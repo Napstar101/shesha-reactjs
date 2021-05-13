@@ -1,4 +1,4 @@
 shesha-reactjs
 ========================
 
-|build-status| |docs| |coverage|
+[![docs](https://readthedocs.org/projects/shesha-reactjs/badge/?version=latest)](https://shesha-reactjs.readthedocs.io/en/latest/?badge=latest)
