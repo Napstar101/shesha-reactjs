@@ -16,3 +16,5 @@ theme:
   name: material
   palette:
     primary: deep orange
+  features:
+    - navigation.sections
