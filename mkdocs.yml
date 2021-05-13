@@ -4,7 +4,6 @@ repo_name: boxfusion/shesha-reactjs
 edit_uri: edit/main/docs/
 copyright: Copyright &copy; Boxfusion
 extra:
-  generator: false
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/
@@ -12,5 +11,8 @@ extra:
       link: https://twitter.com/
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/
+  generator: false
 theme:
   name: material
+  palette:
+    primary: deep orange
