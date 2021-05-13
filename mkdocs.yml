@@ -1,4 +1,6 @@
 site_name: shesha-reactjs
 repo_url: https://github.com/boxfusion/shesha-reactjs
+repo_name: boxfusion/shesha-reactjs
+edit_uri: edit/main/docs/
 theme:
   name: material
