@@ -13,6 +13,8 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/
 theme:
+  logo: assets/logo.png
+  homepage: https://shesha.io
   name: material
   palette:
     primary: deep orange
