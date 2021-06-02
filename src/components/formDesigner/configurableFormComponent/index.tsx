@@ -14,7 +14,7 @@ export interface IProps {
   index: number;
 }
 
-const ConfigurableComponent: FC<IProps> = ({ id /*, index*/ }) => {
+const ConfigurableFormComponent: FC<IProps> = ({ id /*, index*/ }) => {
   const { formMode, visibleComponentIds } = useForm();
   const componentRef = useRef(null);
 
@@ -63,4 +63,4 @@ const ConfigurableComponent: FC<IProps> = ({ id /*, index*/ }) => {
   );
 };
 
-export default ConfigurableComponent;
+export default ConfigurableFormComponent;

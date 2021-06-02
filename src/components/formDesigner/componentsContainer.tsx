@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import ConfigurableComponent from './configurableFormComponent';
+import ConfigurableFormComponent from './configurableFormComponent';
 import { useFormActions, useFormState } from '../../providers/form';
 import { TOOLBOX_DROPPABLE_KEY } from '../../providers/form/models';
 import { ItemInterface, ReactSortable } from 'react-sortablejs';
@@ -53,7 +53,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
 
   const renderComponents = () => {
     return components.map((c, index) => (
-      <ConfigurableComponent id={c.id} index={index} key={c.id}></ConfigurableComponent>
+      <ConfigurableFormComponent id={c.id} index={index} key={c.id}></ConfigurableFormComponent>
     ));
   };
 

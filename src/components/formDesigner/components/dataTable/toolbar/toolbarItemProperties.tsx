@@ -44,9 +44,9 @@ export const ToolbarItemProperties: FC<IProps> = () => {
     const componentModel = getItem(selectedItemId);
 
     const markup =
-      componentModel.type === 'item'
+      componentModel.itemType === 'item'
         ? (itemSettingsJson as FormMarkup)
-        : componentModel.type === 'group'
+        : componentModel.itemType === 'group'
         ? (itemGroupSettingsJson as FormMarkup)
         : [];
     return (

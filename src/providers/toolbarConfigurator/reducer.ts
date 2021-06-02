@@ -13,18 +13,18 @@ import { getItemById, getItemPositionById } from './utils';
 const toolbarReducer = handleActions<IToolbarConfiguratorStateContext, any>(
   {
     [ToolbarActionEnums.AddButton]: (state: IToolbarConfiguratorStateContext) => {
-      const buttonsCount = state.items.filter(i => i.type === 'item').length;
+      const buttonsCount = state.items.filter(i => i.itemType === 'item').length;
       const buttonProps: IToolbarButton = {
         id: uuid(),
-        type: 'item',
+        itemType: 'item',
         sortOrder: state.items.length,
         name: `Button ${buttonsCount + 1}`,
-        buttonType: 'button',
+        itemSubType: 'button',
       };
 
       const newItems = [...state.items];
       const parent = state.selectedItemId ? (getItemById(newItems, state.selectedItemId) as IButtonGroup) : null;
-      if (parent && parent.type == 'group') {
+      if (parent && parent.itemType == 'group') {
         parent.childItems = [...parent.childItems, buttonProps];
       } else newItems.push(buttonProps);
 
@@ -51,10 +51,10 @@ const toolbarReducer = handleActions<IToolbarConfiguratorStateContext, any>(
     },
 
     [ToolbarActionEnums.AddGroup]: (state: IToolbarConfiguratorStateContext) => {
-      const groupsCount = state.items.filter(i => i.type === 'group').length;
+      const groupsCount = state.items.filter(i => i.itemType === 'group').length;
       const groupProps: IButtonGroup = {
         id: uuid(),
-        type: 'group',
+        itemType: 'group',
         sortOrder: state.items.length,
         name: `Group ${groupsCount + 1}`,
         childItems: [],

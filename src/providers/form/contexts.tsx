@@ -1,5 +1,5 @@
 import { createContext, MutableRefObject } from 'react';
-import { IFlagsState, IFlagsSetters, IToolboxComponentGroup, IToolboxComponentBase, IAsyncValidationError } from '../../interfaces';
+import { IFlagsState, IFlagsSetters, IToolboxComponentGroup, IToolboxComponentBase, IAsyncValidationError, IFormValidationErrors } from '../../interfaces';
 import defaultToolboxComponents from './defaults/toolboxComponents';
 import {
   IFormProps,
@@ -59,11 +59,14 @@ export interface IFormStateContext
   path?: string;
   formMode: FormMode;
   isDebug: boolean;
-  formData?: any;
   form?: FormInstance<any>;
   actions: IFormAction[];
   context?: any; // todo: make generic
   formSettings: IFormSettings;
+
+  // runtime props
+  formData?: any;
+  validationErrors?: IFormValidationErrors;
 
   selectedComponentId?: string; // todo: move to the designer level
   selectedComponentRef?: MutableRefObject<any>;
@@ -139,7 +142,10 @@ export interface IFormActionsContext
   getComponentModel: (id: string) => IConfigurableFormComponent;
   //getComponentModelValidation: (id: string) => ;
   setVisibleComponents: (payload: ISetVisibleComponentsPayload) => void;
+  
   setFormData: (payload: ISetFormDataPayload) => void;
+  setValidationErrors: (payload: IFormValidationErrors) => void;  
+
   addComponent: (payload: IComponentAddPayload) => void;
   updateChildComponents: (payload: IUpdateChildComponentsPayload) => void;
   setDebugMode: (isDebug: boolean) => void;

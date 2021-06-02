@@ -5,6 +5,7 @@ import { ToolbarItemProperties } from './toolbarItemProperties';
 import ToolbarItemsContainer from './toolbarItemsContainer';
 import { useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
 import React from 'react';
+import './styles/index.less';
 
 export interface IToolbarConfiguratorProps {}
 

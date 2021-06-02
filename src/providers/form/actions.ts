@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions';
+import { IFormValidationErrors } from '../../interfaces';
 import {
   IComponentAddPayload,
   IComponentDeletePayload,
@@ -40,6 +41,7 @@ export enum FormActionEnums {
   SetVisibleComponents = 'SET_VISIBLE_COMPONENTS',
   UpdateChildComponents = 'UPDATE_CHILD_COMPONENTS',
   SetFormData = 'SET_FORM_DATA',
+  SetValidationErrors = 'SET_VALIDATION_ERRORS',
   SetSelectedComponent = 'SET_SELECTED_COMPONENT',
   RegisterActions = 'REGISTER_ACTIONS',
   UpdateFormSettings = 'UPDATE_FORM_SETTINGS',
@@ -91,6 +93,11 @@ export const setVisibleComponentsAction = createAction<ISetVisibleComponentsPayl
 
 export const setFormDataAction = createAction<ISetFormDataPayload, ISetFormDataPayload>(
   FormActionEnums.SetFormData,
+  p => p
+);
+
+export const setValidationErrorsAction = createAction<IFormValidationErrors, IFormValidationErrors>(
+  FormActionEnums.SetValidationErrors,
   p => p
 );
 

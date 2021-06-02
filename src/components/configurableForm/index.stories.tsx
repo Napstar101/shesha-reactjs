@@ -4,11 +4,12 @@ import { Story } from '@storybook/react';
 import ConfigurableForm from './configurableForm';
 import { Col, Row } from 'antd';
 import { IConfigurableFormProps } from './models';
-import { AppConfiguratorProvider, ShaApplicationProvider, ShaRoutingProvider } from '../../providers';
+import { ShaApplicationProvider, ShaRoutingProvider } from '../../providers';
 import AuthContainer2 from '../authedContainer2';
+import { IndexPageTemplate } from './stories/indexPage';
 
 export default {
-  title: 'Components/Temp/ConfigurableForm',
+  title: 'Components/ConfigurableForm',
   component: ConfigurableForm,
 } as Meta;
 
@@ -16,7 +17,7 @@ const configurableFormProps: IConfigurableFormProps = {
   mode: 'edit',
 };
 
-const backendUrl = 'http://testdsdnpobe.boxfusion.co.za'; // Just for configuring Storybook
+const backendUrl = 'http://localhost:21021'; // Just for configuring Storybook
 // const backendUrl = 'http://localhost:21021';
 
 // Create a master template for mapping args to render the Button component
@@ -25,11 +26,9 @@ const Template: Story<IConfigurableFormProps> = args => (
     <AuthContainer2>
       <Row>
         <Col span={8} offset={8}>
-          <AppConfiguratorProvider>
-            <ShaRoutingProvider>
-              <ConfigurableForm {...args} id="f1e6f97c-dd59-41e0-a3b7-d4657dd92a56"></ConfigurableForm>
-            </ShaRoutingProvider>
-          </AppConfiguratorProvider>
+          <ShaRoutingProvider>
+            <ConfigurableForm {...args} path="/administration/user-management/createModal"></ConfigurableForm>
+          </ShaRoutingProvider>
         </Col>
       </Row>
     </AuthContainer2>
@@ -38,3 +37,9 @@ const Template: Story<IConfigurableFormProps> = args => (
 
 export const Basic = Template.bind({});
 Basic.args = { ...configurableFormProps };
+
+export const IndexPage = IndexPageTemplate.bind({});
+IndexPage.args = { 
+  backendUrl: backendUrl,
+  formPath: '/indexTable',
+};

@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { IToolbarButton } from '../../../../../providers/toolbarConfigurator/models';
-import { Button } from 'antd';
-import { DeleteFilled } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
+import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
 import { useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
 import DragHandle from './dragHandle';
 import React from 'react';
+import ShaIcon, { IconType } from '../../../../shaIcon';
 
 export interface IProps extends IToolbarButton {
   index: number[];
@@ -24,7 +25,15 @@ export const ToolbarItem: FC<IProps> = props => {
     <div className={classes.reduce((a, c) => a + ' ' + c)}>
       <div className="sha-toolbar-item-header">
         <DragHandle id={props.id}></DragHandle>
-        {props.name}
+        { props.icon && <ShaIcon iconName={props.icon as IconType}/> }
+        <span className="sha-toolbar-item-name">
+          {props.name}
+        </span>
+        { props.tooltip && (
+          <Tooltip title={props.tooltip}>
+            <QuestionCircleOutlined className="sha-help-icon"/>
+          </Tooltip>
+        ) }
         <div className="sha-toolbar-item-controls">
           <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
         </div>
