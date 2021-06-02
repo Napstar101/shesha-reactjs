@@ -22,10 +22,11 @@ import { crudActionColumns } from './crudActionColumns';
 import { DataTableFullInstance } from '../../providers/dataTable/contexts';
 import { ModalProps } from 'antd/lib/modal';
 import { nanoid } from 'nanoid';
-import ReactTable, { IReactTableProps } from '../reactTable';
+import ReactTable from '../reactTable';
 import { removeUndefinedProperties } from '../../utils/array';
 import { ValidationErrors } from '..';
 import { useDataTableStore } from '../../providers';
+import { IReactTableProps } from '../reactTable/interfaces';
 
 const FormItem = Form.Item;
 
