@@ -1,0 +1,215 @@
+.sidebar-container {
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background: @background-color;
+
+  .sidebar-container-header {
+    padding: @padding-lg;
+    background-color: white;
+  }
+
+  .sidebar-container-body {
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .sidebar-container-left,
+    .sidebar-container-right {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      .transition();
+
+      .sidebar-header {
+        display: flex;
+
+        .sidebar-header-title {
+          width: @sha-left-sidebar-width - @sha-collapsible-sidebar-btn-height;
+          background: #282828;
+          display: flex;
+          align-items: center;
+          padding: 0 @padding-lg;
+          font-weight: 500;
+          font-size: 16px;
+          color: white;
+        }
+
+        .sidebar-header-btn {
+          height: @sha-collapsible-sidebar-btn-height;
+          width: @sha-collapsible-sidebar-btn-height;
+
+          background: @primary-color;
+          color: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: bolder;
+          cursor: pointer;
+        }
+      }
+
+      .sidebar-body {
+        overflow-x: hidden;
+        overflow-y: auto;
+        display: flex;
+        padding: @padding-lg;
+        flex: 1;
+
+        .sidebar-body-content {
+          width: 100%;
+
+          &.open {
+            margin-left: unset;
+            margin-right: unset;
+          }
+        }
+
+        .sidebar-body-placeholder {
+          width: @sha-collapsible-sidebar-btn-height;
+          margin: -@padding-lg;
+
+          &.open {
+            width: 0;
+          }
+        }
+      }
+    }
+
+    .sidebar-container-left {
+      border-right: 1px solid lightgrey;
+      left: -@sha-left-sidebar-width + @sha-collapsible-sidebar-btn-height;
+
+      &.allow-full-collapse {
+        left: -@sha-left-sidebar-width;
+      }
+
+      &.open {
+        left: 0;
+
+        .toggle-open-btn {
+          transform: rotateX(180deg);
+        }
+      }
+
+      .sidebar-header {
+        .sidebar-header-title {
+        }
+
+        .sidebar-header-btn {
+        }
+      }
+
+      .sidebar-body {
+        .sidebar-body-content {
+          margin-left: -@sha-collapsible-sidebar-btn-height;
+
+          &.open {
+            margin-left: unset;
+          }
+        }
+
+        .sidebar-body-placeholder {
+          width: @sha-collapsible-sidebar-btn-height;
+          margin: -@padding-lg;
+
+          &.open {
+            width: 0;
+          }
+        }
+      }
+    }
+
+    .sidebar-container-right {
+      border-left: 1px solid lightgrey;
+      right: -@sha-right-sidebar-width + @sha-collapsible-sidebar-btn-height;
+
+      &.allow-full-collapse {
+        right: -@sha-right-sidebar-width;
+      }
+
+      &.open {
+        right: 0;
+
+        .toggle-open-btn {
+          transform: rotateX(180deg);
+        }
+      }
+
+      .sidebar-header {
+        flex-direction: row-reverse;
+        .sidebar-header-title {
+          justify-content: flex-end;
+        }
+
+        .sidebar-header-btn {
+        }
+      }
+
+      .sidebar-body {
+        flex-direction: row-reverse;
+
+        .sidebar-body-content {
+          margin-right: -@sha-collapsible-sidebar-btn-height;
+
+          &.open {
+            margin-right: unset;
+          }
+        }
+
+        .sidebar-body-placeholder {
+          width: @sha-collapsible-sidebar-btn-height;
+          margin: -@padding-lg;
+
+          &.open {
+            width: 0;
+          }
+        }
+      }
+    }
+
+    .sidebar-container-main-area {
+      .transition();
+      width: 100%;
+      margin: 0 @sha-collapsible-sidebar-btn-height;
+
+      &::not(.no-padding) {
+        padding: @padding-lg;
+      }
+
+      &.allow-full-collapse {
+        margin-left: unset;
+        margin-right: unset;
+      }
+
+      &.both-open {
+        margin-left: @sha-left-sidebar-width;
+        margin-right: @sha-right-sidebar-width;
+      }
+
+      &.left-only-open {
+        margin-left: @sha-left-sidebar-width;
+      }
+
+      &.right-only-open {
+        margin-right: @sha-right-sidebar-width;
+      }
+
+      &.no-left-panel {
+        margin-left: unset;
+      }
+
+      &.no-right-panel {
+        margin-right: unset;
+      }
+    }
+  }
+}
+
+.test {
+  background: red;
+}

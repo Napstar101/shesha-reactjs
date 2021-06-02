@@ -1,0 +1,137 @@
+[
+  {
+    "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
+    "type": "sectionSeparator",
+    "name": "separator1",
+    "parentId": "root",
+    "label": "Display"
+  },
+  {
+    "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
+    "type": "textField",
+    "name": "name",
+    "parentId": "root",
+    "label": "Name",
+    "validate": { "required": true }
+  },
+  {
+    "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
+    "type": "textField",
+    "name": "label",
+    "parentId": "root",
+    "label": "Label"
+  },
+  {
+    "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
+    "type": "textField",
+    "name": "description",
+    "parentId": "root",
+    "label": "Description"
+  },
+  {
+    "id": "9a0099a7-4166-4d8e-b58f-84208df9d199",
+    "type": "textField",
+    "name": "leftIcon",
+    "parentId": "root",
+    "label": "Left Icon"
+  },
+  {
+    "id": "f2f9afef-b87b-4187-a843-07efe78c543d",
+    "type": "textField",
+    "name": "rightIcon",
+    "parentId": "root",
+    "label": "Right Icon"
+  },
+  {
+    "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+    "type": "checkbox",
+    "name": "hidden",
+    "parentId": "root",
+    "label": "Hidden"
+  },
+  {
+    "id": "24a8be15-98eb-40f7-99ea-ebb602693e9c",
+    "type": "checkbox",
+    "name": "disabled",
+    "parentId": "root",
+    "label": "Disabled"
+  },
+  {
+    "id": "be15598e-5c23-40bc-8245-6b5385bb7963",
+    "type": "dropdown",
+    "name": "buttonType",
+    "label": "Button Type",
+    "labelAlign": "right",
+    "parentId": "root",
+    "hidden": false,
+    "customVisibility": null,
+    "validate": { "required": true },
+    "dataSourceType": "values",
+    "values": [
+      { "id": "c4a96833-8ed7-4085-8848-169d5607136d", "label": "primary", "value": "primary" },
+      { "id": "c6f974da-ad28-44e5-8e4d-50280cf24ae7", "label": "ghost", "value": "ghost" },
+      { "id": "71c0dc14-0473-4748-ae75-a4ed3bd6cffd", "label": "dashed", "value": "dashed" },
+      { "id": "789d5733-2d4f-4969-890f-613e5b4a7d59", "label": "link", "value": "link" },
+      { "id": "36abe636-40b2-476c-95b0-78a50478146b", "label": "text", "value": "text" },
+      { "id": "de08ea36-a831-4373-ab10-ce25fadf80cd", "label": "default", "value": "default" }
+    ]
+  },
+  {
+    "id": "4e9b886a-6186-4467-a688-639b30a0e06f",
+    "type": "checkbox",
+    "name": "danger",
+    "label": "Danger",
+    "labelAlign": "right",
+    "parentId": "root",
+    "hidden": false,
+    "customVisibility": null,
+    "validate": {}
+  },
+  {
+    "id": "ba7ab3f7-39d5-45e5-bb68-9471d71aa9b4",
+    "type": "dropdown",
+    "name": "actionType",
+    "label": "Action",
+    "labelAlign": "right",
+    "parentId": "root",
+    "hidden": false,
+    "customVisibility": null,
+    "dataSourceType": "values",
+    "values": [
+      { "id": "15dfd454-2026-448e-a467-6e616824c53f", "label": "Submit", "value": "submit" },
+      { "id": "95c50007-f453-49e7-98f7-b7ce4614c54b", "label": "Reset", "value": "reset" },
+      { "id": "6e38d699-80c5-4bcb-957f-3b6c7e454a02", "label": "Custom", "value": "custom" },
+      { "id": "deb6f77f-c8f9-4463-a80b-f1563bbd0bfc", "label": "Close", "value": "close" }
+    ],
+    "validate": { "required": true }
+  },
+  {
+    "id": "0d2e21a1-7266-46cb-9232-0bd53de5d47d",
+    "type": "textField",
+    "name": "customAction",
+    "label": "Custom Action",
+    "labelAlign": "right",
+    "parentId": "root",
+    "hidden": false,
+    "customVisibility": "return data.actionType === 'custom'",
+    "validate": {}
+  },
+  {
+    "id": "49d042d1-5b93-4f2d-83cd-4dc5f0654cc3",
+    "type": "sectionSeparator",
+    "name": "separatorVisibility",
+    "parentId": "root",
+    "label": "Visibility"
+  },
+  {
+    "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc6",
+    "type": "textArea",
+    "name": "customVisibility",
+    "parentId": "root",
+    "label": "Custom Visibility",
+    "autoSize": false,
+    "showCount": false,
+    "allowClear": false,
+    "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key."
+  }
+]

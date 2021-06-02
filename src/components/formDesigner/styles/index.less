@@ -1,0 +1,191 @@
+@import '../../../../node_modules/antd/lib/style/themes/default.less';
+
+.sha-form-designer {
+  .sidebar-container-main-area-body {
+    .content-heading {
+      .sha-designer-header {
+        background: white;
+        margin: unset;
+        border-top: 1px solid lightgrey;
+        padding: @padding-md;
+      }
+    }
+  }
+  .sha-designer-toolbar {
+    .sha-designer-toolbar-left {
+      float: left;
+
+      .ant-btn {
+        margin-right: 2px;
+      }
+    }
+    .sha-designer-toolbar-right {
+      float: right;
+
+      .ant-btn {
+        margin-left: 2px;
+      }
+    }
+  }
+  .sha-designer-toolbox {
+    .sha-toolbox-component {
+      display: flex;
+      user-select: none;
+      padding: 2px;
+      align-items: flex-start;
+      align-content: flex-start;
+      line-height: 1.5;
+      border-radius: 3px;
+      background: #fff;
+      margin: 4px 0;
+
+      .anticon {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .sidebar-header-title {
+    .component-properties-actions {
+      width: 100%;
+
+      .action-buttons {
+        float: right;
+
+        .ant-btn {
+          margin-left: 2px;
+        }
+        .ant-btn-dangerous {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .sha-designer-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .sha-form-designer {
+    background-color: white;
+
+    .sha-components-container {
+      border: 1px dashed #ddd;
+      border-radius: 2px;
+
+      .sha-drop-hint {
+        margin: 0;
+        text-align: center;
+        color: darkgray;
+      }
+    }
+  }
+
+  .sha-component-ghost {
+    //background-color: lightgray;
+    border: 1px dashed #4099ff;
+    border-radius: 2px;
+    opacity: 0.7;
+  }
+
+  .sha-component {
+    position: relative;
+    margin: 4px;
+    margin-left: 10px;
+
+    .ant-alert.sha-designer-warning {
+      margin-bottom: 0;
+    }
+
+    &.selected {
+      border: #61affe 1px dashed;
+      border-radius: 4px;
+      background-color: #ebf3fb;
+    }
+
+    &.has-config-errors {
+      border: @red-3 1px solid;
+      border-radius: 4px;
+
+      .sha-component-invisible-indicator {
+        display: none;
+      }
+
+      .sha-component-validation-icon {
+        display: inline-flex;
+        align-items: center;
+        color: @red-3;
+        font-size: 12px !important;
+        left: 15px;
+        height: 100%;
+        position: absolute;
+        z-index: 1000;
+      }
+    }
+
+    .sha-component-drag-handle {
+      visibility: visible;
+      border-radius: 2px;
+      background-color: #ddd;
+      width: 10px;
+      height: 100%;
+      position: absolute;
+      z-index: 1000;
+      cursor: grab;
+    }
+
+    .sha-component-invisible-indicator {
+      display: inline-flex;
+      align-items: center;
+      color: darkgray;
+      left: 15px;
+      height: 100%;
+      position: absolute;
+      z-index: 1000;
+    }
+
+    .sha-component-controls {
+      text-align: right;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      display: block;
+      min-height: 20px;
+      z-index: 1000;
+    }
+    &:not(:hover) {
+      .sha-component-controls {
+        display: none;
+      }
+      .sha-component-drag-handle {
+        background-color: #fff;
+        visibility: hidden;
+      }
+    }
+  }
+  .sha-form {
+    &.sha-dragging {
+      .sha-component-drag-handle {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+.sha-form {
+  .sha-components-container {
+    min-height: 32px;
+    &.horizontal {
+      .sha-components-container-inner {
+        display: flex;
+        //justify-content: space-between;
+      }
+    }
+  }
+
+  .sha-form-live,
+  .sha-form-preview {
+    background-color: white;
+  }
+}

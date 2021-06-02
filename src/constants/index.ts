@@ -1,0 +1,17 @@
+//#region URLs
+export const URL_ERROR_PAGE = '/_error';
+export const URL_HOME_PAGE = '/';
+export const URL_LOGIN_PAGE = '/login';
+export const URL_CHANGE_PASSWORD = '/account/change-password';
+export const URL_RESET_PASSWORD = '/account/reset-password';
+export const URL_FORGOT_PASSWORD = '/account/forgot-password';
+export const URL_ACTIVATE_ACCOUNT = '/account/activate';
+export const URL_SETTINGS = '/settings/overview';
+//#endregion
+
+export const CONFIG_KEY = '__APP_CONFIG__';
+
+//#region permissions
+export const PERM_PAGES_APP_SETTINGS = 'pages:applicationSettings';
+export const PERM_APP_CONFIGURATOR = 'app:Configurator';
+//#region 

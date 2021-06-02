@@ -1,0 +1,19 @@
+.sha-action-btn-group {
+  button {
+    &:last-child {
+      padding-left: unset;
+    }
+
+    &::before {
+      content: '|';
+      padding-left: @padding-sm;
+      color: lightgrey;
+    }
+
+    &:first-child {
+      &::before {
+        content: unset;
+      }
+    }
+  }
+}

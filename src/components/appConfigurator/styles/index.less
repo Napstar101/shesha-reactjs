@@ -1,0 +1,67 @@
+.sha-app-editmode {
+  .sha-configurable-component {
+    position: relative;
+    border: 2px dashed #ddd;
+
+    &:hover {
+      border: 2px dashed #4099ff;
+    }
+
+    &.sha-configurable-component-selected {
+      border: 2px dashed #4099ff;
+    }
+
+    .sha-configurable-component-overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      cursor: pointer;
+    }
+    .sha-configurable-component-overlay:after {
+      content: '';
+
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #ddd;
+      opacity: 0.2;
+    }
+
+    .sha-form {
+      min-height: 120px;
+    }
+
+    .sha-edit-view-msg {
+      width: 200px;
+      height: auto;
+      margin: auto;
+      background-color: #fff;
+      text-align: center;
+      border: 2px solid #fff;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -100px;
+      margin-top: -55px;
+      border-radius: 10px;
+      z-index: 1000;
+      padding: 15px 5px;
+
+      .anticon-edit {
+        font-size: 26px;
+      }
+      h3 {
+        margin-bottom: 0;
+      }
+      p {
+        color: lightgray;
+        margin-bottom: 0;
+      }
+    }
+  }
+}

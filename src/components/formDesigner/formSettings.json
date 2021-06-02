@@ -1,0 +1,92 @@
+{
+  "components": [
+    {
+      "id": "ee6a9269-0e8e-41db-b6e0-069036accb19",
+      "type": "autocomplete",
+      "name": "modelType",
+      "label": "Model Type",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "dataSourceType": "url",
+      "dataSourceUrl": "/api/services/app/Metadata/TypeAutocomplete",
+      "validate": {}
+    },
+    {
+      "id": "3c32d64a-9bda-457f-82f8-6a0f2c110430",
+      "type": "textField",
+      "name": "postUrl",
+      "label": "POST Url",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {}
+    },
+    {
+      "id": "ebcf09bb-8cfe-4514-9bdf-d48fd325f438",
+      "type": "textField",
+      "name": "getUrl",
+      "label": "GET Url",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {}
+    },
+    {
+      "id": "077f5a0d-d59e-44b8-bc5b-a06e18438f4d",
+      "type": "dropdown",
+      "name": "layout",
+      "label": "Layout",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": { "required": true },
+      "dataSourceType": "values",
+      "values": [
+        { "id": "3f7bd074-37e6-450c-8106-95e8d8164ada", "label": "horizontal", "value": "horizontal" },
+        { "id": "5709e098-7c1d-4a27-92e5-f25e998c26fd", "label": "vertical", "value": "vertical" }
+      ]
+    },
+    {
+      "id": "b6bdf196-769f-4bce-b488-9ca50ad16176",
+      "type": "checkbox",
+      "name": "colon",
+      "label": "Colon",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Configure the default value of colon for Form.Item. Indicates whether the colon after the label is displayed (only effective when prop layout is horizontal)",
+      "validate": {}
+    },
+    {
+      "id": "493e12cd-d4ab-4f2a-8c08-3a20ce0f617e",
+      "type": "numberField",
+      "name": "labelCol.span",
+      "label": "Label span",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {},
+      "description": "Raster number of cells to occupy, 0 corresponds to display: none"
+    },
+    {
+      "id": "99c93c99-0005-429e-8f71-e899230f1c6e",
+      "type": "numberField",
+      "name": "wrapperCol.span",
+      "label": "Component span",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {},
+      "description": "Raster number of cells to occupy, 0 corresponds to display: none"
+    }
+  ],
+  "formSettings": { "layout": "horizontal", "colon": true, "labelCol": { "span": 5 }, "wrapperCol": { "span": 19 } }
+}

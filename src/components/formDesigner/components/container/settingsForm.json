@@ -1,0 +1,81 @@
+[
+  {
+    "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
+    "type": "sectionSeparator",
+    "name": "separator1",
+    "parentId": "root",
+    "label": "Display"
+  },
+  {
+    "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
+    "type": "textField",
+    "name": "name",
+    "parentId": "root",
+    "label": "Name",
+    "validate": { "required": true }
+  },
+  {
+    "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+    "type": "checkbox",
+    "name": "hidden",
+    "parentId": "root",
+    "label": "Hidden"
+  },
+  {
+    "id": "45b51033-4803-46f7-96fa-10bb277426c7",
+    "type": "dropdown",
+    "name": "direction",
+    "label": "Direction",
+    "labelAlign": "right",
+    "parentId": "root",
+    "hidden": false,
+    "customVisibility": null,
+    "dataSourceType": "values",
+    "values": [
+      { "id": "f6410e20-49ce-45d0-90e3-49a8469a2c30", "label": "horizontal", "value": "horizontal" },
+      { "id": "efd9da05-227c-43fb-b555-140561b6fefc", "label": "vertical", "value": "vertical" }
+    ],
+    "validate": { "required": true }
+  },
+  {
+    "id": "b796c757-6e6d-4312-94cc-089000b4f130",
+    "type": "dropdown",
+    "name": "justifyContent",
+    "label": "Justify Content",
+    "labelAlign": "right",
+    "parentId": "root",
+    "hidden": false,
+    "customVisibility": "return data.direction === 'horizontal';",
+    "dataSourceType": "values",
+    "values": [
+      { "id": "9e919c30-28e0-4d37-945d-395848b5cdb4", "label": "center", "value": "center" },
+      { "id": "767cee92-3d02-4c85-8d39-d80dd81469c9", "label": "flex-start", "value": "flex-start" },
+      { "id": "8b11b777-d0ef-4062-9644-9994fc2b5872", "label": "flex-end", "value": "flex-end" },
+      { "id": "bcfa736d-2694-4432-b7bb-1d20f3216a34", "label": "left", "value": "left" },
+      { "id": "c4216c9d-0d90-4b70-9a00-19c2efe91d13", "label": "right", "value": "right" },
+      { "id": "7a238c32-b5fa-4ae2-8087-023afc0b1158", "label": "space-between", "value": "space-between" },
+      { "id": "bf3fbcef-0518-4721-90f1-1ac6270bff9a", "label": "space-around", "value": "space-around" },
+      { "id": "d589565d-bf43-4578-88ea-ee3b0961d3c2", "label": "space-evenly", "value": "space-evenly" },
+      { "id": "a2c2b730-5455-43ef-bb17-c461683a14d1", "label": "stretch", "value": "stretch" }
+    ],
+    "validate": {}
+  },
+  {
+    "id": "bc67960e-77e3-40f2-89cc-f18f94678cce",
+    "type": "sectionSeparator",
+    "name": "separatorVisibility",
+    "parentId": "root",
+    "label": "Visibility"
+  },
+  {
+    "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc6",
+    "type": "textArea",
+    "name": "customVisibility",
+    "parentId": "root",
+    "label": "Custom Visibility",
+    "autoSize": false,
+    "showCount": false,
+    "allowClear": false,
+    "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key."
+  }
+]
