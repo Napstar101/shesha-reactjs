@@ -15,7 +15,7 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
   const { updateChildItems } = useToolbarConfigurator();
 
   const renderItem = (item: ToolbarItemProps, index: number) => {
-    switch (item.type) {
+    switch (item.itemType) {
       case 'item':
         const itemProps = item as IToolbarButton;
         return <ToolbarItem key={index} index={[...props.index, index]} {...itemProps}></ToolbarItem>;
@@ -58,7 +58,6 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
     >
       {props.items.map(
         (item, index) => renderItem(item, index)
-        // <ConfigurableComponent id={c.id} index={index} key={c.id}></ConfigurableComponent>
       )}
     </ReactSortable>
   );

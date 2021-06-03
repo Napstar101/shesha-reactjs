@@ -21,6 +21,7 @@ import { handleActions } from 'redux-actions';
 import { v4 as uuid } from 'uuid';
 import { camelize, convertActions, findToolboxComponent } from './utils';
 import undoable, { includeAction } from 'redux-undo';
+import { IFormValidationErrors } from '../../interfaces';
 
 const reducer = handleActions<IFormStateContext, any>(
   {
@@ -224,6 +225,15 @@ const reducer = handleActions<IFormStateContext, any>(
       return {
         ...state,
         formData: newData,
+      };
+    },
+
+    [FormActionEnums.SetValidationErrors]: (state: IFormStateContext, action: ReduxActions.Action<IFormValidationErrors>) => {
+      const { payload } = action;
+
+      return {
+        ...state,
+        validationErrors: payload ? {...payload} : null,
       };
     },
 

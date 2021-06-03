@@ -45,7 +45,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
   const isDesignMode = formMode === 'designer';
 
   const renderItem = (item: ToolbarItemProps, index: number) => {
-    switch (item.type) {
+    switch (item.itemType) {
       case 'item':
         const itemProps = item as IToolbarButton;
 
@@ -53,7 +53,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
         // todo: pass data and context
         if (!visibilityFunc({}, { selectedRow: selectedRow }) && !isInDesignerMode()) return null;
 
-        switch (itemProps.buttonType) {
+        switch (itemProps.itemSubType) {
           case 'button':
             return (
               <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps}></ToolbarButton>

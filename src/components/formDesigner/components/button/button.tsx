@@ -10,12 +10,14 @@ import { useForm } from '../../../../providers/form';
 import { useClosestModal } from '../../../../providers/dynamicModal';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useShaRouting } from '../../../../providers';
+import ShaIcon, { IconType } from '../../../shaIcon';
 
 type ButtonActionType = 'submit' | 'reset' | 'close' | 'custom';
 
 export interface IButtonProps extends IConfigurableFormComponent {
   actionType: ButtonActionType;
   customAction?: string;
+  icon?: string;
 
   buttonType?: ButtonType;
   danger?: boolean;
@@ -76,7 +78,12 @@ const TextField: IToolboxComponent<IButtonProps> = {
 
     return (
       <FormItem model={fieldModel}>
-        <Button onClick={onClick} type={customProps.buttonType} danger={customProps.danger}>
+        <Button 
+          onClick={onClick} 
+          type={customProps.buttonType} 
+          danger={customProps.danger}
+          icon={customProps.icon ? <ShaIcon iconName={customProps.icon as IconType}/> : undefined}
+        >
           {customProps.label}
         </Button>
       </FormItem>

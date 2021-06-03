@@ -32,6 +32,9 @@ import SelectColumnsButton from '../../../components/formDesigner/components/dat
 import ContainerComponent from '../../../components/formDesigner/components/container/containerComponent';
 import HierarchicalChecklistComponent from '../../../components/formDesigner/components/hierarchicalChecklist/hierarchicalChecklistComponent';
 import Switch from '../../../components/formDesigner/components/switch/switch';
+import ValidationErrors from '../../../components/formDesigner/components/validationErrors';
+import IconPicker from '../../../components/formDesigner/components/iconPicker';
+
 import { IToolboxComponentGroup } from '../../../interfaces/formDesigner';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
@@ -53,7 +56,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   },
   {
     name: 'Static',
-    components: [Alert],
+    components: [Alert, ValidationErrors],
   },
   {
     name: 'Layout',
@@ -69,6 +72,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       HierarchicalChecklistComponent,
       KeyValueEditor,
       Notes,
+      IconPicker,
     ],
   },
   {

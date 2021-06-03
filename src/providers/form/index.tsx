@@ -37,6 +37,7 @@ import {
   setVisibleComponentsAction,
   updateChildComponentsAction,
   setFormDataAction,
+  setValidationErrorsAction,
   setSelectedComponentAction,
   changeMarkupAction,
   registerComponentActionsAction,
@@ -57,7 +58,7 @@ import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
-import { IAsyncValidationError, IToolboxComponentGroup, } from '../../interfaces';
+import { IAsyncValidationError, IFormValidationErrors, IToolboxComponentGroup, } from '../../interfaces';
 
 export interface IFormProviderProps {
   id?: string;
@@ -337,6 +338,10 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     });
   };
 
+  const setValidationErrors = (payload: IFormValidationErrors) => {
+    dispatch(setValidationErrorsAction(payload));
+  }
+
   const updateChildComponents = (payload: IUpdateChildComponentsPayload) => {
     dispatch(updateChildComponentsAction(payload));
   };
@@ -391,6 +396,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     endDragging,
     setVisibleComponents,
     setFormData,
+    setValidationErrors,
     updateChildComponents,
     undo,
     redo,

@@ -8,6 +8,8 @@ import IRequestHeaders from '../../interfaces/requestHeaders';
 import { setBackendUrlAction, setHeadersAction } from './actions';
 import ShaRoutingProvider from '../shaRouting';
 import { Router } from 'next/router';
+import { AppConfiguratorProvider } from '../appConfigurator';
+import { DynamicModalProvider } from '../dynamicModal';
 
 export interface IShaApplicationProviderProps {
   backendUrl: string;
@@ -48,7 +50,11 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
               onSetRequestHeaders={onSetRequestHeaders}
             >
               <AuthorizationSettingsProvider>
-                {children}
+                <AppConfiguratorProvider>
+                  <DynamicModalProvider>
+                    {children}
+                  </DynamicModalProvider>
+                </AppConfiguratorProvider>
               </AuthorizationSettingsProvider>
             </AuthProvider>
           </ShaRoutingProvider>

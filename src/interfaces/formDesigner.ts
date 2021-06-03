@@ -53,3 +53,7 @@ export interface IAsyncValidationError {
   field: string;
   message: string;
 }
+
+export interface IFormValidationErrors {
+
+}

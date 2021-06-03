@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, Suspense } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { SidebarContainer } from '../../components';
 import { Row, Col, Form } from 'antd';
 import { FormDto } from '../../apis/form';
@@ -9,16 +9,6 @@ import ComponentPropertiesTitle from './componentPropertiesTitle';
 import { useForm } from '../../providers/form';
 import { ConfigurableFormRenderer } from '../../components';
 import { FormDesignerHeader } from './formDesignerHeader';
-import { Skeleton } from 'antd';
-
-const DynamicJsonView = React.lazy(() => import('react-json-view'));
-const JsonView = props => {
-  return (
-    <Suspense fallback={<Skeleton loading={true}></Skeleton>}>
-      <DynamicJsonView {...props}></DynamicJsonView>
-    </Suspense>
-  );
-};
 
 export interface IFormDesignerProps {
   model?: FormDto;
@@ -33,7 +23,7 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
   const toggleFieldPropertiesSidebar = () => setFieldPropertiesOpen(prop => !prop);
 
   const [formValues, setFormValues] = useState({});
-  const { isDebug, actions } = useForm();
+  const { isDebug } = useForm();
 
   const [propertiesForm] = Form.useForm(); // todo: review usage of this form
   const { selectedComponentId } = useForm();
@@ -72,12 +62,9 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
             <>
               <Row>
                 <Col span={24}>
-                  <JsonView src={actions}></JsonView>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  <JsonView src={formValues}></JsonView>
+                  <pre>
+                    {JSON.stringify(formValues)}
+                  </pre>
                 </Col>
               </Row>
             </>

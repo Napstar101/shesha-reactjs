@@ -5,6 +5,7 @@ import { ISelectionProps } from '../../../../../../providers/dataTableSelection/
 import { IModalProps } from '../../../../../../providers/dynamicModal/models';
 import { evaluateString } from '../../../../../../providers/form/utils';
 import { IToolbarButton } from '../../../../../../providers/toolbarConfigurator/models';
+import ShaIcon, { IconType } from '../../../../../shaIcon';
 
 export interface IToolbarButtonProps extends IToolbarButton {
   formComponentId: string;
@@ -23,6 +24,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
           formId: props.modalFormId,
           title: props.modalTitle,
           onSubmitted: () => {
+            // todo: implement custom actions support
             refreshTable();
           },
         }
@@ -60,7 +62,13 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   };
 
   return (
-    <Button title={props.tooltip} onClick={onButtonClick}>
+    <Button 
+      title={props.tooltip} 
+      onClick={onButtonClick} 
+      type={props.buttonType} 
+      danger={props.danger}
+      icon={props.icon ? <ShaIcon iconName={props.icon as IconType}/> : undefined}
+    >
       {props.name}
     </Button>
   );
