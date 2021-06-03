@@ -1,0 +1,36 @@
+import { FC } from 'react';
+import { Button } from 'antd';
+import { SidebarContainer } from '../../';
+import { ToolbarItemProperties } from './itemProperties';
+import SidebarItemsContainer from './itemsContainer';
+import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfigurator';
+import React from 'react';
+import '../styles/index.less';
+
+export interface ISidebarConfiguratorProps {}
+
+export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
+  const { items, addItem } = useSidebarMenuConfigurator();
+
+  return (
+    <div className="sha-sidebar-configurator">
+      <h4>You can customize the Menu component from this screen.</h4>
+      <div className="sha-action-buttons">
+        <Button onClick={addItem} type="primary">
+          Add New Item
+        </Button>
+      </div>
+      <SidebarContainer
+        rightSidebarProps={{
+          open: true,
+          title: () => 'Properties',
+          content: () => <ToolbarItemProperties></ToolbarItemProperties>,
+        }}
+      >
+        <SidebarItemsContainer items={items} index={[]}></SidebarItemsContainer>
+      </SidebarContainer>
+    </div>
+  );
+};
+
+export default SidebarConfigurator;
