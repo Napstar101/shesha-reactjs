@@ -22,10 +22,11 @@ import { crudActionColumns } from './crudActionColumns';
 import { DataTableFullInstance } from '../../providers/dataTable/contexts';
 import { ModalProps } from 'antd/lib/modal';
 import { nanoid } from 'nanoid';
-import ReactTable, { IReactTableProps } from '../reactTable';
+import ReactTable from '../reactTable';
 import { removeUndefinedProperties } from '../../utils/array';
 import { ValidationErrors } from '..';
 import { useDataTableStore } from '../../providers';
+import { IReactTableProps } from '../reactTable/interfaces';
 
 const FormItem = Form.Item;
 
@@ -34,44 +35,6 @@ const CRUD_MODAL_WIDTH = 700;
 interface IIndexTableProps extends IShaDataTableProps, ICrudProps, TableProps {
   tableRef?: MutableRefObject<Partial<DataTableFullInstance> | null>;
 }
-
-// const MultiselectTable = selectTableHOC(ReactTable);
-
-// const MultiselectWithState: FC<Partial<IIndexTableProps>> = props => {
-//   const { tableData, changeSelectedIds /*multiselect*/, selectedIds /*multiselect*/ } = useDataTableStore();
-
-//   /*multiselect*/
-
-//   const keyField = 'Id';
-//   const allSelected =
-//     selectedIds.length === tableData.length &&
-//     tableData.find((i: any) => !selectedIds.includes(i[keyField])) === undefined;
-//   const selectProps: SelectTableAdditionalProps = {
-//     keyField,
-//     toggleSelection: (_key, _shiftKeyPressed, row) => {
-//       const alreadyAdded = selectedIds.includes(row.Id);
-//       const newList = alreadyAdded ? selectedIds.filter((id: any) => id !== row.Id) : [...selectedIds, row.Id];
-
-//       changeSelectedIds(newList);
-//     },
-//     isSelected: key => {
-//       return selectedIds.includes(key);
-//     },
-//     selectAll: allSelected,
-//     selectType: 'checkbox',
-//     toggleAll: () => {
-//       if (allSelected) {
-//         changeSelectedIds([]);
-//       } else {
-//         const allKeys = tableData.map(i => i[keyField]);
-
-//         changeSelectedIds(allKeys);
-//       }
-//     },
-//   };
-
-//   return <MultiselectTable {...props} {...selectProps} />;
-// };
 
 export interface IExtendedModalProps extends ModalProps {
   content?: string;
