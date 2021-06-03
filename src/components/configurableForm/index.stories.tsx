@@ -18,7 +18,6 @@ const configurableFormProps: IConfigurableFormProps = {
 };
 
 const backendUrl = 'http://localhost:21021'; // Just for configuring Storybook
-// const backendUrl = 'http://localhost:21021';
 
 // Create a master template for mapping args to render the Button component
 const Template: Story<IConfigurableFormProps> = args => (
@@ -39,7 +38,7 @@ export const Basic = Template.bind({});
 Basic.args = { ...configurableFormProps };
 
 export const IndexPage = IndexPageTemplate.bind({});
-IndexPage.args = { 
+IndexPage.args = {
   backendUrl: backendUrl,
   formPath: '/indexTable',
 };

@@ -12,8 +12,7 @@ export default {
 
 const customFileProps: INotesRendererProps = {};
 
-const backendUrl = 'http://testdsdnpobe.boxfusion.co.za'; // TODO: Make this configurable
-// const backendUrl = 'http://localhost:21021'; // TODO: Make this configurable
+const backendUrl = 'http://localhost:21021'; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
 const Template: Story<INotesRendererProps> = args => (

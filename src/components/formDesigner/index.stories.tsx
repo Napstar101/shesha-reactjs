@@ -15,7 +15,6 @@ export interface IFormDesignerStoryProps {
 }
 
 const backendUrl = 'http://localhost:21021'; // TODO: Make this configurable
-// const backendUrl = 'http://localhost:21021'; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
 const Template: Story<IFormDesignerStoryProps> = args => (
@@ -30,13 +29,13 @@ const Template: Story<IFormDesignerStoryProps> = args => (
 
 export const ModalEdit = Template.bind({});
 const modalProps: IFormDesignerStoryProps = {
-  formPath: "/administration/user-management/createModal"
+  formPath: '/administration/user-management/createModal',
 };
 ModalEdit.args = { ...modalProps };
 
 export const IndexPage = Template.bind({});
 const indexPageProps: IFormDesignerStoryProps = {
-  formPath: "/administration/user-management/indexPage"
+  formPath: '/administration/user-management/indexPage',
   //formPath: "D:\\Boxfusion\\shesha-react-new\\src\\components\\formDesigner\\components\\button\\settingsForm.json"
 };
 IndexPage.args = { ...indexPageProps };

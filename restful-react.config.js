@@ -1,6 +1,5 @@
 const camelCase = require('camel-case');
-const BASE_URL = 'http://testdsdnpobe.boxfusion.co.za';
-// const BASE_URL = 'http://localhost:21021';
+const BASE_URL = 'http://localhost:21021';
 const ROOT_PATH = './src/apis';
 
 const API_LIST = [

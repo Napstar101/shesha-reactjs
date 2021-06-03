@@ -27,8 +27,7 @@ interface IAuthContainerProps {
 
 const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) => {
   const [isSignInModalVisible, setSignInModalVisibility] = useState(false);
-  const [baseUrl, setBaseUrl] = useState('http://testdsdnpobe.boxfusion.co.za');
-  // const [baseUrl, setBaseUrl] = useState('http://localhost:21021');
+  const [baseUrl, setBaseUrl] = useState('http://localhost:21021');
   const [token, setToken] = useState<any>(null);
   const [loginForm] = Form.useForm();
   const { mutate: loginMutate, loading } = useMutate({

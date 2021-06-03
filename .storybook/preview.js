@@ -18,7 +18,7 @@ export const parameters = {
 
 export const decorators = [
   Story => (
-    <RestfulProvider base="http://testdsdnpobe.boxfusion.co.za">
+    <RestfulProvider base="http://localhost:21021">
       <Story />
     </RestfulProvider>
   ),
