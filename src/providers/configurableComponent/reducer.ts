@@ -1,16 +1,16 @@
 import {
-  CONFIGURABLE_COMPONENT_CONTEXT_INITIAL_STATE,
   IConfigurableComponentStateContext,
   IComponentLoadPayload,
   IComponentLoadErrorPayload,
   IComponentLoadSuccessPayload,
 } from './contexts';
 import { ConfigurableComponentActionEnums } from './actions';
-import { handleActions } from 'redux-actions';
+import { handleActions, ReduxCompatibleReducer } from 'redux-actions';
 
-const reducer = handleActions<IConfigurableComponentStateContext, any>(
+const reducerFactory = <TSettings extends any>(initialState: IConfigurableComponentStateContext<TSettings>): ReduxCompatibleReducer<IConfigurableComponentStateContext<TSettings>, any> => 
+  handleActions<IConfigurableComponentStateContext<TSettings>, any>(
   {
-    [ConfigurableComponentActionEnums.LoadRequest]: (state: IConfigurableComponentStateContext, action: ReduxActions.Action<IComponentLoadPayload>) => {
+    [ConfigurableComponentActionEnums.LoadRequest]: (state: IConfigurableComponentStateContext<TSettings>, action: ReduxActions.Action<IComponentLoadPayload>) => {
       const { payload } = action;
 
       return {
@@ -20,18 +20,23 @@ const reducer = handleActions<IConfigurableComponentStateContext, any>(
       };
     },
 
-    [ConfigurableComponentActionEnums.LoadSuccess]: (state: IConfigurableComponentStateContext, action: ReduxActions.Action<IComponentLoadSuccessPayload>) => {
+    [ConfigurableComponentActionEnums.LoadSuccess]: (state: IConfigurableComponentStateContext<TSettings>, action: ReduxActions.Action<IComponentLoadSuccessPayload>) => {
       const { payload } = action;
+
+      const settings = payload.settings
+        ? JSON.parse(payload.settings) as TSettings
+        : null;
+      const typedPayload = { ...payload, settings: settings };
 
       return {
         ...state,
-        ...payload,
+        ...typedPayload,
         isInProgress: { ...state.isInProgress, loading: false },
         error: { ...state.error, loading: null },
       };
     },
 
-    [ConfigurableComponentActionEnums.LoadError]: (state: IConfigurableComponentStateContext, action: ReduxActions.Action<IComponentLoadErrorPayload>) => {
+    [ConfigurableComponentActionEnums.LoadError]: (state: IConfigurableComponentStateContext<TSettings>, action: ReduxActions.Action<IComponentLoadErrorPayload>) => {
       const { payload } = action;
 
       return {
@@ -42,8 +47,7 @@ const reducer = handleActions<IConfigurableComponentStateContext, any>(
       };
     },
   },
-
-  CONFIGURABLE_COMPONENT_CONTEXT_INITIAL_STATE
+  initialState
 );
 
-export default reducer;
+export default reducerFactory;

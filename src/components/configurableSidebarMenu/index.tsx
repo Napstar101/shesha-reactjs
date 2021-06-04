@@ -2,31 +2,35 @@ import React, { FC } from 'react';
 import { ConfigurableComponent } from '../appConfigurator/configurableComponent';
 import { ErrorBoundary } from '../errorBoundary/errorBoundary';
 import { SidebarMenu } from '../sidebarMenu';
-import { ConfigurableComponentProvider } from '../../providers/configurableComponent';
+import { createConfigurableComponent } from '../../providers/configurableComponent';
 import { SidebarMenuProvider, ISidebarMenuItem } from '../../providers/sidebarMenu';
 
 export interface ISideBarMenuProps {
   items: ISidebarMenuItem[];
 }
 
-const defaultSidebarItem: ISidebarMenuItem[] = [
-  {
-    key: 'item1',
-    title: 'My Menu Item'
-  }
-];
+const defaultSidebarProps: ISideBarMenuProps = {
+  items: [
+    {
+      key: 'item1',
+      title: 'Item 1'
+    },
+    {
+      key: 'item2',
+      title: 'Item 2'
+    }
+  ]
+}
+
+const { ConfigurableComponentProvider } = createConfigurableComponent<ISideBarMenuProps>(defaultSidebarProps);
 
 export const ConfigurableSidebarMenu: FC = () => {
   return (
-    <ConfigurableComponentProvider>
-      <ConfigurableComponent<ISideBarMenuProps>
-        defaultSettings={{
-          items: defaultSidebarItem
-        }}
-        
-      >
-        {(componentState, BlockOverlay) => (
-          <ErrorBoundary>
+    <ErrorBoundary>
+      <ConfigurableComponentProvider>
+        <ConfigurableComponent<ISideBarMenuProps>>
+          {(componentState, BlockOverlay) => (
+
             <div className={`sidebar ${componentState.wrapperClassName}`}>
               <BlockOverlay></BlockOverlay>
               <SidebarMenuProvider items={componentState.settings?.items || []}>
@@ -34,10 +38,10 @@ export const ConfigurableSidebarMenu: FC = () => {
                 </SidebarMenu>
               </SidebarMenuProvider>
             </div>
-          </ErrorBoundary>
-        )}
-      </ConfigurableComponent>
-    </ConfigurableComponentProvider>
+          )}
+        </ConfigurableComponent>
+      </ConfigurableComponentProvider>
+    </ErrorBoundary>
   );
 };
 

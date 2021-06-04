@@ -5,24 +5,12 @@ import {
 } from './models';
 
 export type IFlagProgressFlags =
-  | 'addComponent'
-  | 'updateComponent'
-  | 'deleteComponent'
-  | 'moveComponent'
   | 'load'
   | 'save' /* NEW_IN_PROGRESS_FLAG_GOES_HERE */;
 export type IFlagSucceededFlags =
-  | 'addComponent'
-  | 'updateComponent'
-  | 'deleteComponent'
-  | 'moveComponent'
   | 'load'
   | 'save' /* NEW_SUCCEEDED_FLAG_GOES_HERE */;
 export type IFlagErrorFlags =
-  | 'addComponent'
-  | 'updateComponent'
-  | 'deleteComponent'
-  | 'moveComponent'
   | 'load'
   | 'save' /* NEW_ERROR_FLAG_GOES_HERE */;
 export type IFlagActionedFlags = '__DEFAULT__' /* NEW_ACTIONED_FLAG_GOES_HERE */;
@@ -31,10 +19,10 @@ export interface ILayoutProps {
   span: number;
 }
 
-// todo: make generic!!!!!
-export interface IConfigurableComponentStateContext
+export interface IConfigurableComponentStateContext<TSettings extends any>
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags>,
     IConfigurableComponentProps {
+  settings: TSettings;
 }
 
 export interface IComponentLoadPayload {
@@ -52,21 +40,23 @@ export interface IComponentLoadSuccessPayload {
   settings: string;
 }
 
-export interface IConfigurableComponentActionsContext
+export interface IConfigurableComponentActionsContext<TSettings extends any>
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   load: () => void;
-  save: (settings: string) => Promise<void>;
+  save: (settings: TSettings) => Promise<void>;
 }
 
-/** Component initial state */
-export const CONFIGURABLE_COMPONENT_CONTEXT_INITIAL_STATE: IConfigurableComponentStateContext = {
-  isInProgress: {},
-  succeeded: {},
-  error: {},
-  actioned: {},
-  settings: null,
-};
+export const getContextInitialState = <TSettings extends any>(defaultSettings: TSettings): IConfigurableComponentStateContext<TSettings> => {
+  return {
+    isInProgress: {},
+    succeeded: {},
+    error: {},
+    actioned: {},
+    settings: defaultSettings,
+  };
+}
 
-export const ConfigurableComponentStateContext = createContext<IConfigurableComponentStateContext>(CONFIGURABLE_COMPONENT_CONTEXT_INITIAL_STATE);
+export const getConfigurableComponentStateContext = <TSettings extends any>(initialState: IConfigurableComponentStateContext<TSettings>) => 
+  createContext<IConfigurableComponentStateContext<TSettings>>(initialState);
 
-export const ConfigurableComponentActionsContext = createContext<IConfigurableComponentActionsContext>(undefined);
+export const getConfigurableComponentActionsContext = <TSettings extends any>() => createContext<IConfigurableComponentActionsContext<TSettings>>(undefined);

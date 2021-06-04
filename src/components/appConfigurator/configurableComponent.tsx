@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useAppConfigurator, useConfigurableComponent } from '../../providers';
+import { useAppConfigurator/*, useConfigurableComponent*/ } from '../../providers';
 import { ComponentSettingsModal } from './componentSettingsModal';
 
 export interface IComponentStateProps<TSettings = any> {
@@ -49,7 +49,7 @@ export const ConfigurableComponent = <TSettings extends any>({
 
   const [modalVisible, setModalVisible] = useState(false);
   const { mode } = useAppConfigurator();
-  const { settings, save } = useConfigurableComponent();
+  //const { save } = useConfigurableComponent();
 
   if (!children) return null;
 
@@ -79,8 +79,8 @@ export const ConfigurableComponent = <TSettings extends any>({
     setModalVisible(false);
   };
 
-  const onSave = (model: TSettings) => {
-    save(JSON.stringify(model));
+  const onSave = (_model: TSettings) => {
+    //save(JSON.stringify(model));
     setModalVisible(false);
   };
 

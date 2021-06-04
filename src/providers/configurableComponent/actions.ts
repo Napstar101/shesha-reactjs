@@ -13,7 +13,7 @@ export enum ConfigurableComponentActionEnums {
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
-export const loadRequestAction = createAction<IComponentLoadPayload, IComponentLoadPayload>(ConfigurableComponentActionEnums.LoadRequest, p => p);
+export const loadRequestAction = createAction<IComponentLoadPayload>(ConfigurableComponentActionEnums.LoadRequest);
 export const loadSuccessAction = createAction<IComponentLoadSuccessPayload, IComponentLoadSuccessPayload>(ConfigurableComponentActionEnums.LoadSuccess, p => p);
 export const loadErrorAction = createAction<IComponentLoadErrorPayload, IComponentLoadErrorPayload>(ConfigurableComponentActionEnums.LoadError, p => p);
 

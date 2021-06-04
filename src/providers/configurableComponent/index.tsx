@@ -1,10 +1,11 @@
-import React, { FC, useContext, PropsWithChildren, useEffect } from 'react';
-import configurableComponentReducer from './reducer';
+import React, { useContext, PropsWithChildren, useEffect, Context } from 'react';
+import reducerFactory from './reducer';
 import {
-  ConfigurableComponentActionsContext,
-  ConfigurableComponentStateContext,
-  CONFIGURABLE_COMPONENT_CONTEXT_INITIAL_STATE,
+  getConfigurableComponentActionsContext,
+  getConfigurableComponentStateContext,
+  getContextInitialState,
   IConfigurableComponentActionsContext,
+  IConfigurableComponentStateContext,
 } from './contexts';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
@@ -17,25 +18,29 @@ import {
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { useConfigurableComponentGet, /*useConfigurableComponentUpdate,*/ useConfigurableComponentUpdateSettings, ConfigurableComponentUpdateSettingsInput } from '../../apis/configurableComponent';
-import useThunkReducer from 'react-hook-thunk-reducer';
+import { useReducer } from 'react';
 
-export interface IConfigurableComponentProviderProps {
+export interface IGenericConfigurableComponentProviderProps<TSettings extends any> {
+  initialState: IConfigurableComponentStateContext<TSettings>,
+  stateContext: Context<IConfigurableComponentStateContext<TSettings>>,
+  actionContext: Context<IConfigurableComponentActionsContext<TSettings>>,
   id?: string;
 }
 
-const ConfigurableComponentProvider: FC<PropsWithChildren<IConfigurableComponentProviderProps>> = ({
+const GenericConfigurableComponentProvider = <TSettings extends any>({
   children,
+  initialState,
+  stateContext,
+  actionContext,
   id,
-}) => {
-  // const initial: IConfigurableComponentStateContext = {
-  //   ...CONFIGURABLE_COMPONENT_CONTEXT_INITIAL_STATE,
-  //   id: id,
-  // };
+}: PropsWithChildren<IGenericConfigurableComponentProviderProps<TSettings>>) => {
 
-  const [state, dispatch] = useThunkReducer(configurableComponentReducer, {
-    ...CONFIGURABLE_COMPONENT_CONTEXT_INITIAL_STATE,
+  const reducer = reducerFactory(initialState);
+  
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
     id: id,
-  });
+  });  
 
   const { loading: isFetching, error: fetchingError, data: fetchingResponse, refetch } = useConfigurableComponentGet({ lazy: true, id: id });
 
@@ -53,14 +58,14 @@ const ConfigurableComponentProvider: FC<PropsWithChildren<IConfigurableComponent
   }, [id]);
 
   useEffect(() => {
-    if (!isFetching){
+    if (!isFetching) {
       if (fetchingResponse)
-        dispatch(loadSuccessAction({ 
+        dispatch(loadSuccessAction({
           ...fetchingResponse,
           settings: fetchingResponse.settings // todo: parse JSON and cast to a specified type
         }));
       if (fetchingError)
-        dispatch(loadErrorAction({ error: fetchingError?.['message'] || 'Failed to load component'}));
+        dispatch(loadErrorAction({ error: fetchingError?.['message'] || 'Failed to load component' }));
     }
   }, [isFetching, fetchingError, fetchingResponse]);
 
@@ -82,7 +87,7 @@ const ConfigurableComponentProvider: FC<PropsWithChildren<IConfigurableComponent
 
     const dto: ConfigurableComponentUpdateSettingsInput = {
       id: state.id,
-      settings: state.settings,
+      settings: state.settings ? JSON.stringify(state.settings) : null,
     };
     return saveFormHttp(dto, {})
       .then(_response => {
@@ -93,7 +98,7 @@ const ConfigurableComponentProvider: FC<PropsWithChildren<IConfigurableComponent
       });
   };
 
-  const configurableFormActions: IConfigurableComponentActionsContext = {
+  const configurableFormActions: IConfigurableComponentActionsContext<TSettings> = {
     ...getFlagSetters(dispatch),
     load: loadComponent,
     save: saveComponent,
@@ -101,36 +106,45 @@ const ConfigurableComponentProvider: FC<PropsWithChildren<IConfigurableComponent
   };
 
   return (
-    <ConfigurableComponentStateContext.Provider value={state}>
-      <ConfigurableComponentActionsContext.Provider value={configurableFormActions}>
+    <stateContext.Provider value={state}>
+      <actionContext.Provider value={configurableFormActions}>
         {children}
-      </ConfigurableComponentActionsContext.Provider>
-    </ConfigurableComponentStateContext.Provider>
+      </actionContext.Provider>
+    </stateContext.Provider>
   );
 };
 
-function useConfigurableComponentState() {
-  const context = useContext(ConfigurableComponentStateContext);
+export interface IConfigurableComponentProviderProps {
+  id?: string;
+}
 
-  if (context === undefined) {
-    throw new Error('useConfigurableComponentState must be used within a ConfigurableComponentProvider');
+export const createConfigurableComponent = <TSettings extends any>(defaultSettings: TSettings) => {
+  const initialState = getContextInitialState<TSettings>(defaultSettings);
+  const StateContext = getConfigurableComponentStateContext<TSettings>(initialState);
+  const ActionContext = getConfigurableComponentActionsContext<TSettings>();
+
+  const useConfigurableComponent = () => {
+    const stateContext = useContext(StateContext);
+    const actionsContext = useContext(ActionContext);
+
+    if (stateContext === undefined || actionsContext === undefined) {
+      throw new Error('useConfigurableComponent must be used within a ConfigurableComponentProvider');
+    }
+
+    return { ...stateContext, ...actionsContext };
   }
 
-  return context;
-}
-
-function useConfigurableComponentActions() {
-  const context = useContext(ConfigurableComponentActionsContext);
-
-  if (context === undefined) {
-    throw new Error('useConfigurableComponentActions must be used within a ConfigurableComponentProvider');
+  const ConfigurableComponentProvider = <T extends PropsWithChildren<IConfigurableComponentProviderProps>>(props: T) => {
+    return (
+      <GenericConfigurableComponentProvider<TSettings>
+        initialState={initialState}
+        stateContext={StateContext}
+        actionContext={ActionContext}
+      >
+        {props.children}
+      </GenericConfigurableComponentProvider>
+    );
   }
 
-  return context;
-}
-
-function useConfigurableComponent() {
-  return { ...useConfigurableComponentState(), ...useConfigurableComponentActions() };
-}
-
-export { ConfigurableComponentProvider, useConfigurableComponentState, useConfigurableComponentActions, useConfigurableComponent };
+  return { ConfigurableComponentProvider, useConfigurableComponent };
+};
