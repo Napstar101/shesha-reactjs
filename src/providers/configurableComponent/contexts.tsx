@@ -31,6 +31,7 @@ export interface ILayoutProps {
   span: number;
 }
 
+// todo: make generic!!!!!
 export interface IConfigurableComponentStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags>,
     IConfigurableComponentProps {
@@ -44,10 +45,17 @@ export interface IComponentLoadErrorPayload {
   error: string;
 }
 
+export interface IComponentLoadSuccessPayload {
+  id?: string;
+  name?: string;
+  description?: string;
+  settings: string;
+}
+
 export interface IConfigurableComponentActionsContext
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   load: () => void;
-  save: () => Promise<void>;
+  save: (settings: string) => Promise<void>;
 }
 
 /** Component initial state */

@@ -1,22 +1,44 @@
 import React, { FC } from 'react';
 import { ConfigurableComponent } from '../appConfigurator/configurableComponent';
-import { ErrorBoundary } from '..';
+import { ErrorBoundary } from '../errorBoundary/errorBoundary';
+import { SidebarMenu } from '../sidebarMenu';
+import { ConfigurableComponentProvider } from '../../providers/configurableComponent';
+import { SidebarMenuProvider, ISidebarMenuItem } from '../../providers/sidebarMenu';
 
-export const ConfigurableLogo: FC = () => {
+export interface ISideBarMenuProps {
+  items: ISidebarMenuItem[];
+}
+
+const defaultSidebarItem: ISidebarMenuItem[] = [
+  {
+    key: 'item1',
+    title: 'My Menu Item'
+  }
+];
+
+export const ConfigurableSidebarMenu: FC = () => {
   return (
     <ConfigurableComponentProvider>
-      <ConfigurableComponent>
+      <ConfigurableComponent<ISideBarMenuProps>
+        defaultSettings={{
+          items: defaultSidebarItem
+        }}
+        
+      >
         {(componentState, BlockOverlay) => (
-            <ErrorBoundary>
-              <div className={`logo ${componentState.wrapperClassName}`}>
-                <BlockOverlay></BlockOverlay>
-                <h3> Sidebar </h3>
-              </div>
-            </ErrorBoundary>
-          )}
+          <ErrorBoundary>
+            <div className={`sidebar ${componentState.wrapperClassName}`}>
+              <BlockOverlay></BlockOverlay>
+              <SidebarMenuProvider items={componentState.settings?.items || []}>
+                <SidebarMenu>
+                </SidebarMenu>
+              </SidebarMenuProvider>
+            </div>
+          </ErrorBoundary>
+        )}
       </ConfigurableComponent>
     </ConfigurableComponentProvider>
   );
 };
 
-export default ConfigurableLogo;
+export default ConfigurableSidebarMenu;

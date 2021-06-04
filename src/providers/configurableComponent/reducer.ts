@@ -3,10 +3,10 @@ import {
   IConfigurableComponentStateContext,
   IComponentLoadPayload,
   IComponentLoadErrorPayload,
+  IComponentLoadSuccessPayload,
 } from './contexts';
 import { ConfigurableComponentActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import { IConfigurableComponentProps } from './models';
 
 const reducer = handleActions<IConfigurableComponentStateContext, any>(
   {
@@ -20,7 +20,7 @@ const reducer = handleActions<IConfigurableComponentStateContext, any>(
       };
     },
 
-    [ConfigurableComponentActionEnums.LoadSuccess]: (state: IConfigurableComponentStateContext, action: ReduxActions.Action<IConfigurableComponentProps>) => {
+    [ConfigurableComponentActionEnums.LoadSuccess]: (state: IConfigurableComponentStateContext, action: ReduxActions.Action<IComponentLoadSuccessPayload>) => {
       const { payload } = action;
 
       return {

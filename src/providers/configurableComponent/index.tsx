@@ -46,6 +46,8 @@ const ConfigurableComponentProvider: FC<PropsWithChildren<IConfigurableComponent
 
   useEffect(() => {
     //if (state.settings) return;
+    if (!Boolean(id))
+      return;
 
     doFetch();
   }, [id]);

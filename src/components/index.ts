@@ -29,7 +29,7 @@ export { default as LayoutHeading } from './layoutHeading';
 export { default as NodeOrFuncRenderer } from './nodeOrFuncRenderer';
 export { default as ShaLink } from './shaLink';
 export { default as SidebarContainer } from './sidebarContainer';
-export { SidebarMenu } from './sidebarMenu';
+export { default as SidebarMenu } from './sidebarMenu';
 export { default as MainLayout } from './mainLayout';
 //export { default as QueryBuilder } from './queryBuilder';
 export { default as ValidationErrors } from './validationErrors';
