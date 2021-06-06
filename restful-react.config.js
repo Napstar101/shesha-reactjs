@@ -1,5 +1,5 @@
 const camelCase = require('camel-case');
-const BASE_URL = 'http://localhost:21021';
+const STORYBOOK_BASE_URL = process.env.STORYBOOK_BASE_URL;
 const ROOT_PATH = './src/apis';
 
 const API_LIST = [
@@ -16,7 +16,7 @@ function generateFetcher() {
     const camelCasedName = camelCase(key);
     apiObj[`${camelCasedName}Api`] = {
       output: `${ROOT_PATH}/${camelCasedName}.tsx`,
-      url: `${BASE_URL}/swagger/service:${key}/swagger.json`,
+      url: `${STORYBOOK_BASE_URL}/swagger/service:${key}/swagger.json`,
     };
   });
 

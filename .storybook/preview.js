@@ -18,7 +18,7 @@ export const parameters = {
 
 export const decorators = [
   Story => (
-    <RestfulProvider base="http://localhost:21021">
+    <RestfulProvider base={process.env.STORYBOOK_BASE_URL}>
       <Story />
     </RestfulProvider>
   ),

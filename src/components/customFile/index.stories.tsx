@@ -13,7 +13,7 @@ export default {
 
 const customFileProps: ICustomFileProps = {};
 
-const backendUrl = 'http://localhost:21021'; // TODO: Make this configurable
+const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
 const Template: Story<ICustomFileProps> = args => (

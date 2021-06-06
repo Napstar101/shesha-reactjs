@@ -17,7 +17,7 @@ const configurableFormProps: IConfigurableFormProps = {
   mode: 'edit',
 };
 
-const backendUrl = 'http://localhost:21021'; // Just for configuring Storybook
+const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
 const Template: Story<IConfigurableFormProps> = args => (
