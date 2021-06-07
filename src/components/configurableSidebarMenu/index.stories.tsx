@@ -51,7 +51,7 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
 
 export const Basic = Template.bind({});
 Basic.args = { 
-  backendUrl: 'http://localhost:21021',
+  backendUrl: process.env.STORYBOOK_BASE_URL,
 };
 
 
@@ -74,5 +74,5 @@ const ConfiguratorTemplate: Story<IConfiguratorTemplateProps> = (props) => (
 
 export const Configurator = ConfiguratorTemplate.bind({});
 Configurator.args = { 
-  backendUrl: 'http://localhost:21021',
+  backendUrl: process.env.STORYBOOK_BASE_URL,
 };

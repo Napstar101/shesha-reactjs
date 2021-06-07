@@ -29,5 +29,5 @@ const Template: Story<IConfigurableLogoStoryProps> = (props) => (
 
 export const Basic = Template.bind({});
 Basic.args = { 
-  backendUrl: 'http://localhost:21021',
+  backendUrl: process.env.STORYBOOK_BASE_URL,
 };
