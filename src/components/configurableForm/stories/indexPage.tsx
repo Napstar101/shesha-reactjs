@@ -11,7 +11,7 @@ export interface IIndexPageTemplateProps {
 }
 export const IndexPageTemplate: Story<IIndexPageTemplateProps> = props => (
   <ShaApplicationProvider backendUrl={props.backendUrl}>
-    <AuthContainer2 layout={false}>
+    <AuthContainer2 layout={true}>
       <MainLayout title="Configurable index page">
         <ConfigurableForm
           mode="edit"

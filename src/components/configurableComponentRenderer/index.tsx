@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react';
-import { useAppConfigurator/*, useConfigurableComponent*/ } from '../../providers';
+import { useAppConfigurator } from '../../providers';
+import { IConfigurableComponentContext } from '../../providers/configurableComponent/contexts';
+import { ISettingsEditor } from '../configurableComponent';
 import { ComponentSettingsModal } from './componentSettingsModal';
 
 export interface IComponentStateProps<TSettings = any> {
@@ -18,10 +20,12 @@ export type ConfigurableComponentChildrenFn<TSettings = any> = (
   BlockOverlay: (props: IOverlayProps) => React.ReactElement
 ) => React.ReactNode | null;
 
-export interface IConfigurableComponentProps<TSettings = any> {
+export interface IConfigurableComponentRendererProps<TSettings = any> {
   canConfigure?: boolean;
   children: ConfigurableComponentChildrenFn<TSettings>;
   onStartEdit?: () => void;
+  contextAccessor: () => IConfigurableComponentContext<TSettings>,
+  settingsEditor?: ISettingsEditor<TSettings>,
 }
 
 export interface IBlockOverlayProps {
@@ -39,14 +43,17 @@ const BlockOverlay: FC<IBlockOverlayProps> = ({ onClick, children, visible }) =>
   );
 };
 
-export const ConfigurableComponent = <TSettings extends any>({ 
+export const ConfigurableComponentRenderer = <TSettings extends any>({ 
   children,
   canConfigure = true,
   onStartEdit,
-}: IConfigurableComponentProps<TSettings>) => {
+  contextAccessor,
+  settingsEditor,
+}: IConfigurableComponentRendererProps<TSettings>) => {
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [editorIsVisible, setEditorIsVisible] = useState(false);
   const { mode } = useAppConfigurator();
+  const { save, settings } = contextAccessor();
 
   if (!children) return null;
 
@@ -64,20 +71,24 @@ export const ConfigurableComponent = <TSettings extends any>({
     isEditMode: mode === 'edit',
     isSelected: false,
     wrapperClassName: 'sha-configurable-component',
-    settings: null
+    settings: settings,
   };
 
   const onOverlayClick = () => {
     if (onStartEdit) onStartEdit();
-    else setModalVisible(true);
+    else setEditorIsVisible(true);
   };
 
-  const onCancelClick = () => {
-    setModalVisible(false);
+  const onCancel = () => {
+    setEditorIsVisible(false);
   };
 
-  const onSave = (_model: TSettings) => {
-    setModalVisible(false);
+  const onSave = (model: TSettings) => {
+    save(model).then(() => {
+      setEditorIsVisible(false);
+    }).catch(e => {
+      console.log(e);
+    });
   };
 
   return (
@@ -87,9 +98,12 @@ export const ConfigurableComponent = <TSettings extends any>({
           {overlayChildren}
         </BlockOverlay>
       ))}
-      {modalVisible && (
+      {
+        editorIsVisible && Boolean(settingsEditor) && (settingsEditor.render({ settings, onSave, onCancel }))
+      }
+      {editorIsVisible && !Boolean(settingsEditor) && (
         <ComponentSettingsModal<TSettings>
-          onCancel={onCancelClick}
+          onCancel={onCancel}
           onSave={onSave}
           markup={null}
           model={null}
@@ -99,4 +113,4 @@ export const ConfigurableComponent = <TSettings extends any>({
   );
 };
 
-export default ConfigurableComponent;
+export default ConfigurableComponentRenderer;
