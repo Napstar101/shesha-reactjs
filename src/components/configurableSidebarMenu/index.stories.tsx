@@ -24,7 +24,27 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
   >
     <AuthContainer2 layout={false}>
       <AppEditModeToggler />
-      <ConfigurableSidebarMenu />
+      <ConfigurableSidebarMenu 
+        id="A8EDC854-DB4A-40DB-A1B5-9081D4C2A487"
+        defaultSettings={{
+          items: [
+            {
+              id: 'item1',
+              name: 'Item 1',
+              itemType: 'button',
+              childItems: undefined,
+              sortOrder: 0,
+            },
+            {
+              id: 'item2',
+              name: 'Item 2',
+              itemType: 'button',
+              childItems: undefined,
+              sortOrder: 1,
+            },
+          ]
+        }}
+      />
     </AuthContainer2>
   </ShaApplicationProvider>
 );
