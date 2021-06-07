@@ -1,18 +1,18 @@
 import { createContext } from 'react';
-import { ISidebarMenuItemProps } from './models';
+import { ISidebarMenuItem } from './models';
 
 export interface IUpdateChildItemsPayload {
   index: number[];
-  childs: ISidebarMenuItemProps[];
+  childs: ISidebarMenuItem[];
 }
 
 export interface IUpdateItemSettingsPayload {
   id: string;
-  settings: ISidebarMenuItemProps;
+  settings: ISidebarMenuItem;
 }
 
 export interface ISidebarMenuConfiguratorStateContext {
-  items: ISidebarMenuItemProps[];
+  items: ISidebarMenuItem[];
   selectedItemId?: string;
 }
 
@@ -21,7 +21,7 @@ export interface ISidebarMenuConfiguratorActionsContext {
   deleteItem: (uid: string) => void;
   selectItem: (uid: string) => void;
   updateChildItems: (payload: IUpdateChildItemsPayload) => void;
-  getItem: (uid: string) => ISidebarMenuItemProps;
+  getItem: (uid: string) => ISidebarMenuItem;
   updateItem: (payload: IUpdateItemSettingsPayload) => void;
   /* NEW_ACTION_ACTION_DECLARATIOS_GOES_HERE */
 }

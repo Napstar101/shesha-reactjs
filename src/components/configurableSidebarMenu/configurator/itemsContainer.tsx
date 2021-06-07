@@ -1,18 +1,18 @@
 import React, { FC } from 'react';
 import { SidebarMenuItem } from './sidebarMenuItem';
 import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfigurator';
-import { ISidebarMenuItemProps } from '../../../providers/sidebarMenuConfigurator/models';
+import { ISidebarMenuItem } from '../../../providers/sidebarMenuConfigurator/models';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];
-  items: ISidebarMenuItemProps[];
+  items: ISidebarMenuItem[];
 }
 
 export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
   const { updateChildItems } = useSidebarMenuConfigurator();
 
-  const renderItem = (itemProps: ISidebarMenuItemProps, index: number) => {
+  const renderItem = (itemProps: ISidebarMenuItem, index: number) => {
     return (
       <SidebarMenuItem 
         key={index} 
@@ -26,7 +26,7 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
     const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     if (listChanged) {
-      const newChilds = newState.map<ISidebarMenuItemProps>(item => item as ISidebarMenuItemProps);
+      const newChilds = newState.map<ISidebarMenuItem>(item => item as ISidebarMenuItem);
       updateChildItems({ index: props.index, childs: newChilds });
     }
     return;

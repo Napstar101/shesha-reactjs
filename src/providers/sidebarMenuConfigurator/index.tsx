@@ -15,17 +15,15 @@ import {
   updateItemAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
-import { ISidebarMenuItemProps } from './models';
 import { getItemById } from './utils';
+import { ISidebarMenuItem } from '../sidebarMenu';
 
 export interface ISidebarMenuConfiguratorProviderPropsBase {
   baseUrl?: string;
 }
 
 export interface ISidebarMenuConfiguratorProviderProps {
-  items: ISidebarMenuItemProps[];
-  value?: any;
-  onChange?: (value: any) => void;
+  items: ISidebarMenuItem[];
 }
 
 const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfiguratorProviderProps>> = props => {
@@ -54,7 +52,7 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
     dispatch(updateChildItemsAction(payload));
   };
 
-  const getItem = (uid: string): ISidebarMenuItemProps => {
+  const getItem = (uid: string): ISidebarMenuItem => {
     return getItemById(state.items, uid);
   };
 

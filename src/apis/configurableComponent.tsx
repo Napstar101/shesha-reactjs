@@ -32,6 +32,35 @@ export interface ConfigurableComponentDto {
   modelType?: string | null;
 }
 
+export interface ValidationErrorInfo {
+  message?: string | null;
+  members?: string[] | null;
+}
+
+export interface ErrorInfo {
+  code?: number;
+  message?: string | null;
+  details?: string | null;
+  validationErrors?: ValidationErrorInfo[] | null;
+}
+
+export interface ConfigurableComponentDtoAjaxResponse {
+  targetUrl?: string | null;
+  success?: boolean;
+  error?: ErrorInfo;
+  unAuthorizedRequest?: boolean;
+  __abp?: boolean;
+  result?: ConfigurableComponentDto;
+}
+
+export interface AjaxResponseBase {
+  targetUrl?: string | null;
+  success?: boolean;
+  error?: ErrorInfo;
+  unAuthorizedRequest?: boolean;
+  __abp?: boolean;
+}
+
 /**
  * Update component settings input
  */
@@ -43,28 +72,35 @@ export interface ConfigurableComponentUpdateSettingsInput {
   settings?: string | null;
 }
 
-export type ConfigurableComponentGetProps = Omit<GetProps<ConfigurableComponentDto, unknown, void>, 'path'> & {
-  id: string;
-};
+export type ConfigurableComponentGetProps = Omit<
+  GetProps<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void>,
+  'path'
+> & { id: string };
 
 export const ConfigurableComponentGet = ({ id, ...props }: ConfigurableComponentGetProps) => (
-  <Get<ConfigurableComponentDto, unknown, void> path={`/api/services/ConfigurableComponents/${id}`} {...props} />
+  <Get<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void>
+    path={`/api/services/ConfigurableComponents/${id}`}
+    {...props}
+  />
 );
 
-export type UseConfigurableComponentGetProps = Omit<UseGetProps<ConfigurableComponentDto, void>, 'path'> & {
+export type UseConfigurableComponentGetProps = Omit<UseGetProps<ConfigurableComponentDtoAjaxResponse, void>, 'path'> & {
   id: string;
 };
 
 export const useConfigurableComponentGet = ({ id, ...props }: UseConfigurableComponentGetProps) =>
-  useGet<ConfigurableComponentDto, unknown, void>(`/api/services/ConfigurableComponents/${id}`, props);
+  useGet<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void>(
+    `/api/services/ConfigurableComponents/${id}`,
+    props
+  );
 
 export type ConfigurableComponentUpdateProps = Omit<
-  MutateProps<ConfigurableComponentDto, unknown, void, ConfigurableComponentDto>,
+  MutateProps<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>,
   'path' | 'verb'
 >;
 
 export const ConfigurableComponentUpdate = (props: ConfigurableComponentUpdateProps) => (
-  <Mutate<ConfigurableComponentDto, unknown, void, ConfigurableComponentDto>
+  <Mutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>
     verb="PUT"
     path={`/api/services/ConfigurableComponents`}
     {...props}
@@ -72,24 +108,24 @@ export const ConfigurableComponentUpdate = (props: ConfigurableComponentUpdatePr
 );
 
 export type UseConfigurableComponentUpdateProps = Omit<
-  UseMutateProps<ConfigurableComponentDto, void, ConfigurableComponentDto>,
+  UseMutateProps<ConfigurableComponentDtoAjaxResponse, void, ConfigurableComponentDto>,
   'path' | 'verb'
 >;
 
 export const useConfigurableComponentUpdate = (props: UseConfigurableComponentUpdateProps) =>
-  useMutate<ConfigurableComponentDto, unknown, void, ConfigurableComponentDto>(
+  useMutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>(
     'PUT',
     `/api/services/ConfigurableComponents`,
     props
   );
 
 export type ConfigurableComponentCreateProps = Omit<
-  MutateProps<ConfigurableComponentDto, unknown, void, ConfigurableComponentDto>,
+  MutateProps<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>,
   'path' | 'verb'
 >;
 
 export const ConfigurableComponentCreate = (props: ConfigurableComponentCreateProps) => (
-  <Mutate<ConfigurableComponentDto, unknown, void, ConfigurableComponentDto>
+  <Mutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>
     verb="POST"
     path={`/api/services/ConfigurableComponents`}
     {...props}
@@ -97,12 +133,12 @@ export const ConfigurableComponentCreate = (props: ConfigurableComponentCreatePr
 );
 
 export type UseConfigurableComponentCreateProps = Omit<
-  UseMutateProps<ConfigurableComponentDto, void, ConfigurableComponentDto>,
+  UseMutateProps<ConfigurableComponentDtoAjaxResponse, void, ConfigurableComponentDto>,
   'path' | 'verb'
 >;
 
 export const useConfigurableComponentCreate = (props: UseConfigurableComponentCreateProps) =>
-  useMutate<ConfigurableComponentDto, unknown, void, ConfigurableComponentDto>(
+  useMutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>(
     'POST',
     `/api/services/ConfigurableComponents`,
     props

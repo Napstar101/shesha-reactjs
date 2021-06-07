@@ -25,14 +25,15 @@ const SidebarMenuProvider: FC<PropsWithChildren<ISidebarMenuProviderProps>> = ({
 
   const [state, dispatch] = useReducer(SidebarMenuReducer, {
     ...SIDEBAR_MENU_CONTEXT_INITIAL_STATE,
-    items,
     actions,
     accountDropdownListItems,
   });
 
+  const getItems = () => items;
+
   const isItemVisible = (item: ISidebarMenuItem): boolean => {
     if (item.isHidden) return false;
-    if (item.requiredPermissions && !anyOfPermissionsGranted(item.requiredPermissions)) return false;
+    if (item.permissions && !anyOfPermissionsGranted(item.permissions)) return false;
 
     return item.childItems && item.childItems.length > 0
       ? item.childItems.some(childItem => isItemVisible(childItem))
@@ -57,6 +58,7 @@ const SidebarMenuProvider: FC<PropsWithChildren<ISidebarMenuProviderProps>> = ({
           collapse,
           expand,
           isItemVisible,
+          getItems,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

@@ -1,13 +1,22 @@
 import { ReactNode } from 'react';
 
+type SidebarItemType = 'button' | 'separator';
+type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction';
+
 export interface ISidebarMenuItem {
-  key: string;
-  title: string;
-  icon?: ReactNode;
-  target?: string;
+  id: string;
+  name: string;
+  tooltip?: string;
+  sortOrder: number;
+  itemType: SidebarItemType;
+  buttonAction?: ButtonActionType;
+  targetUrl?: string;
+  icon?: string;
   isHidden?: boolean;
-  childItems?: ISidebarMenuItem[];
-  requiredPermissions?: string[];
+  visibility?: string;
+  permissions?: string[];
+
+  childItems: ISidebarMenuItem[];
 }
 
 export interface IHeaderAction {

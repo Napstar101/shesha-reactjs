@@ -5,7 +5,7 @@ import {
   SIDEBAR_MENU_CONTEXT_INITIAL_STATE,
 } from './contexts';
 import { SidebarMenuActionEnums } from './actions';
-import { ISidebarMenuItemProps } from './models';
+import { ISidebarMenuItem } from './models';
 import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
 import { getItemById, getItemPositionById } from './utils';
@@ -14,7 +14,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
   {
     [SidebarMenuActionEnums.AddItem]: (state: ISidebarMenuConfiguratorStateContext) => {
       
-      const buttonProps: ISidebarMenuItemProps = {
+      const buttonProps: ISidebarMenuItem = {
         id: uuid(),
         itemType: 'button',
         sortOrder: state.items.length,

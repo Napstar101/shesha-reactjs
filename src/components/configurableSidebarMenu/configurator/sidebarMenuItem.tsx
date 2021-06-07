@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { Button, Tooltip } from 'antd';
 import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
-import { ISidebarMenuItemProps } from '../../../providers/sidebarMenuConfigurator/models';
+import { ISidebarMenuItem } from '../../../providers/sidebarMenu/models';
 import {useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfigurator';
 import DragHandle from './dragHandle';
 import React from 'react';
 import ShaIcon, { IconType } from '../../shaIcon';
 
-export interface IProps extends ISidebarMenuItemProps {
+export interface IProps extends ISidebarMenuItem {
   index: number[];
 }
 

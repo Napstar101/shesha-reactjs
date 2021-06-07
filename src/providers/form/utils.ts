@@ -270,13 +270,6 @@ export const evaluateValue = (value: string, dictionary: any) => {
 
   const evaluatedValue = container[match.groups.accessor];
 
-  // console.log({
-  //   msg: 'regex parsed',
-  //   key: match.groups.key,
-  //   accessor: match.groups.accessor,
-  //   evaluatedValue,
-  // });
-
   return evaluatedValue;
 };
 

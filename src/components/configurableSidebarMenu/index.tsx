@@ -1,46 +1,51 @@
 import React, { FC } from 'react';
-import { ConfigurableComponent } from '../appConfigurator/configurableComponent';
+import { ConfigurableComponent, ISettingsEditorProps } from '../configurableComponent';
 import { ErrorBoundary } from '../errorBoundary/errorBoundary';
 import { SidebarMenu } from '../sidebarMenu';
-import { createConfigurableComponent } from '../../providers/configurableComponent';
 import { SidebarMenuProvider, ISidebarMenuItem } from '../../providers/sidebarMenu';
+import ComponentSettingsModal from './settingsModal';
 
 export interface ISideBarMenuProps {
   items: ISidebarMenuItem[];
 }
 
-const defaultSidebarProps: ISideBarMenuProps = {
-  items: [
-    {
-      key: 'item1',
-      title: 'Item 1'
-    },
-    {
-      key: 'item2',
-      title: 'Item 2'
-    }
-  ]
+export interface IConfigurableSidebarMenuProps {
+  defaultSettings: ISideBarMenuProps;
+  id: string;
 }
 
-const { ConfigurableComponentProvider } = createConfigurableComponent<ISideBarMenuProps>(defaultSidebarProps);
+export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = (props) => {
 
-export const ConfigurableSidebarMenu: FC = () => {
+  const editor = (editorProps: ISettingsEditorProps<ISideBarMenuProps>) => {
+    return (
+      <ComponentSettingsModal
+        settings={editorProps.settings}
+        onSave={editorProps.onSave}
+        onCancel={editorProps.onCancel}
+      >
+      </ComponentSettingsModal>
+    );
+  }
+
   return (
     <ErrorBoundary>
-      <ConfigurableComponentProvider>
-        <ConfigurableComponent<ISideBarMenuProps>>
-          {(componentState, BlockOverlay) => (
-
-            <div className={`sidebar ${componentState.wrapperClassName}`}>
-              <BlockOverlay></BlockOverlay>
-              <SidebarMenuProvider items={componentState.settings?.items || []}>
-                <SidebarMenu>
-                </SidebarMenu>
-              </SidebarMenuProvider>
-            </div>
-          )}
-        </ConfigurableComponent>
-      </ConfigurableComponentProvider>
+      <ConfigurableComponent<ISideBarMenuProps>
+        defaultSettings={props.defaultSettings}
+        settingsEditor={{
+          render: editor
+        }}
+        id={props.id}
+      >
+        {(componentState, BlockOverlay) => (
+          <div className={`sidebar ${componentState.wrapperClassName}`}>
+            <BlockOverlay></BlockOverlay>
+            <SidebarMenuProvider items={componentState.settings?.items || []}>
+              <SidebarMenu>
+              </SidebarMenu>
+            </SidebarMenuProvider>
+          </div>
+        )}
+      </ConfigurableComponent>
     </ErrorBoundary>
   );
 };

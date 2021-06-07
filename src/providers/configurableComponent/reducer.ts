@@ -3,6 +3,9 @@ import {
   IComponentLoadPayload,
   IComponentLoadErrorPayload,
   IComponentLoadSuccessPayload,
+  IComponentSaveErrorPayload,
+  IComponentSaveSuccessPayload,
+  IComponentSavePayload,
 } from './contexts';
 import { ConfigurableComponentActionEnums } from './actions';
 import { handleActions, ReduxCompatibleReducer } from 'redux-actions';
@@ -26,6 +29,7 @@ const reducerFactory = <TSettings extends any>(initialState: IConfigurableCompon
       const settings = payload.settings
         ? JSON.parse(payload.settings) as TSettings
         : null;
+
       const typedPayload = { ...payload, settings: settings };
 
       return {
@@ -41,9 +45,43 @@ const reducerFactory = <TSettings extends any>(initialState: IConfigurableCompon
 
       return {
         ...state,
-        formMode: payload,
         isInProgress: { ...state.isInProgress, loading: false },
         error: { ...state.error, loading: payload.error },
+      };
+    },
+
+    [ConfigurableComponentActionEnums.SaveRequest]: (state: IConfigurableComponentStateContext<TSettings>, _action: ReduxActions.Action<IComponentSavePayload>) => {
+      //const { payload } = action;
+
+      return {
+        ...state,
+        isInProgress: { ...state.isInProgress, save: true },
+        error: { ...state.error, save: null },
+      };
+    },
+
+    [ConfigurableComponentActionEnums.SaveSuccess]: (state: IConfigurableComponentStateContext<TSettings>, action: ReduxActions.Action<IComponentSaveSuccessPayload>) => {
+      const { payload } = action;
+
+      const settings = payload.settings
+        ? JSON.parse(payload.settings) as TSettings
+        : null;
+
+      return {
+        ...state,
+        settings: settings,
+        isInProgress: { ...state.isInProgress, save: false },
+        error: { ...state.error, save: null },
+      };
+    },
+
+    [ConfigurableComponentActionEnums.SaveError]: (state: IConfigurableComponentStateContext<TSettings>, action: ReduxActions.Action<IComponentSaveErrorPayload>) => {
+      const { payload } = action;
+
+      return {
+        ...state,
+        isInProgress: { ...state.isInProgress, save: false },
+        error: { ...state.error, save: payload.error },
       };
     },
   },

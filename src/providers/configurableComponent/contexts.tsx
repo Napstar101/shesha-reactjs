@@ -33,6 +33,17 @@ export interface IComponentLoadErrorPayload {
   error: string;
 }
 
+export interface IComponentSavePayload {
+}
+
+export interface IComponentSaveErrorPayload {
+  error: string;
+}
+
+export interface IComponentSaveSuccessPayload {
+  settings: string;
+}
+
 export interface IComponentLoadSuccessPayload {
   id?: string;
   name?: string;
@@ -44,6 +55,11 @@ export interface IConfigurableComponentActionsContext<TSettings extends any>
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   load: () => void;
   save: (settings: TSettings) => Promise<void>;
+}
+
+export interface IConfigurableComponentContext<TSettings> 
+  extends IConfigurableComponentStateContext<TSettings>, IConfigurableComponentActionsContext<TSettings>{
+  
 }
 
 export const getContextInitialState = <TSettings extends any>(defaultSettings: TSettings): IConfigurableComponentStateContext<TSettings> => {

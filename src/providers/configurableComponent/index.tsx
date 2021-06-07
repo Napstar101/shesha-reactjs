@@ -59,11 +59,12 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
 
   useEffect(() => {
     if (!isFetching) {
-      if (fetchingResponse)
+      if (fetchingResponse){
         dispatch(loadSuccessAction({
-          ...fetchingResponse,
-          settings: fetchingResponse.settings // todo: parse JSON and cast to a specified type
+          ...fetchingResponse.result,
+          settings: fetchingResponse.result?.settings
         }));
+      }
       if (fetchingError)
         dispatch(loadErrorAction({ error: fetchingError?.['message'] || 'Failed to load component' }));
     }
@@ -80,21 +81,25 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
     id: id,
   });
 
-  const saveComponent = (): Promise<void> => {
-    if (!state.id) return new Promise(() => { });
+  const saveComponent = (settings: TSettings): Promise<void> => {
+    if (!state.id) {
+      console.warn('ConfigurableComponent: save of component without `id` called');
+      return Promise.resolve();
+    }
 
-    dispatch(saveRequestAction());
+    dispatch(saveRequestAction({  }));
 
     const dto: ConfigurableComponentUpdateSettingsInput = {
       id: state.id,
-      settings: state.settings ? JSON.stringify(state.settings) : null,
+      settings: settings ? JSON.stringify(settings) : null,
     };
+    
     return saveFormHttp(dto, {})
       .then(_response => {
-        dispatch(saveSuccessAction());
+        dispatch(saveSuccessAction({ settings: dto.settings }));
       })
       .catch(_error => {
-        dispatch(saveErrorAction());
+        dispatch(saveErrorAction({ error: "" }));
       });
   };
 
@@ -140,6 +145,7 @@ export const createConfigurableComponent = <TSettings extends any>(defaultSettin
         initialState={initialState}
         stateContext={StateContext}
         actionContext={ActionContext}
+        id={props.id}
       >
         {props.children}
       </GenericConfigurableComponentProvider>
