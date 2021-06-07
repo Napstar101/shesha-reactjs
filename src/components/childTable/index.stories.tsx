@@ -19,8 +19,8 @@ interface IExtendedChildTableProps extends IChildTableProps {
 }
 
 const simpleTableProps: IExtendedChildTableProps = {
-  parentEntityId: 'ef0916a4-1b25-4587-b73e-006cf79394db',
-  id: 'NpoChildOrganisationsForOfficeBearer_Index',
+  parentEntityId: '208a0e8a-ff27-45bd-8fb3-2247eb6af6f6',
+  id: 'SourcesOfFundings_Index',
   header: 'List of Staff',
   crud: true,
   actionColumns: [
@@ -35,8 +35,8 @@ const simpleTableProps: IExtendedChildTableProps = {
 };
 
 const inlineEditingWithCustomEditorsTableProps: IExtendedChildTableProps = {
-  id: 'NpoChildOrganisationsForOfficeBearer_Index',
-  parentEntityId: 'ef0916a4-1b25-4587-b73e-006cf79394db',
+  id: 'Achievements_Index',
+  parentEntityId: '208a0e8a-ff27-45bd-8fb3-2247eb6af6f6',
   header: 'Staff Meeting Custom Editor',
   crud: true,
   customTypeEditors: [

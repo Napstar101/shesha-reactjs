@@ -25,7 +25,7 @@ import { nanoid } from 'nanoid';
 import ReactTable from '../reactTable';
 import { removeUndefinedProperties } from '../../utils/array';
 import { ValidationErrors } from '..';
-import { useDataTableStore } from '../../providers';
+import { useAuthState, useDataTableStore } from '../../providers';
 import { IReactTableProps } from '../reactTable/interfaces';
 
 const FormItem = Form.Item;
@@ -55,7 +55,12 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   onRowsChanged,
 }) => {
   const store = useDataTableStore();
+  const { headers } = useAuthState();
   if (tableRef) tableRef.current = store;
+
+  useEffect(() => {
+    console.log('IndexTable headers: ', headers);
+  }, [headers]);
 
   // const reactTableRef = useRef(null);
   const { router } = useShaRouting();
@@ -93,16 +98,19 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   const { mutate: createItemHttp, loading: isCreating, error: createError } = useMutate({
     path: crudConfig?.createUrl,
     verb: 'POST',
+    requestOptions: { headers },
   });
 
   const { mutate: updateItemHttp, loading: isUpdating, error: updateError } = useMutate({
     path: crudConfig?.updateUrl,
     verb: 'PUT',
+    requestOptions: { headers },
   });
 
   const { mutate: deleteItemHttp, loading: isDeleting, error: deleteError } = useMutate({
     path: crudConfig?.deleteUrl,
     verb: 'DELETE',
+    requestOptions: { headers },
   });
 
   const table = useDataTableStore();
@@ -253,16 +261,18 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
           const rowValues = props?.row?.values || {};
 
+          const currentId = props?.row?.original?.Id;
+
           if (data?.type === 'update') {
             const callback = () =>
               setCrudRowData({
-                id: props?.value,
+                id: currentId,
                 data: props?.original,
                 mode: 'edit',
               });
 
             // If you were creating or already editing something
-            if (newOrEditableRowData?.id && newOrEditableRowData?.id !== props?.value) {
+            if (newOrEditableRowData?.id && newOrEditableRowData?.id !== currentId) {
               confirmAndProceed('Please note that you will lose data you have not yet saved', callback);
             } else {
               callback();
@@ -270,7 +280,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           }
 
           if (data?.type === 'delete') {
-            deleteItem(props?.value);
+            deleteItem(currentId);
           }
 
           if (data?.type === 'create') {
@@ -278,14 +288,13 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           }
 
           if (data?.type === 'cancel') {
-            // cancelCreateOrEditRowData
             confirmAndProceed('Please note that you will lose data you have not yet saved', cancelCreateOrEditRowData);
           }
 
           // The user wants to view the details using the modal
           if (data?.type === 'read' && !data?.onClick) {
             setCrudRowData({
-              id: props.value,
+              id: currentId,
               mode: 'read',
               data: props.original,
             });
@@ -362,6 +371,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   };
 
   const deleteItem = (itemId: string) => {
+    console.log('deleteItem itemId', itemId);
+
     const deleteCallback = saveLocally
       ? () => deleteRowItem(itemId)
       : () => {
@@ -581,9 +592,11 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   return (
     <Fragment>
-      <ValidationErrors error={createError?.data} />
-      <ValidationErrors error={updateError?.data} />
-      <ValidationErrors error={deleteError?.data} />
+      <div className="sha-child-table-error-container">
+        <ValidationErrors error={createError?.data} />
+        <ValidationErrors error={updateError?.data} />
+        <ValidationErrors error={deleteError?.data} />
+      </div>
 
       {/* {useMultiselect ? <MultiselectWithState {...tableProps} /> : <ReactTable {...tableProps} />} */}
       <ReactTable {...tableProps} />
