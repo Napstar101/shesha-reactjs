@@ -29,3 +29,4 @@ export { IShaDataTableProps } from '../components/indexTable/interfaces';
 export { IChildTableProps } from '../components/childTable';
 export { IDataTableInstance } from '../providers/dataTable/interfaces';
 export * from './formDesigner';
+export * from './sidebar';

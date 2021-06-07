@@ -33,14 +33,12 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
               name: 'Item 1',
               itemType: 'button',
               childItems: undefined,
-              sortOrder: 0,
             },
             {
               id: 'item2',
               name: 'Item 2',
               itemType: 'button',
               childItems: undefined,
-              sortOrder: 1,
             },
           ]
         }}

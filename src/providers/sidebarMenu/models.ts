@@ -1,24 +1,5 @@
 import { ReactNode } from 'react';
 
-type SidebarItemType = 'button' | 'separator';
-type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction';
-
-export interface ISidebarMenuItem {
-  id: string;
-  name: string;
-  tooltip?: string;
-  sortOrder: number;
-  itemType: SidebarItemType;
-  buttonAction?: ButtonActionType;
-  targetUrl?: string;
-  icon?: string;
-  isHidden?: boolean;
-  visibility?: string;
-  permissions?: string[];
-
-  childItems: ISidebarMenuItem[];
-}
-
 export interface IHeaderAction {
   /**
    * the icon to render

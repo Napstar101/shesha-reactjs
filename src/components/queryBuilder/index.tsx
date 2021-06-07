@@ -14,14 +14,16 @@ import classNames from 'classnames';
 
 // For AntDesign widgets only:
 import AntdConfig from 'react-awesome-query-builder/lib/config/antd';
-import 'react-awesome-query-builder/lib/css/styles.css';
-import 'react-awesome-query-builder/lib/css/compact_styles.css'; //optional, for more compact styles
 import { ITableColumn } from '../../interfaces';
 import { IProperty } from '../../providers/queryBuilder/models';
 import EntityAutocompleteWidget from './widgets/entityAutocomplete';
 import RefListDropdownWidget from './widgets/refListDropDown';
 import EntityReferenceType from './types/entityReference';
 import RefListType from './types/refList';
+
+// import 'react-awesome-query-builder/lib/css/styles.css';
+// import 'react-awesome-query-builder/lib/css/compact_styles.css'; //optional, for more compact styles
+
 const InitialConfig = AntdConfig;
 
 export interface IQueryBuilderColumn extends ITableColumn {

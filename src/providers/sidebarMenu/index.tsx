@@ -7,7 +7,8 @@ import {
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { useAuth } from '../auth';
-import { IHeaderAction, ISidebarMenuItem } from './models';
+import { IHeaderAction } from './models';
+import { ISidebarMenuItem } from '../../interfaces/sidebar';
 
 export interface ISidebarMenuProviderProps {
   items: ISidebarMenuItem[];
