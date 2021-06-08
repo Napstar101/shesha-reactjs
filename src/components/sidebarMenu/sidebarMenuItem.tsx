@@ -1,10 +1,10 @@
 import { Menu } from 'antd';
 import React from 'react';
-import { ISidebarMenuItem, useSidebarMenu } from '../../providers/sidebarMenu';
+import { ISidebarMenuItem } from '../../providers/sidebarMenu';
 import { ShaLink } from '../shaLink';
 import classNames from 'classnames';
-import { useShaRouting } from '../../providers/shaRouting';
 import ShaIcon, { IconType } from '../shaIcon';
+import { Router } from 'next/router';
 
 const { SubMenu } = Menu;
 
@@ -16,16 +16,16 @@ export const getMenuItemKey = (title: string): string => {
 
 export interface IProps extends ISidebarMenuItem {
   isSubMenu?: boolean;
+  isItemVisible: (item: ISidebarMenuItem) => boolean;
+  router?: Router;
 }
 
 // Note: Have to use function instead of react control. It's a known issue, you can only pass MenuItem or MenuGroup as Menu's children. See https://github.com/ant-design/ant-design/issues/4853
 export const renderSidebarMenuItem = (props: IProps) => {
   const { id: key, name: title, icon, childItems, targetUrl: target, isSubMenu } = props;
-  const { isItemVisible } = useSidebarMenu();
-  if (!isItemVisible(props)) return null;
+  const asPath = props.router?.asPath;
 
-  const { router } = useShaRouting();
-  const asPath = router?.asPath;
+  if (!props.isItemVisible(props)) return null;
 
   const renderedIcon = icon
     ? <ShaIcon iconName={icon as IconType}></ShaIcon>
@@ -47,7 +47,7 @@ export const renderSidebarMenuItem = (props: IProps) => {
           </span>
         }
       >
-        {childItems.map(child => renderSidebarMenuItem({ ...child, isSubMenu: true }))}
+        {childItems.map(child => renderSidebarMenuItem({ ...child, isSubMenu: true, isItemVisible: props.isItemVisible, router: props.router }))}
       </SubMenu>
     );
 

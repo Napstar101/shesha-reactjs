@@ -14,7 +14,7 @@ interface ISidebarMenuProps {
 export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
   const [openedKeys, setOpenedKeys] = useLocalStorage('openedSidebarKeys', null);
   const { router } = useShaRouting();
-  const { getItems } = useSidebarMenu();
+  const { getItems, isItemVisible } = useSidebarMenu();
   
   const items = getItems();
 
@@ -43,7 +43,7 @@ export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
       onOpenChange={onOpenChange}
       theme={theme}
     >
-      {items.map(item => renderSidebarMenuItem(item))}
+      {items.map(item => renderSidebarMenuItem({...item, isItemVisible, router}))}
     </Menu>
   );
 };
