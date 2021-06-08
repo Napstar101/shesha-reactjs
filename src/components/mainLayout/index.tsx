@@ -8,7 +8,7 @@ import IdleTimerRenderer from '../idleTimerRenderer';
 import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
 import /*HtmlHead,*/ { IHtmlHeadProps } from '../htmlHead';
 import LayoutHeading from '../layoutHeading';
-import SidebarMenu from '../sidebarMenu';
+import ConfigurableSidebarMenu from '../configurableSidebarMenu';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -110,7 +110,11 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
         }}
         theme={theme}
       >
-        <SidebarMenu theme={theme} />
+        <ConfigurableSidebarMenu
+          theme={theme}
+          id="9362F11A-EA9C-4152-9855-9516123467F7"
+          defaultSettings={{ items: [] }}
+        />
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={headerStyle}>

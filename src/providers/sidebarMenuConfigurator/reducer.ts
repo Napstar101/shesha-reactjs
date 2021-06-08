@@ -5,10 +5,10 @@ import {
   SIDEBAR_MENU_CONTEXT_INITIAL_STATE,
 } from './contexts';
 import { SidebarMenuActionEnums } from './actions';
-import { ISidebarMenuItem } from './models';
 import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
-import { getItemById, getItemPositionById } from './utils';
+import { getItemPositionById } from './utils';
+import { ISidebarMenuItem } from '../../interfaces/sidebar';
 
 const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, any>(
   {
@@ -17,7 +17,6 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       const buttonProps: ISidebarMenuItem = {
         id: uuid(),
         itemType: 'button',
-        sortOrder: state.items.length,
         name: `New item`,
         childItems: [],
       };

@@ -1,6 +1,6 @@
 import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
 import SidebarMenuReducer from './reducer';
-import { SidebarMenuActionsContext, SidebarMenuStateContext, SIDEBAR_MENU_CONTEXT_INITIAL_STATE } from './contexts';
+import { SidebarMenuActionsContext, SidebarMenuDefaultsContext, SidebarMenuStateContext, SIDEBAR_MENU_CONTEXT_INITIAL_STATE } from './contexts';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   toggleSidebarAction,
@@ -95,6 +95,31 @@ function useSidebarMenu() {
 
 export default SidebarMenuProvider;
 
+//#region temporary defaults provider
+export interface ISidebarMenuDefaultsProviderProps {
+  items: ISidebarMenuItem[];
+}
+const SidebarMenuDefaultsProvider: FC<PropsWithChildren<ISidebarMenuDefaultsProviderProps>> = ({
+  items,
+  children
+}) => {
+  return (
+    <SidebarMenuDefaultsContext.Provider value={{
+      items: items
+    }}>
+      {children}
+    </SidebarMenuDefaultsContext.Provider>
+  ); 
+}
+
+function useSidebarMenuDefaults() {
+  const context = useContext(SidebarMenuDefaultsContext);
+
+  return context;
+}
+
+//#endregion
+
 export {
   IHeaderAction,
   ISidebarMenuItem,
@@ -102,4 +127,7 @@ export {
   useSidebarMenuState,
   useSidebarMenuActions,
   useSidebarMenu,
+  
+  SidebarMenuDefaultsProvider, // note: to be removed
+  useSidebarMenuDefaults, // note: to be removed
 };

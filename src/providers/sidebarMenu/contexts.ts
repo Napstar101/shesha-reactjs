@@ -36,3 +36,12 @@ export const SIDEBAR_MENU_CONTEXT_INITIAL_STATE: ISidebarMenuStateContext = {
 export const SidebarMenuStateContext = createContext<ISidebarMenuStateContext>(SIDEBAR_MENU_CONTEXT_INITIAL_STATE);
 
 export const SidebarMenuActionsContext = createContext<ISidebarMenuActionsContext>(undefined);
+
+//#region temporary defaults provider
+
+export interface ISidebarMenuDefaultsContext {
+
+}
+export const SidebarMenuDefaultsContext = createContext<ISidebarMenuDefaultsContext>({});
+
+//#endregion

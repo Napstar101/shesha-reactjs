@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { SidebarMenuItem } from './sidebarMenuItem';
 import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfigurator';
-import { ISidebarMenuItem } from '../../../providers/sidebarMenuConfigurator/models';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
+import { ISidebarMenuItem } from '../../../interfaces/sidebar';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];

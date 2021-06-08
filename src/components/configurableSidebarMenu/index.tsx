@@ -4,12 +4,14 @@ import { ErrorBoundary } from '../errorBoundary/errorBoundary';
 import { SidebarMenu } from '../sidebarMenu';
 import { SidebarMenuProvider, ISidebarMenuItem } from '../../providers/sidebarMenu';
 import ComponentSettingsModal from './settingsModal';
+import { MenuTheme } from 'antd/lib/menu/MenuContext';
 
 export interface ISideBarMenuProps {
   items: ISidebarMenuItem[];
 }
 
 export interface IConfigurableSidebarMenuProps {
+  theme?: MenuTheme;
   defaultSettings: ISideBarMenuProps;
   id: string;
 }
@@ -40,7 +42,7 @@ export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = (props
           <div className={`sidebar ${componentState.wrapperClassName}`}>
             <BlockOverlay></BlockOverlay>
             <SidebarMenuProvider items={componentState.settings?.items || []}>
-              <SidebarMenu>
+              <SidebarMenu theme={props.theme}>
               </SidebarMenu>
             </SidebarMenuProvider>
           </div>
