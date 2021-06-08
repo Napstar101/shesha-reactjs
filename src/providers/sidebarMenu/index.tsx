@@ -69,31 +69,29 @@ const SidebarMenuProvider: FC<PropsWithChildren<ISidebarMenuProviderProps>> = ({
   );
 };
 
-function useSidebarMenuState() {
+function useSidebarMenuState(require: boolean) {
   const context = useContext(SidebarMenuStateContext);
 
-  if (context === undefined) {
+  if (context === undefined && require) {
     throw new Error('useSidebarMenuState must be used within a SidebarMenuProvider');
   }
 
   return context;
 }
 
-function useSidebarMenuActions() {
+function useSidebarMenuActions(require: boolean) {
   const context = useContext(SidebarMenuActionsContext);
 
-  if (context === undefined) {
+  if (context === undefined && require) {
     throw new Error('useSidebarMenuActions must be used within a SidebarMenuProvider');
   }
 
   return context;
 }
 
-function useSidebarMenu() {
-  return { ...useSidebarMenuState(), ...useSidebarMenuActions() };
+function useSidebarMenu(require: boolean = true) {
+  return { ...useSidebarMenuState(require), ...useSidebarMenuActions(require) };
 }
-
-export default SidebarMenuProvider;
 
 //#region temporary defaults provider
 export interface ISidebarMenuDefaultsProviderProps {

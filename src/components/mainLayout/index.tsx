@@ -9,6 +9,7 @@ import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
 import /*HtmlHead,*/ { IHtmlHeadProps } from '../htmlHead';
 import LayoutHeading from '../layoutHeading';
 import ConfigurableSidebarMenu from '../configurableSidebarMenu';
+import { useSidebarMenuDefaults } from '../../providers/sidebarMenu';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -59,7 +60,8 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
   toolbar,
 }) => {
   const [collapsed, setCollapsed] = useState(true);
-
+  const sidebarDefaults = useSidebarMenuDefaults();
+  const sidebarDefaultItems = sidebarDefaults?.items || [];
   useEffect(() => {
     document.title = title || '';
   });
@@ -113,7 +115,7 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
         <ConfigurableSidebarMenu
           theme={theme}
           id="9362F11A-EA9C-4152-9855-9516123467F7"
-          defaultSettings={{ items: [] }}
+          defaultSettings={{ items: sidebarDefaultItems }}
         />
       </Sider>
       <Layout className="site-layout">

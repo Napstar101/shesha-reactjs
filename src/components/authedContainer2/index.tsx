@@ -1,7 +1,8 @@
 import { Alert, Button, Form, Input, Modal } from 'antd';
 import React, { FC, Fragment } from 'react';
 import { useState } from 'react';
-import { ShaRoutingProvider, SidebarMenuProvider, useAuth } from '../../providers';
+import { ShaRoutingProvider, useAuth } from '../../providers';
+import { SidebarMenuProvider } from '../../providers/sidebarMenu';
 import SectionSeparator from '../sectionSeparator';
 import './index.less';
 

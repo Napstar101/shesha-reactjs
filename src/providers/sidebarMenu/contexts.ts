@@ -40,8 +40,8 @@ export const SidebarMenuActionsContext = createContext<ISidebarMenuActionsContex
 //#region temporary defaults provider
 
 export interface ISidebarMenuDefaultsContext {
-
+  items: ISidebarMenuItem[];
 }
-export const SidebarMenuDefaultsContext = createContext<ISidebarMenuDefaultsContext>({});
+export const SidebarMenuDefaultsContext = createContext<ISidebarMenuDefaultsContext>({ items: [] });
 
 //#endregion
