@@ -13,6 +13,8 @@ import {
   selectItemAction,
   updateChildItemsAction,
   updateItemAction,
+  addGroupAction,
+  deleteGroupAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { getItemById } from './utils';
@@ -52,6 +54,14 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
     dispatch(updateChildItemsAction(payload));
   };
 
+  const addGroup = () => {
+    dispatch(addGroupAction());
+  };
+
+  const deleteGroup = (uid: string) => {
+    dispatch(deleteGroupAction(uid));
+  };
+
   const getItem = (uid: string): ISidebarMenuItem => {
     return getItemById(state.items, uid);
   };
@@ -72,6 +82,8 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
           updateChildItems,
           getItem,
           updateItem,
+          addGroup,
+          deleteGroup,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

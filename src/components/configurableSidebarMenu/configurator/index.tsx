@@ -2,20 +2,23 @@ import { FC } from 'react';
 import { Button } from 'antd';
 import { SidebarContainer } from '../../';
 import { ToolbarItemProperties } from './itemProperties';
-import SidebarItemsContainer from './itemsContainer';
+import SidebarItemsContainer from './sidebarItemsContainer';
 import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfigurator';
 import React from 'react';
 import '../styles/index.less';
 
-export interface ISidebarConfiguratorProps {}
+export interface ISidebarConfiguratorProps { }
 
 export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
-  const { items, addItem } = useSidebarMenuConfigurator();
+  const { items, addItem, addGroup } = useSidebarMenuConfigurator();
 
   return (
     <div className="sha-sidebar-configurator">
       <h4>You can customize the Menu component from this screen.</h4>
       <div className="sha-action-buttons">
+        <Button onClick={addGroup} type="primary">
+          Add Group
+        </Button>
         <Button onClick={addItem} type="primary">
           Add New Item
         </Button>

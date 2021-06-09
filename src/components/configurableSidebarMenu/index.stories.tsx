@@ -25,7 +25,7 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
     <AuthContainer2 layout={false}>
       <AppEditModeToggler />
       <ConfigurableSidebarMenu 
-        id="A8EDC854-DB4A-40DB-A1B5-9081D4C2A487"
+        id="9362F11A-EA9C-4152-9855-9516123467F7"
         defaultSettings={{
           items: [
             {

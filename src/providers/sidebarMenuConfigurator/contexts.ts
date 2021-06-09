@@ -23,6 +23,10 @@ export interface ISidebarMenuConfiguratorActionsContext {
   updateChildItems: (payload: IUpdateChildItemsPayload) => void;
   getItem: (uid: string) => ISidebarMenuItem;
   updateItem: (payload: IUpdateItemSettingsPayload) => void;
+
+  addGroup: () => void;
+  deleteGroup: (uid: string) => void;
+
   /* NEW_ACTION_ACTION_DECLARATIOS_GOES_HERE */
 }
 

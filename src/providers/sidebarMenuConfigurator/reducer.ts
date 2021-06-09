@@ -114,6 +114,35 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
         items: newItems,
       };
     },
+
+    [SidebarMenuActionEnums.AddGroup]: (state: ISidebarMenuConfiguratorStateContext) => {
+      const groupProps: ISidebarMenuItem = {
+        id: uuid(),
+        itemType: 'group',
+        name: `New Group`,
+        childItems: [],
+      };
+      return {
+        ...state,
+        items: [...state.items, groupProps],
+        selectedItemId: groupProps.id,
+      };
+    },
+
+    [SidebarMenuActionEnums.DeleteGroup]: (
+      state: ISidebarMenuConfiguratorStateContext,
+      action: ReduxActions.Action<string>
+    ) => {
+      const { payload } = action;
+
+      const newItems = state.items.filter(item => item.id !== payload);
+
+      return {
+        ...state,
+        items: [...newItems],
+        selectedItemId: state.selectedItemId === payload ? null : state.selectedItemId,
+      };
+    },
   },
 
   SIDEBAR_MENU_CONTEXT_INITIAL_STATE

@@ -1,4 +1,4 @@
-export type SidebarItemType = 'button' | 'separator';
+export type SidebarItemType = 'button' | 'separator' | 'group';
 export type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction';
 
 export interface ISidebarMenuItem {

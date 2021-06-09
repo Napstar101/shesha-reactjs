@@ -6,6 +6,7 @@ import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfig
 import { FormMarkup } from '../../../providers/form/models';
 import { ConfigurableFormInstance } from '../../../providers/form/contexts';
 import itemSettingsJson from './itemSettings.json';
+import groupSettingsJson from './groupSettings.json';
 
 export interface IProps {}
 
@@ -41,7 +42,11 @@ export const ToolbarItemProperties: FC<IProps> = () => {
 
     const componentModel = getItem(selectedItemId);
 
-    const markup = itemSettingsJson as FormMarkup;
+    //const markup = itemSettingsJson as FormMarkup;
+    const markup =
+      componentModel.itemType === 'group'
+        ? groupSettingsJson as FormMarkup
+        : itemSettingsJson as FormMarkup;
     return (
       <ConfigurableForm
         formRef={formRef}
