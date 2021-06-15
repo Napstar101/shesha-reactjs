@@ -9,13 +9,45 @@ import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
 
 export interface IDetailsPageProps {
+  /**
+   * The id of an entity whose details are to be rendered
+   */
   id?: string;
+
+  /**
+   * The id of the form that will be used to render the entity. If not passed, the pathname will be used as the form id
+   */
   formId?: string;
+
+  /**
+   * A get API to be called with the id to get the details of the form
+   */
   fetcher: (props: UseGenericGetProps) => IDataFetcher;
+
+  /**
+   * The form markup
+   */
   markup?: FormMarkup;
-  title?: string;
+
+  /**
+   * The title of this page
+   */
+  title?: (model: any) => string | string;
+
+  /**
+   *
+   */
   toolbarItems?: IToolbarItem[];
+
+  /**
+   *
+   */
   footer?: ReactNode | ((model: any) => ReactNode);
+
+  /**
+   *
+   */
+  status?: ReactNode | (() => ReactNode);
 }
 
 const DetailsPage: FC<IDetailsPageProps> = props => {
@@ -38,13 +70,31 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
 
   const { router } = useShaRouting();
 
+  const renderStatus = () => {
+    if (props?.status) {
+      return typeof props.status === 'function' ? props.status() : status;
+    }
+
+    return null;
+  };
+
+  const renderTitle = () => {
+    const { title } = props;
+
+    if (title) {
+      return typeof title === 'string' ? title : title(model);
+    }
+
+    return 'Details';
+  };
+
   return (
     <Spin spinning={loading} tip="Loading...">
       <MainLayout
-        title={props.title}
+        title={renderTitle()}
         description=""
         showHeading={false}
-        toolbar={<IndexToolbar items={props.toolbarItems} />}
+        toolbar={<IndexToolbar items={props.toolbarItems} elementsRight={renderStatus()} />}
       >
         <ValidationErrors error={fetchError?.data}></ValidationErrors>
         {model && (

@@ -15,7 +15,7 @@ interface IEditPageProps {
   markup?: FormMarkup;
   fetcher: (props: UseGenericGetProps) => IDataFetcher;
   updater: (props: any) => IDataMutator;
-  title?: (model: any) => string;
+  title?: (model: any) => string | string;
 }
 
 const EditPage: NextPage<IEditPageProps> = props => {
@@ -67,13 +67,19 @@ const EditPage: NextPage<IEditPageProps> = props => {
   const { formItemLayout } = useUi();
   const model = serverData?.result;
 
+  const renderTitle = () => {
+    const { title } = props;
+
+    if (title) {
+      return typeof title === 'string' ? title : title(model);
+    }
+
+    return 'Edit';
+  };
+
   return (
     <Spin spinning={loading || saving} tip="Please wait...">
-      <MainLayout
-        title={props.title ? props.title(model) : 'Edit'}
-        showHeading={false}
-        toolbar={<IndexToolbar items={toolbarItems} />}
-      >
+      <MainLayout title={renderTitle()} showHeading={false} toolbar={<IndexToolbar items={toolbarItems} />}>
         <ValidationErrors error={savingError?.data || fetchError?.data}></ValidationErrors>
         {model && (
           <ConfigurableForm
