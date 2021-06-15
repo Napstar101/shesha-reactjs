@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import CustomFile, { ICustomFileProps } from './';
 import StoredFilesProvider from '../../providers/storedFiles';
 import { ShaApplicationProvider } from '../../providers';
-import AuthContainer2 from '../authedContainer2';
+import AuthContainer from '../authedContainer';
 
 export default {
   title: 'Components/Temp/CustomFile',
@@ -18,7 +18,7 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 // Create a master template for mapping args to render the Button component
 const Template: Story<ICustomFileProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
-    <AuthContainer2>
+    <AuthContainer>
       <StoredFilesProvider
         ownerId="32e2b3dd-4d99-4542-af71-134ec7c0e2ce"
         ownerType="Shesha.Core.Person"
@@ -30,7 +30,7 @@ const Template: Story<ICustomFileProps> = args => (
           <CustomFile />
         </div>
       </StoredFilesProvider>
-    </AuthContainer2>
+    </AuthContainer>
   </ShaApplicationProvider>
 );
 

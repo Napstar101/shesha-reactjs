@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ConfigurableLogo from './';
 import { ShaApplicationProvider } from '../../providers';
-import AuthContainer2 from '../authedContainer2';
+import AuthContainer from '../authedContainer';
 import { AppEditModeToggler } from '../..';
 
 export default {
@@ -20,10 +20,10 @@ const Template: Story<IConfigurableLogoStoryProps> = (props) => (
   <ShaApplicationProvider 
     backendUrl={props.backendUrl || ''}
   >
-    <AuthContainer2 layout={false}>
+    <AuthContainer layout={false}>
       <AppEditModeToggler />
       <ConfigurableLogo />
-    </AuthContainer2>
+    </AuthContainer>
   </ShaApplicationProvider>
 );
 

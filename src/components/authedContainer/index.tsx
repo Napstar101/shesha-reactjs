@@ -1,13 +1,8 @@
 import { Alert, Button, Form, Input, Modal } from 'antd';
 import React, { FC, Fragment } from 'react';
-import { useEffect } from 'react';
 import { useState } from 'react';
-import { RestfulProvider, useMutate } from 'restful-react';
-import AuthProvider from '../../providers/auth';
-import AuthorizationSettingsProvider from '../../providers/authorizationSettings';
-import ShaRoutingProvider from '../../providers/shaRouting';
-import SidebarMenuProvider from '../../providers/sidebarMenu';
-import { getAccessToken, removeAccessToken, saveUserToken } from '../../utils/auth';
+import { ShaRoutingProvider, useAuth } from '../../providers';
+import { SidebarMenuProvider } from '../../providers/sidebarMenu';
 import SectionSeparator from '../sectionSeparator';
 import './index.less';
 
@@ -27,48 +22,33 @@ interface IAuthContainerProps {
 
 const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) => {
   const [isSignInModalVisible, setSignInModalVisibility] = useState(false);
-  const [baseUrl, setBaseUrl] = useState(process.env.STORYBOOK_BASE_URL);
-  const [token, setToken] = useState<any>(null);
-  const [loginForm] = Form.useForm();
-  const { mutate: loginMutate, loading } = useMutate({
-    base: baseUrl,
-    verb: 'POST',
-    path: '/api/TokenAuth/Authenticate',
-  });
 
-  useEffect(() => {
-    setToken(getAccessToken(ACCESS_TOKEN_NAME));
-  }, []);
+  const { loginUser, logoutUser, isInProgress, loginInfo } = useAuth();
+  const isLoggedIn = Boolean(loginInfo?.userName);
+
+  const [loginForm] = Form.useForm();
 
   const showSignInModal = () => setSignInModalVisibility(true);
   const hideSignInModal = () => setSignInModalVisibility(false);
 
   const login = ({ baseUrl, ...payload }: ILoginForm) => {
-    loginMutate(payload)
-      .then(response => {
-        const accessToken = response.result;
-
-        saveUserToken(accessToken, ACCESS_TOKEN_NAME);
-        setToken(accessToken);
-        hideSignInModal();
-      })
-      .catch(() => {
-        hideSignInModal();
-      });
+    loginUser({
+      password: payload.password,
+      userNameOrEmailAddress: payload.userNameOrEmailAddress,
+    });
   };
 
   const logout = () => {
-    setToken(null);
-    removeAccessToken(ACCESS_TOKEN_NAME);
+    logoutUser();
   };
 
   return (
-    <RestfulProvider base={baseUrl}>
+    <>
       <div className="sha-storybook-authenticated-container">
         {!layout && (
           <Fragment>
             <div className="sha-storybook-authenticated-action-btn">
-              {token ? (
+              {isLoggedIn ? (
                 <Button type="primary" onClick={logout} danger>
                   Logout
                 </Button>
@@ -83,15 +63,11 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
           </Fragment>
         )}
 
-        {token ? (
+        {isLoggedIn ? (
           <ShaRoutingProvider>
-            <AuthProvider tokenName={ACCESS_TOKEN_NAME}>
-              <AuthorizationSettingsProvider>
-                <SidebarMenuProvider items={[]}>
-                  <div>{children}</div>
-                </SidebarMenuProvider>
-              </AuthorizationSettingsProvider>
-            </AuthProvider>
+            <SidebarMenuProvider items={[]}>
+              <div>{children}</div>
+            </SidebarMenuProvider>
           </ShaRoutingProvider>
         ) : (
           <Alert
@@ -107,13 +83,9 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
           visible={isSignInModalVisible}
           onCancel={hideSignInModal}
           onOk={() => loginForm?.submit()}
-          okButtonProps={{ loading }}
+          okButtonProps={{ loading: isInProgress?.loginUser || false }}
         >
           <Form form={loginForm} onFinish={login}>
-            <Item name="baseUrl" rules={[{ required: true }]}>
-              <Input onChange={event => setBaseUrl(event?.target?.value)} value={baseUrl} placeholder="Base Url" />
-            </Item>
-
             <Item name="userNameOrEmailAddress" rules={[{ required: true }]}>
               <Input placeholder="username" />
             </Item>
@@ -124,7 +96,7 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
           </Form>
         </Modal>
       </div>
-    </RestfulProvider>
+    </>
   );
 };
 

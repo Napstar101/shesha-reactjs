@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ConfigurableSidebarMenu from './';
 import { ShaApplicationProvider } from '../../providers';
-import AuthContainer2 from '../authedContainer2';
+import AuthContainer from '../authedContainer';
 import { AppEditModeToggler } from '../..';
 import SidebarConfigurator from './configurator';
 import { SidebarMenuConfiguratorProvider } from '../../providers/sidebarMenuConfigurator';
@@ -22,7 +22,7 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
   <ShaApplicationProvider 
     backendUrl={props.backendUrl || ''}
   >
-    <AuthContainer2 layout={false}>
+    <AuthContainer layout={false}>
       <AppEditModeToggler />
       <ConfigurableSidebarMenu 
         id="9362F11A-EA9C-4152-9855-9516123467F7"
@@ -43,7 +43,7 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
           ]
         }}
       />
-    </AuthContainer2>
+    </AuthContainer>
   </ShaApplicationProvider>
 );
 
@@ -62,11 +62,11 @@ const ConfiguratorTemplate: Story<IConfiguratorTemplateProps> = (props) => (
   <ShaApplicationProvider 
     backendUrl={props.backendUrl || ''}
   >
-    <AuthContainer2 layout={false}>
+    <AuthContainer layout={false}>
       <SidebarMenuConfiguratorProvider items={[]}>
         <SidebarConfigurator></SidebarConfigurator>
       </SidebarMenuConfiguratorProvider>
-    </AuthContainer2>
+    </AuthContainer>
   </ShaApplicationProvider>
 );
 

@@ -5,7 +5,7 @@ import ConfigurableForm from './configurableForm';
 import { Col, Row } from 'antd';
 import { IConfigurableFormProps } from './models';
 import { ShaApplicationProvider, ShaRoutingProvider } from '../../providers';
-import AuthContainer2 from '../authedContainer2';
+import AuthContainer from '../authedContainer';
 import { IndexPageTemplate } from './stories/indexPage';
 
 export default {
@@ -22,7 +22,7 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Story
 // Create a master template for mapping args to render the Button component
 const Template: Story<IConfigurableFormProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
-    <AuthContainer2>
+    <AuthContainer>
       <Row>
         <Col span={8} offset={8}>
           <ShaRoutingProvider>
@@ -30,7 +30,7 @@ const Template: Story<IConfigurableFormProps> = args => (
           </ShaRoutingProvider>
         </Col>
       </Row>
-    </AuthContainer2>
+    </AuthContainer>
   </ShaApplicationProvider>
 );
 
