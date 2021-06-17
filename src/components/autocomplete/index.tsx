@@ -152,7 +152,7 @@ export const Autocomplete: FC<IAutocompleteProps> = props => {
     200
   );
 
-  const data = getFetchedItems();
+  const data = getFetchedItems() || [];
   const options =
     Boolean(autocompleteText) || Boolean(data)
       ? data?.map(d => (
