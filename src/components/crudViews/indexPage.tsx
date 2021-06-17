@@ -20,10 +20,10 @@ interface IIndexPageProps {
   tableConfigId: string;
   detailsUrl?: (id: string) => string;
   editUrl?: (id: string) => string;
-  createModalProps: ICreateModalProps | null;
+  createModalProps?: ICreateModalProps | null;
 }
 
-const TableWithControls: FC<IIndexPageProps> = (props) => {
+const TableWithControls: FC<IIndexPageProps> = props => {
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
 
   const { refreshTable } = useDataTableStore();
@@ -73,7 +73,7 @@ const TableWithControls: FC<IIndexPageProps> = (props) => {
   );
 };
 
-const IndexPage: FC<IIndexPageProps> = (props) => (
+const IndexPage: FC<IIndexPageProps> = props => (
   <DataTableProvider tableId={props.tableConfigId}>
     <TableWithControls {...props}></TableWithControls>
   </DataTableProvider>
