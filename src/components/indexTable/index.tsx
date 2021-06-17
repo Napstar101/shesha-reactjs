@@ -58,9 +58,9 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   const { headers } = useAuthState();
   if (tableRef) tableRef.current = store;
 
-  useEffect(() => {
-    console.log('IndexTable headers: ', headers);
-  }, [headers]);
+  // useEffect(() => {
+  //   console.log('IndexTable headers: ', headers);
+  // }, [headers]);
 
   // const reactTableRef = useRef(null);
   const { router } = useShaRouting();

@@ -94,7 +94,7 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
         title={renderTitle()}
         description=""
         showHeading={false}
-        toolbar={<IndexToolbar items={props.toolbarItems} elementsRight={renderStatus()} />}
+        toolbar={<IndexToolbar items={props.toolbarItems || []} elementsRight={renderStatus()} />}
       >
         <ValidationErrors error={fetchError?.data}></ValidationErrors>
         {model && (
