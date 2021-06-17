@@ -2,11 +2,11 @@ import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ChildDataTable, { IndexTableFull } from './';
-import AuthContainer from '../authedContainer';
 import DataTableProvider from '../../providers/dataTable';
 import { SearchOutlined } from '@ant-design/icons';
 
 import { IShaDataTableProps } from '../..';
+import AuthContainer from '../authedContainer';
 
 export default {
   title: 'Components/IndexTableFull',

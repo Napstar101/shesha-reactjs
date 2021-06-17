@@ -2,7 +2,7 @@ import React from 'react';
 import { Story } from '@storybook/react';
 import ConfigurableForm from '../configurableForm';
 import { ShaApplicationProvider } from '../../../providers';
-import AuthContainer2 from '../../authedContainer2';
+import AuthContainer from '../../authedContainer';
 import { MainLayout } from '../..';
 
 export interface IIndexPageTemplateProps {
@@ -11,7 +11,7 @@ export interface IIndexPageTemplateProps {
 }
 export const IndexPageTemplate: Story<IIndexPageTemplateProps> = props => (
   <ShaApplicationProvider backendUrl={props.backendUrl}>
-    <AuthContainer2 layout={false}>
+    <AuthContainer layout={false}>
       <MainLayout title="Configurable index page">
         <ConfigurableForm
           mode="edit"
@@ -23,6 +23,6 @@ export const IndexPageTemplate: Story<IIndexPageTemplateProps> = props => (
           }}
         ></ConfigurableForm>
       </MainLayout>
-    </AuthContainer2>
+    </AuthContainer>
   </ShaApplicationProvider>
 );

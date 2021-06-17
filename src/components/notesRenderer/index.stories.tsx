@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import NotesRenderer, { INotesRendererProps } from './';
 import { NotesProvider, ShaApplicationProvider } from '../../providers';
-import AuthContainer2 from '../authedContainer2';
+import AuthContainer from '../authedContainer';
 
 export default {
   title: 'Components/Temp/NotesRenderer',
@@ -17,11 +17,11 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 // Create a master template for mapping args to render the Button component
 const Template: Story<INotesRendererProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
-    <AuthContainer2>
+    <AuthContainer>
       <NotesProvider ownerId="32e2b3dd-4d99-4542-af71-134ec7c0e2ce" ownerType="Shesha.Core.Person" {...args}>
         <NotesRenderer />
       </NotesProvider>
-    </AuthContainer2>
+    </AuthContainer>
   </ShaApplicationProvider>
 );
 
