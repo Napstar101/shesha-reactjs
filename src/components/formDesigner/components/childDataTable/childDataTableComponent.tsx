@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { TableOutlined } from '@ant-design/icons';
@@ -7,7 +7,6 @@ import { Alert } from 'antd';
 import { ChildTable, IChildTableProps } from '../../../../';
 import { useForm } from '../../../../providers/form';
 import { DataTableFullInstance } from '../../../../providers/dataTable/contexts';
-import React from 'react';
 import { useDataTableState } from '../../../../providers';
 import DataTableProvider from '../../../../providers/dataTable';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
@@ -26,7 +25,7 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
   factory: (model: IConfigurableFormComponent) => {
     const customProps = model as IChildDataTableProps;
     const { formMode, visibleComponentIds } = useForm();
-    
+
     const tableRef = useRef<DataTableFullInstance>(null);
     const { registerActions } = useForm();
 
@@ -70,6 +69,14 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  initModel: model => {
+    const response: IChildDataTableProps = {
+      ...model,
+      parentEntityId: '{data.id}',
+    };
+
+    return response;
+  },
 };
 
 export default ChildDataTableComponent;
