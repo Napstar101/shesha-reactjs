@@ -7,7 +7,6 @@ import { useUi } from '../../providers';
 import { FormMarkup } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
-import { useMemo } from 'react';
 
 export interface IDetailsPageProps {
   /**
