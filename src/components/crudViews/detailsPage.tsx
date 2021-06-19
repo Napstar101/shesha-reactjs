@@ -7,6 +7,7 @@ import { useUi } from '../../providers';
 import { FormMarkup } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
+import { useMemo } from 'react';
 
 export interface IDetailsPageProps {
   /**
@@ -32,7 +33,7 @@ export interface IDetailsPageProps {
   /**
    * The title of this page
    */
-  title?: (model: any) => string | string;
+  title?: ((model: any) => string) | string;
 
   /**
    *
@@ -45,9 +46,11 @@ export interface IDetailsPageProps {
   footer?: ReactNode | ((model: any) => ReactNode);
 
   /**
-   *
+   * Used to display the statuses of the entity as well as the reference numbers
    */
-  status?: ReactNode | (() => ReactNode);
+  headerControls?: ReactNode | ((model: any) => ReactNode);
+
+  formPath?: string;
 }
 
 const DetailsPage: FC<IDetailsPageProps> = props => {
@@ -70,14 +73,6 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
 
   const { router } = useShaRouting();
 
-  const renderStatus = () => {
-    if (props?.status) {
-      return typeof props.status === 'function' ? props.status() : status;
-    }
-
-    return null;
-  };
-
   const renderTitle = () => {
     const { title } = props;
 
@@ -93,8 +88,10 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
       <MainLayout
         title={renderTitle()}
         description=""
-        showHeading={false}
-        toolbar={<IndexToolbar items={props.toolbarItems || []} elementsRight={renderStatus()} />}
+        showHeading={!!renderTitle() || !!props.headerControls}
+        // toolbar={<IndexToolbar items={props.toolbarItems || []} elementsRight="Something" />}
+        toolbar={<IndexToolbar items={props.toolbarItems || []} />}
+        headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
       >
         <ValidationErrors error={fetchError?.data}></ValidationErrors>
         {model && (
@@ -102,7 +99,7 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
             <ConfigurableForm
               mode="readonly"
               {...formItemLayout}
-              path={router.pathname}
+              path={props?.formPath || router.pathname}
               markup={props.markup}
               initialValues={model}
             />

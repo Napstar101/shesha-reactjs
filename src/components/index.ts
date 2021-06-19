@@ -91,3 +91,4 @@ export { default as EditModeToggler } from './appConfigurator/editModeToggler'; 
 export { default as ConfigurableComponent } from './appConfigurator/configurableComponent'; // todo: convert to subtype
 export { default as SimplePageToolbar } from './simplePageToolbar';
 export { default as ErrorBoundary } from './errorBoundary/errorBoundary';
+export { default as DetailsViewHeaderControls } from './detailsViewHeaderControls';

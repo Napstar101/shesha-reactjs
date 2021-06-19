@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { MainLayout, ValidationErrors, ConfigurableForm, IndexToolbar } from '../';
 import { Form, Spin } from 'antd';
 import { NextPage } from 'next';
@@ -16,6 +16,10 @@ interface IEditPageProps {
   fetcher: (props: UseGenericGetProps) => IDataFetcher;
   updater: (props: any) => IDataMutator;
   title?: (model: any) => string | string;
+  /**
+   * Used to display the statuses of the entity as well as the reference numbers
+   */
+  headerControls?: ReactNode | ((model: any) => ReactNode);
 }
 
 const EditPage: NextPage<IEditPageProps> = props => {
@@ -79,7 +83,12 @@ const EditPage: NextPage<IEditPageProps> = props => {
 
   return (
     <Spin spinning={loading || saving} tip="Please wait...">
-      <MainLayout title={renderTitle()} showHeading={false} toolbar={<IndexToolbar items={toolbarItems} />}>
+      <MainLayout
+        title={renderTitle()}
+        showHeading={false}
+        toolbar={<IndexToolbar items={toolbarItems} />}
+        headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
+      >
         <ValidationErrors error={savingError?.data || fetchError?.data}></ValidationErrors>
         {model && (
           <ConfigurableForm

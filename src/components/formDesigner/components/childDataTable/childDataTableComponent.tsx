@@ -9,7 +9,7 @@ import { useForm } from '../../../../providers/form';
 import { DataTableFullInstance } from '../../../../providers/dataTable/contexts';
 import { useDataTableState } from '../../../../providers';
 import DataTableProvider from '../../../../providers/dataTable';
-import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
 export interface IChildDataTableProps extends IConfigurableFormComponent {
   tableConfigId?: string;
@@ -24,7 +24,7 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
   icon: <TableOutlined />,
   factory: (model: IConfigurableFormComponent) => {
     const customProps = model as IChildDataTableProps;
-    const { formMode, visibleComponentIds } = useForm();
+    const { formMode, visibleComponentIds, formData } = useForm();
 
     const tableRef = useRef<DataTableFullInstance>(null);
     const { registerActions } = useForm();
@@ -57,12 +57,14 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
     if (!tableProps.id) return <Alert message="Child DataTable is not configured properly" type="warning" showIcon />;
     const { parentEntityId: currentParentEntityId } = useDataTableState();
 
+    const evaluatedParentEntityId = evaluateValue(customProps.parentEntityId, { data: formData });
+
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
     return (
-      <DataTableProvider tableId={tableProps.id} parentEntityId={currentParentEntityId}>
+      <DataTableProvider tableId={tableProps.id} parentEntityId={currentParentEntityId || evaluatedParentEntityId}>
         <ChildTable {...tableProps} tableRef={tableRef} />
       </DataTableProvider>
     );

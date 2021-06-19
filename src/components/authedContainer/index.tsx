@@ -3,6 +3,7 @@ import React, { FC, Fragment } from 'react';
 import { useState } from 'react';
 import { ShaRoutingProvider, SidebarMenuProvider, useAuth } from '../../providers';
 import SectionSeparator from '../sectionSeparator';
+import classNames from 'classnames';
 import './index.less';
 
 export const ACCESS_TOKEN_NAME = 'xDFcxiooPQxazdndDsdRSerWQPlincytLDCarcxVxv';
@@ -65,7 +66,7 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
         {isLoggedIn ? (
           <ShaRoutingProvider>
             <SidebarMenuProvider items={[]}>
-              <div>{children}</div>
+              <div className={classNames({ 'sha-storybook-authenticated-container-layout': layout })}>{children}</div>
             </SidebarMenuProvider>
           </ShaRoutingProvider>
         ) : (
