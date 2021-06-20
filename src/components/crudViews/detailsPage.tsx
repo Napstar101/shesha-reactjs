@@ -1,4 +1,4 @@
-import React, { FC, useEffect, ReactNode } from 'react';
+import React, { FC, useEffect, ReactNode, MutableRefObject } from 'react';
 import { Spin } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
@@ -49,7 +49,20 @@ export interface IDetailsPageProps {
    */
   headerControls?: ReactNode | ((model: any) => ReactNode);
 
+  /**
+   * Form path. If not passed, router.pathname will be used instead.
+   */
   formPath?: string;
+
+  /**
+   * ref object
+   */
+  pageRef?: MutableRefObject<any>;
+
+  /**
+   * A callback for when the data has been loaded
+   */
+  onDataLoaded?: (model: any) => void;
 }
 
 const DetailsPage: FC<IDetailsPageProps> = props => {
@@ -69,6 +82,17 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
 
   const model = serverData?.result;
   const { formItemLayout } = useUi();
+
+  useEffect(() => {
+    if (props?.onDataLoaded) {
+      props?.onDataLoaded(model);
+    }
+    if (props.pageRef) {
+      props.pageRef.current = model;
+    }
+  }, [loading]);
+
+  // console.log('props.ref: ', props);
 
   const { router } = useShaRouting();
 

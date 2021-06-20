@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider, UiProvider } from '../../providers';
@@ -25,16 +25,32 @@ const configurableFormProps = {
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
+enum MembershipStatus {
+  Active = 1,
+  Suspended = 2,
+  Cancelled = 3,
+}
+
 // Create a master template for mapping args to render the Button component
 const Template: Story<IDetailsPageProps> = args => {
-  const [] = useState('');
-  const { refetch } = useMembersGet({ lazy: true, queryParams: { id } });
+  const [data, setData] = useState<MemberResponse>();
 
-  useEffect(() => {
-    if (id) {
-      refetch();
+  const getStatusColor = () => {
+    switch (data) {
+      case MembershipStatus.Active:
+        return '#87d068';
+      case MembershipStatus.Suspended:
+        return 'orange';
+      case MembershipStatus.Cancelled:
+        return '#87d068';
+      default:
+        return '#2db7f5';
     }
-  }, [id]);
+  };
+
+  const onDataLoaded = (model: any) => {
+    setData(model);
+  };
 
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
@@ -46,6 +62,7 @@ const Template: Story<IDetailsPageProps> = args => {
             id={id}
             fetcher={useMembersGet}
             formPath="/members/details"
+            onDataLoaded={onDataLoaded}
             headerControls={(model: MemberResponse) => (
               <DetailsViewHeaderControls
                 items={[
@@ -54,7 +71,7 @@ const Template: Story<IDetailsPageProps> = args => {
                     value: model?.membershipStartDate ? moment(model?.membershipStartDate).format('lll') : null,
                     hide: !model?.membershipStartDate,
                   },
-                  { name: 'Status', value: <Tag color="#108ee9">Active</Tag> },
+                  { name: 'Status', value: <Tag color={getStatusColor()}>{data?.membershipStatus?.item}</Tag> },
                 ]}
               />
             )}

@@ -56,6 +56,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 }) => {
   const store = useDataTableStore();
   const { headers } = useAuthState();
+
   if (tableRef) tableRef.current = store;
 
   // useEffect(() => {

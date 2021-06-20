@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { MutableRefObject, ReactNode, useEffect } from 'react';
 import { MainLayout, ValidationErrors, ConfigurableForm, IndexToolbar } from '../';
 import { Form, Spin } from 'antd';
 import { NextPage } from 'next';
@@ -20,6 +20,21 @@ interface IEditPageProps {
    * Used to display the statuses of the entity as well as the reference numbers
    */
   headerControls?: ReactNode | ((model: any) => ReactNode);
+
+  /**
+   * Form path. If not passed, router.pathname will be used instead.
+   */
+  formPath?: string;
+
+  /**
+   * ref object
+   */
+  pageRef?: MutableRefObject<any>;
+
+  /**
+   * A callback for when the data has been loaded
+   */
+  onDataLoaded?: (model: any) => void;
 }
 
 const EditPage: NextPage<IEditPageProps> = props => {
@@ -38,6 +53,15 @@ const EditPage: NextPage<IEditPageProps> = props => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (props?.onDataLoaded) {
+      props?.onDataLoaded(model);
+    }
+    if (props.pageRef) {
+      props.pageRef.current = model;
+    }
+  }, [loading]);
 
   const renderTitle = () => {
     const { title } = props;
@@ -88,6 +112,7 @@ const EditPage: NextPage<IEditPageProps> = props => {
         showHeading={false}
         toolbar={<IndexToolbar items={toolbarItems} />}
         headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
+        noPadding
       >
         <ValidationErrors error={savingError?.data || fetchError?.data}></ValidationErrors>
         {model && (
@@ -96,7 +121,7 @@ const EditPage: NextPage<IEditPageProps> = props => {
             {...formItemLayout}
             form={form}
             onFinish={handleSubmit}
-            path={router.pathname}
+            path={props?.formPath || router.pathname}
             initialValues={model}
           />
         )}

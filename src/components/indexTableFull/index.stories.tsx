@@ -6,6 +6,7 @@ import DataTableProvider from '../../providers/dataTable';
 import { SearchOutlined } from '@ant-design/icons';
 import { IShaDataTableProps, ShaApplicationProvider } from '../..';
 import AuthContainer from '../authedContainer';
+import { useRef } from 'react';
 
 export default {
   title: 'Components/IndexTableFull',
@@ -30,16 +31,22 @@ const tableProps: IShaDataTableProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IShaDataTableProps> = args => (
-  <ShaApplicationProvider backendUrl={backendUrl}>
-    <AuthContainer>
-      <DataTableProvider tableId={args.id} title="Users" {...args}>
-        {/* <TableHack></TableHack> */}
-        <IndexTableFull {...tableProps} {...args} />
-      </DataTableProvider>
-    </AuthContainer>
-  </ShaApplicationProvider>
-);
+const Template: Story<IShaDataTableProps> = args => {
+  const tableRef = useRef();
+
+  console.log('tableRef', tableRef?.current);
+
+  return (
+    <ShaApplicationProvider backendUrl={backendUrl}>
+      <AuthContainer>
+        <DataTableProvider tableId={args.id} title="Users" {...args}>
+          {/* <TableHack></TableHack> */}
+          <IndexTableFull {...tableProps} {...args} tableRef={tableRef} />
+        </DataTableProvider>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  );
+};
 
 export const SimpleChildTable = Template.bind({});
 SimpleChildTable.args = { ...tableProps };

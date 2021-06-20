@@ -45,23 +45,24 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
   return (
     <>
       <div className="sha-storybook-authenticated-container">
-        {!layout && (
-          <Fragment>
-            <div className="sha-storybook-authenticated-action-btn">
-              {isLoggedIn ? (
-                <Button type="primary" onClick={logout} danger>
-                  Logout
-                </Button>
-              ) : (
-                <Button type="primary" onClick={showSignInModal}>
-                  Authorize
-                </Button>
-              )}
-            </div>
+        {!layout ||
+          (!isLoggedIn && (
+            <Fragment>
+              <div className="sha-storybook-authenticated-action-btn">
+                {isLoggedIn ? (
+                  <Button type="primary" onClick={logout} danger>
+                    Logout
+                  </Button>
+                ) : (
+                  <Button type="primary" onClick={showSignInModal}>
+                    Authorize
+                  </Button>
+                )}
+              </div>
 
-            <SectionSeparator sectionName="" />
-          </Fragment>
-        )}
+              <SectionSeparator sectionName="" />
+            </Fragment>
+          ))}
 
         {isLoggedIn ? (
           <ShaRoutingProvider>

@@ -1,12 +1,13 @@
 import React, { FC, ReactNode } from 'react';
 import CancelButton from '../cancelButton';
-import { useShaRouting } from '../../providers';
+import { useAuth, useShaRouting } from '../../providers';
 import './styles/index.less';
 
 export interface IControlItemData {
   readonly name: string;
   readonly value: ReactNode;
   readonly hide?: boolean;
+  readonly permissions?: string[];
 }
 
 interface IProps {
@@ -16,13 +17,21 @@ interface IProps {
 
 export const DetailsViewHeaderControls: FC<IProps> = ({ items, backUrl }) => {
   const { router } = useShaRouting();
+  const { anyOfPermissionsGranted } = useAuth();
 
   let i = 0;
+
   return (
     <div className="details-view-header-list">
       <span className="details-view-header-list-container">
         {items
-          .filter(({ hide }) => !hide)
+          .filter(({ hide, permissions }) => {
+            if (permissions?.length && !anyOfPermissionsGranted(permissions)) {
+              return false;
+            }
+
+            return !hide;
+          })
           .map(({ name, value }) => (
             <span key={i++} className="details-view-header-container">
               <span className="details-view-header-list-item">{name}</span>
