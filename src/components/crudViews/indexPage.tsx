@@ -15,7 +15,7 @@ interface ICreateModalProps {
   formPath: string;
 }
 
-interface IIndexPageProps {
+export interface IIndexPageProps {
   title: string;
   tableConfigId: string;
   detailsUrl?: (id: string) => string;

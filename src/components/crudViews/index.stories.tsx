@@ -3,17 +3,12 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider, UiProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import { GenericDetailsPage } from '../..';
-import { EditOutlined } from '@ant-design/icons';
-import { IDetailsPageProps } from './detailsPage';
-import { MemberResponse, useMembersGet } from '../../apis/members';
-import { useState } from 'react';
-import DetailsViewHeaderControls from '../detailsViewHeaderControls';
-import { Tag } from 'antd';
-import moment from 'moment';
+import { GenericDetailsPage, GenericIndexPage } from '../..';
+import { IIndexPageProps } from './indexPage';
+import { useAreaCreate } from '../../apis/area';
 
 export default {
-  title: 'Components/CrudViews/DetailsView',
+  title: 'Components/CrudViews/IndexView',
   component: GenericDetailsPage,
 } as Meta;
 
@@ -25,63 +20,19 @@ const configurableFormProps = {
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
-enum MembershipStatus {
-  Active = 1,
-  Suspended = 2,
-  Cancelled = 3,
-}
-
 // Create a master template for mapping args to render the Button component
-const Template: Story<IDetailsPageProps> = args => {
-  const [data, setData] = useState<MemberResponse>();
-
-  const getStatusColor = () => {
-    switch (data) {
-      case MembershipStatus.Active:
-        return '#87d068';
-      case MembershipStatus.Suspended:
-        return 'orange';
-      case MembershipStatus.Cancelled:
-        return '#87d068';
-      default:
-        return '#2db7f5';
-    }
-  };
-
-  const onDataLoaded = (model: any) => {
-    setData(model);
-  };
-
+const Template: Story<IIndexPageProps> = args => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>
         <UiProvider>
-          <GenericDetailsPage
-            {...args}
-            title={data => `Membership Details: ${data?.name} ${data?.surname}`}
-            id={id}
-            fetcher={useMembersGet}
-            formPath="/members/details"
-            onDataLoaded={onDataLoaded}
-            headerControls={(model: MemberResponse) => (
-              <DetailsViewHeaderControls
-                items={[
-                  {
-                    name: 'Date Registered',
-                    value: model?.membershipStartDate ? moment(model?.membershipStartDate).format('lll') : null,
-                    hide: !model?.membershipStartDate,
-                  },
-                  { name: 'Status', value: <Tag color={getStatusColor()}>{data?.membershipStatus?.item}</Tag> },
-                ]}
-              />
-            )}
-            toolbarItems={[
-              {
-                title: 'Edit',
-                icon: <EditOutlined />,
-                onClick: () => console.log('Clicked on configurable form'),
-              },
-            ]}
+          <GenericIndexPage
+            title="All Areas"
+            tableConfigId="GmaAreas_Index"
+            createModalProps={{
+              updater: useAreaCreate,
+              formPath: '/areas/create',
+            }}
           />
         </UiProvider>
       </AuthContainer>

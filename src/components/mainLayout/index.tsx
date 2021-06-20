@@ -83,10 +83,11 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
     return fixHeading && ((Boolean(title) && showHeading) || Boolean(heading));
   }, [heading, title, heading, showHeading]);
 
-  const renderReference = () => {
+  const renderPageControls = () => {
+    if (!headerControls && !reference) return null;
     return (
       <span style={{ minWidth: 'fit-content', margin: '0', marginRight: '1%' }}>
-        <NodeOrFuncRenderer>{headerControls || reference || 'Nothing to show'}</NodeOrFuncRenderer>
+        <NodeOrFuncRenderer>{headerControls || reference}</NodeOrFuncRenderer>
       </span>
     );
   };
@@ -133,7 +134,7 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
         <Content className={classNames({ collapsed })} style={contentStyle}>
           {breadcrumb}
           <div className={classNames('sha-layout-heading', headingClass)}>
-            {renderPageTitle()} {renderReference()}
+            {renderPageTitle()} {renderPageControls()}
           </div>
 
           <div

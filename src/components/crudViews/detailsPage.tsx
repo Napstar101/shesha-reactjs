@@ -92,8 +92,6 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
     }
   }, [loading]);
 
-  // console.log('props.ref: ', props);
-
   const { router } = useShaRouting();
 
   const renderTitle = () => {
@@ -112,7 +110,6 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
         title={renderTitle()}
         description=""
         showHeading={!!renderTitle() || !!props.headerControls}
-        // toolbar={<IndexToolbar items={props.toolbarItems || []} elementsRight="Something" />}
         toolbar={<IndexToolbar items={props.toolbarItems || []} />}
         headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
       >
