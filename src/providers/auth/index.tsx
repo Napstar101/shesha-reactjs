@@ -155,7 +155,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     };
 
     if (!hasAccessToken) {
-      if (router?.pathname === URL_LOGIN_PAGE || router?.pathname === unauthorizedRedirectUrl) {
+      if (router?.pathname === URL_LOGIN_PAGE || router?.pathname === unauthorizedRedirectUrl || whitelistUrls?.includes(router?.pathname)) {
         return redirect(router?.asPath); // Make sure we don't end up with /login?returnUrl=/login
       }
 
