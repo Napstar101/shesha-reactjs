@@ -47,6 +47,8 @@ interface IAuthProviderProps {
    * URL that that the user should be redirected to if they're not authorized. Default is /login
    */
   unauthorizedRedirectUrl?: string;
+
+  whitelistUrls?: string[];
 }
 
 const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
@@ -54,6 +56,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   tokenName = '',
   onSetRequestHeaders,
   unauthorizedRedirectUrl = URL_LOGIN_PAGE,
+  whitelistUrls
 }) => {
   const { router } = useShaRouting();
 
@@ -270,7 +273,10 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   }
 
   if (isNotAuthorized) {
-    if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
+    if (whitelistUrls?.includes(router?.pathname) || router?.pathname === unauthorizedRedirectUrl) {
+      // TODO: 
+    }
+    else if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
       // Not authorized
       // console.log('Not authorized router :>> ', router);
       router?.push(URL_LOGIN_PAGE);

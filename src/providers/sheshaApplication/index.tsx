@@ -21,6 +21,7 @@ export interface IShaApplicationProviderProps {
   accessTokenName?: string;
   router?: Router; // todo: replace with IRouter
   unauthorizedRedirectUrl?: string;
+  whitelistUrls?: string[];
 }
 
 const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>> = ({
@@ -29,6 +30,7 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
   accessTokenName,
   router,
   unauthorizedRedirectUrl,
+  whitelistUrls
 }) => {
   const [state, dispatch] = useReducer(appConfiguratorReducer, {
     ...SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
@@ -61,6 +63,7 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
               tokenName={accessTokenName || DEFAULT_ACCESS_TOKEN_NAME}
               onSetRequestHeaders={onSetRequestHeaders}
               unauthorizedRedirectUrl={unauthorizedRedirectUrl}
+              whitelistUrls={whitelistUrls}
             >
               <AuthorizationSettingsProvider>
                 <AppConfiguratorProvider>

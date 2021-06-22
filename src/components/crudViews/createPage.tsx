@@ -53,6 +53,8 @@ const CreateForm: NextPage<ICreatePageProps> = ({
   ];
 
   const handleSubmit = (values: any) => {
+    console.log('handleSubmit values: ', values);
+    
     const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
     save(preparedValues).then(() => {
       if (onSuccess) onSuccess(form);
