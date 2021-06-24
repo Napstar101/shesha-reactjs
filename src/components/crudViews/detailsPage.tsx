@@ -110,7 +110,7 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
         title={renderTitle()}
         description=""
         showHeading={!!renderTitle() || !!props.headerControls}
-        toolbar={<IndexToolbar items={props.toolbarItems || []} />}
+        toolbar={props?.toolbarItems?.filter(({hide}) => !hide)?.length ? <IndexToolbar items={props.toolbarItems} /> : null}
         headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
       >
         <ValidationErrors error={fetchError?.data}></ValidationErrors>
