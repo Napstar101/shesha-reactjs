@@ -57,6 +57,7 @@ export { default as FormComponent } from './formComponent';
 export { default as GlobalTableFilter } from './globalTableFilter';
 export { default as GlobalTableFilterBase } from './globalTableFilterBase';
 export { default as GooglePlacesAutocomplete } from './googlePlacesAutocomplete';
+export { default as Autocomplete } from './autocomplete';
 export { default as IdleTimerRenderer } from './idleTimerRenderer';
 export { default as ChildTable } from './childTable';
 export { default as IndexTable } from './indexTable';
