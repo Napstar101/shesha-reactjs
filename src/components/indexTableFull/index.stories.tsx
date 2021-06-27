@@ -38,7 +38,7 @@ const Template: Story<IShaDataTableProps> = args => {
 
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer>
+      <AuthContainer layout>
         <DataTableProvider tableId={args.id} title="Users" {...args}>
           {/* <TableHack></TableHack> */}
           <IndexTableFull {...tableProps} {...args} tableRef={tableRef} />
