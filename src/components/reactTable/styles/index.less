@@ -1,6 +1,6 @@
 .sha-react-table {
-  /* margin: 2rem; */
-  /* padding: 2rem; */
+  margin: 0 12px;
+  background: white;
   /* These styles are suggested for the table fill all available space in its containing element */
   display: block;
   /* These styles are required for a horizontaly scrollable table overflow */
@@ -71,6 +71,9 @@
 
     .th,
     .td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       margin: 0;
       padding: 0.5rem;
       border-right: 1px solid rgba(0, 0, 0, 0.05);
