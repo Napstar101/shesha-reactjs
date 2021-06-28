@@ -130,9 +130,11 @@ const ReactTable: FC<IReactTableProps> = ({
         ]);
       }
       useInstanceBeforeDimensions.push(({ headerGroups }) => {
-        // fix the parent group of the selection button to not be resizable
-        const selectionGroupHeader = headerGroups[0].headers[0];
-        selectionGroupHeader.canResize = false;
+        if (Array.isArray(headerGroups)) {
+          // fix the parent group of the selection button to not be resizable
+          const selectionGroupHeader = headerGroups[0]?.headers[0];
+          selectionGroupHeader.canResize = false;
+        }
       });
     }
   );
@@ -193,7 +195,7 @@ const ReactTable: FC<IReactTableProps> = ({
               })}
               className={classNames("tr tr-head")}
             >
-              {headerGroup.headers.map((column) => {
+              {headerGroup?.headers?.map((column) => {
                 return (
                   <div
                     // {...column.getHeaderProps(headerProps)}
