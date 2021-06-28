@@ -129,11 +129,13 @@ const ReactTable: FC<IReactTableProps> = ({
           ...columns,
         ]);
       }
-      useInstanceBeforeDimensions.push(({ headerGroups }) => {
+      useInstanceBeforeDimensions?.push(({ headerGroups }) => {
         if (Array.isArray(headerGroups)) {
           // fix the parent group of the selection button to not be resizable
           const selectionGroupHeader = headerGroups[0]?.headers[0];
-          selectionGroupHeader.canResize = false;
+          if (selectionGroupHeader) {
+            selectionGroupHeader.canResize = false;
+          }
         }
       });
     }
