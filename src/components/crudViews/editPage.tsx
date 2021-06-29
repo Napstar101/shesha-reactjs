@@ -10,7 +10,7 @@ import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
 import { IToolbarItem } from '../../interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
 
-interface IEditPageProps {
+export interface IEditPageProps {
   id?: string;
   markup?: FormMarkup;
   fetcher: (props: UseGenericGetProps) => IDataFetcher;
@@ -80,6 +80,7 @@ const EditPage: NextPage<IEditPageProps> = props => {
   };
 
   const { router } = useShaRouting();
+
   const toolbarItems: IToolbarItem[] = [
     {
       title: 'Save',
@@ -103,16 +104,17 @@ const EditPage: NextPage<IEditPageProps> = props => {
   };
 
   const { formItemLayout } = useUi();
+
   const model = serverData?.result;
 
   return (
     <Spin spinning={loading || saving} tip="Please wait...">
       <MainLayout
         title={renderTitle()}
-        showHeading={false}
+        description=""
+        showHeading={!!renderTitle() || !!props.headerControls}
         toolbar={<IndexToolbar items={toolbarItems} />}
         headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
-        noPadding
       >
         <ValidationErrors error={savingError?.data || fetchError?.data}></ValidationErrors>
         {model && (
