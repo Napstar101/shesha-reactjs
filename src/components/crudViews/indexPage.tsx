@@ -8,18 +8,59 @@ import { IToolbarItem } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
 import { useDataTableStore } from '../../providers';
 import { EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
 
 interface ICreateModalProps {
+  /**
+   * Title for the modal
+   */
+  title?: string;
+
+  /**
+   * A mutate function to update the entity
+   */
   updater: (props: any) => IDataMutator;
+
+  /**
+   * A function to prepare modal values
+   */
   prepareValues?: (values: any) => any;
+
+  /**
+   * The path for the form
+   */
   formPath: string;
+
+  /**
+   * Allows you to capture the form and have the modal remain open
+   */
+   keepModalOpenAfterSave?: boolean;
 }
 
 export interface IIndexPageProps {
+  /**
+   * Page title
+   */
   title: string;
+
+  /**
+   * The id for the table
+   */
   tableConfigId: string;
+
+  /**
+   * A callback for redirecting the user to the details page of the modal
+   */
   detailsUrl?: (id: string) => string;
+
+  /**
+   * A callback for redirecting the user to the edit page of the modal
+   */
   editUrl?: (id: string) => string;
+
+  /**
+   * The props for the modal used to add an entity
+   */
   createModalProps?: ICreateModalProps | null;
 }
 
@@ -29,6 +70,7 @@ const TableWithControls: FC<IIndexPageProps> = props => {
   const { refreshTable } = useDataTableStore();
 
   let toolbarItems: IToolbarItem[] = [];
+
   if (props.createModalProps)
     toolbarItems.push({
       title: 'Create New',
@@ -36,9 +78,18 @@ const TableWithControls: FC<IIndexPageProps> = props => {
       onClick: () => setCreateModalVisible(true),
     });
 
-  const handleEntityCreated = (form: FormInstance) => {
-    setCreateModalVisible(false);
+  const handleEntityCreated = (form: FormInstance, keepModalOpenAfterSave: boolean) => {
+    if (!keepModalOpenAfterSave) {
+      setCreateModalVisible(false);
+    } else {
+      notification.success({
+        message: 'Success',
+        description: 'Data has successfully been saved.'
+      })
+    }
+
     form.resetFields();
+
     refreshTable();
   };
 
@@ -61,13 +112,11 @@ const TableWithControls: FC<IIndexPageProps> = props => {
       {props.createModalProps && (
         <GenericCreateModal
           visible={createModalVisible}
+          title="Create"
           onCancel={handleCancel}
           onSuccess={handleEntityCreated}
-          updater={props.createModalProps.updater}
-          prepareValues={props.createModalProps.prepareValues}
-          title="Create"
-          formPath={props.createModalProps.formPath}
-        ></GenericCreateModal>
+          {...props.createModalProps}
+        />
       )}
     </MainLayout>
   );

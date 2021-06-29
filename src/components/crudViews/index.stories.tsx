@@ -21,7 +21,7 @@ const configurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IIndexPageProps> = args => {
+const Template: Story<IIndexPageProps> = () => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>
@@ -32,6 +32,8 @@ const Template: Story<IIndexPageProps> = args => {
             createModalProps={{
               updater: useAreaCreate,
               formPath: '/areas/create',
+              // keepModalOpenAfterSave: true,
+              title:"Add new area"
             }}
           />
         </UiProvider>
