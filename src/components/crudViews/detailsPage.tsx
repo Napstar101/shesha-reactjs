@@ -1,4 +1,4 @@
-import React, { FC, useEffect, ReactNode, MutableRefObject, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, ReactNode, MutableRefObject, forwardRef, useImperativeHandle } from 'react';
 import { Spin } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
