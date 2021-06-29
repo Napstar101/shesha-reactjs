@@ -1,7 +1,6 @@
 import React, { forwardRef, MutableRefObject, ReactNode, useEffect, useImperativeHandle } from 'react';
 import { MainLayout, ValidationErrors, ConfigurableForm, IndexToolbar } from '../';
 import { Form, Spin } from 'antd';
-import { NextPage } from 'next';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import { useUi } from '../../providers';
