@@ -4,20 +4,21 @@ import { Story } from '@storybook/react';
 import { ShaApplicationProvider, UiProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericDetailsPage } from '../..';
-import { EditOutlined } from '@ant-design/icons';
-import { IDetailsPageProps } from './detailsPage';
+import { EditOutlined, ReloadOutlined } from '@ant-design/icons';
+import { DetailsPageHandleRefType, IDetailsPageProps } from './detailsPage';
 import { MemberResponse, useMembersGet } from '../../apis/members';
 import { useState } from 'react';
 import DetailsViewHeaderControls from '../detailsViewHeaderControls';
 import { Tag } from 'antd';
 import moment from 'moment';
+import { createRef } from 'react';
 
 export default {
   title: 'Components/CrudViews/DetailsView',
   component: GenericDetailsPage,
 } as Meta;
 
-const id = '26f7507e-efa3-49eb-aa0c-775668f49370';
+const id = '6743d48e-d67f-48ab-a3a2-10a32d448e08';
 
 const configurableFormProps = {
   id,
@@ -34,6 +35,7 @@ enum MembershipStatus {
 // Create a master template for mapping args to render the Button component
 const Template: Story<IDetailsPageProps> = args => {
   const [data, setData] = useState<MemberResponse>();
+  const pageRef = createRef<DetailsPageHandleRefType>();
 
   const getStatusColor = () => {
     switch (data) {
@@ -48,6 +50,10 @@ const Template: Story<IDetailsPageProps> = args => {
     }
   };
 
+  const onRefresh = () => {
+    pageRef?.current?.refresh();
+  }
+
   const onDataLoaded = (model: any) => {
     setData(model);
   };
@@ -58,6 +64,7 @@ const Template: Story<IDetailsPageProps> = args => {
         <UiProvider>
           <GenericDetailsPage
             {...args}
+            ref={pageRef}
             title={data => `Membership Details: ${data?.name} ${data?.surname}`}
             id={id}
             fetcher={useMembersGet}
@@ -80,6 +87,11 @@ const Template: Story<IDetailsPageProps> = args => {
                 title: 'Edit',
                 icon: <EditOutlined />,
                 onClick: () => console.log('Clicked on configurable form'),
+              },
+              {
+                title: 'Reload',
+                icon: <ReloadOutlined />,
+                onClick: onRefresh,
               },
             ]}
           />

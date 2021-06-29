@@ -1,4 +1,4 @@
-import React, { MutableRefObject, ReactNode, useEffect } from 'react';
+import React, { forwardRef, MutableRefObject, ReactNode, useEffect, useImperativeHandle } from 'react';
 import { MainLayout, ValidationErrors, ConfigurableForm, IndexToolbar } from '../';
 import { Form, Spin } from 'antd';
 import { NextPage } from 'next';
@@ -9,6 +9,7 @@ import { FormMarkup } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
 import { IToolbarItem } from '../../interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
+import { CommonCrudHandles } from './interfaces';
 
 export interface IEditPageProps {
   id?: string;
@@ -37,22 +38,26 @@ export interface IEditPageProps {
   onDataLoaded?: (model: any) => void;
 }
 
-const EditPage: NextPage<IEditPageProps> = props => {
-  const { loading: loading, refetch: doFetch, error: fetchError, data: serverData } = props.fetcher({
+
+const EditPage = forwardRef<CommonCrudHandles, IEditPageProps>((props, forwardedRef) => {
+  useImperativeHandle(forwardedRef, () => ({
+    refresh() {
+      fetchData();
+    }
+  }));
+
+  const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props.fetcher({
     lazy: true,
     requestOptions: { headers: requestHeaders() },
+    queryParams: { id: props.id } 
   });
-
-  const fetchData = async () => {
-    await doFetch({ queryParams: { id: props.id } });
-  };
 
   const [form] = Form.useForm();
 
-  // fetch data on page load
+  // fetch data on page load or when the id changes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.id]);
 
   useEffect(() => {
     if (props?.onDataLoaded) {
@@ -130,6 +135,6 @@ const EditPage: NextPage<IEditPageProps> = props => {
       </MainLayout>
     </Spin>
   );
-};
+});
 
 export default EditPage;

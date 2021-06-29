@@ -1,4 +1,4 @@
-import React, { FC, useEffect, ReactNode, MutableRefObject } from 'react';
+import React, { FC, useEffect, ReactNode, MutableRefObject, forwardRef, useImperativeHandle } from 'react';
 import { Spin } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
@@ -7,6 +7,7 @@ import { useUi } from '../../providers';
 import { FormMarkup } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
+import { CommonCrudHandles } from './interfaces';
 
 export interface IDetailsPageProps {
   /**
@@ -65,22 +66,26 @@ export interface IDetailsPageProps {
   onDataLoaded?: (model: any) => void;
 }
 
-const DetailsPage: FC<IDetailsPageProps> = props => {
-  const { loading: loading, refetch: doFetch, error: fetchError, data: serverData } = props.fetcher({
+const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, forwardedRef) => {
+  useImperativeHandle(forwardedRef, () => ({
+    refresh() {
+      fetchData();
+    }
+  }));
+
+  const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props.fetcher({
     lazy: true,
     requestOptions: { headers: requestHeaders() },
+    queryParams: { id: props.id } 
   });
 
-  const fetchData = async () => {
-    await doFetch({ queryParams: { id: props.id } });
-  };
-
-  // fetch data on page load
+  // fetch data on page load or when the id changes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.id]);
 
   const model = serverData?.result;
+
   const { formItemLayout } = useUi();
 
   useEffect(() => {
@@ -129,6 +134,8 @@ const DetailsPage: FC<IDetailsPageProps> = props => {
       </MainLayout>
     </Spin>
   );
-};
+});
+
+export type DetailsPageHandleRefType = React.ElementRef<typeof DetailsPage>;
 
 export default DetailsPage;
