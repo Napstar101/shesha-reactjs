@@ -5,6 +5,7 @@ import Autocomplete, { IAutocompleteProps } from './';
 import { Form } from 'antd';
 import AuthContainer from '../authedContainer';
 import { ShaApplicationProvider } from '../../providers';
+import { GooglePlacesAutocomplete } from '..';
 
 export default {
   title: 'Components/Autocomplete',
@@ -40,6 +41,14 @@ const Template: Story<IAutocompleteProps> = args => (
         >
           <Form.Item label="Autocomplete">
             <Autocomplete {...args} />
+          </Form.Item>
+
+          <Form.Item label="Address" name="address">
+            <GooglePlacesAutocomplete
+              onChange={(payload) => {
+                console.log('GooglePlacesAutocomplete payload: ', payload);
+              }}
+            />
           </Form.Item>
         </Form>
       </div>
