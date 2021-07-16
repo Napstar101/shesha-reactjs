@@ -189,7 +189,7 @@ const ReactTable: FC<IReactTableProps> = ({
       }
     >
       <div className="sha-react-table">
-        <div {...getTableProps()} className="sha-table">
+        <table {...getTableProps()} className="sha-table">
           {headerGroups.map((headerGroup) => (
             <div
               {...headerGroup.getHeaderGroupProps({
@@ -262,7 +262,7 @@ const ReactTable: FC<IReactTableProps> = ({
               );
             })}
           </div>
-        </div>
+        </table>
       </div>
     </Spin>
   );

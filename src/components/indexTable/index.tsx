@@ -174,7 +174,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   // We are making sure that we only update the columns
   useEffect(() => {
-    const localPreparedColumns = columns.map<Column<any>>(columnItem => {
+    const localPreparedColumns = columns.filter(({ show }) => show).map<Column<any>>(columnItem => {
       return {
         ...columnItem,
         Header: columnItem.header,
@@ -377,19 +377,19 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     const deleteCallback = saveLocally
       ? () => deleteRowItem(itemId)
       : () => {
-          {
-            deleteItemHttp('', {
-              queryParams: { id: itemId },
+        {
+          deleteItemHttp('', {
+            queryParams: { id: itemId },
+          })
+            .then(() => {
+              cancelCreateOrEditRowData();
+              refreshTable();
             })
-              .then(() => {
-                cancelCreateOrEditRowData();
-                refreshTable();
-              })
-              .catch(() => {
-                console.log('Delete error');
-              });
-          }
-        };
+            .catch(() => {
+              console.log('Delete error');
+            });
+        }
+      };
 
     confirmAndProceed(
       'Are you sure you want to delete this item. Please note this action cannot be reversed?',
@@ -438,8 +438,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   const defaultSorting = tableSorting
     ? tableSorting.map<SortingRule<string>>(c => ({ id: c.id, desc: c.desc }))
     : columns
-        .filter(c => c.defaultSorting != null)
-        .map<SortingRule<string>>(c => ({ id: c.id, desc: c.defaultSorting === 1 }));
+      .filter(c => c.defaultSorting != null)
+      .map<SortingRule<string>>(c => ({ id: c.id, desc: c.defaultSorting === 1 }));
 
   const isLoading = isFetchingTableData || isCreating || isUpdating || isDeleting;
 
