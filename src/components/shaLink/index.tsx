@@ -25,7 +25,7 @@ export const ShaLink: FC<IShaLinkProps> = ({ linkTo, icon, displayName, children
   const childrenOrDisplayText = children || displayName;
 
   return (
-    <a className="sha-link" onClick={changeRoute} href={linkTo}>
+    <a className="sha-link" onClick={changeRoute}>
       {icon}
       {childrenOrDisplayText && <span> {childrenOrDisplayText}</span>}
     </a>

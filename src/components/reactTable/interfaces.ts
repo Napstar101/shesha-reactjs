@@ -16,6 +16,7 @@ export interface IColumnResizing {
 
 export interface IReactTableProps {
   /**
+   * @deprecated - use scrollBodyHorizontally
    * Whether the table should be scrollable or not
    */
   scroll?: boolean;
@@ -129,11 +130,6 @@ export interface IReactTableProps {
   selectedRowIndex?: number;
 
   /**
-   * The table height. Required if scroll is true
-   */
-  height?: number;
-
-  /**
    * Disables sorting for every column in the entire table.
    */
   disableSortBy?: boolean;
@@ -154,4 +150,11 @@ export interface IReactTableProps {
   // rememberColumnWidths?: boolean;
 
   tableId?: string;
+
+  scrollBodyHorizontally?: boolean; // If true, specify the height, else it will default to 250px
+
+  /**
+   * The table height. Required if scrollBodyHorizontally is true. Default value is 250px
+   */
+  height?: number;
 }

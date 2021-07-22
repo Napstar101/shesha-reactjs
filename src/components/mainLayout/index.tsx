@@ -6,10 +6,9 @@ import LayoutHeader from './header';
 import { MenuTheme } from 'antd/lib/menu/MenuContext';
 import IdleTimerRenderer from '../idleTimerRenderer';
 import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
-import /*HtmlHead,*/ { IHtmlHeadProps } from '../htmlHead';
+import { /*HtmlHead,*/ IHtmlHeadProps } from '../htmlHead';
 import LayoutHeading from '../layoutHeading';
-import ConfigurableSidebarMenu from '../configurableSidebarMenu';
-import { useSidebarMenuDefaults } from '../../providers/sidebarMenu';
+import SidebarMenu from '../sidebarMenu';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -35,7 +34,17 @@ interface IMainLayoutProps extends IHtmlHeadProps {
   showHeading?: boolean;
   noPadding?: boolean;
   toolbar?: ReactNodeOrFunc;
+
+  /**
+   * @deprecated
+   * Use headerControls instead
+   */
   reference?: string;
+
+  /**
+   * Used to display the statuses of the entity as well as the reference numbers
+   */
+  headerControls?: ReactNodeOrFunc;
 }
 
 const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
@@ -58,10 +67,10 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
   reference,
   noPadding = false,
   toolbar,
+  headerControls,
 }) => {
   const [collapsed, setCollapsed] = useState(true);
-  const sidebarDefaults = useSidebarMenuDefaults();
-  const sidebarDefaultItems = sidebarDefaults?.items || [];
+
   useEffect(() => {
     document.title = title || '';
   });
@@ -74,8 +83,13 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
     return fixHeading && ((Boolean(title) && showHeading) || Boolean(heading));
   }, [heading, title, heading, showHeading]);
 
-  const RenderReference = () => {
-    return reference && <h3 style={{ minWidth: 'fit-content', margin: '0', marginRight: '1%' }}>{reference}</h3>;
+  const renderPageControls = () => {
+    if (!headerControls && !reference) return null;
+    return (
+      <span style={{ minWidth: 'fit-content', margin: '0', marginRight: '1%' }}>
+        <NodeOrFuncRenderer>{headerControls || reference}</NodeOrFuncRenderer>
+      </span>
+    );
   };
 
   const headingClass = {
@@ -98,7 +112,6 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
 
   return (
     <Layout style={style}>
-      {/* <HtmlHead title={title || ''} description={description} ogImage={ogImage} url={url} /> */}
       <Sider
         collapsible
         collapsed={collapsed}
@@ -112,11 +125,7 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
         }}
         theme={theme}
       >
-        <ConfigurableSidebarMenu
-          theme={theme}
-          id="9362F11A-EA9C-4152-9855-9516123467F7"
-          defaultSettings={{ items: sidebarDefaultItems }}
-        />
+        <SidebarMenu theme={theme} />
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={headerStyle}>
@@ -125,7 +134,7 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
         <Content className={classNames({ collapsed })} style={contentStyle}>
           {breadcrumb}
           <div className={classNames('sha-layout-heading', headingClass)}>
-            {renderPageTitle()} {reference && RenderReference()}
+            {renderPageTitle()} {renderPageControls()}
           </div>
 
           <div

@@ -1,8 +1,7 @@
 import { createContext } from 'react';
 import { IFlagsSetters } from '../../interfaces/flagsSetters';
 import { IFlagsState } from '../../interfaces/flagsState';
-import { ISidebarMenuItem } from '../../interfaces/sidebar';
-import { IHeaderAction } from './models';
+import { IHeaderAction, ISidebarMenuItem } from './models';
 
 export type IFlagProgressFlags = 'fetchFileInfo' /* NEW_IN_PROGRESS_FLAG_GOES_HERE */;
 export type IFlagSucceededFlags = 'fetchFileInfo' /* NEW_SUCCEEDED_FLAG_GOES_HERE */;
@@ -11,6 +10,7 @@ export type IFlagActionedFlags = '__DEFAULT__' /* NEW_ACTIONED_FLAG_GOES_HERE */
 
 export interface ISidebarMenuStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
+  items: ISidebarMenuItem[];
   isExpanded: boolean;
   actions?: IHeaderAction[];
   accountDropdownListItems?: IHeaderAction[];
@@ -21,7 +21,6 @@ export interface ISidebarMenuActionsContext
   expand: () => void;
   collapse: () => void;
   isItemVisible: (item: ISidebarMenuItem) => boolean;
-  getItems: () => ISidebarMenuItem[];
   /* NEW_ACTION_ACTION_DECLARATION_GOES_HERE */
 }
 
@@ -30,18 +29,10 @@ export const SIDEBAR_MENU_CONTEXT_INITIAL_STATE: ISidebarMenuStateContext = {
   succeeded: {},
   error: {},
   actioned: {},
+  items: [],
   isExpanded: false,
 };
 
 export const SidebarMenuStateContext = createContext<ISidebarMenuStateContext>(SIDEBAR_MENU_CONTEXT_INITIAL_STATE);
 
 export const SidebarMenuActionsContext = createContext<ISidebarMenuActionsContext>(undefined);
-
-//#region temporary defaults provider
-
-export interface ISidebarMenuDefaultsContext {
-  items: ISidebarMenuItem[];
-}
-export const SidebarMenuDefaultsContext = createContext<ISidebarMenuDefaultsContext>({ items: [] });
-
-//#endregion

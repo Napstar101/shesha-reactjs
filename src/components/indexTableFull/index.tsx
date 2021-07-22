@@ -30,6 +30,7 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
   paginationPlacement = 'top',
   toolbarItems,
   toolbarExtra,
+  tableRef,
 }) => {
   const {
     isInProgress: { isFiltering, isSelectingColumns, exportToExcel: isExportingToExcel },
@@ -94,6 +95,7 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
           selectedRowIndex={selectedRowIndex}
           onSelectRow={onSelectRow}
           customTypeRenders={customTypeRenders}
+          tableRef={tableRef}
         />
 
         {paginationPlacement === 'bottom' && (

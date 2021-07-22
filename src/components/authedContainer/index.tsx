@@ -1,9 +1,9 @@
 import { Alert, Button, Form, Input, Modal } from 'antd';
 import React, { FC, Fragment } from 'react';
 import { useState } from 'react';
-import { ShaRoutingProvider, useAuth } from '../../providers';
-import { SidebarMenuProvider } from '../../providers/sidebarMenu';
+import { ShaRoutingProvider, SidebarMenuProvider, useAuth } from '../../providers';
 import SectionSeparator from '../sectionSeparator';
+import classNames from 'classnames';
 import './index.less';
 
 export const ACCESS_TOKEN_NAME = 'xDFcxiooPQxazdndDsdRSerWQPlincytLDCarcxVxv';
@@ -45,28 +45,29 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
   return (
     <>
       <div className="sha-storybook-authenticated-container">
-        {!layout && (
-          <Fragment>
-            <div className="sha-storybook-authenticated-action-btn">
-              {isLoggedIn ? (
-                <Button type="primary" onClick={logout} danger>
-                  Logout
-                </Button>
-              ) : (
-                <Button type="primary" onClick={showSignInModal}>
-                  Authorize
-                </Button>
-              )}
-            </div>
+        {!layout ||
+          (!isLoggedIn && (
+            <Fragment>
+              <div className="sha-storybook-authenticated-action-btn">
+                {isLoggedIn ? (
+                  <Button type="primary" onClick={logout} danger>
+                    Logout
+                  </Button>
+                ) : (
+                  <Button type="primary" onClick={showSignInModal}>
+                    Authorize
+                  </Button>
+                )}
+              </div>
 
-            <SectionSeparator sectionName="" />
-          </Fragment>
-        )}
+              <SectionSeparator sectionName="" />
+            </Fragment>
+          ))}
 
         {isLoggedIn ? (
           <ShaRoutingProvider>
             <SidebarMenuProvider items={[]}>
-              <div>{children}</div>
+              <div className={classNames({ 'sha-storybook-authenticated-container-layout': layout })}>{children}</div>
             </SidebarMenuProvider>
           </ShaRoutingProvider>
         ) : (

@@ -22,7 +22,7 @@ import ChildDataTable from '../../../components/formDesigner/components/childDat
 import Address from '../../../components/formDesigner/components/address/addressComponent';
 import Toolbar from '../../../components/formDesigner/components/dataTable/toolbar/toolbarComponent';
 import TableViewSelector from '../../../components/formDesigner/components/dataTable/tableViewSelector/tableViewSelectorComponent';
-import QueryBuilderComponent from '../../../components/formDesigner/components/queryBuilder/queryBuilderComponent';
+//import QueryBuilderComponent from '../../../components/formDesigner/components/queryBuilder/queryBuilderComponent';
 import TableContext from '../../../components/formDesigner/components/dataTable/tableContext/tableContextComponent';
 import DataTable from '../../../components/formDesigner/components/dataTable/table/tableComponent';
 import Pager from '../../../components/formDesigner/components/dataTable/pager/pagerComponent';
@@ -73,7 +73,6 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       KeyValueEditor,
       Notes,
       IconPicker,
-      QueryBuilderComponent,
     ],
   },
   {
