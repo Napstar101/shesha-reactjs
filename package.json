@@ -24,7 +24,7 @@
     "changelog:patch": "changelog -p && git add CHANGELOG.md && git commit -m \"updated CHANGELOG.md\" && npm version patch && git push origin",
     "generate-fetcher": "restful-react import --config restful-react.config.js",
     "postgenerate-fetcher": "prettier ./src/apis/*.tsx --write",
-    "storybook": "start-storybook -p 6006 STORYBOOK_BASE_URL=http://localhost:21021",
+    "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
