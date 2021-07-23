@@ -46,17 +46,18 @@ interface IModalProps {
 }
 
 const ModalForm: FC<IModalProps> = ({
-    visible, 
-    onCancel, 
-    onSuccess, 
-    updater, 
-    title, 
-    formPath, 
-    prepareValues,
-    keepModalOpenAfterSave
-  }) => {
+  visible,
+  onCancel,
+  onSuccess,
+  updater,
+  title,
+  formPath,
+  prepareValues,
+  keepModalOpenAfterSave,
+}) => {
   const { mutate: save, error, loading } = updater({});
-  const [localKeepOpen, setLocalKeepOpen] = useState(false)
+
+  const [localKeepOpen, setLocalKeepOpen] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -64,13 +65,13 @@ const ModalForm: FC<IModalProps> = ({
     setLocalKeepOpen(false);
 
     form.submit();
-  }
-  
+  };
+
   const onSubmitKeepOpen = () => {
     setLocalKeepOpen(true);
 
     form.submit();
-  }
+  };
 
   const onFinish = (values: any) => {
     const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
@@ -85,7 +86,7 @@ const ModalForm: FC<IModalProps> = ({
   };
 
   const { formItemLayout } = useUi();
-  
+
   return (
     <Modal
       width="60%"
@@ -96,20 +97,20 @@ const ModalForm: FC<IModalProps> = ({
       footer={
         <div>
           <Button onClick={handleCancel}>Cancel</Button>
-          <Button type="primary" onClick={onSubmit}>Save</Button>
-          {keepModalOpenAfterSave &&
-            <Button type="primary" onClick={onSubmitKeepOpen}>Save And Capture Another</Button>
-          }
+          <Button type="primary" onClick={onSubmit}>
+            Save
+          </Button>
+          {keepModalOpenAfterSave && (
+            <Button type="primary" onClick={onSubmitKeepOpen}>
+              Save And Capture Another
+            </Button>
+          )}
         </div>
       }
     >
       <Spin spinning={loading} tip="Please wait...">
         <ValidationErrors error={error?.data}></ValidationErrors>
-        <ConfigurableForm
-          mode="edit" {...formItemLayout}
-          form={form}
-          onFinish={onFinish}
-          path={formPath} />
+        <ConfigurableForm mode="edit" {...formItemLayout} form={form} onFinish={onFinish} path={formPath} />
       </Spin>
     </Modal>
   );

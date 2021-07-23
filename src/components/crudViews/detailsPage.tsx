@@ -4,7 +4,7 @@ import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
 import { MainLayout, IndexToolbar, ValidationErrors, ConfigurableForm } from '../';
 import { useUi } from '../../providers';
-import { FormMarkup } from '../../providers/form/models';
+import { FormMarkup, IFormActions } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
 import { CommonCrudHandles } from './interfaces';
@@ -56,6 +56,11 @@ export interface IDetailsPageProps {
   formPath?: string;
 
   /**
+   * Form actions. Page-specific actions which can be executed from the configurable form
+   */
+  formActions?: IFormActions;
+
+  /**
    * ref object
    */
   pageRef?: MutableRefObject<any>;
@@ -70,13 +75,13 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
   useImperativeHandle(forwardedRef, () => ({
     refresh() {
       fetchData();
-    }
+    },
   }));
 
   const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props.fetcher({
     lazy: true,
     requestOptions: { headers: requestHeaders() },
-    queryParams: { id: props.id } 
+    queryParams: { id: props.id },
   });
 
   // fetch data on page load or when the id changes
@@ -115,7 +120,9 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
         title={renderTitle()}
         description=""
         showHeading={!!renderTitle() || !!props.headerControls}
-        toolbar={props?.toolbarItems?.filter(({hide}) => !hide)?.length ? <IndexToolbar items={props.toolbarItems} /> : null}
+        toolbar={
+          props?.toolbarItems?.filter(({ hide }) => !hide)?.length ? <IndexToolbar items={props.toolbarItems} /> : null
+        }
         headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
       >
         <ValidationErrors error={fetchError?.data}></ValidationErrors>
@@ -127,6 +134,7 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
               path={props?.formPath || router.pathname}
               markup={props.markup}
               initialValues={model}
+              actions={props.formActions}
             />
             {typeof props?.footer === 'function' ? props?.footer(model) : props?.footer}
           </>

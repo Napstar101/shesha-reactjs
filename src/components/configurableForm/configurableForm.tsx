@@ -16,8 +16,8 @@ export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
     <ConfigurableComponent
       canConfigure={handleEditMode}
       onStartEdit={() => {
-        if (Boolean(id)) router.push(`/settings/forms/designer?id=${id}`);
-        else if (Boolean(path)) router.push(`/settings/forms/designer?path=${path}`);
+        if (Boolean(id)) router?.push(`/settings/forms/designer?id=${id}`);
+        else if (Boolean(path)) router?.push(`/settings/forms/designer?path=${path}`);
       }}
     >
       {(componentState, BlockOverlay) => (

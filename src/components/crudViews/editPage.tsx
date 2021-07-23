@@ -4,7 +4,7 @@ import { Form, Spin } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import { useUi } from '../../providers';
-import { FormMarkup } from '../../providers/form/models';
+import { FormMarkup, IFormActions } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
 import { IToolbarItem } from '../../interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
@@ -27,6 +27,11 @@ export interface IEditPageProps {
   formPath?: string;
 
   /**
+   * Form actions. Page-specific actions which can be executed from the configurable form
+   */
+  formActions?: IFormActions;
+
+  /**
    * ref object
    */
   pageRef?: MutableRefObject<any>;
@@ -37,18 +42,17 @@ export interface IEditPageProps {
   onDataLoaded?: (model: any) => void;
 }
 
-
 const EditPage = forwardRef<CommonCrudHandles, IEditPageProps>((props, forwardedRef) => {
   useImperativeHandle(forwardedRef, () => ({
     refresh() {
       fetchData();
-    }
+    },
   }));
 
   const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props.fetcher({
     lazy: true,
     requestOptions: { headers: requestHeaders() },
-    queryParams: { id: props.id } 
+    queryParams: { id: props.id },
   });
 
   const [form] = Form.useForm();
@@ -129,6 +133,7 @@ const EditPage = forwardRef<CommonCrudHandles, IEditPageProps>((props, forwarded
             onFinish={handleSubmit}
             path={props?.formPath || router.pathname}
             initialValues={model}
+            actions={props.formActions}
           />
         )}
       </MainLayout>

@@ -28,14 +28,19 @@ const Template: Story<IFormDesignerStoryProps> = args => (
 );
 
 export const ModalEdit = Template.bind({});
+
+const formPath = 'test/form-designer-components';
+
 const modalProps: IFormDesignerStoryProps = {
-  formPath: '/administration/user-management/createModal',
+  formPath,
 };
+
 ModalEdit.args = { ...modalProps };
 
 export const IndexPage = Template.bind({});
 const indexPageProps: IFormDesignerStoryProps = {
-  formPath: '/administration/user-management/indexPage',
+  formPath,
+  // formPath: '/administration/user-management/indexPage'
   //formPath: "D:\\Boxfusion\\shesha-react-new\\src\\components\\formDesigner\\components\\button\\settingsForm.json"
 };
 IndexPage.args = { ...indexPageProps };
