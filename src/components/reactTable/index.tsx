@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useRef } from "react";
-import classNames from "classnames";
+import React, { FC, useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import {
   useResizeColumns,
   useFlexLayout,
@@ -11,22 +11,22 @@ import {
   usePagination,
   Row,
   useTable,
-} from "react-table";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Empty, Spin } from "antd";
-import _ from "lodash";
-import { IReactTableProps } from "./interfaces";
+} from 'react-table';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Empty, Spin } from 'antd';
+import _ from 'lodash';
+import { IReactTableProps } from './interfaces';
 // const headerProps = (props, { column }) => getStyles(props, column.align);
 
 const cellProps: CellPropGetter<object> = (props, { cell }) => getStyles(props, cell.column.align);
 
-const getStyles = (props: Partial<TableHeaderProps | TableCellProps>, align = "left") => [
+const getStyles = (props: Partial<TableHeaderProps | TableCellProps>, align = 'left') => [
   props,
   {
     style: {
-      justifyContent: align === "right" ? "flex-end" : "flex-start",
-      alignItems: "flex-start",
-      display: "flex",
+      justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
+      alignItems: 'flex-start',
+      display: 'flex',
     },
   },
 ];
@@ -84,7 +84,7 @@ const ReactTable: FC<IReactTableProps> = ({
         sortBy: defaultSorting || [],
         hiddenColumns: columns
           .map((column: any) => {
-            if (column.isVisible === false) return column.accessor || column.id;
+            if ([column.isVisible, column.show].includes(false)) return column.accessor || column.id;
           })
           ?.filter(Boolean),
       },
@@ -102,10 +102,10 @@ const ReactTable: FC<IReactTableProps> = ({
     // useBlockLayout,
     ({ useInstanceBeforeDimensions, allColumns }) => {
       if (useMultiSelect) {
-        allColumns.push((columns) => [
+        allColumns.push(columns => [
           // Let's make a column for selection
           {
-            id: "selection",
+            id: 'selection',
             disableResizing: true,
             minWidth: 35,
             width: 35,
@@ -182,38 +182,38 @@ const ReactTable: FC<IReactTableProps> = ({
     <Spin
       spinning={loading}
       indicator={
-        <span style={{ display: "flex", alignItems: "center" }}>
-          <LoadingOutlined style={{ fontSize: 24 }} spin />{" "}
-          <span style={{ marginLeft: 12, fontSize: 14, color: "black" }}>loading...</span>
+        <span style={{ display: 'flex', alignItems: 'center' }}>
+          <LoadingOutlined style={{ fontSize: 24 }} spin />{' '}
+          <span style={{ marginLeft: 12, fontSize: 14, color: 'black' }}>loading...</span>
         </span>
       }
     >
       <div className="sha-react-table">
         <table {...getTableProps()} className="sha-table">
-          {headerGroups.map((headerGroup) => (
+          {headerGroups.map(headerGroup => (
             <div
               {...headerGroup.getHeaderGroupProps({
                 // style: { paddingRight: '15px' },
               })}
-              className={classNames("tr tr-head")}
+              className={classNames('tr tr-head')}
             >
-              {headerGroup?.headers?.map((column) => {
+              {headerGroup?.headers?.map(column => {
                 return (
                   <div
                     // {...column.getHeaderProps(headerProps)}
                     {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={classNames("th", {
-                      "sorted-asc": column.isSorted && column.isSortedDesc,
-                      "sorted-desc": column.isSorted && !column.isSortedDesc,
+                    className={classNames('th', {
+                      'sorted-asc': column.isSorted && column.isSortedDesc,
+                      'sorted-desc': column.isSorted && !column.isSortedDesc,
                     })}
                   >
-                    {column.render("Header")}
+                    {column.render('Header')}
 
                     {/* Use column.getResizerProps to hook up the events correctly */}
                     {column.canResize && (
                       <div
                         {...column.getResizerProps()}
-                        className={classNames("resizer", { isResizing: column.isResizing })}
+                        className={classNames('resizer', { isResizing: column.isResizing })}
                         onClick={onResizeClick}
                       />
                     )}
@@ -226,8 +226,8 @@ const ReactTable: FC<IReactTableProps> = ({
           <div
             className="tbody"
             style={{
-              height: scrollBodyHorizontally ? height || 250 : "unset",
-              overflowY: scrollBodyHorizontally ? "auto" : "unset",
+              height: scrollBodyHorizontally ? height || 250 : 'unset',
+              overflowY: scrollBodyHorizontally ? 'auto' : 'unset',
             }}
             {...getTableBodyProps()}
           >
@@ -246,15 +246,15 @@ const ReactTable: FC<IReactTableProps> = ({
                   onDoubleClick={() => handleDoubleClickRow(row)}
                   {...row.getRowProps()}
                   className={classNames(
-                    "tr tr-body",
-                    { "tr-odd": rowIndex % 2 === 0 },
-                    { "sha-tr-selected": selectedRowIndex === row?.index }
+                    'tr tr-body',
+                    { 'tr-odd': rowIndex % 2 === 0 },
+                    { 'sha-tr-selected': selectedRowIndex === row?.index }
                   )}
                 >
-                  {row.cells.map((cell) => {
+                  {row.cells.map(cell => {
                     return (
                       <div {...cell.getCellProps(cellProps)} className="td">
-                        {cell.render("Cell")}
+                        {cell.render('Cell')}
                       </div>
                     );
                   })}
