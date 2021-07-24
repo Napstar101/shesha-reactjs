@@ -17,7 +17,7 @@ import {
   IFormSettings,
   DEFAULT_FORM_SETTINGS,
 } from './contexts';
-import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings } from './models';
+import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, Store } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   componentAddAction,
@@ -58,7 +58,7 @@ import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
-import { IAsyncValidationError, IFormValidationErrors, IToolboxComponentGroup, } from '../../interfaces';
+import { IAsyncValidationError, IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 
 export interface IFormProviderProps {
   id?: string;
@@ -69,6 +69,7 @@ export interface IFormProviderProps {
   actions?: IFormActions;
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
+  initialValues?: Store;
 
   toolboxComponentGroups?: IToolboxComponentGroup[];
 }
@@ -83,6 +84,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   actions,
   context,
   formRef,
+  initialValues,
   toolboxComponentGroups,
 }) => {
   const formProps = getComponentsAndSettings(markup);
@@ -240,13 +242,19 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     const component = getComponentModel(payload.componentId);
     const toolboxComponent = getToolboxComponent(component.type);
     if (toolboxComponent.validateSettings) {
-      toolboxComponent.validateSettings(payload.settings)
+      toolboxComponent
+        .validateSettings(payload.settings)
         .then(() => {
           dispatch(componentUpdateSettingsValidationAction({ componentId: payload.componentId, validationErrors: [] }));
         })
         .catch(({ errors }) => {
           const validationErrors = errors as IAsyncValidationError[];
-          dispatch(componentUpdateSettingsValidationAction({ componentId: payload.componentId, validationErrors: validationErrors }));
+          dispatch(
+            componentUpdateSettingsValidationAction({
+              componentId: payload.componentId,
+              validationErrors: validationErrors,
+            })
+          );
         });
     }
   };
@@ -261,7 +269,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   });
 
   const saveForm = (): Promise<void> => {
-    if (!state.present.id) return new Promise(() => { });
+    if (!state.present.id) return new Promise(() => {});
 
     dispatch(saveRequestAction());
 
@@ -340,7 +348,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   const setValidationErrors = (payload: IFormValidationErrors) => {
     dispatch(setValidationErrorsAction(payload));
-  }
+  };
 
   const updateChildComponents = (payload: IUpdateChildComponentsPayload) => {
     dispatch(updateChildComponentsAction(payload));
@@ -369,7 +377,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
       let component = state.present.allComponents[currentId];
 
       let action = state.present.actions.find(a => a.owner == component?.parentId && a.name == name);
-      if (action) return action.body;
+      if (action) return () => action.body(initialValues);
 
       currentId = component?.parentId;
     } while (currentId);
