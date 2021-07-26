@@ -34,7 +34,6 @@ export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
             actions={actions}
             context={context}
             formRef={formRef}
-            initialValues={restProps.initialValues}
           >
             <ConfigurableFormRenderer {...restProps}></ConfigurableFormRenderer>
           </FormProvider>

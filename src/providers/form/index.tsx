@@ -17,7 +17,7 @@ import {
   IFormSettings,
   DEFAULT_FORM_SETTINGS,
 } from './contexts';
-import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, Store } from './models';
+import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   componentAddAction,
@@ -69,8 +69,6 @@ export interface IFormProviderProps {
   actions?: IFormActions;
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
-  initialValues?: Store;
-
   toolboxComponentGroups?: IToolboxComponentGroup[];
 }
 
@@ -84,7 +82,6 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   actions,
   context,
   formRef,
-  initialValues,
   toolboxComponentGroups,
 }) => {
   const formProps = getComponentsAndSettings(markup);
@@ -377,7 +374,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
       let component = state.present.allComponents[currentId];
 
       let action = state.present.actions.find(a => a.owner == component?.parentId && a.name == name);
-      if (action) return () => action.body(initialValues);
+      if (action) return (data, parameters) => action.body(data, parameters);
 
       currentId = component?.parentId;
     } while (currentId);

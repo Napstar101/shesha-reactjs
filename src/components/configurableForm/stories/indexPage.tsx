@@ -20,6 +20,13 @@ export const IndexPageTemplate: Story<IIndexPageTemplateProps> = props => (
             test: () => {
               console.log('test acton executed');
             },
+            customSubmit: (values, actionArgs) => {
+              console.log({
+                msg: 'customSubmit',
+                values,
+                actionArgs
+              });
+            }
           }}
         ></ConfigurableForm>
       </MainLayout>

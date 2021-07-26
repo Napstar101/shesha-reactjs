@@ -8,15 +8,18 @@ import FormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { useForm } from '../../../../providers/form';
 import { useClosestModal } from '../../../../providers/dynamicModal';
-import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useShaRouting } from '../../../../providers';
 import ShaIcon, { IconType } from '../../../shaIcon';
 
 type ButtonActionType = 'submit' | 'reset' | 'close' | 'custom';
 
+export type IActionParameters = [{ key: string, value: string }];
+
 export interface IButtonProps extends IConfigurableFormComponent {
   actionType: ButtonActionType;
   customAction?: string;
+  customActionParameters?: IActionParameters;
   icon?: string;
 
   buttonType?: ButtonType;
@@ -30,7 +33,7 @@ const TextField: IToolboxComponent<IButtonProps> = {
   name: 'Button',
   icon: <BorderOutlined />,
   factory: (model: IConfigurableFormComponent) => {
-    const { form, getAction } = useForm();
+    const { form, getAction, formData } = useForm();
     const { router } = useShaRouting();
     const closestModal = useClosestModal();
 
@@ -67,7 +70,14 @@ const TextField: IToolboxComponent<IButtonProps> = {
           const action = customProps.customAction ? getAction(model.id, customProps.customAction) : null;
 
           if (action) {
-            action();
+            let actionArgs = {};
+            for (let parameterIdx in customProps.customActionParameters) {
+              const parameter = customProps.customActionParameters[parameterIdx];
+              const value = evaluateValue(parameter.value, { data: formData });
+              actionArgs[parameter.key] = value;
+            }
+
+            action(formData, actionArgs);
           }
           break;
 

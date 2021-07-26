@@ -104,7 +104,7 @@ export interface IConfigurableFormBaseProps {
   path?: string;
 }
 
-export type FormAction = (values?: any) => void;
+export type FormAction = (values?: any, parameters?: any) => void;
 
 export interface IFormActionDesc {
   url: string;
@@ -122,5 +122,5 @@ export interface IFormAction {
   /** Action name */
   name: string;
   /** Action body */
-  body: (values?: any) => void;
+  body: (values?: any, parameters?: any) => void;
 }
