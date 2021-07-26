@@ -256,28 +256,40 @@ export const camelize = str => {
 };
 
 const DICTIONARY_ACCESSOR_REGEX = /(^[\s]*\{(?<key>[\w]+)\.(?<accessor>[^\}]+)\}[\s]*$)/;
+const NESTED_ACCESSOR_REGEX = /((?<key>[\w]+)\.(?<accessor>[^\}]+))/;
 
 export const evaluateValue = (value: string, dictionary: any) => {
+  return _evaluateValue(value, dictionary, true);
+}
+
+export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) => {
   if (!value) return value;
-
-  const match = value.match(DICTIONARY_ACCESSOR_REGEX);
-  if (!match) return value;
-
   if (!dictionary) return null;
 
-  const container = dictionary[match.groups.key];
-  if (!container) return null;
+  const match = value.match(isRoot ? DICTIONARY_ACCESSOR_REGEX : NESTED_ACCESSOR_REGEX);
+  if (!match) return value;
 
-  const evaluatedValue = container[match.groups.accessor];
+  // check nested properties
+  if (match.groups.accessor.match(NESTED_ACCESSOR_REGEX))
+  {
+    // try get value recursive
+    return _evaluateValue(match.groups.accessor, dictionary[match.groups.key], false);
+  } else 
+  {
+    const container = dictionary[match.groups.key];
+    if (!container) return null;
+    
+    const evaluatedValue = container[match.groups.accessor];
 
-  // console.log({
-  //   msg: 'regex parsed',
-  //   key: match.groups.key,
-  //   accessor: match.groups.accessor,
-  //   evaluatedValue,
-  // });
-
-  return evaluatedValue;
+    // console.log({
+    //   msg: 'regex parsed',
+    //   key: match.groups.key,
+    //   accessor: match.groups.accessor,
+    //   evaluatedValue,
+    // });
+  
+    return evaluatedValue;
+  }
 };
 
 const TAGS_REGEX = /{(?<key>[\w]+)\.(?<accessor>[^\}]+)\}/;
