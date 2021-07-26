@@ -8,14 +8,25 @@ import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
+type TextType = 'text' | 'password';
 export interface ITextFieldProps extends IConfigurableFormComponent {
   placeholder?: string;
   prefix?: string;
   suffix?: string;
   hideBorder?: boolean;
+  textType?: TextType;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
+
+const renderInput = (type: TextType) => {
+  switch (type) {
+    case 'password':
+      return Input.Password;
+    default:
+      return Input;
+  }
+};
 
 const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
@@ -29,10 +40,14 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       prefix: customProps.prefix,
       suffix: customProps.suffix,
       disabled: customProps.disabled,
+      bordered: !customProps.hideBorder,
     };
+
+    const InputComponentType = renderInput(customProps.textType);
+
     return (
       <FormItem model={model}>
-        <Input {...inputProps} bordered={!customProps.hideBorder}></Input>
+        <InputComponentType {...inputProps} />
       </FormItem>
     );
   },
