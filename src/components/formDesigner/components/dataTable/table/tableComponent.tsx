@@ -1,10 +1,9 @@
 import { FC, Fragment } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
+import { IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { TableOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
 import { useForm } from '../../../../../providers/form';
-import settingsFormJson from './settingsForm.json';
 import {
   IndexTable,
   CollapsibleSidebarContainer,
@@ -13,12 +12,12 @@ import {
 } from '../../../../../';
 import { useDataTableSelection } from '../../../../../providers/dataTableSelection';
 import React from 'react';
-import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
 import { useDataTableStore } from '../../../../../providers';
+import TableSettings from './tableComponent-settings';
 
-export interface ITableContextComponentProps extends IConfigurableFormComponent {}
+export interface ITableContextComponentProps extends IConfigurableFormComponent {
 
-const settingsForm = settingsFormJson as FormMarkup;
+}
 
 const TableComponent: IToolboxComponent<ITableContextComponentProps> = {
   type: 'datatable',
@@ -35,8 +34,17 @@ const TableComponent: IToolboxComponent<ITableContextComponentProps> = {
       items: [],
     };
   },
-  settingsFormMarkup: settingsForm,
-  validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  settingsFormFactory: ({ model, onSave, onCancel, onValuesChange, form }) => {
+    return (
+      <TableSettings
+        model={model as ITableContextComponentProps}
+        onSave={onSave}
+        onCancel={onCancel}
+        onValuesChange={onValuesChange}
+        form={form}
+      />
+    );
+  },
 };
 
 const NotConfiguredWarning: FC = () => {

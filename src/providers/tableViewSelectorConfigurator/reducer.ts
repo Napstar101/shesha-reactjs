@@ -4,7 +4,7 @@ import {
   IUpdateItemSettingsPayload,
   TOOLBAR_CONTEXT_INITIAL_STATE as TABLE_VIEWS_SELECTOR_CONTEXT_INITIAL_STATE,
 } from './contexts';
-import { ToolbarActionEnums as TableViewSelectorActionEnums } from './actions';
+import { ColumnsActionEnums as TableViewSelectorActionEnums } from './actions';
 import { ITableViewProps } from './models';
 import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
