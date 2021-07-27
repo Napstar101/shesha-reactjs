@@ -1,6 +1,11 @@
 import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
 import appConfiguratorReducer from './reducer';
-import { DEFAULT_ACCESS_TOKEN_NAME, SheshaApplicationActionsContext, SheshaApplicationStateContext, SHESHA_APPLICATION_CONTEXT_INITIAL_STATE } from './contexts';
+import {
+  DEFAULT_ACCESS_TOKEN_NAME,
+  SheshaApplicationActionsContext,
+  SheshaApplicationStateContext,
+  SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
+} from './contexts';
 import { RestfulProvider } from 'restful-react';
 import AuthProvider from '../auth';
 import AuthorizationSettingsProvider from '../authorizationSettings';
@@ -15,9 +20,18 @@ export interface IShaApplicationProviderProps {
   backendUrl: string;
   accessTokenName?: string;
   router?: Router; // todo: replace with IRouter
+  unauthorizedRedirectUrl?: string;
+  whitelistUrls?: string[];
 }
 
-const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>> = ({ children, backendUrl, accessTokenName, router }) => {
+const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>> = ({
+  children,
+  backendUrl,
+  accessTokenName,
+  router,
+  unauthorizedRedirectUrl,
+  whitelistUrls
+}) => {
   const [state, dispatch] = useReducer(appConfiguratorReducer, {
     ...SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
     backendUrl: backendUrl,
@@ -25,17 +39,17 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
 
   const onSetRequestHeaders = (headers: IRequestHeaders) => {
     dispatch(setHeadersAction(headers));
-  }
+  };
 
   const changeBackendUrl = (backendUrl: string) => {
     dispatch(setBackendUrlAction(backendUrl));
-  }  
+  };
 
   return (
     <SheshaApplicationStateContext.Provider value={state}>
       <SheshaApplicationActionsContext.Provider
         value={{
-          changeBackendUrl: changeBackendUrl
+          changeBackendUrl: changeBackendUrl,
         }}
       >
         <RestfulProvider
@@ -48,12 +62,12 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
             <AuthProvider
               tokenName={accessTokenName || DEFAULT_ACCESS_TOKEN_NAME}
               onSetRequestHeaders={onSetRequestHeaders}
+              unauthorizedRedirectUrl={unauthorizedRedirectUrl}
+              whitelistUrls={whitelistUrls}
             >
               <AuthorizationSettingsProvider>
                 <AppConfiguratorProvider>
-                  <DynamicModalProvider>
-                    {children}
-                  </DynamicModalProvider>
+                  <DynamicModalProvider>{children}</DynamicModalProvider>
                 </AppConfiguratorProvider>
               </AuthorizationSettingsProvider>
             </AuthProvider>

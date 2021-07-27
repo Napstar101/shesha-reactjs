@@ -34,8 +34,13 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
     const { formMode, visibleComponentIds } = useForm();
     const customProps = model as IHierarchicalChecklistProps;
 
+    const { formData } = useForm();
+    const ownerType = formData?.ownerType || customProps?.ownerType;
+    const checklistId = formData?.checklistId || customProps?.checklistId;
+    const ownerId = formData?.ownerId || customProps?.ownerId;
+
     const renderChecklist = () => {
-      if (!isUuid(customProps?.checklistId)) {
+      if (!isUuid(checklistId)) {
         return customProps?.dropdown ? (
           <Skeleton.Input style={{ width: 250 }} active={false} size="default" />
         ) : (
@@ -45,8 +50,9 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
 
       return (
         <HierarchicalCheckListWrapper
-          id={customProps?.checklistId}
-          ownerType={customProps?.ownerType}
+          id={checklistId}
+          ownerType={ownerType}
+          ownerId={ownerId}
           readOnly={customProps?.readOnly}
           dropdown={customProps?.dropdown}
           saveLocally={customProps?.saveLocally}

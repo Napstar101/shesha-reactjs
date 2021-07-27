@@ -105,7 +105,7 @@ export const Autocomplete: FC<IAutocompleteProps> = props => {
 
   const dofetchItems = (term: string) => {
     // if value is specified but displayText is not specified - fetch text from the server
-    if (props.dataSourceType === 'entitiesList' && props.value && !props.displayText) {
+    if (props.dataSourceType === 'entitiesList') {
       entityFetcher.refetch({
         queryParams: {
           term: term,
@@ -152,7 +152,7 @@ export const Autocomplete: FC<IAutocompleteProps> = props => {
     200
   );
 
-  const data = getFetchedItems();
+  const data = getFetchedItems() || [];
   const options =
     Boolean(autocompleteText) || Boolean(data)
       ? data?.map(d => (

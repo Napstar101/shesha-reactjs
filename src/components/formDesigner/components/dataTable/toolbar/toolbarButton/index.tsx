@@ -40,7 +40,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
               ? evaluateString(props.targetUrl, { selectedRow: props.selectedRow })
               : props.targetUrl;
 
-          router.push(preparedUrl);
+          router?.push(preparedUrl);
         } else console.warn('tagret Url is not specified');
         break;
       case 'dialogue':
@@ -62,12 +62,12 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   };
 
   return (
-    <Button 
-      title={props.tooltip} 
-      onClick={onButtonClick} 
-      type={props.buttonType} 
+    <Button
+      title={props.tooltip}
+      onClick={onButtonClick}
+      type={props.buttonType}
       danger={props.danger}
-      icon={props.icon ? <ShaIcon iconName={props.icon as IconType}/> : undefined}
+      icon={props.icon ? <ShaIcon iconName={props.icon as IconType} /> : undefined}
     >
       {props.name}
     </Button>

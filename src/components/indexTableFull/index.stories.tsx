@@ -2,11 +2,11 @@ import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ChildDataTable, { IndexTableFull } from './';
-import AuthContainer from '../authedContainer';
 import DataTableProvider from '../../providers/dataTable';
 import { SearchOutlined } from '@ant-design/icons';
-
-import { IShaDataTableProps } from '../..';
+import { IShaDataTableProps, ShaApplicationProvider } from '../..';
+import AuthContainer from '../authedContainer';
+import { useRef } from 'react';
 
 export default {
   title: 'Components/IndexTableFull',
@@ -18,20 +18,35 @@ const tableProps: IShaDataTableProps = {
   id: 'Persons_Index',
   header: 'List of People',
   crud: true,
-  actionColumns: [{ icon: <SearchOutlined />, onClick: id => {
-    alert('clicked row with Id = ' + id);
-  } }],
+  actionColumns: [
+    {
+      icon: <SearchOutlined />,
+      onClick: id => {
+        alert('clicked row with Id = ' + id);
+      },
+    },
+  ],
 };
 
+const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
+
 // Create a master template for mapping args to render the Button component
-const Template: Story<IShaDataTableProps> = args => (
-  <AuthContainer>
-    <DataTableProvider tableId={args.id} title="Users" {...args}>
-      {/* <TableHack></TableHack> */}
-      <IndexTableFull {...tableProps} {...args} />
-    </DataTableProvider>
-  </AuthContainer>
-);
+const Template: Story<IShaDataTableProps> = args => {
+  const tableRef = useRef();
+
+  console.log('tableRef', tableRef?.current);
+
+  return (
+    <ShaApplicationProvider backendUrl={backendUrl}>
+      <AuthContainer layout>
+        <DataTableProvider tableId={args.id} title="Users" {...args}>
+          {/* <TableHack></TableHack> */}
+          <IndexTableFull {...tableProps} {...args} tableRef={tableRef} />
+        </DataTableProvider>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  );
+};
 
 export const SimpleChildTable = Template.bind({});
 SimpleChildTable.args = { ...tableProps };

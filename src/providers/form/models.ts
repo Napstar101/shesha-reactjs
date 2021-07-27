@@ -59,7 +59,7 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   //#region runtime properties
   visibilityFunc?: (data: any) => boolean;
   /**/
-  settingsValidationErrors?: IAsyncValidationError[]; 
+  settingsValidationErrors?: IAsyncValidationError[];
   //#endregion
 }
 
@@ -104,7 +104,7 @@ export interface IConfigurableFormBaseProps {
   path?: string;
 }
 
-export type FormAction = () => void;
+export type FormAction = (values?: any, parameters?: any) => void;
 
 export interface IFormActionDesc {
   url: string;
@@ -122,5 +122,5 @@ export interface IFormAction {
   /** Action name */
   name: string;
   /** Action body */
-  body: () => void;
+  body: (values?: any, parameters?: any) => void;
 }

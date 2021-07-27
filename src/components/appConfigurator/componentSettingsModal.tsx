@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Modal } from 'antd';
 import { Form } from 'antd';
 import { ConfigurableForm } from '../configurableForm/configurableForm';
@@ -12,7 +12,7 @@ export interface IProps<TModel = any> {
   onSave: (model: TModel) => void;
 }
 
-export const ComponentSettingsModal = <TSettings extends any>({ title, markup, model, onCancel, onSave }: IProps<TSettings>) => {
+export const ComponentSettingsModal: FC<IProps> = ({ title, markup, model, onCancel, onSave }) => {
   const formLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 13 },

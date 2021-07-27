@@ -22,10 +22,10 @@ interface ISuggestion {
   description: string;
 }
 
-interface IGooglePlacesAutocompleteProps {
+export interface IGooglePlacesAutocompleteProps {
   isInvalid?: boolean;
   onGeocodeChange?: (payload?: IAddressAndCoords) => void;
-  onChange: (payload?: string) => void;
+  onChange?: (payload?: string) => void;
   value?: string;
   selectedValue?: string;
   help?: string;
@@ -58,10 +58,12 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
 
   const handleChange = (localAddress: string) => {
     try {
-      if (localAddress) {
-        onChange(localAddress);
-      } else {
-        onChange(null);
+      if (onChange) {
+        if (localAddress) {
+          onChange(localAddress);
+        } else {
+          onChange(null);
+        }
       }
     } catch (error) {
       console.log('PlacesAutocomplete._this.handleChange error address: ', localAddress);
@@ -70,7 +72,9 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
 
   const handleSelect = (localAddress: string) => {
     try {
-      onChange(localAddress);
+      if (onChange) {
+        onChange(localAddress);
+      }
       geocodeByAddress(localAddress)
         .then(results => getLatLng(results[0]))
         .then(({ lat, lng }) => {
@@ -117,7 +121,7 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
 
     const firstIndex = 0;
 
-    const lastIndex = _suggestions.length - 1;
+    const lastIndex = _suggestions?.length - 1;
 
     if (event.keyCode === KeyCodes.ArrowUp || event.keyCode === KeyCodes.ArrowDown) {
       let suggestion: ISuggestion;
@@ -161,11 +165,14 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
 
   const onBlur = () => setShowSuggestionsDropdownContainer(false);
 
+  console.log('PlacesAutocomplete ');
+
   return (
     <PlacesAutocomplete
-      value={prefixText ? `${prefixText} ${displayValue}` : displayValue}
+      value={(prefixText ? `${prefixText} ${displayValue}` : displayValue) ?? ''}
       onChange={handleChange}
       onSelect={handleSelect}
+      
       // className="location-search-input"
     >
       {({ getInputProps, suggestions, getSuggestionItemProps }) => (
@@ -173,7 +180,7 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
           {(() => {
             const inputProps = getInputProps({ placeholder });
 
-            if (suggestions.length === 0) {
+            if (suggestions?.length === 0) {
               setHighlightedPlaceId('');
               suggestionRef.current = [];
             } else {
@@ -184,11 +191,13 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
               <Input
                 value={displayValue}
                 onChange={e => {
-                  const {
-                    target: { value: realValue },
-                  } = e;
-                  handleChange(realValue);
-                  inputProps.onChange(e);
+                  if (inputProps.onChange) {
+                    const {
+                      target: { value: realValue },
+                    } = e;
+                    handleChange(realValue);
+                    inputProps.onChange(e);
+                  }
                 }}
                 allowClear
                 prefix={<SearchOutlined />}
@@ -218,7 +227,7 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
                   })}
                   key={localSuggestion?.placeId}
                 >
-                  <div className="suggestion">{localSuggestion.description}</div>
+                  <div className="suggestion">{localSuggestion?.description}</div>
                 </div>
               );
             })}

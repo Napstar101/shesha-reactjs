@@ -1,6 +1,7 @@
 import { IndexColumnDataType } from './../../providers/dataTable/interfaces';
-import { ReactNode } from 'react';
+import { MutableRefObject, ReactNode } from 'react';
 import { ICrudProps, IDataTableInstance } from '../../providers/dataTable/interfaces';
+import { DataTableFullInstance } from '../../providers/dataTable/contexts';
 
 export type TableActionColumnType = 'create' | 'read' | 'update' | 'delete' | 'cancel'; // CRUD and cancel
 
@@ -50,4 +51,5 @@ export interface IShaDataTableProps extends ICrudProps {
   customTypeRenders?: ITableCustomTypesRender[];
   customTypeEditors?: ITableCustomTypeEditor[];
   onRowsChanged?: (rows: object[]) => void;
+  tableRef?: MutableRefObject<Partial<DataTableFullInstance> | null>;
 }

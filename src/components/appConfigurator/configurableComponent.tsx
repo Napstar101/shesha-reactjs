@@ -1,26 +1,25 @@
 import React, { FC, useState } from 'react';
-import { useAppConfigurator/*, useConfigurableComponent*/ } from '../../providers';
+import { useAppConfigurator } from '../../providers';
 import { ComponentSettingsModal } from './componentSettingsModal';
 
-export interface IComponentStateProps<TSettings = any> {
+export interface IComponentStateProps {
   isSelected: boolean;
   isEditMode: boolean;
   wrapperClassName: string;
-  settings: TSettings;
 }
 
 export interface IOverlayProps {
   children?: React.ReactElement;
 }
 
-export type ConfigurableComponentChildrenFn<TSettings = any> = (
-  componentState: IComponentStateProps<TSettings>,
+export type ConfigurableComponentChildrenFn = (
+  componentState: IComponentStateProps,
   BlockOverlay: (props: IOverlayProps) => React.ReactElement
 ) => React.ReactNode | null;
 
-export interface IConfigurableComponentProps<TSettings = any> {
+export interface IConfigurableComponentProps {
   canConfigure?: boolean;
-  children: ConfigurableComponentChildrenFn<TSettings>;
+  children: ConfigurableComponentChildrenFn;
   onStartEdit?: () => void;
 }
 
@@ -39,12 +38,11 @@ const BlockOverlay: FC<IBlockOverlayProps> = ({ onClick, children, visible }) =>
   );
 };
 
-export const ConfigurableComponent = <TSettings extends any>({ 
+export const ConfigurableComponent: FC<IConfigurableComponentProps> = ({
   children,
   canConfigure = true,
   onStartEdit,
-}: IConfigurableComponentProps<TSettings>) => {
-
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { mode } = useAppConfigurator();
 
@@ -53,7 +51,7 @@ export const ConfigurableComponent = <TSettings extends any>({
   if (!canConfigure){
     return (
       <>
-        {children({ isEditMode: false, isSelected: false, wrapperClassName: '', settings: null }, () => (
+        {children({ isEditMode: false, isSelected: false, wrapperClassName: '' }, () => (
           <></>
         ))}
       </>
@@ -64,7 +62,6 @@ export const ConfigurableComponent = <TSettings extends any>({
     isEditMode: mode === 'edit',
     isSelected: false,
     wrapperClassName: 'sha-configurable-component',
-    settings: null
   };
 
   const onOverlayClick = () => {
@@ -76,7 +73,7 @@ export const ConfigurableComponent = <TSettings extends any>({
     setModalVisible(false);
   };
 
-  const onSave = (_model: TSettings) => {
+  const onSave = () => {
     setModalVisible(false);
   };
 
@@ -88,7 +85,7 @@ export const ConfigurableComponent = <TSettings extends any>({
         </BlockOverlay>
       ))}
       {modalVisible && (
-        <ComponentSettingsModal<TSettings>
+        <ComponentSettingsModal
           onCancel={onCancelClick}
           onSave={onSave}
           markup={null}

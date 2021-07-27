@@ -1,5 +1,15 @@
 import { ReactNode } from 'react';
 
+export interface ISidebarMenuItem {
+  key: string;
+  title: string;
+  icon?: ReactNode;
+  target?: string;
+  isHidden?: boolean;
+  childItems?: ISidebarMenuItem[];
+  requiredPermissions?: string[];
+}
+
 export interface IHeaderAction {
   /**
    * the icon to render

@@ -19,6 +19,8 @@ export interface IColumnProps {
 
 export interface IColumnsComponentProps extends IConfigurableFormComponent {
   columns: IColumnProps[];
+  gutterX?: number;
+  gutterY?: number;
 }
 
 const ColumnsComponent: IToolboxComponent<IColumnsComponentProps> = {
@@ -27,14 +29,14 @@ const ColumnsComponent: IToolboxComponent<IColumnsComponentProps> = {
   icon: <SplitCellsOutlined />,
   factory: model => {
     const { formMode, visibleComponentIds } = useForm();
-    const { columns } = model as IColumnsComponentProps;
+    const { columns, gutterX = 0, gutterY = 0 } = model as IColumnsComponentProps;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
     return (
-      <Row>
+      <Row gutter={[gutterX, gutterY]}>
         {columns &&
           columns.map((col, index) => (
             <Col
@@ -59,7 +61,10 @@ const ColumnsComponent: IToolboxComponent<IColumnsComponentProps> = {
         { id: uuid(), flex: 12, offset: 0, push: 0, pull: 0, components: [] },
         { id: uuid(), flex: 12, offset: 0, push: 0, pull: 0, components: [] },
       ],
+      gutterX: 12,
+      gutterY: 12
     };
+    
     return tabsModel;
   },
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange, form }) => {

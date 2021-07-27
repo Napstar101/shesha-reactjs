@@ -54,6 +54,7 @@ const CreateForm: NextPage<ICreatePageProps> = ({
 
   const handleSubmit = (values: any) => {
     const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
+
     save(preparedValues).then(() => {
       if (onSuccess) onSuccess(form);
       else router.back();
@@ -64,7 +65,7 @@ const CreateForm: NextPage<ICreatePageProps> = ({
   return (
     <MainLayout title={title} toolbar={actionButtonPosition === 'top' ? <IndexToolbar items={toolbarItems} /> : null}>
       <Spin spinning={saveInProgress} tip="Please wait...">
-        <ValidationErrors error={saveError?.data}></ValidationErrors>
+        <ValidationErrors error={saveError?.data} />
         <ConfigurableForm
           mode="edit"
           {...formItemLayout}
@@ -100,4 +101,5 @@ const CreateForm: NextPage<ICreatePageProps> = ({
     </MainLayout>
   );
 };
+
 export default CreateForm;

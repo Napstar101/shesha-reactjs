@@ -1,14 +1,13 @@
 import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
 import SidebarMenuReducer from './reducer';
-import { SidebarMenuActionsContext, SidebarMenuDefaultsContext, SidebarMenuStateContext, SIDEBAR_MENU_CONTEXT_INITIAL_STATE } from './contexts';
+import { SidebarMenuActionsContext, SidebarMenuStateContext, SIDEBAR_MENU_CONTEXT_INITIAL_STATE } from './contexts';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   toggleSidebarAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { useAuth } from '../auth';
-import { IHeaderAction } from './models';
-import { ISidebarMenuItem } from '../../interfaces/sidebar';
+import { IHeaderAction, ISidebarMenuItem } from './models';
 
 export interface ISidebarMenuProviderProps {
   items: ISidebarMenuItem[];
@@ -26,15 +25,14 @@ const SidebarMenuProvider: FC<PropsWithChildren<ISidebarMenuProviderProps>> = ({
 
   const [state, dispatch] = useReducer(SidebarMenuReducer, {
     ...SIDEBAR_MENU_CONTEXT_INITIAL_STATE,
+    items,
     actions,
     accountDropdownListItems,
   });
 
-  const getItems = () => items;
-
   const isItemVisible = (item: ISidebarMenuItem): boolean => {
     if (item.isHidden) return false;
-    if (item.permissions && !anyOfPermissionsGranted(item.permissions)) return false;
+    if (item.requiredPermissions && !anyOfPermissionsGranted(item.requiredPermissions)) return false;
 
     return item.childItems && item.childItems.length > 0
       ? item.childItems.some(childItem => isItemVisible(childItem))
@@ -59,7 +57,6 @@ const SidebarMenuProvider: FC<PropsWithChildren<ISidebarMenuProviderProps>> = ({
           collapse,
           expand,
           isItemVisible,
-          getItems,
           /* NEW_ACTION_GOES_HERE */
         }}
       >
@@ -69,54 +66,31 @@ const SidebarMenuProvider: FC<PropsWithChildren<ISidebarMenuProviderProps>> = ({
   );
 };
 
-function useSidebarMenuState(require: boolean) {
+function useSidebarMenuState() {
   const context = useContext(SidebarMenuStateContext);
 
-  if (context === undefined && require) {
+  if (context === undefined) {
     throw new Error('useSidebarMenuState must be used within a SidebarMenuProvider');
   }
 
   return context;
 }
 
-function useSidebarMenuActions(require: boolean) {
+function useSidebarMenuActions() {
   const context = useContext(SidebarMenuActionsContext);
 
-  if (context === undefined && require) {
+  if (context === undefined) {
     throw new Error('useSidebarMenuActions must be used within a SidebarMenuProvider');
   }
 
   return context;
 }
 
-function useSidebarMenu(require: boolean = true) {
-  return { ...useSidebarMenuState(require), ...useSidebarMenuActions(require) };
+function useSidebarMenu() {
+  return { ...useSidebarMenuState(), ...useSidebarMenuActions() };
 }
 
-//#region temporary defaults provider
-export interface ISidebarMenuDefaultsProviderProps {
-  items: ISidebarMenuItem[];
-}
-const SidebarMenuDefaultsProvider: FC<PropsWithChildren<ISidebarMenuDefaultsProviderProps>> = ({
-  items,
-  children
-}) => {
-  return (
-    <SidebarMenuDefaultsContext.Provider value={{
-      items: items
-    }}>
-      {children}
-    </SidebarMenuDefaultsContext.Provider>
-  ); 
-}
-
-function useSidebarMenuDefaults() {
-  const context = useContext(SidebarMenuDefaultsContext);
-
-  return context;
-}
-
-//#endregion
+export default SidebarMenuProvider;
 
 export {
   IHeaderAction,
@@ -125,7 +99,4 @@ export {
   useSidebarMenuState,
   useSidebarMenuActions,
   useSidebarMenu,
-  
-  SidebarMenuDefaultsProvider, // note: to be removed
-  useSidebarMenuDefaults, // note: to be removed
 };

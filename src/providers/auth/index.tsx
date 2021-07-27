@@ -31,11 +31,33 @@ import { useShaRouting } from '../shaRouting';
 import IRequestHeaders from '../../interfaces/requestHeaders';
 
 interface IAuthProviderProps {
+  /**
+   * What the token name should be
+   *
+   * TODO: The whole authorization and storing of token needs to be reviewed
+   */
   tokenName: string;
+
+  /**
+   * A callback for when the request headers are changed
+   */
   onSetRequestHeaders?: (headers: IRequestHeaders) => void;
+
+  /**
+   * URL that that the user should be redirected to if they're not authorized. Default is /login
+   */
+  unauthorizedRedirectUrl?: string;
+
+  whitelistUrls?: string[];
 }
 
-const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({ children, tokenName = '', onSetRequestHeaders }) => {
+const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
+  children,
+  tokenName = '',
+  onSetRequestHeaders,
+  unauthorizedRedirectUrl = URL_LOGIN_PAGE,
+  whitelistUrls
+}) => {
   const { router } = useShaRouting();
 
   const [state, dispatch] = useReducer(authReducer, AUTH_CONTEXT_INITIAL_STATE);
@@ -133,11 +155,11 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({ children, tok
     };
 
     if (!hasAccessToken) {
-      if (router?.pathname === URL_LOGIN_PAGE) {
+      if (router?.pathname === URL_LOGIN_PAGE || router?.pathname === unauthorizedRedirectUrl || whitelistUrls?.includes(router?.pathname)) {
         return redirect(router?.asPath); // Make sure we don't end up with /login?returnUrl=/login
       }
 
-      if (router?.pathname === URL_HOME_PAGE) return redirect(URL_LOGIN_PAGE);
+      if (router?.pathname === URL_HOME_PAGE) return redirect(unauthorizedRedirectUrl);
 
       return redirect(`${URL_LOGIN_PAGE}?returnUrl=${router?.pathname}`);
     } else fetchCurrentLoginInformation({ requestOptions: { headers: hasAccessToken } });
@@ -251,7 +273,10 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({ children, tok
   }
 
   if (isNotAuthorized) {
-    if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
+    if (whitelistUrls?.includes(router?.pathname) || router?.pathname === unauthorizedRedirectUrl) {
+      // TODO: 
+    }
+    else if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
       // Not authorized
       // console.log('Not authorized router :>> ', router);
       router?.push(URL_LOGIN_PAGE);

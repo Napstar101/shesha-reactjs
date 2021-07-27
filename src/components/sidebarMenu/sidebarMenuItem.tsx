@@ -1,10 +1,12 @@
 import { Menu } from 'antd';
 import React from 'react';
-import { ISidebarMenuItem } from '../../providers/sidebarMenu';
+import { useSidebarMenu } from '../../providers/sidebarMenu';
+import { ISidebarMenuItem } from '../../providers/sidebarMenu/models';
 import { ShaLink } from '../shaLink';
 import classNames from 'classnames';
-import ShaIcon, { IconType } from '../shaIcon';
-import { Router } from 'next/router';
+import { useShaRouting } from '../../providers/shaRouting';
+
+export interface ISidebarMenuItemProps extends ISidebarMenuItem {}
 
 const { SubMenu } = Menu;
 
@@ -14,22 +16,18 @@ export const getMenuItemKey = (title: string): string => {
     .replace(/\s+/g, '');
 };
 
-export interface IProps extends ISidebarMenuItem {
+export interface IProps extends ISidebarMenuItemProps {
   isSubMenu?: boolean;
-  isItemVisible: (item: ISidebarMenuItem) => boolean;
-  router?: Router;
 }
 
 // Note: Have to use function instead of react control. It's a known issue, you can only pass MenuItem or MenuGroup as Menu's children. See https://github.com/ant-design/ant-design/issues/4853
 export const renderSidebarMenuItem = (props: IProps) => {
-  const { id: key, name: title, icon, childItems, targetUrl: target, isSubMenu } = props;
-  const asPath = props.router?.asPath;
+  const { key, title, icon, childItems, target, isSubMenu } = props;
+  const { isItemVisible } = useSidebarMenu();
+  if (!isItemVisible(props)) return null;
 
-  if (!props.isItemVisible(props)) return null;
-
-  const renderedIcon = icon
-    ? <ShaIcon iconName={icon as IconType}></ShaIcon>
-    : null;
+  const { router } = useShaRouting();
+  const asPath = router?.asPath;
 
   if (childItems)
     return (
@@ -38,7 +36,7 @@ export const renderSidebarMenuItem = (props: IProps) => {
         className="is-ant-menu-item"
         title={
           <span>
-            {renderedIcon}
+            {icon}
             <span>
               <a className="nav-links-renderer" href={target}>
                 {title}
@@ -47,7 +45,7 @@ export const renderSidebarMenuItem = (props: IProps) => {
           </span>
         }
       >
-        {childItems.map(child => renderSidebarMenuItem({ ...child, isSubMenu: true, isItemVisible: props.isItemVisible, router: props.router }))}
+        {childItems.map(child => renderSidebarMenuItem({ ...child, isSubMenu: true }))}
       </SubMenu>
     );
 
@@ -64,7 +62,7 @@ export const renderSidebarMenuItem = (props: IProps) => {
       })}
       title={title}
     >
-      <ShaLink linkTo={target} icon={renderedIcon} displayName={title} />
+      <ShaLink linkTo={target} icon={icon} displayName={title} />
     </Menu.Item>
   );
 };

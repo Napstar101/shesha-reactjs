@@ -46,6 +46,7 @@ const ModalForm: FC<IModalProps> = ({
 
   const handleSubmit = values => {
     const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
+
     save(preparedValues).then(() => {
       onSuccess(form);
     });
