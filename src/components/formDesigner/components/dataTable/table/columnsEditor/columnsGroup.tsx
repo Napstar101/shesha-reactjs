@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Button } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
-import { IColumnGroup } from '../../../../../../providers/datatableColumnsConfigurator/models';
+import { IConfigurableColumnGroup } from '../../../../../../providers/datatableColumnsConfigurator/models';
 import { useColumnsConfigurator } from '../../../../../../providers/datatableColumnsConfigurator';
 import ToolbarItemsContainer from './columnsContainer';
 import DragHandle from './dragHandle';
 
-export interface IProps extends IColumnGroup {
+export interface IProps extends IConfigurableColumnGroup {
   index: number[];
 }
 
@@ -24,7 +24,7 @@ export const ColumnsGroup: FC<IProps> = props => {
     <div className={classes.reduce((a, c) => a + ' ' + c)}>
       <div className="sha-toolbar-group-header">
         <DragHandle id={props.id}></DragHandle>
-        <strong>{props.name}</strong>
+        <strong>{props.caption}</strong>
         <div className="sha-toolbar-item-controls">
           <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
         </div>

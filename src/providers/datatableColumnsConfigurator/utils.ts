@@ -1,4 +1,4 @@
-import { IColumnGroup, ColumnsItemProps } from './models';
+import { IConfigurableColumnGroup, ColumnsItemProps } from './models';
 
 export const getItemById = (items: ColumnsItemProps[], id: string): ColumnsItemProps => {
   const position = getItemPositionById(items, id);
@@ -31,7 +31,7 @@ export const getItemPositionById = (items: ColumnsItemProps[], id: string): IIte
         index,
       };
 
-    const childs = (item as IColumnGroup)?.childItems;
+    const childs = (item as IConfigurableColumnGroup)?.childItems;
     if (childs) {
       const itemPosition = getItemPositionById(childs, id);
       if (itemPosition) return itemPosition;

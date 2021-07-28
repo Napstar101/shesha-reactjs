@@ -62,7 +62,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useGet } from 'restful-react';
 
 interface IDataTableProviderProps extends ICrudProps {
-  tableId: string;
+  tableId?: string;
+  entityType?: string;
   title?: string;
   parentEntityId?: string;
   /**
@@ -97,10 +98,12 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   getDataPath,
   getExportToExcelPath,
   defaultFilter,
+  entityType,
 }) => {
   const [state, dispatch] = useThunkReducer(dataTableReducer, {
     ...DATA_TABLE_CONTEXT_INITIAL_STATE,
     tableId: tableId,
+    entityType: entityType,
     title: title,
     parentEntityId: parentEntityId,
   });
@@ -154,6 +157,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   const [userDTSettings, setUserDTSettings] = useLocalStorage<IDataTableUserConfig>(tableId, null);
 
+  // refresh table data on change of the `dataStamp` property
   useEffect(() => {
     if (dataStamp) {
       refreshTable();
@@ -162,9 +166,16 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   // fetch table data when config is ready or something changed (selected filter, changed current page etc.)
   useEffect(() => {
-    if (!isFetchingTableConfig && tableConfig && state?.columns?.length) {
-      tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
-      refreshTable();
+    if (tableId){
+      // fetch using table config
+      if (!isFetchingTableConfig && tableConfig && state?.columns?.length) {
+        tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
+        refreshTable();
+      }
+    } else
+    if (entityType) {
+      // fecth using entity type
+      
     }
   }, [
     state.appliedFiltersColumnIds,
@@ -248,6 +259,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     }
   };
 
+  // fetch table data when configuration is available
   useEffect(() => {
     if (!isFetchingTableConfig && tableConfig) {
       let dtSettings = userDTSettings;
@@ -273,8 +285,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   // fetch table config on first render
   useEffect(() => {
-    fetTableConfig();
-  }, []);
+    if (tableId)
+      fetTableConfig();
+  }, [tableId]);
 
   useEffect(() => {
     // Save the settings whenever the columns change

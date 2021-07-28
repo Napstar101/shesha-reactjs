@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Form, Button, FormInstance } from 'antd';
-import { ITableProps } from './models';
+import { ITableComponentProps } from './models';
 import { ColumnsEditorModal } from './columnsEditor/columnsEditorModal';
 import React from 'react';
 
 export interface IProps {
-  model: ITableProps;
-  onSave: (model: ITableProps) => void;
+  model: ITableComponentProps;
+  onSave: (model: ITableComponentProps) => void;
   onCancel: () => void;
-  onValuesChange?: (changedValues: any, values: ITableProps) => void;
+  onValuesChange?: (changedValues: any, values: ITableComponentProps) => void;
   form: FormInstance;
 }
 
@@ -20,6 +20,7 @@ function ColumnsSettings(props: IProps) {
     if (props.onValuesChange) props.onValuesChange(changedValues, values);
   };
 
+  console.log({ items: props.model.items });
   return (
     <>
       <Form form={form} onFinish={props.onSave} onValuesChange={onValuesChange}>

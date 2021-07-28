@@ -15,6 +15,7 @@ import DataTableProvider from '../../../../../providers/dataTable';
 
 export interface ITableContextComponentProps extends IConfigurableFormComponent {
   tableConfigId?: string;
+  entityType?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -43,18 +44,24 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
 
   useEffect(() => {
     setTable(<TableContextInner key={props.tableConfigId} {...props}></TableContextInner>);
-  }, [props.tableConfigId]);
+  }, [props.tableConfigId, props.entityType]);
 
   return table;
 };
 
 export const TableContextInner: FC<ITableContextComponentProps> = props => {
-  const { tableConfigId, label } = props;
+  const { tableConfigId, entityType, label } = props;
   const { formMode } = useForm();
   const [selectedRow, setSelectedRow] = useState(-1);
   const isDesignMode = formMode === 'designer';
 
-  if (!tableConfigId && isDesignMode)
+  console.log({
+    source: 'context',
+    isDesignMode,
+    tableConfigId,
+    entityType
+  });
+  if (isDesignMode && !tableConfigId && !entityType) 
     return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 
   const tableProps: IShaDataTableProps = {
@@ -73,7 +80,13 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
 
   return (
     <DataTableSelectionProvider>
-      <DataTableProvider tableId={tableProps.id} title={label} selectedRow={selectedRow} onSelectRow={onSelectRow}>
+      <DataTableProvider 
+        tableId={tableProps.id}
+        entityType={entityType}
+        title={label}
+        selectedRow={selectedRow}
+        onSelectRow={onSelectRow}
+      >
         <TableContextAccessor {...props}></TableContextAccessor>
       </DataTableProvider>
     </DataTableSelectionProvider>

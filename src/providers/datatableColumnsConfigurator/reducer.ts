@@ -5,7 +5,7 @@ import {
   TOOLBAR_CONTEXT_INITIAL_STATE,
 } from './contexts';
 import { ColumnsActionEnums } from './actions';
-import { IColumnsProps, IColumnGroup } from './models';
+import { IConfigurableColumnsProps, IConfigurableColumnGroup } from './models';
 import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
 import { getItemById, getItemPositionById } from './utils';
@@ -14,24 +14,25 @@ const toolbarReducer = handleActions<IColumnsConfiguratorStateContext, any>(
   {
     [ColumnsActionEnums.AddButton]: (state: IColumnsConfiguratorStateContext) => {
       const buttonsCount = state.items.filter(i => i.itemType === 'item').length;
-      const buttonProps: IColumnsProps = {
+      const columnProps: IConfigurableColumnsProps = {
         id: uuid(),
         itemType: 'item',
         sortOrder: state.items.length,
-        name: `Button ${buttonsCount + 1}`,
-        itemSubType: 'button',
+        caption: `Column ${buttonsCount + 1}`,
+        columnType: 'data',
+        isVisible: true,
       };
 
       const newItems = [...state.items];
-      const parent = state.selectedItemId ? (getItemById(newItems, state.selectedItemId) as IColumnGroup) : null;
+      const parent = state.selectedItemId ? (getItemById(newItems, state.selectedItemId) as IConfigurableColumnGroup) : null;
       if (parent && parent.itemType == 'group') {
-        parent.childItems = [...parent.childItems, buttonProps];
-      } else newItems.push(buttonProps);
+        parent.childItems = [...parent.childItems, columnProps];
+      } else newItems.push(columnProps);
 
       return {
         ...state,
         items: newItems,
-        selectedItemId: buttonProps.id,
+        selectedItemId: columnProps.id,
       };
     },
 
@@ -52,12 +53,13 @@ const toolbarReducer = handleActions<IColumnsConfiguratorStateContext, any>(
 
     [ColumnsActionEnums.AddGroup]: (state: IColumnsConfiguratorStateContext) => {
       const groupsCount = state.items.filter(i => i.itemType === 'group').length;
-      const groupProps: IColumnGroup = {
+      const groupProps: IConfigurableColumnGroup = {
         id: uuid(),
         itemType: 'group',
         sortOrder: state.items.length,
-        name: `Group ${groupsCount + 1}`,
+        caption: `Group ${groupsCount + 1}`,
         childItems: [],
+        isVisible: true,
       };
       return {
         ...state,

@@ -1,13 +1,13 @@
 import { FC } from 'react';
-import { IColumnsProps } from '../../../../../../providers/datatableColumnsConfigurator/models';
+import { IConfigurableColumnsProps } from '../../../../../../providers/datatableColumnsConfigurator/models';
 import { Button, Tooltip } from 'antd';
 import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
 import { useColumnsConfigurator } from '../../../../../../providers/datatableColumnsConfigurator';
 import DragHandle from './dragHandle';
 import React from 'react';
-import ShaIcon, { IconType } from '../../../../../shaIcon';
+//import ShaIcon, { IconType } from '../../../../../shaIcon';
 
-export interface IProps extends IColumnsProps {
+export interface IProps extends IConfigurableColumnsProps {
   index: number[];
 }
 
@@ -25,12 +25,12 @@ export const Column: FC<IProps> = props => {
     <div className={classes.reduce((a, c) => a + ' ' + c)}>
       <div className="sha-toolbar-item-header">
         <DragHandle id={props.id}></DragHandle>
-        { props.icon && <ShaIcon iconName={props.icon as IconType}/> }
+        {/* { props.icon && <ShaIcon iconName={props.icon as IconType}/> } */}
         <span className="sha-toolbar-item-name">
-          {props.name}
+          {props.caption}
         </span>
-        { props.tooltip && (
-          <Tooltip title={props.tooltip}>
+        { props.description && (
+          <Tooltip title={props.description}>
             <QuestionCircleOutlined className="sha-help-icon"/>
           </Tooltip>
         ) }

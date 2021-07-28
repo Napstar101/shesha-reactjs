@@ -57,6 +57,7 @@ export interface IDataTableStateContext
   title?: string;
   hiddenColumns?: string[];
   tableId?: string; // todo: move all table-specific properties to a separate sub-store
+  entityType?: string;
   columns?: ITableColumn[];
   // this one is a prop, not state
   storedFilters?: IStoredFilter[];

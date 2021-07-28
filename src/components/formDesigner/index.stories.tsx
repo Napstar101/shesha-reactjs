@@ -27,20 +27,14 @@ const Template: Story<IFormDesignerStoryProps> = args => (
   </ShaApplicationProvider>
 );
 
-export const ModalEdit = Template.bind({});
+export const TableContextProps = Template.bind({});
 
-const formPath = 'test/form-designer-components';
-
-const modalProps: IFormDesignerStoryProps = {
-  formPath,
+TableContextProps.args = {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs-columns-editor\\src\\components\\formDesigner\\components\\dataTable\\tableContext\\settingsForm.json'
 };
-
-ModalEdit.args = { ...modalProps };
 
 export const IndexPage = Template.bind({});
 const indexPageProps: IFormDesignerStoryProps = {
-  formPath,
-  // formPath: '/administration/user-management/indexPage'
-  //formPath: "D:\\Boxfusion\\shesha-react-new\\src\\components\\formDesigner\\components\\button\\settingsForm.json"
+  formPath: '/indexTable',
 };
 IndexPage.args = { ...indexPageProps };

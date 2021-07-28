@@ -2,14 +2,13 @@ import { FC } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { SlidersOutlined } from '@ant-design/icons';
-import { Alert, Button } from 'antd';
-import { useForm } from '../../../../../providers/form';
+import { Button } from 'antd';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
 import { useDataTableStore } from '../../../../../providers';
 
-export interface IPagerComponentProps extends IConfigurableFormComponent {}
+export interface IPagerComponentProps extends IConfigurableFormComponent { }
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -32,38 +31,24 @@ const SelectColumnsButtonComponent: IToolboxComponent<IPagerComponentProps> = {
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
 };
 
-const NotConfiguredWarning: FC = () => {
-  return <Alert className="sha-designer-warning" message="Pager is not configured properly" type="warning" />;
-};
+export const SelectColumnsButton: FC<IPagerComponentProps> = ({ }) => {
+  const {
+    isInProgress: { isSelectingColumns },
+    setIsInProgressFlag,
+  } = useDataTableStore();
 
-export const SelectColumnsButton: FC<IPagerComponentProps> = ({}) => {
-  const { formMode } = useForm();
-  const isDesignMode = formMode === 'designer';
+  const startTogglingColumnVisibility = () => setIsInProgressFlag({ isSelectingColumns: true, isFiltering: false });
 
-  try {
-    const {
-      tableId,
-      isInProgress: { isSelectingColumns },
-      setIsInProgressFlag,
-    } = useDataTableStore();
-
-    if (!tableId && isDesignMode) return <NotConfiguredWarning></NotConfiguredWarning>;
-
-    const startTogglingColumnVisibility = () => setIsInProgressFlag({ isSelectingColumns: true, isFiltering: false });
-
-    return (
-      <Button
-        type="link"
-        className="extra-btn column-visibility"
-        icon={<SlidersOutlined rotate={90} />}
-        disabled={!!isSelectingColumns}
-        onClick={startTogglingColumnVisibility}
-        size="small"
-      />
-    );
-  } catch (error) {
-    return <NotConfiguredWarning></NotConfiguredWarning>;
-  }
+  return (
+    <Button
+      type="link"
+      className="extra-btn column-visibility"
+      icon={<SlidersOutlined rotate={90} />}
+      disabled={!!isSelectingColumns}
+      onClick={startTogglingColumnVisibility}
+      size="small"
+    />
+  );
 };
 
 export default SelectColumnsButtonComponent;

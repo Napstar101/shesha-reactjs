@@ -25,7 +25,6 @@ export function dataTableReducerInner(
     case DataTableActionEnums.ApplyFilter:
     case DataTableActionEnums.ChangeQuickSearch:
     case DataTableActionEnums.ToggleSaveFilterModal:
-    case DataTableActionEnums.InitializeTableConfig:
     case DataTableActionEnums.ChangeSelectedRow:
     case DataTableActionEnums.ChangeSelectedStoredFilterIds:
     case DataTableActionEnums.SetCrudRowData:

@@ -18,11 +18,18 @@ export enum DataTableActionEnums {
   FetchTableConfig = 'FETCH_TABLE_CONFIG',
   FetchTableConfigSuccess = 'FETCH_TABLE_CONFIG_SUCCESS',
   FetchTableConfigError = 'FETCH_TABLE_CONFIG_ERROR',
+
   FetchTableData = 'FETCH_TABLE_DATA',
   FetchTableDataSuccess = 'FETCH_TABLE_DATA_SUCCESS',
   FetchTableDataError = 'FETCH_TABLE_DATA_ERROR',
+
+  ExportToExcelRequest = 'EXPORT_TO_EXCEL_REQUEST',
+  ExportToExcelSuccess = 'EXPORT_TO_EXCEL_SUCCESS',
+  ExportToExcelError = 'EXPORT_TO_EXCEL_ERROR',
+
   ChangePageSize = 'CHANGE_PAGE_SIZE',
   SetCurrentPage = 'SET_CURRENT_PAGE',
+  
   ToggleColumnVisibility = 'TOGGLE_COLUMN_VISIBILITY',
   ToggleColumnFilter = 'TOGGLE_COLUMN_FILTER',
   RemoveColumnFilter = 'REMOVE_COLUMN_FILTER',
@@ -32,10 +39,6 @@ export enum DataTableActionEnums {
   ChangeQuickSearch = 'CHANGE_QUICK_SEARCH',
   ToggleSaveFilterModal = 'TOGGLE_SAVE_FILTER_MODAL',
   ChangeSelectedRow = 'CHANGE_SELECTED_ROW',
-  ExportToExcelRequest = 'EXPORT_TO_EXCEL_REQUEST',
-  ExportToExcelSuccess = 'EXPORT_TO_EXCEL_SUCCESS',
-  ExportToExcelError = 'EXPORT_TO_EXCEL_ERROR',
-  InitializeTableConfig = 'INITIALIZE_TABLE_CONFIG',
   ChangeSelectedStoredFilterIds = 'CHANGE_SELECTED_STORED_FILTER_IDS',
   SetPredefinedFilters = 'REGISTER_STORED_FILTER',
   ChangeSelectedIds = 'CHANGE_SELECTED_IDS',
@@ -291,11 +294,6 @@ export interface IInitTableConfigProps {
   selectedPageSize?: number;
   currentPage?: number;
 }
-
-export const initializeTableConfigAction = createAction<IInitTableConfigProps, IInitTableConfigProps>(
-  DataTableActionEnums.InitializeTableConfig,
-  props => props
-);
 
 export const updateLocalTableDataAction = createAction<IDataTableStateContext>(
   DataTableActionEnums.UpdateLocalTableData,

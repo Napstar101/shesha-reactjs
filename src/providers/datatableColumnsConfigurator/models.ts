@@ -1,35 +1,83 @@
-import { ButtonType } from 'antd/lib/button';
-
 type ColumnsItemType = 'item' | 'group';
 
-export type ColumnsItemProps = IColumnsProps | IColumnGroup;
+export type ColumnsItemProps = IConfigurableColumnsProps | IConfigurableColumnGroup;
 
-type ColumnsItemSubType = 'button' | 'separator' | 'line';
 type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction';
 
-export interface IColumnsBase {
+/**
+ * Base properties of configurable column
+ */
+export interface IConfigurableColumnsBase {
   id: string;
-  name: string;
-  tooltip?: string;
+  caption: string;
   sortOrder: number;
   itemType: ColumnsItemType;
+  description?: string;
+  minWidth?: number;
+  maxWidth?: number;
+  isVisible: boolean;
 }
 
-export interface IColumnsProps extends IColumnsBase {
-  itemSubType: ColumnsItemSubType;
-  buttonAction?: ButtonActionType;
-  targetUrl?: string;
-  modalFormId?: string;
+export type DatatableColumnType = 'data' | 'action' | 'calculated';
+
+/**
+ * Configurable table column
+ */
+export interface IConfigurableColumnsProps extends IConfigurableColumnsBase {
+  columnType: DatatableColumnType;
+}
+
+/**
+ * Configurable data column (displays property of the model)
+ */
+export interface IDataColumnsProps extends IConfigurableColumnsProps {
+  propertyName: string;
+}
+
+/**
+ * Configurable action column
+ */
+export interface IConfigurableActionColumnsProps extends IConfigurableColumnsProps {
+  icon?: string;
+  /**
+   * type of action
+   */
+  action?: ButtonActionType;
+
+  //#region Action = 'navigate'
+  
+  /**
+   * target Url, applicable when action = 'navigate'
+   */
+  targetUrl?: string; 
+
+  //#endregion
+
+  //#region Action = 'dialogue'
+
+  /**
+   * Title of the modal
+   */
   modalTitle?: string;
+
+  /**
+   * Id of the modal form
+   */
+  modalFormId?: string;
+
+  //#endregion
+
+  //#region Action = 'executeFormAction'
+
+  /** Form action */
   formAction?: string;
 
-  icon?: string;
-  buttonType?: ButtonType;
-  danger?: boolean;
-  visibility?: string;
-  permissions?: string;
+  //#endregion  
 }
 
-export interface IColumnGroup extends IColumnsBase {
+/**
+ * Configurable columns group
+ */
+export interface IConfigurableColumnGroup extends IConfigurableColumnsBase {
   childItems?: ColumnsItemProps[];
 }

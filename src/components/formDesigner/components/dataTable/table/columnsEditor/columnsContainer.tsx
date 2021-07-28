@@ -2,26 +2,26 @@ import { FC } from 'react';
 import { Column } from './column';
 import { ColumnsGroup } from './columnsGroup';
 import { useColumnsConfigurator } from '../../../../../../providers/datatableColumnsConfigurator';
-import { IColumnGroup, IColumnsProps, IColumnsBase } from '../../../../../../providers/datatableColumnsConfigurator/models';
+import { IConfigurableColumnGroup, IConfigurableColumnsProps, IConfigurableColumnsBase } from '../../../../../../providers/datatableColumnsConfigurator/models';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
 import React from 'react';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];
-  items: IColumnsBase[];
+  items: IConfigurableColumnsBase[];
 }
 
 export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
   const { updateChildItems } = useColumnsConfigurator();
 
-  const renderItem = (item: IColumnsBase, index: number) => {
+  const renderItem = (item: IConfigurableColumnsBase, index: number) => {
     switch (item.itemType) {
       case 'item':
-        const itemProps = item as IColumnsProps;
+        const itemProps = item as IConfigurableColumnsProps;
         return <Column key={index} index={[...props.index, index]} {...itemProps}></Column>;
 
       case 'group':
-        const groupProps = item as IColumnGroup;
+        const groupProps = item as IConfigurableColumnGroup;
         return <ColumnsGroup key={index} {...groupProps} index={[...props.index, index]}></ColumnsGroup>;
     }
   };
@@ -30,7 +30,7 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
     const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     if (listChanged) {
-      const newChilds = newState.map<IColumnsBase>(item => item as IColumnsBase);
+      const newChilds = newState.map<IConfigurableColumnsBase>(item => item as IConfigurableColumnsBase);
       updateChildItems({ index: props.index, childs: newChilds });
     }
     return;

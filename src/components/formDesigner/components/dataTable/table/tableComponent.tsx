@@ -14,17 +14,14 @@ import { useDataTableSelection } from '../../../../../providers/dataTableSelecti
 import React from 'react';
 import { useDataTableStore } from '../../../../../providers';
 import TableSettings from './tableComponent-settings';
+import { ITableComponentProps } from './models';
 
-export interface ITableContextComponentProps extends IConfigurableFormComponent {
-
-}
-
-const TableComponent: IToolboxComponent<ITableContextComponentProps> = {
+const TableComponent: IToolboxComponent<ITableComponentProps> = {
   type: 'datatable',
   name: 'DataTable',
   icon: <TableOutlined />,
   factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as ITableContextComponentProps;
+    const customProps = model as ITableComponentProps;
 
     return <TableContext {...customProps}></TableContext>;
   },
@@ -37,7 +34,7 @@ const TableComponent: IToolboxComponent<ITableContextComponentProps> = {
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange, form }) => {
     return (
       <TableSettings
-        model={model as ITableContextComponentProps}
+        model={ model as ITableComponentProps }
         onSave={onSave}
         onCancel={onCancel}
         onValuesChange={onValuesChange}
@@ -51,13 +48,14 @@ const NotConfiguredWarning: FC = () => {
   return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 };
 
-export const TableContext: FC<ITableContextComponentProps> = ({}) => {
+export const TableContext: FC<ITableComponentProps> = ({}) => {
   const { formMode } = useForm();
   const isDesignMode = formMode === 'designer';
 
-  try {
+  //try {
     const {
       tableId,
+      entityType,
       isInProgress: { isFiltering, isSelectingColumns },
       setIsInProgressFlag,
     } = useDataTableStore();
@@ -81,7 +79,16 @@ export const TableContext: FC<ITableContextComponentProps> = ({}) => {
         ? setIsInProgressFlag({ isFiltering: true })
         : setIsInProgressFlag({ isFiltering: false, isSelectingColumns: false });
 
-    if (!tableId && isDesignMode) return <NotConfiguredWarning></NotConfiguredWarning>;
+    console.log(
+      {
+        isDesignMode,
+        tableId,
+        entityType
+      }
+    );
+
+    if (isDesignMode && !tableId && !entityType) 
+      return <NotConfiguredWarning></NotConfiguredWarning>;
 
     const onSelectRow = (index: number, row: any) => {
       setSelectedRow(index, row);
@@ -101,9 +108,9 @@ export const TableContext: FC<ITableContextComponentProps> = ({}) => {
         <IndexTable id={tableId} onSelectRow={onSelectRow} selectedRowIndex={selectedRow?.index} />
       </CollapsibleSidebarContainer>
     );
-  } catch (error) {
-    return <NotConfiguredWarning></NotConfiguredWarning>;
-  }
+  // } catch (error) {
+  //   return <NotConfiguredWarning></NotConfiguredWarning>;
+  // }
 };
 
 export default TableComponent;
