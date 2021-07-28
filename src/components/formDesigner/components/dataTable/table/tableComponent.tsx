@@ -23,7 +23,7 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
   factory: (model: IConfigurableFormComponent) => {
     const customProps = model as ITableComponentProps;
 
-    return <TableContext {...customProps}></TableContext>;
+    return <TableWrapper {...customProps}></TableWrapper>;
   },
   initModel: (model: IConfigurableFormComponent) => {
     return {
@@ -34,7 +34,7 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange, form }) => {
     return (
       <TableSettings
-        model={ model as ITableComponentProps }
+        model={model as ITableComponentProps}
         onSave={onSave}
         onCancel={onCancel}
         onValuesChange={onValuesChange}
@@ -48,69 +48,65 @@ const NotConfiguredWarning: FC = () => {
   return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 };
 
-export const TableContext: FC<ITableComponentProps> = ({}) => {
+export const TableWrapper: FC<ITableComponentProps> = ({ }) => {
   const { formMode } = useForm();
   const isDesignMode = formMode === 'designer';
 
-  //try {
-    const {
+  const {
+    tableId,
+    entityType,
+    isInProgress: { isFiltering, isSelectingColumns },
+    setIsInProgressFlag,
+  } = useDataTableStore();
+
+  const { selectedRow, setSelectedRow } = useDataTableSelection();
+
+  const renderSidebarContent = () => {
+    if (isFiltering) {
+      return <IndexTableColumnFilters />;
+    }
+
+    if (isSelectingColumns) {
+      return <IndexTableColumnVisibilityToggle />;
+    }
+
+    return <Fragment />;
+  };
+
+  const toggleFieldPropertiesSidebar = () =>
+    !isSelectingColumns && !isFiltering
+      ? setIsInProgressFlag({ isFiltering: true })
+      : setIsInProgressFlag({ isFiltering: false, isSelectingColumns: false });
+
+  console.log(
+    {
+      isDesignMode,
       tableId,
-      entityType,
-      isInProgress: { isFiltering, isSelectingColumns },
-      setIsInProgressFlag,
-    } = useDataTableStore();
+      entityType
+    }
+  );
 
-    const { selectedRow, setSelectedRow } = useDataTableSelection();
+  if (isDesignMode && !tableId && !entityType)
+    return <NotConfiguredWarning></NotConfiguredWarning>;
 
-    const renderSidebarContent = () => {
-      if (isFiltering) {
-        return <IndexTableColumnFilters />;
-      }
+  const onSelectRow = (index: number, row: any) => {
+    setSelectedRow(index, row);
+  };
 
-      if (isSelectingColumns) {
-        return <IndexTableColumnVisibilityToggle />;
-      }
-
-      return <Fragment />;
-    };
-
-    const toggleFieldPropertiesSidebar = () =>
-      !isSelectingColumns && !isFiltering
-        ? setIsInProgressFlag({ isFiltering: true })
-        : setIsInProgressFlag({ isFiltering: false, isSelectingColumns: false });
-
-    console.log(
-      {
-        isDesignMode,
-        tableId,
-        entityType
-      }
-    );
-
-    if (isDesignMode && !tableId && !entityType) 
-      return <NotConfiguredWarning></NotConfiguredWarning>;
-
-    const onSelectRow = (index: number, row: any) => {
-      setSelectedRow(index, row);
-    };
-
-    return (
-      <CollapsibleSidebarContainer
-        rightSidebarProps={{
-          open: isSelectingColumns || isFiltering,
-          onOpen: toggleFieldPropertiesSidebar,
-          onClose: toggleFieldPropertiesSidebar,
-          title: 'Table Columns',
-          content: renderSidebarContent,
-        }}
-        allowFullCollapse
-      >
-        <IndexTable id={tableId} onSelectRow={onSelectRow} selectedRowIndex={selectedRow?.index} />
-      </CollapsibleSidebarContainer>
-    );
-  // } catch (error) {
-  //   return <NotConfiguredWarning></NotConfiguredWarning>;
-  // }
+  return (
+    <CollapsibleSidebarContainer
+      rightSidebarProps={{
+        open: isSelectingColumns || isFiltering,
+        onOpen: toggleFieldPropertiesSidebar,
+        onClose: toggleFieldPropertiesSidebar,
+        title: 'Table Columns',
+        content: renderSidebarContent,
+      }}
+      allowFullCollapse
+    >
+      <IndexTable id={tableId} onSelectRow={onSelectRow} selectedRowIndex={selectedRow?.index} />
+    </CollapsibleSidebarContainer>
+  );
 };
 
 export default TableComponent;

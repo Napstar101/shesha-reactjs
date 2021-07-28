@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import { IFlagsSetters, IFlagsState } from '../../interfaces';
+import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models';
 import {
   ITableColumn,
   IStoredFilter,
@@ -90,6 +91,9 @@ export interface IDataTableStateContext
   selectedStoredFilters?: IStoredFilter[];
   selectedStoredFilterIds?: string[],
 
+  /** Configurable columns */
+  configurableColumns?: IConfigurableColumnsBase[],
+
   /**
    * The following fields will not be persisted in the redux store
    */
@@ -102,7 +106,6 @@ export interface IDataTableStateContext
   selectedIds?: string[];
   crudConfig?: ITableCrudConfig;
   newOrEditableRowData?: IEditableRowState;
-  idOfItemToDeleteOrUpdate?: string;
 }
 
 export interface IPublicDataTableActions {
@@ -140,6 +143,11 @@ export interface IDataTableActionsContext
   changeSelectedIds?: (selectedIds: string[]) => void;
   updateLocalTableData?: () => void;
   deleteRowItem?: (idOfItemToDeleteOrUpdate: string) => void;
+
+  /**
+   * Register columns in the table context. Is used for configurable tables
+   */
+  registerConfigurableColumns?: (ownerId: string, columns: IConfigurableColumnsBase[]) => void;
   /* NEW_ACTION_ACTION_DECLARATIO_GOES_HERE */
 }
 
@@ -175,6 +183,7 @@ export const DATA_TABLE_CONTEXT_INITIAL_STATE: IDataTableStateContext = {
   saveFilterModalVisible: false,
   selectedStoredFilters: [],
   selectedIds: [],
+  configurableColumns: [],
 };
 
 export interface DataTableFullInstance extends IDataTableStateContext, IDataTableActionsContext {}

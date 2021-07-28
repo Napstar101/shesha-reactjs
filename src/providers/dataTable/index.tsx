@@ -22,7 +22,6 @@ import {
   changePageSizeAction,
   toggleColumnVisibilityAction,
   toggleColumnFilterAction,
-  removeColumnFilterAction,
   changeFilterOptionAction,
   changeFilterAction,
   applyFilterAction,
@@ -359,14 +358,11 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   const toggleColumnFilter = (ids: string[]) => dispatch(toggleColumnFilterAction(ids));
 
-  const removeColumnFilter = (columnIdToRemoveFromFilter: string) =>
-    dispatch(removeColumnFilterAction(columnIdToRemoveFromFilter));
-
   const changeFilterOption = (filterColumnId: string, filterOptionValue: IndexColumnFilterOption) =>
-    dispatch(changeFilterOptionAction(filterColumnId, filterOptionValue));
+    dispatch(changeFilterOptionAction({ filterColumnId, filterOptionValue }));
 
   const changeFilter = (filterColumnId: string, filterValue: ColumnFilter) =>
-    dispatch(changeFilterAction(filterColumnId, filterValue));
+    dispatch(changeFilterAction({ filterColumnId, filterValue }));
 
   const applyFilters = () => {
     const { columns } = state;
@@ -509,7 +505,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           changePageSize,
           toggleColumnVisibility,
           toggleColumnFilter,
-          removeColumnFilter,
+          //removeColumnFilter,
           changeFilterOption,
           changeFilter,
           applyFilters,

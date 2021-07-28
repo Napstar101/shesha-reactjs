@@ -1,16 +1,13 @@
 import { createAction } from 'redux-actions';
 import { DataTableConfigDto } from '../../apis/dataTable';
-import { IDataTableStateContext, IDataTableUserConfig, DEFAULT_PAGE_SIZE_OPTIONS } from './contexts';
+import { IDataTableUserConfig } from './contexts';
 import {
   IndexColumnFilterOption,
   ITableColumn,
   ITableFilter,
   IStoredFilter,
-  ColumnFilter,
   ITableDataResponse,
   IGetDataPayload,
-  IndexColumnDataType,
-  SortDirection,
   IEditableRowState,
 } from './interfaces';
 
@@ -32,7 +29,6 @@ export enum DataTableActionEnums {
   
   ToggleColumnVisibility = 'TOGGLE_COLUMN_VISIBILITY',
   ToggleColumnFilter = 'TOGGLE_COLUMN_FILTER',
-  RemoveColumnFilter = 'REMOVE_COLUMN_FILTER',
   ChangeFilterOption = 'CHANGE_FILTER_OPTION',
   ChangeFilter = 'CHANGE_FILTER',
   ApplyFilter = 'APPLY_FILTER',
@@ -49,50 +45,39 @@ export enum DataTableActionEnums {
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
-export const fetchTableDataAction = createAction<IDataTableStateContext, IGetDataPayload>(
+export const fetchTableDataAction = createAction<IGetDataPayload, IGetDataPayload>(
   DataTableActionEnums.FetchTableData,
-  payload => ({
-    isFetchingTableData: true,
-    tableId: payload.id, // todo: isolate all table properties including id, for now we just pass the id from the fetch aciton
-    tableSorting: payload.sorting,
-    currentPage: payload.currentPage,
-    selectedPageSize: payload.pageSize,
-    parentEntityId: payload.parentEntityId,
-    selectedStoredFilterIds: payload.selectedStoredFilterIds ?? [],
-  })
+  p => p
 );
 
-export const fetchTableDataSuccessAction = createAction<IDataTableStateContext, ITableDataResponse>(
+export const fetchTableDataSuccessAction = createAction<ITableDataResponse, ITableDataResponse>(
   DataTableActionEnums.FetchTableDataSuccess,
-  tableData => {
-    const { rows, totalPages, totalRows, totalRowsBeforeFilter } = tableData;
-
-    return {
-      tableData: rows,
-      totalPages,
-      totalRows,
-      totalRowsBeforeFilter,
-      isFetchingTableData: false,
-    };
-  }
+  p => p
 );
 
-export const fetchTableDataErrorAction = createAction<IDataTableStateContext>(
+export const fetchTableDataErrorAction = createAction(
   DataTableActionEnums.FetchTableDataError,
-  () => ({
-    isFetchingTableData: false,
-    hasFetchTableDataError: true,
-  })
+  () => {}
 );
 
-export const fetchTableConfigAction = createAction<IDataTableStateContext, string>(
+export const fetchTableConfigAction = createAction<string, string>(
   DataTableActionEnums.FetchTableConfig,
-  tableId => ({ isFetchingTableData: true, tableId })
+  p => p
 );
 
-export const setCreateOrEditRowDataAction = createAction<IDataTableStateContext, IEditableRowState>(
+export const fetchTableConfigSuccessAction = createAction<IFetchTableConfigSuccessPayload, IFetchTableConfigSuccessPayload>(
+  DataTableActionEnums.FetchTableConfigSuccess,
+  p => p
+);
+
+export const fetchTableConfigErrorAction = createAction<boolean, boolean>(
+  DataTableActionEnums.FetchTableConfigError,
+  p => p
+);
+
+export const setCreateOrEditRowDataAction = createAction<IEditableRowState, IEditableRowState>(
   DataTableActionEnums.SetCrudRowData,
-  newOrEditableRowData => ({ newOrEditableRowData })
+  p => p
 );
 
 export interface IFetchTableConfigSuccessPayload {
@@ -101,164 +86,67 @@ export interface IFetchTableConfigSuccessPayload {
   userConfig: IDataTableUserConfig;
 }
 
-export const fetchTableConfigSuccessAction = createAction<IDataTableStateContext, IFetchTableConfigSuccessPayload>(
-  DataTableActionEnums.FetchTableConfigSuccess,
-  payload => {
-    const { tableConfig, userConfig } = payload;
-    const { columns, storedFilters, createUrl, updateUrl, deleteUrl, detailsUrl } = tableConfig;
-
-    const cols = columns.map<ITableColumn>(column => {
-      const userColumn = userConfig?.columns?.find(c => c.id === column.name);
-
-      const colVisibility =
-        userColumn?.show === null || userColumn?.show === undefined ? !column.isHiddenByDefault : userColumn?.show;
-
-      return {
-        id: column.name,
-        columnId: column.name,
-        caption: column.caption,
-        accessor: column.name,
-        propertyName: column.propertyName,
-        header: column.caption,
-        isVisible: column.isVisible,
-        isSortable: column.isSortable,
-        isHiddenByDefault: column.isHiddenByDefault,
-        isFilterable: column.isFilterable,
-        width: column.width,
-        entityReferenceTypeShortAlias: column.entityReferenceTypeShortAlias,
-        referenceListName: column.referenceListName,
-        referenceListNamespace: column.referenceListNamespace,
-        autocompleteUrl: column.autocompleteUrl,
-        allowInherited: column.allowInherited,
-        dataType: column.dataType as IndexColumnDataType,
-        defaultSorting: column.defaultSorting as SortDirection,
-
-        filterOption: userColumn?.filterOption,
-        filter: userColumn?.filter,
-        allowFilter: userConfig?.appliedFiltersColumnIds?.includes(column.name),
-        show: column.isVisible && colVisibility,
-      };
-    });
-
-    const mergedConfig: IDataTableStateContext = {
-      isFetchingTableData: false,
-      tableConfigLoaded: true,
-      columns: cols,
-      currentPage: userConfig?.currentPage || 1,
-      selectedPageSize: userConfig?.pageSize || DEFAULT_PAGE_SIZE_OPTIONS[1],
-      quickSearch: userConfig?.quickSearch,
-      tableFilter: userConfig?.tableFilter,
-      selectedStoredFilterIds: userConfig?.selectedStoredFilterIds || [],
-      storedFilters: storedFilters
-        ?.filter(f => Boolean(f.id))
-        .map<IStoredFilter>(filter => ({ ...filter })),
-      tableSorting: userConfig?.tableSorting,
-      appliedFiltersColumnIds: userConfig?.appliedFiltersColumnIds || [],
-      crudConfig: {
-        createUrl,
-        updateUrl,
-        deleteUrl,
-        detailsUrl,
-      },
-    };
-
-    return mergedConfig;
-  }
-);
-
-export const fetchTableConfigErrorAction = createAction<IDataTableStateContext, boolean>(
-  DataTableActionEnums.FetchTableConfigError,
-  hasFetchTableDataError => ({
-    isFetchingTableData: false,
-    hasFetchTableDataError,
-  })
-);
-
-export const changePageSizeAction = createAction<IDataTableStateContext, number>(
+export const changePageSizeAction = createAction<number, number>(
   DataTableActionEnums.ChangePageSize,
-  selectedPageSize => ({
-    selectedPageSize,
-  })
+  p => p
 );
 
-export const changeQuickSearchAction = createAction<IDataTableStateContext, string>(
+export const changeQuickSearchAction = createAction<string, string>(
   DataTableActionEnums.ChangeQuickSearch,
-  quickSearch => ({
-    quickSearch,
-  })
+  p => p
 );
 
-export const toggleSaveFilterModalAction = createAction<IDataTableStateContext, boolean>(
+export const toggleSaveFilterModalAction = createAction<boolean, boolean>(
   DataTableActionEnums.ToggleSaveFilterModal,
-  payload => ({
-    saveFilterModalVisible: payload,
-  })
+  p => p
 );
 
-export const setCurrentPageAction = createAction<IDataTableStateContext, number>(
+export const setCurrentPageAction = createAction<number, number>(
   DataTableActionEnums.SetCurrentPage,
-  currentPage => ({
-    currentPage,
-  })
+  p => p
 );
 
-export const toggleColumnVisibilityAction = createAction<IDataTableStateContext, string>(
+export const toggleColumnVisibilityAction = createAction<string, string>(
   DataTableActionEnums.ToggleColumnVisibility,
-  columnIdToToggle => ({
-    columnIdToToggle,
-  })
+  p => p
 );
 
-export const toggleColumnFilterAction = createAction<IDataTableStateContext, string[]>(
+export const toggleColumnFilterAction = createAction<string[], string[]>(
   DataTableActionEnums.ToggleColumnFilter,
-  appliedFiltersColumnIds => ({
-    appliedFiltersColumnIds,
-  })
+  p => p
 );
 
-export const removeColumnFilterAction = createAction<IDataTableStateContext, string>(
-  DataTableActionEnums.RemoveColumnFilter,
-  columnIdToRemoveFromFilter => ({
-    columnIdToRemoveFromFilter,
-  })
-);
-
-export const changeFilterOptionAction = createAction<IDataTableStateContext, string, IndexColumnFilterOption>(
+export interface IChangeFilterOptionPayload {
+  filterColumnId: string,
+  filterOptionValue: IndexColumnFilterOption,
+}
+export const changeFilterOptionAction = createAction<IChangeFilterOptionPayload, IChangeFilterOptionPayload>(
   DataTableActionEnums.ChangeFilterOption,
-  (filterColumnId, filterOptionValue) => ({
-    filterColumnId,
-    filterOptionValue,
-  })
+  p => p
 );
 
-export const changeFilterAction = createAction<IDataTableStateContext, string, ColumnFilter>(
+export interface IChangeFilterAction {
+  filterColumnId: string,
+  filterValue: any,
+}
+export const changeFilterAction = createAction<IChangeFilterAction, IChangeFilterAction>(
   DataTableActionEnums.ChangeFilter,
-  (filterColumnId, filterValue) => ({
-    filterColumnId,
-    filterValue,
-  })
+  p => p
 );
 
-export const applyFilterAction = createAction<IDataTableStateContext, ITableFilter[]>(
+export const applyFilterAction = createAction<ITableFilter[], ITableFilter[]>(
   DataTableActionEnums.ApplyFilter,
-  tableFilter => ({
-    tableFilter,
-    currentPage: 1,
-  })
+  p => p
 );
 
-export const changeSelectedRowAction = createAction<IDataTableStateContext, number>(
+export const changeSelectedRowAction = createAction<number, number>(
   DataTableActionEnums.ChangeSelectedRow,
-  selectedRow => ({
-    selectedRow,
-  })
+  p => p
 );
 
-export const changeSelectedStoredFilterIdsAction = createAction<IDataTableStateContext, string[]>(
+export const changeSelectedStoredFilterIdsAction = createAction<string[], string[]>(
   DataTableActionEnums.ChangeSelectedStoredFilterIds,
-  selectedStoredFilterIds => ({
-    selectedStoredFilterIds,
-  })
+  p => p
 );
 
 export const setPredefinedFiltersAction = createAction<IStoredFilter[], IStoredFilter[]>(
@@ -266,24 +154,19 @@ export const setPredefinedFiltersAction = createAction<IStoredFilter[], IStoredF
   p => p
 );
 
-export const changeSelectedIdsAction = createAction<IDataTableStateContext, string[]>(
+export const changeSelectedIdsAction = createAction<string[], string[]>(
   DataTableActionEnums.ChangeSelectedIds,
-  selectedIds => ({
-    selectedIds,
-  })
+  p => p
 );
 
-export const exportToExcelRequestAction = createAction<IDataTableStateContext>(
+export const exportToExcelRequestAction = createAction(
   DataTableActionEnums.ExportToExcelRequest,
-  () => ({})
 );
-export const exportToExcelSuccessAction = createAction<IDataTableStateContext>(
+export const exportToExcelSuccessAction = createAction(
   DataTableActionEnums.ExportToExcelSuccess,
-  () => ({})
 );
-export const exportToExcelErrorAction = createAction<IDataTableStateContext>(
+export const exportToExcelErrorAction = createAction(
   DataTableActionEnums.ExportToExcelError,
-  () => ({})
 );
 
 export interface IInitTableConfigProps {
@@ -295,14 +178,13 @@ export interface IInitTableConfigProps {
   currentPage?: number;
 }
 
-export const updateLocalTableDataAction = createAction<IDataTableStateContext>(
+export const updateLocalTableDataAction = createAction(
   DataTableActionEnums.UpdateLocalTableData,
-  () => ({})
 );
 
-export const deleteRowItemAction = createAction<IDataTableStateContext, string>(
+export const deleteRowItemAction = createAction<string, string>(
   DataTableActionEnums.DeleteRowItem,
-  idOfItemToDeleteOrUpdate => ({ idOfItemToDeleteOrUpdate })
+  p => p
 );
 
 /* NEW_ACTION_GOES_HERE */
