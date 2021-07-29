@@ -97,12 +97,6 @@ export interface IDataTableStateContext
   /**
    * The following fields will not be persisted in the redux store
    */
-  columnIdToRemoveFromFilter?: string;
-  filterColumnId?: string;
-  filterOptionValue?: IndexColumnFilterOption;
-  filterValue?: ColumnFilter;
-  quickFilterIdToToggle?: string;
-  filterName?: string;
   selectedIds?: string[];
   crudConfig?: ITableCrudConfig;
   newOrEditableRowData?: IEditableRowState;
