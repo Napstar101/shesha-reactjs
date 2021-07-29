@@ -38,6 +38,7 @@ import {
   setCreateOrEditRowDataAction,
   updateLocalTableDataAction,
   deleteRowItemAction,
+  registerConfigurableColumnsAction,
 } from './actions';
 import {
   ITableDataResponse,
@@ -59,6 +60,7 @@ import { useAuth } from '../auth';
 import { nanoid } from 'nanoid';
 import { useDebouncedCallback } from 'use-debounce';
 import { useGet } from 'restful-react';
+import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models';
 
 interface IDataTableProviderProps extends ICrudProps {
   tableId?: string;
@@ -492,6 +494,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     dispatch(deleteRowItemAction(idOfItemToDeleteOrUpdate));
   };
 
+  const registerConfigurableColumns = (ownerId: string, columns: IConfigurableColumnsBase[]) => {
+    dispatch(registerConfigurableColumnsAction({ ownerId, columns }));
+  }
+
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   return (
@@ -524,6 +530,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           cancelCreateOrEditRowData,
           updateLocalTableData,
           deleteRowItem,
+          registerConfigurableColumns,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

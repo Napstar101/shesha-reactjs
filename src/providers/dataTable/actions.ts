@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { DataTableConfigDto } from '../../apis/dataTable';
+import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models';
 import { IDataTableUserConfig } from './contexts';
 import {
   IndexColumnFilterOption,
@@ -41,6 +42,7 @@ export enum DataTableActionEnums {
   SetCrudRowData = 'SET_CRUD_ROW_DATA',
   UpdateLocalTableData = 'UPDATE_LOCAL_TABLE_DATA',
   DeleteRowItem = 'DELETE_ROW_ITEM',
+  RegisterConfigurableColumns = 'REGISTER_CONFIGURABLE_COLUMNS',
 
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
@@ -184,6 +186,16 @@ export const updateLocalTableDataAction = createAction(
 
 export const deleteRowItemAction = createAction<string, string>(
   DataTableActionEnums.DeleteRowItem,
+  p => p
+);
+
+export interface IRegisterConfigurableColumnsPayload {
+  /** owner of the columns list, not used now and may be removed later */
+  ownerId: string, 
+  columns: IConfigurableColumnsBase[],
+}
+export const registerConfigurableColumnsAction = createAction<IRegisterConfigurableColumnsPayload, IRegisterConfigurableColumnsPayload>(
+  DataTableActionEnums.RegisterConfigurableColumns,
   p => p
 );
 

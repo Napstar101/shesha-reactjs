@@ -55,12 +55,6 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
   const [selectedRow, setSelectedRow] = useState(-1);
   const isDesignMode = formMode === 'designer';
 
-  console.log({
-    source: 'context',
-    isDesignMode,
-    tableConfigId,
-    entityType
-  });
   if (isDesignMode && !tableConfigId && !entityType) 
     return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 

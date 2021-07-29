@@ -8,7 +8,6 @@ export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
   onSave: (values: TModel) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: TModel) => void;
-  form?: FormInstance;
 }
 
 export type ISettingsFormFactory = (props: ISettingsFormFactoryArgs) => ReactNode;

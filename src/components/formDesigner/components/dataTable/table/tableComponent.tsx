@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC, Fragment, useEffect } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
 import { IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { TableOutlined } from '@ant-design/icons';
@@ -31,14 +31,13 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
       items: [],
     };
   },
-  settingsFormFactory: ({ model, onSave, onCancel, onValuesChange, form }) => {
+  settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
     return (
       <TableSettings
         model={model as ITableComponentProps}
         onSave={onSave}
         onCancel={onCancel}
         onValuesChange={onValuesChange}
-        form={form}
       />
     );
   },
@@ -48,7 +47,7 @@ const NotConfiguredWarning: FC = () => {
   return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 };
 
-export const TableWrapper: FC<ITableComponentProps> = ({ }) => {
+export const TableWrapper: FC<ITableComponentProps> = ({ id, items }) => {
   const { formMode } = useForm();
   const isDesignMode = formMode === 'designer';
 
@@ -57,7 +56,14 @@ export const TableWrapper: FC<ITableComponentProps> = ({ }) => {
     entityType,
     isInProgress: { isFiltering, isSelectingColumns },
     setIsInProgressFlag,
+    registerConfigurableColumns,
   } = useDataTableStore();
+
+  useEffect(() => {
+    // register columns
+    console.log('register columns');
+    registerConfigurableColumns(id, items);
+  }, [items]);
 
   const { selectedRow, setSelectedRow } = useDataTableSelection();
 
@@ -73,18 +79,11 @@ export const TableWrapper: FC<ITableComponentProps> = ({ }) => {
     return <Fragment />;
   };
 
-  const toggleFieldPropertiesSidebar = () =>
+  const toggleFieldPropertiesSidebar = () => {
     !isSelectingColumns && !isFiltering
       ? setIsInProgressFlag({ isFiltering: true })
       : setIsInProgressFlag({ isFiltering: false, isSelectingColumns: false });
-
-  console.log(
-    {
-      isDesignMode,
-      tableId,
-      entityType
-    }
-  );
+  }
 
   if (isDesignMode && !tableId && !entityType)
     return <NotConfiguredWarning></NotConfiguredWarning>;

@@ -1,5 +1,5 @@
 import { DATA_TABLE_CONTEXT_INITIAL_STATE, DEFAULT_PAGE_SIZE_OPTIONS, IDataTableStateContext } from './contexts';
-import { DataTableActionEnums, IChangeFilterAction, IChangeFilterOptionPayload, IFetchTableConfigSuccessPayload } from './actions';
+import { DataTableActionEnums, IChangeFilterAction, IChangeFilterOptionPayload, IFetchTableConfigSuccessPayload, IRegisterConfigurableColumnsPayload } from './actions';
 import flagsReducer from '../utils/flagsReducer';
 import { IEditableRowState, IGetDataPayload, IndexColumnDataType, IStoredFilter, ITableColumn, ITableDataResponse, ITableFilter, SortDirection } from './interfaces';
 import { handleActions } from 'redux-actions';
@@ -303,7 +303,16 @@ const reducer = handleActions<IDataTableStateContext, any>({
       ...state,
       predefinedFilters: filters ? [...filters] : [],
     };
-  }
+  },
+
+  [DataTableActionEnums.RegisterConfigurableColumns]: (state: IDataTableStateContext, action: ReduxActions.Action<IRegisterConfigurableColumnsPayload>) => {
+    const { payload } = action;
+
+    return {
+      ...state,
+      configurableColumns: [...payload.columns],
+    };
+  },  
 }, DATA_TABLE_CONTEXT_INITIAL_STATE);
 
 export function dataTableReducer(

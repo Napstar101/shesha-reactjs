@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Button, FormInstance } from 'antd';
+import { Form, Button } from 'antd';
 import { ITableComponentProps } from './models';
 import { ColumnsEditorModal } from './columnsEditor/columnsEditorModal';
 import React from 'react';
@@ -9,18 +9,21 @@ export interface IProps {
   onSave: (model: ITableComponentProps) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: ITableComponentProps) => void;
-  form: FormInstance;
 }
 
 function ColumnsSettings(props: IProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [form] = Form.useForm(props.form);
+  const [form] = Form.useForm();
 
   const onValuesChange = (changedValues, values) => {
     if (props.onValuesChange) props.onValuesChange(changedValues, values);
   };
 
-  console.log({ items: props.model.items });
+  const formFields = form.getFieldsValue();
+  console.log({
+    items: props.model.items,
+    formFields
+  });
   return (
     <>
       <Form form={form} onFinish={props.onSave} onValuesChange={onValuesChange}>

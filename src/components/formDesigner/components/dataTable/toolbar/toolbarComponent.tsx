@@ -26,14 +26,13 @@ const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
       items: [],
     };
   },
-  settingsFormFactory: ({ model, onSave, onCancel, onValuesChange, form }) => {
+  settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
     return (
       <ToolbarSettings
         model={model as IToolbarProps}
         onSave={onSave}
         onCancel={onCancel}
         onValuesChange={onValuesChange}
-        form={form}
       />
     );
   },
