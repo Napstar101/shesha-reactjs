@@ -1,6 +1,5 @@
 import React, { FC, useRef, useEffect, useState, Fragment, MutableRefObject, useMemo } from 'react';
 import { Column, SortingRule, TableProps } from 'react-table';
-// import 'react-table/react-table.css';
 import {
   CheckOutlined,
   CloseOutlined,
@@ -10,7 +9,7 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { IGetDataPayload, ICrudProps } from '../../providers/dataTable/interfaces';
+import { ICrudProps } from '../../providers/dataTable/interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
 import { IColumnEditFieldProps, IShaDataTableProps, ITableActionColumns } from './interfaces';
 import { renderers } from './columnRenderers';
@@ -59,17 +58,10 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   if (tableRef) tableRef.current = store;
 
-  // useEffect(() => {
-  //   console.log('IndexTable headers: ', headers);
-  // }, [headers]);
-
-  // const reactTableRef = useRef(null);
   const { router } = useShaRouting();
   const {
-    tableId,
     tableData,
     isFetchingTableData,
-    fetchTableData,
     totalPages,
     columns,
     pageSizeOptions,
@@ -421,18 +413,17 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   };
   //#endregion
 
-  // @ts-ignore
-  const onFetchData = (state: any) => {
-    const payload: IGetDataPayload = {
-      id: tableId,
-      pageSize: state.pageSize,
-      currentPage: state.page + 1, // starts from 0
-      sorting: state.sorted,
-      quickSearch: state.quickSearch,
-      filter: tableFilter,
-    };
-    fetchTableData(payload);
-  };
+  // const onFetchData = (state: any) => {
+  //   const payload: IGetDataPayload = {
+  //     id: tableId,
+  //     pageSize: state.pageSize,
+  //     currentPage: state.page + 1, // starts from 0
+  //     sorting: state.sorted,
+  //     quickSearch: state.quickSearch,
+  //     filter: tableFilter,
+  //   };
+  //   fetchTableData(payload);
+  // };
 
   // sort
   const defaultSorting = tableSorting

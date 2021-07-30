@@ -39,6 +39,7 @@ import {
   updateLocalTableDataAction,
   deleteRowItemAction,
   registerConfigurableColumnsAction,
+  fetchColumnsSuccessSuccessAction,
 } from './actions';
 import {
   ITableDataResponse,
@@ -53,14 +54,15 @@ import {
 } from './interfaces';
 import { useMutate } from 'restful-react';
 import _ from 'lodash';
-// import { useDataTableGetConfiguration } from '../../apis/dataTable';
+import { GetColumnsInput, DataTableColumnDtoListAjaxResponse } from '../../apis/dataTable';
 import { IResult } from '../../interfaces/result';
-import { useApplicationConfiguration, useLocalStorage } from '../../hooks';
+import { useLocalStorage } from '../../hooks';
 import { useAuth } from '../auth';
 import { nanoid } from 'nanoid';
 import { useDebouncedCallback } from 'use-debounce';
 import { useGet } from 'restful-react';
-import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models';
+import { IConfigurableColumnsBase, IConfigurableColumnsProps, IDataColumnsProps } from '../datatableColumnsConfigurator/models';
+import { useSheshaApplication } from '../sheshaApplication';
 
 interface IDataTableProviderProps extends ICrudProps {
   tableId?: string;
@@ -108,8 +110,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     title: title,
     parentEntityId: parentEntityId,
   });
+
+  const { backendUrl } = useSheshaApplication();
   const tableIsReady = useRef(false);
-  const { config } = useApplicationConfiguration();
   const { headers } = useAuth();
 
   const { mutate: fetchDataTableDataInternal } = useMutate<IResult<ITableDataResponse>>({
@@ -165,18 +168,35 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     }
   }, [dataStamp]);
 
+  const configIsReady = tableId &&
+    !isFetchingTableConfig &&
+    state.tableConfigLoaded &&
+    tableConfig &&
+    (state?.columns?.length || 0) > 0;
+
   // fetch table data when config is ready or something changed (selected filter, changed current page etc.)
   useEffect(() => {
+    console.log({
+      tableId,
+      entityType,
+      configIsReady,
+      columnsAreReady,
+      tableIsReady: tableIsReady.current,
+      columns: state.columns,
+    });
+
     if (tableId){
       // fetch using table config
-      if (!isFetchingTableConfig && tableConfig && state?.columns?.length) {
+      if (configIsReady) {
         tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
         refreshTable();
       }
     } else
     if (entityType) {
+      console.log('refreshTable on changes');
       // fecth using entity type
-      
+      tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
+      refreshTable();
     }
   }, [
     state.appliedFiltersColumnIds,
@@ -186,49 +206,20 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     state.selectedPageSize,
     isFetchingTableConfig,
     state.tableConfigLoaded,
+    state.entityType,
+    state.columns,
   ]);
 
   const refreshTable = () => {
-    if (!isFetchingTableConfig && tableConfig && state?.columns?.length && tableIsReady.current === true) {
+    if ((configIsReady || columnsAreReady) && tableIsReady.current === true) {
       fetchTableData();
     }
-  };
-
-  const prepareTableData = (data: ITableDataResponse): ITableDataResponse => {
-    return data;
-    /*
-    if (!data.rows || data.rows.length === 0)
-      return data;
-
-    const complexDataTypes: IndexColumnDataType[] = ['refList', 'entityReference'];
-    const columnsToPrepare = state.columns.filter(col => complexDataTypes.includes(col.dataType));
-    if (columnsToPrepare.length === 0)
-      return data;
-
-    const preparedRows = data.rows.map(row => {
-      let preparedRow = { ...row };
-      columnsToPrepare.forEach(col => {
-        if (preparedRow[col.id]) {
-          try {
-            preparedRow[col.id] = JSON.parse(preparedRow[col.id]);
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      });
-      return preparedRow;
-    });
-    return {
-      ...data,
-      rows: preparedRows
-    };
-    */
   };
 
   const debouncedFetch = useDebouncedCallback(
     (payload: any) => {
       fetchDataTableData(payload)
-        .then(data => dispatch(fetchTableDataSuccessAction(prepareTableData(data.result))))
+        .then(data => dispatch(fetchTableDataSuccessAction(data.result)))
         .catch(e => {
           console.log(e);
           dispatch(fetchTableDataErrorAction());
@@ -237,6 +228,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     // delay in ms
     300
   );
+
+  const columnsAreReady = !tableId &&
+    entityType &&
+    state?.columns?.length > 0;
 
   const fetchTableData = (payload?: IGetDataPayload) => {
     const internalPayload = {
@@ -249,13 +244,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     // so we have to save the payload on every fetch request but skip data fetch in some cases
     dispatch(fetchTableDataAction(internalPayload)); // todo: remove this line, it's needed just to save the Id
 
-    if (
-      !state.isFetchingTableData &&
-      state.tableConfigLoaded &&
-      tableConfig &&
-      state?.columns?.length &&
-      tableIsReady.current === true
-    ) {
+    if ((configIsReady || columnsAreReady) &&
+      tableIsReady.current === true) {
+        console.log('debouncedFetch');
       debouncedFetch(internalPayload);
     }
   };
@@ -292,7 +283,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   useEffect(() => {
     // Save the settings whenever the columns change
-    if (!_.isEmpty(userDTSettings) && state?.columns?.length !== 0) {
+    if (!_.isEmpty(userDTSettings) && state?.columns?.length > 0) {
       setUserDTSettings({
         ...userDTSettings,
         columns: state?.columns,
@@ -304,15 +295,19 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     // Add default filter to table filter
     const filter = localState?.tableFilter || [];
 
+    const properties = getDataProperties(localState.configurableColumns);
+
     const payload: IGetDataPayload = {
       id: tableId,
+      entityType: entityType,
+      properties: properties,
       pageSize: localState.selectedPageSize,
       currentPage: localState.currentPage,
       sorting: localState.tableSorting,
       quickSearch: localState.quickSearch,
       filter, //state.tableFilter,
       parentEntityId,
-      selectedStoredFilterIds: localState.selectedStoredFilterIds,
+      selectedStoredFilterIds: localState.selectedStoredFilterIds || [],
       selectedFilters: localState.selectedStoredFilters,
     };
 
@@ -329,7 +324,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     dispatch(exportToExcelRequestAction());
 
     axios({
-      url: `${config?.baseUrl}` + (getExportToExcelPath ?? `/api/DataTable/ExportToExcel`),
+      url: `${backendUrl}` + (getExportToExcelPath ?? `/api/DataTable/ExportToExcel`),
       method: 'POST',
       data: payload,
       responseType: 'blob', // important
@@ -493,6 +488,59 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   const deleteRowItem = (idOfItemToDeleteOrUpdate: string) => {
     dispatch(deleteRowItemAction(idOfItemToDeleteOrUpdate));
   };
+
+  const getDataProperties = (columns: IConfigurableColumnsBase[]) => {
+    const dataFields = columns.filter(c => c.itemType == 'item' && 
+      (c as IConfigurableColumnsProps).columnType == 'data' &&
+      Boolean((c as IDataColumnsProps).propertyName)) as IDataColumnsProps[];
+
+    const properties = dataFields.map(f => f.propertyName);
+    return properties;
+  }
+
+  useEffect(() => {
+    const { configurableColumns, entityType } = state;
+    if (!entityType)
+      return;
+
+    const properties = getDataProperties(configurableColumns);
+    if (properties.length == 0){
+      // don't fetch data from server when properties is empty
+      dispatch(fetchColumnsSuccessSuccessAction({ columns: [] }));
+      return;
+    }
+
+    // fetch columns config from server
+    const getColumnsPayload: GetColumnsInput = {
+      entityType: entityType,
+      properties: properties
+    };
+    console.log({
+      msg: 'fetch columns',
+      payload: getColumnsPayload
+    });
+    axios({
+      method: 'POST',
+      url: `${backendUrl}/api/DataTable/GetColumns`,
+      data: getColumnsPayload,
+      headers,
+    })
+      .then(response => {
+        const responseData = response.data as DataTableColumnDtoListAjaxResponse;
+        console.log({
+          msg: 'fetched columns',
+          responseData
+        });
+
+        if (responseData.success) {
+          dispatch(fetchColumnsSuccessSuccessAction({ columns: responseData.result }));
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        //dispatch(exportToExcelErrorAction());
+      });
+  }, [state.configurableColumns, state.entityType]);
 
   const registerConfigurableColumns = (ownerId: string, columns: IConfigurableColumnsBase[]) => {
     dispatch(registerConfigurableColumnsAction({ ownerId, columns }));

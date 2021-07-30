@@ -1,5 +1,5 @@
 import { DATA_TABLE_CONTEXT_INITIAL_STATE, DEFAULT_PAGE_SIZE_OPTIONS, IDataTableStateContext } from './contexts';
-import { DataTableActionEnums, IChangeFilterAction, IChangeFilterOptionPayload, IFetchTableConfigSuccessPayload, IRegisterConfigurableColumnsPayload } from './actions';
+import { DataTableActionEnums, IChangeFilterAction, IChangeFilterOptionPayload, IFetchColumnsSuccessSuccessPayload, IFetchTableConfigSuccessPayload, IRegisterConfigurableColumnsPayload } from './actions';
 import flagsReducer from '../utils/flagsReducer';
 import { IEditableRowState, IGetDataPayload, IndexColumnDataType, IStoredFilter, ITableColumn, ITableDataResponse, ITableFilter, SortDirection } from './interfaces';
 import { handleActions } from 'redux-actions';
@@ -194,6 +194,75 @@ const reducer = handleActions<IDataTableStateContext, any>({
         deleteUrl,
         detailsUrl,
       },
+    };
+  },
+
+  [DataTableActionEnums.FetchColumnsSuccess]: (state: IDataTableStateContext, action: ReduxActions.Action<IFetchColumnsSuccessSuccessPayload>) => {
+    const { payload: { columns } } = action;
+
+    const cols = columns.map<ITableColumn>(column => {
+      //const userColumn = userConfig?.columns?.find(c => c.id === column.name);
+      /*
+      const colVisibility =
+        userColumn?.show === null || userColumn?.show === undefined ? !column.isHiddenByDefault : userColumn?.show;
+        */
+
+      return {
+        id: column.name,
+        columnId: column.name,
+        caption: column.caption,
+        accessor: column.name,
+        propertyName: column.propertyName,
+        header: column.caption,
+        isVisible: column.isVisible,
+        isSortable: column.isSortable,
+        isHiddenByDefault: column.isHiddenByDefault,
+        isFilterable: column.isFilterable,
+        width: column.width,
+        entityReferenceTypeShortAlias: column.entityReferenceTypeShortAlias,
+        referenceListName: column.referenceListName,
+        referenceListNamespace: column.referenceListNamespace,
+        autocompleteUrl: column.autocompleteUrl,
+        allowInherited: column.allowInherited,
+        dataType: column.dataType as IndexColumnDataType,
+        defaultSorting: column.defaultSorting as SortDirection,
+
+        /*
+        filterOption: userColumn?.filterOption,
+        filter: userColumn?.filter,
+        allowFilter: userConfig?.appliedFiltersColumnIds?.includes(column.name),
+        */
+        show: column.isVisible //&& colVisibility,
+      };
+    });
+
+    console.log({
+      msg: 'FetchColumnsSuccess',
+      cols
+    });
+
+    return {
+      ...state,
+
+      //isFetchingTableData: false,
+      //tableConfigLoaded: true,
+      columns: cols,
+      /*
+      currentPage: userConfig?.currentPage || 1,
+      selectedPageSize: userConfig?.pageSize || DEFAULT_PAGE_SIZE_OPTIONS[1],
+      quickSearch: userConfig?.quickSearch,
+      tableFilter: userConfig?.tableFilter,
+      selectedStoredFilterIds: userConfig?.selectedStoredFilterIds || [],
+      storedFilters: [...(state.storedFilters || []), ...filteredFilters],
+      tableSorting: userConfig?.tableSorting,
+      appliedFiltersColumnIds: userConfig?.appliedFiltersColumnIds || [],
+      crudConfig: {
+        createUrl,
+        updateUrl,
+        deleteUrl,
+        detailsUrl,
+      },
+      */
     };
   },
 

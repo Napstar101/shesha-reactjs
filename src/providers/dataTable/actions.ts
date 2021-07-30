@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { DataTableConfigDto } from '../../apis/dataTable';
+import { DataTableColumnDto, DataTableConfigDto } from '../../apis/dataTable';
 import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models';
 import { IDataTableUserConfig } from './contexts';
 import {
@@ -16,6 +16,8 @@ export enum DataTableActionEnums {
   FetchTableConfig = 'FETCH_TABLE_CONFIG',
   FetchTableConfigSuccess = 'FETCH_TABLE_CONFIG_SUCCESS',
   FetchTableConfigError = 'FETCH_TABLE_CONFIG_ERROR',
+
+  FetchColumnsSuccess = 'FETCH_COLUMNS_SUCCESS',
 
   FetchTableData = 'FETCH_TABLE_DATA',
   FetchTableDataSuccess = 'FETCH_TABLE_DATA_SUCCESS',
@@ -69,6 +71,14 @@ export const fetchTableConfigAction = createAction<string, string>(
 
 export const fetchTableConfigSuccessAction = createAction<IFetchTableConfigSuccessPayload, IFetchTableConfigSuccessPayload>(
   DataTableActionEnums.FetchTableConfigSuccess,
+  p => p
+);
+
+export interface IFetchColumnsSuccessSuccessPayload {
+  columns: DataTableColumnDto[];
+}
+export const fetchColumnsSuccessSuccessAction = createAction<IFetchColumnsSuccessSuccessPayload, IFetchColumnsSuccessSuccessPayload>(
+  DataTableActionEnums.FetchColumnsSuccess,
   p => p
 );
 

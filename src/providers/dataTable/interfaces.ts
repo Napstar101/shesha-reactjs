@@ -74,6 +74,8 @@ export interface IColumnSorting {
 
 export interface IGetDataPayload {
   readonly id: string;
+  readonly entityType: string;
+  readonly properties: string[];
   readonly pageSize: number;
   readonly currentPage: number;
   readonly sorting: IColumnSorting[];

@@ -16,7 +16,6 @@ export const ColumnsEditorModalInner: FC<IColumnsEditorModal> = ({ visible, onCh
   const { items } = useColumnsConfigurator();
 
   const onOkClick = () => {
-    debugger
     if (typeof onChange === 'function') onChange(items);
     hideModal();
   };
