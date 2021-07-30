@@ -506,7 +506,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     const properties = getDataProperties(configurableColumns);
     if (properties.length == 0){
       // don't fetch data from server when properties is empty
-      dispatch(fetchColumnsSuccessSuccessAction({ columns: [] }));
+      dispatch(fetchColumnsSuccessSuccessAction({ columns: [], configurableColumns }));
       return;
     }
 
@@ -533,7 +533,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
         });
 
         if (responseData.success) {
-          dispatch(fetchColumnsSuccessSuccessAction({ columns: responseData.result }));
+          dispatch(fetchColumnsSuccessSuccessAction({ columns: responseData.result, configurableColumns }));
         }
       })
       .catch((e) => {
@@ -559,7 +559,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           changePageSize,
           toggleColumnVisibility,
           toggleColumnFilter,
-          //removeColumnFilter,
           changeFilterOption,
           changeFilter,
           applyFilters,

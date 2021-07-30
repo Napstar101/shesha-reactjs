@@ -170,7 +170,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       return {
         ...columnItem,
         Header: columnItem.header,
-        maxWidth: undefined,
+        minWidth: columnItem.minWidth,
+        maxWidth: columnItem.maxWidth,
         width: undefined,
         resizable: true,
         Cell: props => {
@@ -196,7 +197,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
                 const { property, render } = customEditor;
 
                 if (columnItem?.id === property) {
-                  return render(editProps);
+                  return render(editProps) || null;
                 }
               }
             }
@@ -210,12 +211,12 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
               const { key, render } = customRender;
 
               if (columnItem.dataType === key || columnItem.customDataType === key) {
-                return render(props);
+                return render(props) || null;
               }
             }
           }
-
-          return props.value;
+          
+          return props.value || null;
         },
       };
     });

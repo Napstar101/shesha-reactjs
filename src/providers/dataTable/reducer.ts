@@ -3,6 +3,7 @@ import { DataTableActionEnums, IChangeFilterAction, IChangeFilterOptionPayload, 
 import flagsReducer from '../utils/flagsReducer';
 import { IEditableRowState, IGetDataPayload, IndexColumnDataType, IStoredFilter, ITableColumn, ITableDataResponse, ITableFilter, SortDirection } from './interfaces';
 import { handleActions } from 'redux-actions';
+import { IDataColumnsProps } from '../datatableColumnsConfigurator/models';
 
 const reducer = handleActions<IDataTableStateContext, any>({
   [DataTableActionEnums.ChangeSelectedRow]: (state: IDataTableStateContext, action: ReduxActions.Action<number>) => {
@@ -198,71 +199,51 @@ const reducer = handleActions<IDataTableStateContext, any>({
   },
 
   [DataTableActionEnums.FetchColumnsSuccess]: (state: IDataTableStateContext, action: ReduxActions.Action<IFetchColumnsSuccessSuccessPayload>) => {
-    const { payload: { columns } } = action;
+    const { payload: { columns, configurableColumns } } = action;
 
-    const cols = columns.map<ITableColumn>(column => {
-      //const userColumn = userConfig?.columns?.find(c => c.id === column.name);
-      /*
-      const colVisibility =
-        userColumn?.show === null || userColumn?.show === undefined ? !column.isHiddenByDefault : userColumn?.show;
-        */
+    const cols = configurableColumns.map<ITableColumn>(column => {
+      const dataColumn = column as IDataColumnsProps;
+
+      const srvColumn = dataColumn.propertyName
+        ? columns.find(c => c.name === dataColumn.propertyName)
+        : {};
 
       return {
-        id: column.name,
-        columnId: column.name,
+        id: column.id,
+        columnId: column.id,
+        accessor: dataColumn?.propertyName,
+        propertyName: dataColumn?.propertyName,
+        minWidth: column.minWidth,
+        maxWidth: column.minWidth,
+
+        isSortable: srvColumn.isSortable,
+        isHiddenByDefault: srvColumn.isHiddenByDefault,
+        isFilterable: srvColumn.isFilterable,
+        width: srvColumn.width,
+        entityReferenceTypeShortAlias: srvColumn.entityReferenceTypeShortAlias,
+        referenceListName: srvColumn.referenceListName,
+        referenceListNamespace: srvColumn.referenceListNamespace,
+        autocompleteUrl: srvColumn.autocompleteUrl,
+        allowInherited: srvColumn.allowInherited,
+        dataType: srvColumn.dataType as IndexColumnDataType,
+        defaultSorting: srvColumn.defaultSorting as SortDirection,
+
         caption: column.caption,
-        accessor: column.name,
-        propertyName: column.propertyName,
         header: column.caption,
         isVisible: column.isVisible,
-        isSortable: column.isSortable,
-        isHiddenByDefault: column.isHiddenByDefault,
-        isFilterable: column.isFilterable,
-        width: column.width,
-        entityReferenceTypeShortAlias: column.entityReferenceTypeShortAlias,
-        referenceListName: column.referenceListName,
-        referenceListNamespace: column.referenceListNamespace,
-        autocompleteUrl: column.autocompleteUrl,
-        allowInherited: column.allowInherited,
-        dataType: column.dataType as IndexColumnDataType,
-        defaultSorting: column.defaultSorting as SortDirection,
 
         /*
         filterOption: userColumn?.filterOption,
         filter: userColumn?.filter,
         allowFilter: userConfig?.appliedFiltersColumnIds?.includes(column.name),
         */
-        show: column.isVisible //&& colVisibility,
+        show: srvColumn.isVisible //&& colVisibility,
       };
-    });
-
-    console.log({
-      msg: 'FetchColumnsSuccess',
-      cols
     });
 
     return {
       ...state,
-
-      //isFetchingTableData: false,
-      //tableConfigLoaded: true,
       columns: cols,
-      /*
-      currentPage: userConfig?.currentPage || 1,
-      selectedPageSize: userConfig?.pageSize || DEFAULT_PAGE_SIZE_OPTIONS[1],
-      quickSearch: userConfig?.quickSearch,
-      tableFilter: userConfig?.tableFilter,
-      selectedStoredFilterIds: userConfig?.selectedStoredFilterIds || [],
-      storedFilters: [...(state.storedFilters || []), ...filteredFilters],
-      tableSorting: userConfig?.tableSorting,
-      appliedFiltersColumnIds: userConfig?.appliedFiltersColumnIds || [],
-      crudConfig: {
-        createUrl,
-        updateUrl,
-        deleteUrl,
-        detailsUrl,
-      },
-      */
     };
   },
 

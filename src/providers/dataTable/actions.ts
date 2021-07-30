@@ -76,6 +76,7 @@ export const fetchTableConfigSuccessAction = createAction<IFetchTableConfigSucce
 
 export interface IFetchColumnsSuccessSuccessPayload {
   columns: DataTableColumnDto[];
+  configurableColumns: IConfigurableColumnsBase[];
 }
 export const fetchColumnsSuccessSuccessAction = createAction<IFetchColumnsSuccessSuccessPayload, IFetchColumnsSuccessSuccessPayload>(
   DataTableActionEnums.FetchColumnsSuccess,

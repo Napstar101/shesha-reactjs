@@ -53,6 +53,9 @@ export interface ITableColumn {
   referenceListNamespace?: string;
   entityReferenceTypeShortAlias?: string;
   allowInherited?: boolean;
+
+  minWidth?: number;
+  maxWidth?: number;
 }
 
 export interface ICustomFilterOptions {
