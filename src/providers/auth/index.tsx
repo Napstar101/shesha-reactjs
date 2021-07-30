@@ -10,6 +10,7 @@ import {
   resetPasswordSuccessAction,
   setAccessTokenAction,
   setRequestHeadersAction,
+  checkAuthAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { URL_LOGIN_PAGE, URL_HOME_PAGE, URL_CHANGE_PASSWORD } from '../../constants';
@@ -48,6 +49,9 @@ interface IAuthProviderProps {
    */
   unauthorizedRedirectUrl?: string;
 
+  /**
+   * @deprecated - use `withAuth` instead. Any page that doesn't require Auth will be rendered without being wrapped inside `withAuth`
+   */
   whitelistUrls?: string[];
 }
 
@@ -56,9 +60,9 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   tokenName = '',
   onSetRequestHeaders,
   unauthorizedRedirectUrl = URL_LOGIN_PAGE,
-  whitelistUrls
+  whitelistUrls,
 }) => {
-  const { router } = useShaRouting();
+  const { router, nextRoute } = useShaRouting();
 
   const [state, dispatch] = useReducer(authReducer, AUTH_CONTEXT_INITIAL_STATE);
   const setters = getFlagSetters(dispatch);
@@ -99,9 +103,33 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   }, [isFetchingCurrentLoginInformation]);
   //#endregion
 
-  const init = () => {
-    setters?.setIsInProgressFlag({ isIdle: false });
+  // const init = () => {
+  //   setters?.setIsInProgressFlag({ isIdle: false });
+  // };
+
+  //#region `checkAuth`
+  const checkAuth = () => {
+    dispatch(checkAuthAction());
+
+    const headers = trySetTokenReturnHeaderIfSet();
+
+    if (headers && !state.loginInfo && !state?.error?.fetchUserData) {
+      if (!state.isFetchingUserInfo) {
+        fetchCurrentLoginInformation({ requestOptions: { headers } });
+      }
+    } else {
+      if (nextRoute) {
+        if (unauthorizedRedirectUrl === URL_LOGIN_PAGE) {
+          router?.push(`${unauthorizedRedirectUrl}?returnUrl=${nextRoute}`);
+        } else {
+          router?.push(unauthorizedRedirectUrl);
+        }
+      } else {
+        router?.push(unauthorizedRedirectUrl);
+      }
+    }
   };
+  //#endregion
 
   //#region AuthToken
   const trySetTokenReturnHeaderIfSet = (t: string = null): any => {
@@ -133,6 +161,8 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     return Boolean(token) ? headers : null;
   };
 
+  const getAccessTokenLocal = () => trySetTokenReturnHeaderIfSet();
+
   const clearAccessToken = () => {
     removeAccessToken(tokenName);
     setRequestHeaders({});
@@ -145,7 +175,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   //#endregion
 
   useEffect(() => {
-    init();
+    // init();
 
     const hasAccessToken = trySetTokenReturnHeaderIfSet();
 
@@ -155,7 +185,11 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     };
 
     if (!hasAccessToken) {
-      if (router?.pathname === URL_LOGIN_PAGE || router?.pathname === unauthorizedRedirectUrl || whitelistUrls?.includes(router?.pathname)) {
+      if (
+        router?.pathname === URL_LOGIN_PAGE ||
+        router?.pathname === unauthorizedRedirectUrl ||
+        whitelistUrls?.includes(router?.pathname)
+      ) {
         return redirect(router?.asPath); // Make sure we don't end up with /login?returnUrl=/login
       }
 
@@ -220,6 +254,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     if (!permissions) return true;
 
     const granted = loginInfo.grantedPermissions || [];
+
     return permissions.some(p => granted.includes(p));
   };
 
@@ -231,7 +266,6 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
 
   //#region Reset password
   /**
-   *
    * @param verifyOtpResPayload - the payload for resetting the password
    */
   const verifyOtpSuccess = (verifyOtpResPayload: ResetPasswordVerifyOtpResponse) => {
@@ -250,7 +284,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     return !!(
       (
         isFetchingCurrentLoginInformation ||
-        state.isInProgress?.isIdle ||
+        // state.isInProgress?.isIdle ||
         (!isFetchingCurrentLoginInformation && !state.loginInfo && state.token)
       ) // Done fetching user info but the state is not yet updated
     );
@@ -274,9 +308,8 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
 
   if (isNotAuthorized) {
     if (whitelistUrls?.includes(router?.pathname) || router?.pathname === unauthorizedRedirectUrl) {
-      // TODO: 
-    }
-    else if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
+      // TODO:
+    } else if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
       // Not authorized
       // console.log('Not authorized router :>> ', router);
       router?.push(URL_LOGIN_PAGE);
@@ -291,7 +324,9 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
         <AuthActionsContext.Provider
           value={{
             ...setters,
+            checkAuth,
             loginUser,
+            getAccessToken: getAccessTokenLocal,
             logoutUser,
             anyOfPermissionsGranted: anyOfPermissionsGrantedWrapper,
             verifyOtpSuccess,

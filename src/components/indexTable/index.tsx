@@ -174,59 +174,61 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   // We are making sure that we only update the columns
   useEffect(() => {
-    const localPreparedColumns = columns.filter(({ show }) => show).map<Column<any>>(columnItem => {
-      return {
-        ...columnItem,
-        Header: columnItem.header,
-        maxWidth: undefined,
-        width: undefined,
-        resizable: true,
-        Cell: props => {
-          const allRenderers = [...(customTypeRenders || []), ...renderers];
+    const localPreparedColumns = columns
+      .filter(({ show }) => show)
+      .map<Column<any>>(columnItem => {
+        return {
+          ...columnItem,
+          Header: columnItem.header,
+          maxWidth: undefined,
+          width: undefined,
+          resizable: true,
+          Cell: props => {
+            const allRenderers = [...(customTypeRenders || []), ...renderers];
 
-          const _data = newOrEditableRowDataRef?.current?.data || {};
+            const _data = newOrEditableRowDataRef?.current?.data || {};
 
-          if (props?.row?.original?.Id === newOrEditableRowData?.id && crudMode === 'inline') {
-            const editProps: IColumnEditFieldProps = {
-              id: columnItem?.id,
-              dataType: columnItem?.dataType,
-              name: columnItem.id,
-              caption: columnItem.caption,
-              onChange: handleGenericChange,
-              value: _data[columnItem?.id],
-              referenceListName: columnItem?.referenceListName,
-              referenceListNamespace: columnItem?.referenceListNamespace,
-              entityReferenceTypeShortAlias: columnItem?.entityReferenceTypeShortAlias,
-            };
+            if (props?.row?.original?.Id === newOrEditableRowData?.id && crudMode === 'inline') {
+              const editProps: IColumnEditFieldProps = {
+                id: columnItem?.id,
+                dataType: columnItem?.dataType,
+                name: columnItem.id,
+                caption: columnItem.caption,
+                onChange: handleGenericChange,
+                value: _data[columnItem?.id],
+                referenceListName: columnItem?.referenceListName,
+                referenceListNamespace: columnItem?.referenceListNamespace,
+                entityReferenceTypeShortAlias: columnItem?.entityReferenceTypeShortAlias,
+              };
 
-            if (customTypeEditors?.length) {
-              for (const customEditor of customTypeEditors) {
-                const { property, render } = customEditor;
+              if (customTypeEditors?.length) {
+                for (const customEditor of customTypeEditors) {
+                  const { property, render } = customEditor;
 
-                if (columnItem?.id === property) {
-                  return render(editProps);
+                  if (columnItem?.id === property) {
+                    return render(editProps);
+                  }
+                }
+              }
+
+              return <ColumnEditField {...editProps} />;
+            }
+
+            // Allow the user to override the default render behavior of the table without having to make changes to it
+            if (allRenderers) {
+              for (const customRender of allRenderers) {
+                const { key, render } = customRender;
+
+                if (columnItem.dataType === key || columnItem.customDataType === key) {
+                  return render(props);
                 }
               }
             }
 
-            return <ColumnEditField {...editProps} />;
-          }
-
-          // Allow the user to override the default render behavior of the table without having to make changes to it
-          if (allRenderers) {
-            for (const customRender of allRenderers) {
-              const { key, render } = customRender;
-
-              if (columnItem.dataType === key || columnItem.customDataType === key) {
-                return render(props);
-              }
-            }
-          }
-
-          return props.value;
-        },
-      };
-    });
+            return props.value;
+          },
+        };
+      });
 
     const allActionColumns = [...(actionColumns || []), ...(crud ? crudActionColumns : [])];
 
@@ -304,7 +306,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           if (data?.onClick) {
             const result = data.onClick(rowValues.Id, table);
 
-            if (typeof result === 'string') router.push(result);
+            if (typeof result === 'string') router?.push(result);
           }
         };
 
@@ -377,19 +379,19 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     const deleteCallback = saveLocally
       ? () => deleteRowItem(itemId)
       : () => {
-        {
-          deleteItemHttp('', {
-            queryParams: { id: itemId },
-          })
-            .then(() => {
-              cancelCreateOrEditRowData();
-              refreshTable();
+          {
+            deleteItemHttp('', {
+              queryParams: { id: itemId },
             })
-            .catch(() => {
-              console.log('Delete error');
-            });
-        }
-      };
+              .then(() => {
+                cancelCreateOrEditRowData();
+                refreshTable();
+              })
+              .catch(() => {
+                console.log('Delete error');
+              });
+          }
+        };
 
     confirmAndProceed(
       'Are you sure you want to delete this item. Please note this action cannot be reversed?',
@@ -438,8 +440,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   const defaultSorting = tableSorting
     ? tableSorting.map<SortingRule<string>>(c => ({ id: c.id, desc: c.desc }))
     : columns
-      .filter(c => c.defaultSorting != null)
-      .map<SortingRule<string>>(c => ({ id: c.id, desc: c.defaultSorting === 1 }));
+        .filter(c => c.defaultSorting != null)
+        .map<SortingRule<string>>(c => ({ id: c.id, desc: c.defaultSorting === 1 }));
 
   const isLoading = isFetchingTableData || isCreating || isUpdating || isDeleting;
 

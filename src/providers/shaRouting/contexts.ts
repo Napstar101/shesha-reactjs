@@ -10,11 +10,12 @@ export type IFlagActionedFlags = '__DEFAULT__' /* NEW_ACTIONED_FLAG_GOES_HERE */
 export interface IShaRoutingStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   router?: Router;
+  nextRoute?: string;
 }
 
 export interface IShaRoutingActionsContext
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
-  /* NEW_ACTION_ACTION_DECLARATIO_GOES_HERE */
+  goingToRoute?: (route: string) => void;
 }
 
 export const SHA_ROUTING_CONTEXT_INITIAL_STATE: IShaRoutingStateContext = {

@@ -5,6 +5,7 @@ import { IErrorInfo } from '../../interfaces/errorInfo';
 import IRequestHeaders from '../../interfaces/requestHeaders';
 import { IAuthStateContext } from './contexts';
 export enum AuthActionEnums {
+  CheckAuthAction = 'CHECK_AUTH_ACTION',
   SetToken = 'SET_TOKEN',
   SetHeaders = 'SET_HEADERS',
   LoginUserRequest = 'LOGIN_USER_REQUEST',
@@ -23,17 +24,21 @@ export enum AuthActionEnums {
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
+export const checkAuthAction = createAction<IAuthStateContext>(AuthActionEnums.CheckAuthAction, () => ({
+  isCheckingAuth: true,
+}));
+
 //#region  Login user
 export const loginUserAction = createAction<IAuthStateContext>(AuthActionEnums.LoginUserRequest, () => ({}));
 
 export const loginUserSuccessAction = createAction<IAuthStateContext, UserLoginInfoDto>(
   AuthActionEnums.LoginUserSuccess,
-  loginInfo => ({ loginInfo })
+  loginInfo => ({ loginInfo, isCheckingAuth: false })
 );
 
 export const loginUserErrorAction = createAction<IAuthStateContext, IErrorInfo>(
   AuthActionEnums.LoginUserError,
-  errorInfo => ({ errorInfo })
+  errorInfo => ({ errorInfo, isCheckingAuth: false })
 );
 //#endregion
 

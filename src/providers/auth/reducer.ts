@@ -19,6 +19,7 @@ export function authReducer(
       };
     }
     case AuthActionEnums.LoginUserRequest:
+    case AuthActionEnums.CheckAuthAction:
     case AuthActionEnums.LoginUserSuccess:
     case AuthActionEnums.LoginUserError:
 
