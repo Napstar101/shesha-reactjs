@@ -61,7 +61,6 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items }) => {
 
   useEffect(() => {
     // register columns
-    console.log('register columns');
     registerConfigurableColumns(id, items);
   }, [items]);
 

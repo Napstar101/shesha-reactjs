@@ -12,6 +12,7 @@ export type IndexColumnDataType =
   | 'refList'
   | 'multiValueRefList'
   | 'entityReference'
+  | 'action'
   | 'other';
 
 export type IndexColumnFilterOption =
@@ -48,7 +49,7 @@ export interface ITableColumn {
   name?: string;
   caption?: string;
   allowShowHide?: boolean;
-  width?: string;
+  //width?: string;
   referenceListName?: string;
   referenceListNamespace?: string;
   entityReferenceTypeShortAlias?: string;

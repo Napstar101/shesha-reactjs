@@ -3,7 +3,7 @@ import { DataTableActionEnums, IChangeFilterAction, IChangeFilterOptionPayload, 
 import flagsReducer from '../utils/flagsReducer';
 import { IEditableRowState, IGetDataPayload, IndexColumnDataType, IStoredFilter, ITableColumn, ITableDataResponse, ITableFilter, SortDirection } from './interfaces';
 import { handleActions } from 'redux-actions';
-import { IDataColumnsProps } from '../datatableColumnsConfigurator/models';
+import { IConfigurableActionColumnsProps, IConfigurableColumnsProps, IDataColumnsProps } from '../datatableColumnsConfigurator/models';
 
 const reducer = handleActions<IDataTableStateContext, any>({
   [DataTableActionEnums.ChangeSelectedRow]: (state: IDataTableStateContext, action: ReduxActions.Action<number>) => {
@@ -155,7 +155,6 @@ const reducer = handleActions<IDataTableStateContext, any>({
         isSortable: column.isSortable,
         isHiddenByDefault: column.isHiddenByDefault,
         isFilterable: column.isFilterable,
-        width: column.width,
         entityReferenceTypeShortAlias: column.entityReferenceTypeShortAlias,
         referenceListName: column.referenceListName,
         referenceListNamespace: column.referenceListNamespace,
@@ -202,44 +201,76 @@ const reducer = handleActions<IDataTableStateContext, any>({
     const { payload: { columns, configurableColumns } } = action;
 
     const cols = configurableColumns.map<ITableColumn>(column => {
-      const dataColumn = column as IDataColumnsProps;
+      const colProps = column as IConfigurableColumnsProps;
 
-      const srvColumn = dataColumn.propertyName
-        ? columns.find(c => c.name === dataColumn.propertyName)
-        : {};
+      switch (colProps.columnType) {
+        case 'data': {
+          const dataProps = column as IDataColumnsProps;
+          const srvColumn = dataProps.propertyName
+            ? columns.find(c => c.name === dataProps.propertyName)
+            : {};
 
-      return {
-        id: column.id,
-        columnId: column.id,
-        accessor: dataColumn?.propertyName,
-        propertyName: dataColumn?.propertyName,
-        minWidth: column.minWidth,
-        maxWidth: column.minWidth,
+          return {
+            id: dataProps?.propertyName,
+            columnId: column.id,
+            accessor: dataProps?.propertyName,
+            propertyName: dataProps?.propertyName,
+            minWidth: column.minWidth,
+            maxWidth: column.minWidth,
+    
+            dataType: srvColumn.dataType as IndexColumnDataType,
+            isSortable: srvColumn.isSortable,
+            isHiddenByDefault: srvColumn.isHiddenByDefault,
+            isFilterable: srvColumn.isFilterable,
+            entityReferenceTypeShortAlias: srvColumn.entityReferenceTypeShortAlias,
+            referenceListName: srvColumn.referenceListName,
+            referenceListNamespace: srvColumn.referenceListNamespace,
+            autocompleteUrl: srvColumn.autocompleteUrl,
+            allowInherited: srvColumn.allowInherited,
+            defaultSorting: srvColumn.defaultSorting as SortDirection,
+    
+            caption: column.caption,
+            header: column.caption,
+            isVisible: column.isVisible,
+    
+            /*
+            filterOption: userColumn?.filterOption,
+            filter: userColumn?.filter,
+            allowFilter: userConfig?.appliedFiltersColumnIds?.includes(column.name),
+            */
+            show: srvColumn.isVisible //&& colVisibility,
+          };
+        }
+        case 'action': {
+          const actionProps = column as IConfigurableActionColumnsProps;
 
-        isSortable: srvColumn.isSortable,
-        isHiddenByDefault: srvColumn.isHiddenByDefault,
-        isFilterable: srvColumn.isFilterable,
-        width: srvColumn.width,
-        entityReferenceTypeShortAlias: srvColumn.entityReferenceTypeShortAlias,
-        referenceListName: srvColumn.referenceListName,
-        referenceListNamespace: srvColumn.referenceListNamespace,
-        autocompleteUrl: srvColumn.autocompleteUrl,
-        allowInherited: srvColumn.allowInherited,
-        dataType: srvColumn.dataType as IndexColumnDataType,
-        defaultSorting: srvColumn.defaultSorting as SortDirection,
+          return {
+            id: column.id,
+            columnId: column.id,
+            accessor: column.id,
+            propertyName: column.id,
+            minWidth: column.minWidth,
+            maxWidth: column.minWidth,
+    
+            dataType: 'action',
+            actionProps: actionProps, // todo: review and add to interface
 
-        caption: column.caption,
-        header: column.caption,
-        isVisible: column.isVisible,
-
-        /*
-        filterOption: userColumn?.filterOption,
-        filter: userColumn?.filter,
-        allowFilter: userConfig?.appliedFiltersColumnIds?.includes(column.name),
-        */
-        show: srvColumn.isVisible //&& colVisibility,
-      };
-    });
+            isSortable: false,
+            isHiddenByDefault: false,
+            isFilterable: false,
+            //width: column.minWidth,
+    
+            caption: column.caption,
+            header: column.caption,
+            isVisible: column.isVisible,
+    
+            allowFilter: false,
+            show: column.isVisible,
+          };
+        }
+      }
+      return null;
+    }).filter(c => c !== null);
 
     return {
       ...state,

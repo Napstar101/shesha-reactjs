@@ -176,15 +176,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   // fetch table data when config is ready or something changed (selected filter, changed current page etc.)
   useEffect(() => {
-    console.log({
-      tableId,
-      entityType,
-      configIsReady,
-      columnsAreReady,
-      tableIsReady: tableIsReady.current,
-      columns: state.columns,
-    });
-
     if (tableId){
       // fetch using table config
       if (configIsReady) {
@@ -193,7 +184,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       }
     } else
     if (entityType) {
-      console.log('refreshTable on changes');
       // fecth using entity type
       tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
       refreshTable();
@@ -244,9 +234,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     // so we have to save the payload on every fetch request but skip data fetch in some cases
     dispatch(fetchTableDataAction(internalPayload)); // todo: remove this line, it's needed just to save the Id
 
-    if ((configIsReady || columnsAreReady) &&
-      tableIsReady.current === true) {
-        console.log('debouncedFetch');
+    if ((configIsReady || columnsAreReady) && tableIsReady.current === true) {
       debouncedFetch(internalPayload);
     }
   };
@@ -515,10 +503,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       entityType: entityType,
       properties: properties
     };
-    console.log({
-      msg: 'fetch columns',
-      payload: getColumnsPayload
-    });
+    
     axios({
       method: 'POST',
       url: `${backendUrl}/api/DataTable/GetColumns`,
@@ -527,10 +512,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     })
       .then(response => {
         const responseData = response.data as DataTableColumnDtoListAjaxResponse;
-        console.log({
-          msg: 'fetched columns',
-          responseData
-        });
 
         if (responseData.success) {
           dispatch(fetchColumnsSuccessSuccessAction({ columns: responseData.result, configurableColumns }));
