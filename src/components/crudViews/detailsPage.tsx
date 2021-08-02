@@ -1,5 +1,5 @@
 import React, { useEffect, ReactNode, MutableRefObject, forwardRef, useImperativeHandle } from 'react';
-import { Spin } from 'antd';
+import { Form, Spin } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
 import { MainLayout, IndexToolbar, ValidationErrors, ConfigurableForm } from '../';
@@ -69,9 +69,16 @@ export interface IDetailsPageProps {
    * A callback for when the data has been loaded
    */
   onDataLoaded?: (model: any) => void;
+
+  /**
+   * Form Values. If passed, model will be overridden to FormValues, m.
+   */
+  formValues?: any;
 }
 
 const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, forwardedRef) => {
+  const [form] = Form.useForm();
+
   useImperativeHandle(forwardedRef, () => ({
     refresh() {
       fetchData();
@@ -88,6 +95,12 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
   useEffect(() => {
     fetchData();
   }, [props.id]);
+
+  useEffect(() => {
+    if (props?.formValues) {
+      form.setFieldsValue(props.formValues);
+    }
+  }, [props?.formValues]);
 
   const model = serverData?.result;
 
@@ -131,6 +144,7 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
             <ConfigurableForm
               mode="readonly"
               {...formItemLayout}
+              form={form}
               path={props?.formPath || router.pathname}
               markup={props.markup}
               initialValues={model}
