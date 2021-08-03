@@ -47,7 +47,6 @@ import {
   IGetDataPayload,
   ColumnFilter,
   IFilterItem,
-  ITableFilter,
   IEditableRowState,
   ICrudProps,
   IStoredFilter,
@@ -139,7 +138,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     setUserDTSettings(userConfigToSave);
 
     // convert filters
-    const allFilters = [...(state.predefinedFilters || []), ...(state.selectedStoredFilters || [])];
+    const allFilters = [...(state.predefinedFilters || []), ...(state.storedFilters || [])];
     const filters = payload.selectedStoredFilterIds
       .map(id => allFilters.find(f => f.id === id))
       .filter(f => Boolean(f));
@@ -189,7 +188,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       refreshTable();
     }
   }, [
-    state.appliedFiltersColumnIds,
     state.tableFilter,
     state.currentPage,
     state.selectedStoredFilterIds,
@@ -296,9 +294,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       filter, //state.tableFilter,
       parentEntityId,
       selectedStoredFilterIds: localState.selectedStoredFilterIds || [],
-      selectedFilters: localState.selectedStoredFilters,
     };
-
     return payload;
   };
 
@@ -350,13 +346,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     dispatch(changeFilterAction({ filterColumnId, filterValue }));
 
   const applyFilters = () => {
-    const { columns } = state;
+    const { tableFilterDirty } = state;
 
-    const filters = columns
-      .filter(({ allowFilter }) => allowFilter)
-      .map(({ columnId, filterOption, filter }) => ({ columnId, filterOption, filter } as ITableFilter));
-
-    dispatch(applyFilterAction(filters));
+    dispatch(applyFilterAction(tableFilterDirty));
   };
 
   /** change quick search text without refreshing of the table data */

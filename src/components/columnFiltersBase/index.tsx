@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 import { ColumnItemFilter } from '../columnItemFilter';
-import { IndexColumnFilterOption, ITableColumn, ColumnFilter } from '../../providers/dataTable/interfaces';
+import { IndexColumnFilterOption, ITableColumn, ColumnFilter, ITableFilter } from '../../providers/dataTable/interfaces';
 
 interface IColumnFiltersBaseProps {
   columns: ITableColumn[];
+  currentFilter?: ITableFilter[];
   appliedFiltersColumnIds: string[];
   changeFilterOption: (filterColumnId: string, filterOptionValue: IndexColumnFilterOption) => void;
   changeFilter: (filterColumnId: string, filterValue: any) => void;
@@ -18,23 +19,25 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
   changeFilter,
   toggleColumnFilter,
   applyFilters,
+  currentFilter,
 }) => {
+  const filterableColumns = columns.filter(c => Boolean(appliedFiltersColumnIds.find(id => id === c.id)));
+  
   return (
     <div className="sha-column-filters">
-      {columns.map(
+      {filterableColumns.map(
         ({
           id,
           accessor,
           header,
           dataType,
-          filter,
-          filterOption,
           allowFilter,
           referenceListName,
           referenceListNamespace,
           entityReferenceTypeShortAlias,
         }) => {
           if (allowFilter) {
+
             const onRemoveFilter = (idOfFilter: string) => {
               toggleColumnFilter(appliedFiltersColumnIds.filter(id => id !== idOfFilter));
             };
@@ -50,6 +53,8 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
                 changeFilter(filterId, fltr);
               }
             };
+
+            const existingFilter = currentFilter.find(f => f.columnId === id);
             return (
               <ColumnItemFilter
                 onRemoveFilter={onRemoveFilter}
@@ -60,8 +65,8 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
                   filterName: header,
                   accessor,
                   dataType,
-                  filter,
-                  filterOption,
+                  filter: existingFilter?.filter,
+                  filterOption: existingFilter?.filterOption,
                   allowFilter,
                   applyFilters,
                   referenceListName,

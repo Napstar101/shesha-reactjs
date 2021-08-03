@@ -73,7 +73,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     selectedRow,
     parentEntityId,
     tableSorting,
-    selectedStoredFilters,
     quickSearch,
     crudConfig,
     refreshTable,
@@ -143,7 +142,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     dblClickHandler,
     selectedRow,
     parentEntityId,
-    selectedStoredFilters,
     quickSearch,
     tableSorting,
   ]);

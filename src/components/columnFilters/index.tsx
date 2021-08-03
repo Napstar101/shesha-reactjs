@@ -7,13 +7,15 @@ interface IColumnFiltersProps {}
 export const ColumnFilters: FC<IColumnFiltersProps> = () => {
   const {
     columns,
+    tableFilterDirty,
+    tableFilter,
     appliedFiltersColumnIds,
     changeFilterOption,
     changeFilter,
     toggleColumnFilter,
     applyFilters,
   } = useDataTableStore();
-
+  const currentFilter = (tableFilterDirty || tableFilter || []);
   return (
     <ColumnFiltersBase
       {...{
@@ -24,6 +26,7 @@ export const ColumnFilters: FC<IColumnFiltersProps> = () => {
         toggleColumnFilter,
         applyFilters,
       }}
+      currentFilter={currentFilter}
     />
   );
 };

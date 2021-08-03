@@ -20,6 +20,10 @@ const allOptions = {
   string: ['contains', 'startsWith', 'endsWith', 'equals'],
 };
 
+export const getFilterOptions = (dataType: string): IndexColumnFilterOption[] => {
+  return allOptions[dataType] || [];
+}
+
 interface IColumnItemFilterProps {
   id: string;
   filterName: string;

@@ -4,6 +4,12 @@ import flagsReducer from '../utils/flagsReducer';
 import { IEditableRowState, IGetDataPayload, IndexColumnDataType, IStoredFilter, ITableColumn, ITableDataResponse, ITableFilter, SortDirection } from './interfaces';
 import { handleActions } from 'redux-actions';
 import { IConfigurableActionColumnsProps, IConfigurableColumnsProps, IDataColumnsProps } from '../datatableColumnsConfigurator/models';
+import { getFilterOptions } from '../../components/columnItemFilter';
+
+/** get dirty filter if exists and fallback to current filter state */
+const getDirtyFilter = (state: IDataTableStateContext): ITableFilter[] => {
+  return [...(state.tableFilterDirty || state.tableFilter || [])];
+}
 
 const reducer = handleActions<IDataTableStateContext, any>({
   [DataTableActionEnums.ChangeSelectedRow]: (state: IDataTableStateContext, action: ReduxActions.Action<number>) => {
@@ -35,6 +41,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
     return {
       ...state,
       tableFilter: payload,
+      tableFilterDirty: payload,
       currentPage: 1,
     };
   },
@@ -104,7 +111,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
 
   [DataTableActionEnums.FetchTableDataSuccess]: (state: IDataTableStateContext, action: ReduxActions.Action<ITableDataResponse>) => {
     const { payload: { rows, totalPages, totalRows, totalRowsBeforeFilter } } = action;
-    
+
     return {
       ...state,
       tableData: rows,
@@ -117,13 +124,13 @@ const reducer = handleActions<IDataTableStateContext, any>({
 
   [DataTableActionEnums.FetchTableConfig]: (state: IDataTableStateContext, action: ReduxActions.Action<string>) => {
     const { payload } = action;
-    
+
     return {
       ...state,
       tableId: payload
     };
   },
-  
+
   [DataTableActionEnums.FetchTableConfigError]: (state: IDataTableStateContext, action: ReduxActions.Action<boolean>) => {
     const { payload } = action;
 
@@ -162,10 +169,8 @@ const reducer = handleActions<IDataTableStateContext, any>({
         allowInherited: column.allowInherited,
         dataType: column.dataType as IndexColumnDataType,
         defaultSorting: column.defaultSorting as SortDirection,
+        allowFilter: column.isFilterable,
 
-        filterOption: userColumn?.filterOption,
-        filter: userColumn?.filter,
-        allowFilter: userConfig?.appliedFiltersColumnIds?.includes(column.name),
         show: column.isVisible && colVisibility,
       };
     });
@@ -217,7 +222,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
             propertyName: dataProps?.propertyName,
             minWidth: column.minWidth,
             maxWidth: column.minWidth,
-    
+
             dataType: srvColumn.dataType as IndexColumnDataType,
             isSortable: srvColumn.isSortable,
             isHiddenByDefault: srvColumn.isHiddenByDefault,
@@ -228,11 +233,11 @@ const reducer = handleActions<IDataTableStateContext, any>({
             autocompleteUrl: srvColumn.autocompleteUrl,
             allowInherited: srvColumn.allowInherited,
             defaultSorting: srvColumn.defaultSorting as SortDirection,
-    
+
             caption: column.caption,
             header: column.caption,
             isVisible: column.isVisible,
-    
+
             /*
             filterOption: userColumn?.filterOption,
             filter: userColumn?.filter,
@@ -251,19 +256,18 @@ const reducer = handleActions<IDataTableStateContext, any>({
             propertyName: column.id,
             minWidth: column.minWidth,
             maxWidth: column.minWidth,
-    
+
             dataType: 'action',
             actionProps: actionProps, // todo: review and add to interface
 
             isSortable: false,
             isHiddenByDefault: false,
             isFilterable: false,
-            //width: column.minWidth,
-    
+
             caption: column.caption,
             header: column.caption,
             isVisible: column.isVisible,
-    
+
             allowFilter: false,
             show: column.isVisible,
           };
@@ -289,12 +293,12 @@ const reducer = handleActions<IDataTableStateContext, any>({
       ...state,
       tableData: foundItem
         ? rows?.map(item => {
-            if (item?.Id === newOrEditableRowData?.id) {
-              return newOrEditableRowData?.data;
-            }
+          if (item?.Id === newOrEditableRowData?.id) {
+            return newOrEditableRowData?.data;
+          }
 
-            return item;
-          })
+          return item;
+        })
         : [newOrEditableRowData?.data, ...(tableData || [])],
       newOrEditableRowData: null,
     };
@@ -313,17 +317,26 @@ const reducer = handleActions<IDataTableStateContext, any>({
 
   [DataTableActionEnums.ToggleColumnFilter]: (state: IDataTableStateContext, action: ReduxActions.Action<string[]>) => {
     const { payload: appliedFiltersColumnIds } = action;
+    
+    const currentFilter = getDirtyFilter(state);
+    const filter = appliedFiltersColumnIds.map<ITableFilter>(id => {
+      const existingFilter = currentFilter.find(f => f.columnId === id);
+      if (existingFilter)
+        return existingFilter;
+
+      const column = state.columns.find(c => c.id === id);
+      const filterOptions = getFilterOptions(column?.dataType);
+      return {
+        columnId: id,
+        filterOption: filterOptions.length > 0 ? filterOptions[0] : null,
+        filter: null
+      } as ITableFilter;
+    })
+    
     return {
       ...state,
       appliedFiltersColumnIds,
-      hasUnappliedChanges: !!appliedFiltersColumnIds?.length,
-      filteredColumns: appliedFiltersColumnIds?.length ? state.filteredColumns : [],
-      columns: state.columns.map(({ allowFilter, id, filter, ...rest }) => ({
-        id,
-        ...rest,
-        allowFilter: appliedFiltersColumnIds.includes(id),
-        filter: appliedFiltersColumnIds.includes(id) ? filter : null,
-      })),
+      tableFilterDirty: filter,
     };
   },
 
@@ -347,33 +360,36 @@ const reducer = handleActions<IDataTableStateContext, any>({
   [DataTableActionEnums.ChangeFilterOption]: (state: IDataTableStateContext, action: ReduxActions.Action<IChangeFilterOptionPayload>) => {
     const { payload: { filterColumnId, filterOptionValue } } = action;
 
+    const currentFilter = getDirtyFilter(state);
+
+    const filter = currentFilter.map<ITableFilter>(f => ({
+      ...f,
+      filterOption: f.columnId === filterColumnId
+        ? filterOptionValue
+        : f.filterOption
+    }));
+.0
     return {
       ...state,
-      hasUnappliedChanges: true,
-      columns: state.columns.map(({ id, filterOption, filter, ...rest }) => {
-        const isThisItem = id === filterColumnId;
-
-        return {
-          id,
-          ...rest,
-          filterOption: isThisItem ? filterOptionValue : filterOption,
-          filter: isThisItem ? null : filter,
-        };
-      }),
+      tableFilterDirty: filter,
     };
   },
 
   [DataTableActionEnums.ChangeFilter]: (state: IDataTableStateContext, action: ReduxActions.Action<IChangeFilterAction>) => {
     const { payload: { filterColumnId, filterValue } } = action;
 
+    const currentFilter = getDirtyFilter(state);
+
+    const filter = currentFilter.map<ITableFilter>(f => ({
+      ...f,
+      filter: f.columnId === filterColumnId
+        ? filterValue
+        : f.filter
+    }));
+
     return {
       ...state,
-      hasUnappliedChanges: true,
-      columns: state.columns.map(({ id, filter, ...rest }) => ({
-        id,
-        ...rest,
-        filter: id === filterColumnId ? filterValue : filter,
-      })),
+      tableFilterDirty: filter,
     };
   },
 
@@ -393,7 +409,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
       ...state,
       configurableColumns: [...payload.columns],
     };
-  },  
+  },
 }, DATA_TABLE_CONTEXT_INITIAL_STATE);
 
 export function dataTableReducer(
@@ -402,6 +418,6 @@ export function dataTableReducer(
 ): IDataTableStateContext {
   const flaggedState = flagsReducer(incomingState, action) as IDataTableStateContext;
   const newState = reducer(flaggedState, action);
-  
+
   return newState;
 }
