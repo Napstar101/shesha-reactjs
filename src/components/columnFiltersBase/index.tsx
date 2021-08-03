@@ -5,23 +5,21 @@ import { IndexColumnFilterOption, ITableColumn, ColumnFilter, ITableFilter } fro
 interface IColumnFiltersBaseProps {
   columns: ITableColumn[];
   currentFilter?: ITableFilter[];
-  appliedFiltersColumnIds: string[];
   changeFilterOption: (filterColumnId: string, filterOptionValue: IndexColumnFilterOption) => void;
   changeFilter: (filterColumnId: string, filterValue: any) => void;
-  toggleColumnFilter: (ids: string[]) => void;
+  toggleColumnFilter: (columnIds: string[]) => void;
   applyFilters: () => void;
 }
 
 export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
   columns,
-  appliedFiltersColumnIds,
   changeFilterOption,
   changeFilter,
   toggleColumnFilter,
   applyFilters,
   currentFilter,
 }) => {
-  const filterableColumns = columns.filter(c => Boolean(appliedFiltersColumnIds.find(id => id === c.id)));
+  const filterableColumns = columns.filter(c => Boolean(currentFilter.find(f => f.columnId === c.id)));
   
   return (
     <div className="sha-column-filters">
@@ -39,7 +37,8 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
           if (isFilterable) {
 
             const onRemoveFilter = (idOfFilter: string) => {
-              toggleColumnFilter(appliedFiltersColumnIds.filter(id => id !== idOfFilter));
+              const newIds = currentFilter.filter(f => f.columnId !== idOfFilter).map(f => f.columnId);
+              toggleColumnFilter(newIds);
             };
 
             const onChangeFilterOption = (filterId: string, fOption: IndexColumnFilterOption) => {

@@ -33,7 +33,6 @@ export interface IDataTableUserConfig {
 
   selectedStoredFilterIds?: string[];
   tableFilter?: ITableFilter[];
-  appliedFiltersColumnIds?: string[];
 }
 
 export const DEFAULT_DT_USER_CONFIG: IDataTableUserConfig = {
@@ -46,7 +45,6 @@ export const DEFAULT_DT_USER_CONFIG: IDataTableUserConfig = {
 export interface IDataTableStoredConfig extends IGetDataPayload {
   columns?: ITableColumn[];
   tableFilter?: ITableFilter[];
-  appliedFiltersColumnIds?: string[];
   // stored filters must also be restored from the local storage after page refresh or navigating away.
   // Selected filters are in IGetDataPayload so we just need to add the filters list
   storedFilters?: IStoredFilter[];
@@ -125,7 +123,6 @@ export interface IDataTableStateContext
   hasFetchTableDataError?: boolean;
   tableConfigLoaded?: boolean;
 
-  appliedFiltersColumnIds?: string[];
   saveFilterModalVisible?: boolean;
   //#endregion
 }
@@ -145,7 +142,7 @@ export interface IDataTableActionsContext
   toggleColumnVisibility?: (val: string) => void;
   setCurrentPage?: (page: number) => void;
   changePageSize?: (size: number) => void;
-  toggleColumnFilter?: (ids: string[]) => void;
+  toggleColumnFilter?: (columnIds: string[]) => void;
   removeColumnFilter?: (columnIdToRemoveFromFilter: string) => void;
   changeFilterOption?: (filterColumnId: string, filterOptionValue: IndexColumnFilterOption) => void;
   changeFilter?: (filterColumnId: string, filterValue: ColumnFilter) => void;
@@ -165,6 +162,7 @@ export interface IDataTableActionsContext
   changeSelectedIds?: (selectedIds: string[]) => void;
   updateLocalTableData?: () => void;
   deleteRowItem?: (idOfItemToDeleteOrUpdate: string) => void;
+  getCurrentFilter: () => ITableFilter[];
 
   /**
    * Register columns in the table context. Is used for configurable tables
@@ -190,7 +188,6 @@ export const DATA_TABLE_CONTEXT_INITIAL_STATE: IDataTableStateContext = {
   totalPages: -1,
   totalRows: null,
   totalRowsBeforeFilter: null,
-  appliedFiltersColumnIds: [],
   quickSearch: null,
   tableConfigLoaded: false,
   tableSorting: [],

@@ -50,6 +50,7 @@ import {
   IEditableRowState,
   ICrudProps,
   IStoredFilter,
+  ITableFilter,
 } from './interfaces';
 import { useMutate } from 'restful-react';
 import _ from 'lodash';
@@ -133,7 +134,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
       selectedStoredFilterIds: payload.selectedStoredFilterIds,
       tableFilter: payload.filter,
-      appliedFiltersColumnIds: state.appliedFiltersColumnIds,
     };
     setUserDTSettings(userConfigToSave);
 
@@ -248,7 +248,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
         dtSettings = {
           ...DEFAULT_DT_USER_CONFIG,
           tableFilter: defaultFilter,
-          appliedFiltersColumnIds: defaultFilter?.map(({ columnId }) => columnId) || [],
         };
       }
       dispatch(fetchTableConfigSuccessAction({ tableConfig: tableConfig.result, userConfig: dtSettings }));
@@ -379,7 +378,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       delete newUserSTSettings.currentPage;
       delete newUserSTSettings.quickSearch;
       delete newUserSTSettings.tableFilter;
-      newUserSTSettings.appliedFiltersColumnIds = [];
 
       setUserDTSettings(newUserSTSettings);
     }
@@ -519,6 +517,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     dispatch(registerConfigurableColumnsAction({ ownerId, columns }));
   }
 
+  const getCurrentFilter = (): ITableFilter[] => {
+    return state.tableFilterDirty || state.tableFilter || [];
+  }
+
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   return (
@@ -551,6 +553,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           updateLocalTableData,
           deleteRowItem,
           registerConfigurableColumns,
+          getCurrentFilter,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

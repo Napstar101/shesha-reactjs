@@ -4,7 +4,6 @@ import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models
 import { IDataTableUserConfig } from './contexts';
 import {
   IndexColumnFilterOption,
-  ITableColumn,
   ITableFilter,
   IStoredFilter,
   ITableDataResponse,
@@ -181,15 +180,6 @@ export const exportToExcelSuccessAction = createAction(
 export const exportToExcelErrorAction = createAction(
   DataTableActionEnums.ExportToExcelError,
 );
-
-export interface IInitTableConfigProps {
-  columns?: ITableColumn[];
-  tableFilter?: ITableFilter[];
-  appliedFiltersColumnIds?: string[];
-  storedFilters?: IStoredFilter[];
-  selectedPageSize?: number;
-  currentPage?: number;
-}
 
 export const updateLocalTableDataAction = createAction(
   DataTableActionEnums.UpdateLocalTableData,

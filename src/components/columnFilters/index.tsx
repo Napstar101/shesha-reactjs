@@ -9,7 +9,6 @@ export const ColumnFilters: FC<IColumnFiltersProps> = () => {
     columns,
     tableFilterDirty,
     tableFilter,
-    appliedFiltersColumnIds,
     changeFilterOption,
     changeFilter,
     toggleColumnFilter,
@@ -20,7 +19,6 @@ export const ColumnFilters: FC<IColumnFiltersProps> = () => {
     <ColumnFiltersBase
       {...{
         columns,
-        appliedFiltersColumnIds,
         changeFilterOption,
         changeFilter,
         toggleColumnFilter,

@@ -191,7 +191,6 @@ const reducer = handleActions<IDataTableStateContext, any>({
       selectedStoredFilterIds: userConfig?.selectedStoredFilterIds || [],
       storedFilters: [...(state.storedFilters || []), ...filteredFilters],
       tableSorting: userConfig?.tableSorting,
-      appliedFiltersColumnIds: userConfig?.appliedFiltersColumnIds || [],
       crudConfig: {
         createUrl,
         updateUrl,
@@ -332,7 +331,6 @@ const reducer = handleActions<IDataTableStateContext, any>({
     
     return {
       ...state,
-      appliedFiltersColumnIds,
       tableFilterDirty: filter,
     };
   },
