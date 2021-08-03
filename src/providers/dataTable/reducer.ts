@@ -169,7 +169,6 @@ const reducer = handleActions<IDataTableStateContext, any>({
         allowInherited: column.allowInherited,
         dataType: column.dataType as IndexColumnDataType,
         defaultSorting: column.defaultSorting as SortDirection,
-        allowFilter: column.isFilterable,
 
         show: column.isVisible && colVisibility,
       };
@@ -241,7 +240,6 @@ const reducer = handleActions<IDataTableStateContext, any>({
             /*
             filterOption: userColumn?.filterOption,
             filter: userColumn?.filter,
-            allowFilter: userConfig?.appliedFiltersColumnIds?.includes(column.name),
             */
             show: srvColumn.isVisible //&& colVisibility,
           };
@@ -268,7 +266,6 @@ const reducer = handleActions<IDataTableStateContext, any>({
             header: column.caption,
             isVisible: column.isVisible,
 
-            allowFilter: false,
             show: column.isVisible,
           };
         }

@@ -31,12 +31,12 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
           accessor,
           header,
           dataType,
-          allowFilter,
+          isFilterable,
           referenceListName,
           referenceListNamespace,
           entityReferenceTypeShortAlias,
         }) => {
-          if (allowFilter) {
+          if (isFilterable) {
 
             const onRemoveFilter = (idOfFilter: string) => {
               toggleColumnFilter(appliedFiltersColumnIds.filter(id => id !== idOfFilter));
@@ -67,7 +67,6 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
                   dataType,
                   filter: existingFilter?.filter,
                   filterOption: existingFilter?.filterOption,
-                  allowFilter,
                   applyFilters,
                   referenceListName,
                   referenceListNamespace,

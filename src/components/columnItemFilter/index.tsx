@@ -27,7 +27,6 @@ export const getFilterOptions = (dataType: string): IndexColumnFilterOption[] =>
 interface IColumnItemFilterProps {
   id: string;
   filterName: string;
-  allowFilter: boolean;
   accessor: string;
   referenceListName: string;
   referenceListNamespace: string;
@@ -51,14 +50,12 @@ export const ColumnItemFilter: FC<IColumnItemFilterProps> = ({
   onChangeFilterOption,
   onChangeFilter,
   filter,
-  allowFilter,
   applyFilters,
   referenceListName,
   referenceListNamespace,
   entityReferenceTypeShortAlias,
   autocompleteUrl,
 }) => {
-  if (!allowFilter) return null;
   // @ts-ignore
   const [refListItems, setReflistItems] = useState<ReferenceListItemDto[]>([]);
 

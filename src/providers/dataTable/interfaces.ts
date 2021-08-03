@@ -37,7 +37,6 @@ export interface ITableColumn {
   isHiddenByDefault: boolean;
   show?: boolean; // is visible on client
   dataType?: IndexColumnDataType;
-  allowFilter?: boolean;
   filterOption?: IndexColumnFilterOption;
   filter?: any;
   isFilterable: boolean;
