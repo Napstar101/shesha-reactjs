@@ -76,6 +76,7 @@ export const fetchTableConfigSuccessAction = createAction<IFetchTableConfigSucce
 export interface IFetchColumnsSuccessSuccessPayload {
   columns: DataTableColumnDto[];
   configurableColumns: IConfigurableColumnsBase[];
+  userConfig: IDataTableUserConfig;
 }
 export const fetchColumnsSuccessSuccessAction = createAction<IFetchColumnsSuccessSuccessPayload, IFetchColumnsSuccessSuccessPayload>(
   DataTableActionEnums.FetchColumnsSuccess,
@@ -93,7 +94,6 @@ export const setCreateOrEditRowDataAction = createAction<IEditableRowState, IEdi
 );
 
 export interface IFetchTableConfigSuccessPayload {
-  //tableConfig: ITableConfigResponse;
   tableConfig: DataTableConfigDto;
   userConfig: IDataTableUserConfig;
 }

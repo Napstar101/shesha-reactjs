@@ -184,27 +184,31 @@ const reducer = handleActions<IDataTableStateContext, any>({
       isFetchingTableData: false,
       tableConfigLoaded: true,
       columns: cols,
-      currentPage: userConfig?.currentPage || 1,
-      selectedPageSize: userConfig?.pageSize || DEFAULT_PAGE_SIZE_OPTIONS[1],
-      quickSearch: userConfig?.quickSearch,
-      tableFilter: userConfig?.tableFilter,
-      selectedStoredFilterIds: userConfig?.selectedStoredFilterIds || [],
       storedFilters: [...(state.storedFilters || []), ...filteredFilters],
-      tableSorting: userConfig?.tableSorting,
       crudConfig: {
         createUrl,
         updateUrl,
         deleteUrl,
         detailsUrl,
       },
+      // user config
+      currentPage: userConfig?.currentPage || 1,
+      selectedPageSize: userConfig?.pageSize || DEFAULT_PAGE_SIZE_OPTIONS[1],
+      quickSearch: userConfig?.quickSearch,
+      tableFilter: userConfig?.tableFilter,
+      selectedStoredFilterIds: userConfig?.selectedStoredFilterIds || [],
+      tableSorting: userConfig?.tableSorting,
     };
   },
 
   [DataTableActionEnums.FetchColumnsSuccess]: (state: IDataTableStateContext, action: ReduxActions.Action<IFetchColumnsSuccessSuccessPayload>) => {
-    const { payload: { columns, configurableColumns } } = action;
+    const { payload: { columns, configurableColumns, userConfig } } = action;
 
     const cols = configurableColumns.map<ITableColumn>(column => {
       const colProps = column as IConfigurableColumnsProps;
+      const userColumn = userConfig?.columns?.find(c => c.id === column.id);
+      const colVisibility =
+        userColumn?.show === null || userColumn?.show === undefined ? column.isVisible : userColumn?.show;
 
       switch (colProps.columnType) {
         case 'data': {
@@ -236,11 +240,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
             header: column.caption,
             isVisible: column.isVisible,
 
-            /*
-            filterOption: userColumn?.filterOption,
-            filter: userColumn?.filter,
-            */
-            show: srvColumn.isVisible //&& colVisibility,
+            show: srvColumn.isVisible && colVisibility,
           };
         }
         case 'action': {
@@ -275,6 +275,13 @@ const reducer = handleActions<IDataTableStateContext, any>({
     return {
       ...state,
       columns: cols,
+      // user config
+      currentPage: userConfig?.currentPage || 1,
+      selectedPageSize: userConfig?.pageSize || DEFAULT_PAGE_SIZE_OPTIONS[1],
+      quickSearch: userConfig?.quickSearch,
+      tableFilter: userConfig?.tableFilter,
+      selectedStoredFilterIds: userConfig?.selectedStoredFilterIds || [],
+      tableSorting: userConfig?.tableSorting,
     };
   },
 

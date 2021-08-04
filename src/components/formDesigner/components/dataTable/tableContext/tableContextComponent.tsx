@@ -75,6 +75,7 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
   return (
     <DataTableSelectionProvider>
       <DataTableProvider 
+        userConfigId={props.id}
         tableId={tableProps.id}
         entityType={entityType}
         title={label}

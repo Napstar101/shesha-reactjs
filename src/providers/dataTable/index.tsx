@@ -65,9 +65,15 @@ import { IConfigurableColumnsBase, IConfigurableColumnsProps, IDataColumnsProps 
 import { useSheshaApplication } from '../sheshaApplication';
 
 interface IDataTableProviderProps extends ICrudProps {
+  /** Table configuration Id */
   tableId?: string;
+  /** Type of entity */
   entityType?: string;
+  /** Id of the user config, is used for saving of the user settings (sorting, paging etc) to the local storage. `tableId` is used if missing  */
+  userConfigId?: string;  
+  /** Table title */
   title?: string;
+  /** Id of the parent entity */
   parentEntityId?: string;
   /**
    * @deprecated pass this on an `IndexTable` level
@@ -92,6 +98,7 @@ interface IDataTableProviderProps extends ICrudProps {
 const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   children,
   tableId,
+  userConfigId,
   title,
   parentEntityId,
   onDblClick,
@@ -158,7 +165,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     path: '/api/DataTable/GetConfiguration',
   });
 
-  const [userDTSettings, setUserDTSettings] = useLocalStorage<IDataTableUserConfig>(tableId, null);
+  const [userDTSettingsInner, setUserDTSettings] = useLocalStorage<IDataTableUserConfig>(userConfigId || tableId, null);
+  const userDTSettings = defaultFilter
+    ? { ...DEFAULT_DT_USER_CONFIG, tableFilter: defaultFilter, }
+    : userDTSettingsInner
 
   // refresh table data on change of the `dataStamp` property
   useEffect(() => {
@@ -175,18 +185,18 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   // fetch table data when config is ready or something changed (selected filter, changed current page etc.)
   useEffect(() => {
-    if (tableId){
+    if (tableId) {
       // fetch using table config
       if (configIsReady) {
         tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
         refreshTable();
       }
     } else
-    if (entityType) {
-      // fecth using entity type
-      tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
-      refreshTable();
-    }
+      if (entityType) {
+        // fecth using entity type
+        tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
+        refreshTable();
+      }
   }, [
     state.tableFilter,
     state.currentPage,
@@ -240,17 +250,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   // fetch table data when configuration is available
   useEffect(() => {
     if (!isFetchingTableConfig && tableConfig) {
-      let dtSettings = userDTSettings;
-
-      if (defaultFilter) {
-        setUserDTSettings(null);
-
-        dtSettings = {
-          ...DEFAULT_DT_USER_CONFIG,
-          tableFilter: defaultFilter,
-        };
-      }
-      dispatch(fetchTableConfigSuccessAction({ tableConfig: tableConfig.result, userConfig: dtSettings }));
+      dispatch(fetchTableConfigSuccessAction({ tableConfig: tableConfig.result, userConfig: userDTSettings }));
 
       //#region HACK - the value is not populated. I need to investigate why and remove this manual setting
       defaultFilter?.forEach(element => {
@@ -468,7 +468,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   };
 
   const getDataProperties = (columns: IConfigurableColumnsBase[]) => {
-    const dataFields = columns.filter(c => c.itemType == 'item' && 
+    const dataFields = columns.filter(c => c.itemType == 'item' &&
       (c as IConfigurableColumnsProps).columnType == 'data' &&
       Boolean((c as IDataColumnsProps).propertyName)) as IDataColumnsProps[];
 
@@ -482,9 +482,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       return;
 
     const properties = getDataProperties(configurableColumns);
-    if (properties.length == 0){
+    if (properties.length == 0) {
       // don't fetch data from server when properties is empty
-      dispatch(fetchColumnsSuccessSuccessAction({ columns: [], configurableColumns }));
+      dispatch(fetchColumnsSuccessSuccessAction({ columns: [], configurableColumns, userConfig: userDTSettings }));
       return;
     }
 
@@ -493,7 +493,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       entityType: entityType,
       properties: properties
     };
-    
+
     axios({
       method: 'POST',
       url: `${backendUrl}/api/DataTable/GetColumns`,
@@ -504,7 +504,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
         const responseData = response.data as DataTableColumnDtoListAjaxResponse;
 
         if (responseData.success) {
-          dispatch(fetchColumnsSuccessSuccessAction({ columns: responseData.result, configurableColumns }));
+          dispatch(fetchColumnsSuccessSuccessAction({ columns: responseData.result, configurableColumns, userConfig: userDTSettings }));
         }
       })
       .catch((e) => {
