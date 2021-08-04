@@ -171,6 +171,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
         defaultSorting: column.defaultSorting as SortDirection,
 
         show: column.isVisible && colVisibility,
+        allowShowHide: column.allowShowHide ?? true,
       };
     });
 
@@ -239,6 +240,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
             caption: column.caption,
             header: column.caption,
             isVisible: column.isVisible,
+            allowShowHide: true,
 
             show: srvColumn.isVisible && colVisibility,
           };
@@ -264,6 +266,7 @@ const reducer = handleActions<IDataTableStateContext, any>({
             caption: column.caption,
             header: column.caption,
             isVisible: column.isVisible,
+            allowShowHide: false,
 
             show: column.isVisible,
           };

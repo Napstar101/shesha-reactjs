@@ -10,7 +10,7 @@ interface IIndexTableColumnVisibilityToggleProps {}
 export const IndexTableColumnVisibilityToggle: FC<IIndexTableColumnVisibilityToggleProps> = () => {
   const { columns, toggleColumnVisibility } = useDataTable();
 
-  const visibleColumns = columns.filter(c => c.isVisible === true);
+  const visibleColumns = columns.filter(c => c.isVisible === true && c.allowShowHide === true);
 
   const [columnFilter, setColumnFilter] = useState('');
 
