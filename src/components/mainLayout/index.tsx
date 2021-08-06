@@ -123,6 +123,7 @@ const DefaultLayout: FC<PropsWithChildren<IMainLayoutProps>> = props => {
           overflow: 'auto',
           height: '100vh',
           position: 'fixed',
+          paddingTop: '48px',
           left: 0,
         }}
         theme={theme}
