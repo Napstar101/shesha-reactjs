@@ -175,8 +175,6 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   //#endregion
 
   useEffect(() => {
-    // init();
-
     const hasAccessToken = trySetTokenReturnHeaderIfSet();
 
     const redirect = (url: string) => {
@@ -198,6 +196,21 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       return redirect(`${URL_LOGIN_PAGE}?returnUrl=${router?.pathname}`);
     } else fetchCurrentLoginInformation({ requestOptions: { headers: hasAccessToken } });
   }, []);
+  /*
+  const isNotAuthorized = useMemo(() => {
+    return !state.loginInfo && !state.token && !isFetchingCurrentLoginInformation;
+  }, [state, isFetchingCurrentLoginInformation]);
+  
+  if (isNotAuthorized) {
+    if (whitelistUrls?.includes(router?.pathname) || router?.pathname === unauthorizedRedirectUrl) {
+      // TODO:
+    } else if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
+      // Not authorized
+      // console.log('Not authorized router :>> ', router);
+      router?.push(URL_LOGIN_PAGE);
+    }
+  }
+  */
 
   //#region  Login
   const { mutate: loginUserHttp } = useTokenAuthAuthenticate({});
@@ -290,30 +303,11 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     );
   }, [isFetchingCurrentLoginInformation, state]);
 
-  const isNotAuthorized = useMemo(() => {
-    return !state.loginInfo && !state.token && !isFetchingCurrentLoginInformation;
-  }, [state, isFetchingCurrentLoginInformation]);
-
-  // const routerTo = (path: string) => {
-  //   if (router) {
-  //     router?.push(path);
-  //   }
-  // }
 
   //#endregion
 
   if (showLoader) {
     return <OverlayLoader loading={true} loadingText="Initializing..." />;
-  }
-
-  if (isNotAuthorized) {
-    if (whitelistUrls?.includes(router?.pathname) || router?.pathname === unauthorizedRedirectUrl) {
-      // TODO:
-    } else if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
-      // Not authorized
-      // console.log('Not authorized router :>> ', router);
-      router?.push(URL_LOGIN_PAGE);
-    }
   }
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */

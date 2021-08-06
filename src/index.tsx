@@ -70,6 +70,8 @@ export * from './providers';
 export * from './components';
 export * from './hocs';
 
+export { requestHeaders } from './utils/requestHeaders';
+
 export {
   usePrevious,
   useOnlineStatus,

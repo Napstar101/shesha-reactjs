@@ -1,4 +1,5 @@
 import jseu from 'js-encoding-utils';
+import { getLocalStorage } from './storage';
 
 // Fields to remove from the AuthContext
 interface IAccessToken {
@@ -16,13 +17,13 @@ export const saveUserToken = ({ accessToken, expireInSeconds, expireOn }: IAcces
 
   const encodedToken = jseu.encoder.encodeBase64(JSON.stringify(token));
 
-  localStorage.setItem(tokenName, encodedToken);
+  getLocalStorage()?.setItem(tokenName, encodedToken);
 
   return token;
 };
 
 export const getAccessToken = (tokenName: string): IAccessToken | null => {
-  const token = localStorage.getItem(tokenName);
+  const token = getLocalStorage()?.getItem(tokenName);
 
   if (token) {
     const deserializedToken = JSON.parse(jseu.encoder.decodeBase64(token) as string) as IAccessToken;
@@ -40,8 +41,8 @@ export const getAccessToken = (tokenName: string): IAccessToken | null => {
 
 export const removeAccessToken = (tokenName: string) => {
   try {
-    localStorage.removeItem(tokenName);
-    localStorage.clear();
+    getLocalStorage()?.removeItem(tokenName);
+    getLocalStorage()?.clear();
     return true;
   } catch (error) {
     return false;

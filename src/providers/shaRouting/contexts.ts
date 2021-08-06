@@ -15,7 +15,7 @@ export interface IShaRoutingStateContext
 
 export interface IShaRoutingActionsContext
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
-  goingToRoute?: (route: string) => void;
+  goingToRoute: (route: string) => void;
 }
 
 export const SHA_ROUTING_CONTEXT_INITIAL_STATE: IShaRoutingStateContext = {

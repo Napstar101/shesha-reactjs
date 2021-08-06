@@ -2,14 +2,16 @@ import React, { FC, useEffect, ComponentType } from 'react';
 import { useAuth, useShaRouting } from '../providers';
 import { IdleTimerRenderer, OverlayLoader } from '../components';
 
-/**
- * Ensures that a particular page cannot be accessed if you're not authenticated
- */
-export const withAuth = <P extends object>(
-  Component: ComponentType<P>,
-  unauthorizedRedirectUrl = '/login',
-  landingPage = '/'
-): FC<P> => (...props) => {
+export interface IComponentWithAuthProps {
+  unauthorizedRedirectUrl: string,
+  landingPage: string,
+  children: (query: NodeJS.Dict<string | string[]>) => React.ReactElement,
+}
+export const ComponentWithAuth: FC<IComponentWithAuthProps> = (props) => {
+  const {
+    landingPage,
+    unauthorizedRedirectUrl,
+   } = props;
   const { isCheckingAuth, loginInfo, checkAuth, getAccessToken } = useAuth();
 
   const { goingToRoute, router } = useShaRouting();
@@ -24,12 +26,15 @@ export const withAuth = <P extends object>(
       redirectUrl = `/?redirectUrl=${asPath}`;
       nextRoute = asPath;
     }
-
+    
     if (shouldRedirect) {
       router?.push(`${unauthorizedRedirectUrl}${redirectUrl}`);
     }
 
-    goingToRoute(nextRoute);
+    if (goingToRoute){
+      goingToRoute(nextRoute);
+    } else
+      console.error('Router is not provided');
   };
 
   useEffect(() => {
@@ -46,13 +51,32 @@ export const withAuth = <P extends object>(
     }
   }, [isCheckingAuth]);
 
-  const _props = Array.isArray(props) ? props[0] : props;
-
   return isCheckingAuth || !loginInfo ? (
     <OverlayLoader loading={true} loadingText="Initializing..." />
   ) : (
     <IdleTimerRenderer>
-      <Component {..._props} id={router?.query?.id} />
+      {props.children(router?.query)}
     </IdleTimerRenderer>
+  );
+}
+
+/**
+ * Ensures that a particular page cannot be accessed if you're not authenticated
+ */
+export const withAuth = <P extends object>(
+  Component: ComponentType<P>,
+  unauthorizedRedirectUrl = '/login',
+  landingPage = '/'
+): FC<P> => (props) => {
+
+  const _props = Array.isArray(props) ? props[0] : props;
+  
+  return (
+    <ComponentWithAuth
+      landingPage={landingPage}
+      unauthorizedRedirectUrl={unauthorizedRedirectUrl}
+    >
+      {(query) => <Component {..._props} id={query?.id} />}
+    </ComponentWithAuth>
   );
 };
