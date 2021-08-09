@@ -261,9 +261,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         // @ts-ignore
         const clickHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, props: any) => {
           event.preventDefault();
-
-          const rowValues = props?.row?.values || {};
-
           const currentId = props?.row?.original?.Id;
 
           if (data?.type === 'update') {
@@ -304,7 +301,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           }
 
           if (data?.onClick) {
-            const result = data.onClick(rowValues.Id, table);
+            const result = data.onClick(currentId, table);
 
             if (typeof result === 'string') router?.push(result);
           }
