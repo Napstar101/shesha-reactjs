@@ -134,15 +134,12 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   //#region AuthToken
   const trySetTokenReturnHeaderIfSet = (t: string = null): any => {
     const headers: { [key: string]: string } = {};
-    const tokenObj = getAccessToken(tokenName);
 
-    let token = '';
-    if (t) {
-      token = t;
-    } else if (tokenObj?.accessToken && !state.token) {
-      token = tokenObj.accessToken;
+    let token = t || state.token;
+    if (!token){
+      const tokenObj = getAccessToken(tokenName);
+      token = tokenObj?.accessToken;
     }
-
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
       dispatch(setAccessTokenAction(token));
