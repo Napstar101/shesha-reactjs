@@ -19,6 +19,7 @@ export function authReducer(
       };
     }
     case AuthActionEnums.LoginUserRequest:
+    case AuthActionEnums.CheckAuthAction:
     case AuthActionEnums.LoginUserSuccess:
     case AuthActionEnums.LoginUserError:
 
@@ -32,11 +33,13 @@ export function authReducer(
     case AuthActionEnums.SetHeaders:
       /* NEW_ACTION_ENUM_GOES_HERE */
 
-      //#endregion
-      return {
+      const newState = {
         ...state,
         ...payload,
       };
+
+      //#endregion
+      return newState;
 
     default: {
       return state;

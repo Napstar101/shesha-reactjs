@@ -174,7 +174,9 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   // We are making sure that we only update the columns
   useEffect(() => {
-    const localPreparedColumns = columns.map<Column<any>>(columnItem => {
+    const localPreparedColumns = columns
+      .filter(({ show }) => show)
+      .map<Column<any>>(columnItem => {
       return {
         ...columnItem,
         Header: columnItem.header,
@@ -304,7 +306,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           if (data?.onClick) {
             const result = data.onClick(rowValues.Id, table);
 
-            if (typeof result === 'string') router.push(result);
+            if (typeof result === 'string') router?.push(result);
           }
         };
 

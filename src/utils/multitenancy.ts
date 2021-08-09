@@ -1,3 +1,5 @@
+import { getLocalStorage } from "./storage";
+
 const TENANT_KEY = 'TENANT';
 
 /**
@@ -6,9 +8,9 @@ const TENANT_KEY = 'TENANT';
  */
 export const setTenantId = (tenantId: string) => {
   if (tenantId) {
-    localStorage.setItem(TENANT_KEY, tenantId);
+    getLocalStorage()?.setItem(TENANT_KEY, tenantId);
   } else {
-    localStorage.removeItem(TENANT_KEY);
+    getLocalStorage()?.removeItem(TENANT_KEY);
   }
 };
 
@@ -17,7 +19,7 @@ export const setTenantId = (tenantId: string) => {
  * @returns tenantId
  */
 export const getTenantId = () => {
-  const value = localStorage.getItem(TENANT_KEY);
+  const value = getLocalStorage()?.getItem(TENANT_KEY);
   if (!value) {
     return null;
   }

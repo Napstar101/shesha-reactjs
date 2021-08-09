@@ -42,14 +42,13 @@ export interface ILoginForm extends AuthenticateModel {
 
 export interface IAuthStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
+  isCheckingAuth?: boolean;
   isFetchingUserInfo?: boolean;
   loginInfo?: UserLoginInfoDto;
   requireChangePassword?: boolean;
   loginUserSuccessful?: boolean | null;
-
   token?: string;
   headers?: IRequestHeaders;
-
   // The below field is just a placeholder for an `IFlagErrorFlags`. Whenever an error occurs, we'd like to pass errorInfo so that we can render ValidationErrors properly
   errorInfo?: IErrorInfo;
 
@@ -79,6 +78,10 @@ export interface IAuthActionsContext
   verifyOtpSuccess: (verifyOtpResPayload: ResetPasswordVerifyOtpResponse) => void;
 
   resetPasswordSuccess?: () => void;
+
+  getAccessToken?: () => any;
+
+  checkAuth?: () => void;
 
   /* NEW_ACTION_ACTION_DECLARATION_GOES_HERE */
 }

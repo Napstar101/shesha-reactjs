@@ -1,6 +1,6 @@
 import { IShaRoutingStateContext } from './contexts';
-import { ShaRoutingActionEnums } from './actions';
 import flagsReducer from '../utils/flagsReducer';
+import { RouteActionEnums } from './actions';
 
 export function shaRoutingReducer(
   incomingState: IShaRoutingStateContext,
@@ -13,15 +13,15 @@ export function shaRoutingReducer(
   //#endregion
 
   switch (type) {
-    case ShaRoutingActionEnums.DefaultAction:
-    /* NEW_ACTION_ENUM_GOES_HERE */
+    case RouteActionEnums.GoingToRoute:
+      /* NEW_ACTION_ENUM_GOES_HERE */
       return {
         ...state,
         ...payload,
       };
 
     default: {
-      throw new Error(`Unhandled action type: ${type}`);
+      return state;
     }
   }
 }
