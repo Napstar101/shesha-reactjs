@@ -1,6 +1,5 @@
 import React, { FC, useRef, useEffect, useState, Fragment, MutableRefObject, useMemo } from 'react';
 import { Column, SortingRule, TableProps } from 'react-table';
-// import 'react-table/react-table.css';
 import {
   CheckOutlined,
   CloseOutlined,
@@ -10,7 +9,7 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { IGetDataPayload, ICrudProps } from '../../providers/dataTable/interfaces';
+import { ICrudProps } from '../../providers/dataTable/interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
 import { IColumnEditFieldProps, IShaDataTableProps, ITableActionColumns } from './interfaces';
 import { renderers } from './columnRenderers';
@@ -59,17 +58,10 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   if (tableRef) tableRef.current = store;
 
-  // useEffect(() => {
-  //   console.log('IndexTable headers: ', headers);
-  // }, [headers]);
-
-  // const reactTableRef = useRef(null);
   const { router } = useShaRouting();
   const {
-    tableId,
     tableData,
     isFetchingTableData,
-    fetchTableData,
     totalPages,
     columns,
     pageSizeOptions,
@@ -81,7 +73,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     selectedRow,
     parentEntityId,
     tableSorting,
-    selectedStoredFilters,
     quickSearch,
     crudConfig,
     refreshTable,
@@ -151,7 +142,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     dblClickHandler,
     selectedRow,
     parentEntityId,
-    selectedStoredFilters,
     quickSearch,
     tableSorting,
   ]);
@@ -180,7 +170,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       return {
         ...columnItem,
         Header: columnItem.header,
-        maxWidth: undefined,
+        minWidth: columnItem.minWidth,
+        maxWidth: columnItem.maxWidth,
         width: undefined,
         resizable: true,
         Cell: props => {
@@ -206,7 +197,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
                 const { property, render } = customEditor;
 
                 if (columnItem?.id === property) {
-                  return render(editProps);
+                  return render(editProps) || null;
                 }
               }
             }
@@ -220,12 +211,12 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
               const { key, render } = customRender;
 
               if (columnItem.dataType === key || columnItem.customDataType === key) {
-                return render(props);
+                return render(props) || null;
               }
             }
           }
-
-          return props.value;
+          
+          return props.value || null;
         },
       };
     });
@@ -420,18 +411,17 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   };
   //#endregion
 
-  // @ts-ignore
-  const onFetchData = (state: any) => {
-    const payload: IGetDataPayload = {
-      id: tableId,
-      pageSize: state.pageSize,
-      currentPage: state.page + 1, // starts from 0
-      sorting: state.sorted,
-      quickSearch: state.quickSearch,
-      filter: tableFilter,
-    };
-    fetchTableData(payload);
-  };
+  // const onFetchData = (state: any) => {
+  //   const payload: IGetDataPayload = {
+  //     id: tableId,
+  //     pageSize: state.pageSize,
+  //     currentPage: state.page + 1, // starts from 0
+  //     sorting: state.sorted,
+  //     quickSearch: state.quickSearch,
+  //     filter: tableFilter,
+  //   };
+  //   fetchTableData(payload);
+  // };
 
   // sort
   const defaultSorting = tableSorting

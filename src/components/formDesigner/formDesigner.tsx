@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { SidebarContainer } from '../../components';
-import { Row, Col, Form } from 'antd';
+import { Row, Col } from 'antd';
 import { FormDto } from '../../apis/form';
 import Toolbox from './toolbox';
 import FormDesignerToolbar from './formDesignerToolbar';
@@ -25,12 +25,6 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
   const [formValues, setFormValues] = useState({});
   const { isDebug } = useForm();
 
-  const [propertiesForm] = Form.useForm(); // todo: review usage of this form
-  const { selectedComponentId } = useForm();
-  useEffect(() => {
-    propertiesForm.resetFields();
-  }, [selectedComponentId]);
-
   return (
     <div className="sha-form-designer">
       <SidebarContainer
@@ -46,8 +40,8 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
           open: fieldPropertiesOpen,
           onOpen: toggleFieldPropertiesSidebar,
           onClose: toggleFieldPropertiesSidebar,
-          title: () => <ComponentPropertiesTitle form={propertiesForm}></ComponentPropertiesTitle>,
-          content: () => <ComponentPropertiesPanel form={propertiesForm}></ComponentPropertiesPanel>,
+          title: () => <ComponentPropertiesTitle></ComponentPropertiesTitle>,
+          content: () => <ComponentPropertiesPanel></ComponentPropertiesPanel>,
           placeholder: 'Properties',
         }}
         header={() => <FormDesignerToolbar></FormDesignerToolbar>}

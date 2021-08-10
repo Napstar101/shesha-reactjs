@@ -1,9 +1,9 @@
 import { createContext } from 'react';
 import { IFlagsSetters, IFlagsState } from '../../interfaces';
+import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models';
 import {
   ITableColumn,
   IStoredFilter,
-  IQuickFilter,
   ITableFilter,
   IColumnSorting,
   IndexColumnFilterOption,
@@ -33,7 +33,6 @@ export interface IDataTableUserConfig {
 
   selectedStoredFilterIds?: string[];
   tableFilter?: ITableFilter[];
-  appliedFiltersColumnIds?: string[];
 }
 
 export const DEFAULT_DT_USER_CONFIG: IDataTableUserConfig = {
@@ -46,7 +45,6 @@ export const DEFAULT_DT_USER_CONFIG: IDataTableUserConfig = {
 export interface IDataTableStoredConfig extends IGetDataPayload {
   columns?: ITableColumn[];
   tableFilter?: ITableFilter[];
-  appliedFiltersColumnIds?: string[];
   // stored filters must also be restored from the local storage after page refresh or navigating away.
   // Selected filters are in IGetDataPayload so we just need to add the filters list
   storedFilters?: IStoredFilter[];
@@ -55,53 +53,78 @@ export interface IDataTableStoredConfig extends IGetDataPayload {
 export interface IDataTableStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   title?: string;
-  hiddenColumns?: string[];
+  /** Id of the table configuration */
   tableId?: string; // todo: move all table-specific properties to a separate sub-store
-  columns?: ITableColumn[];
-  // this one is a prop, not state
-  storedFilters?: IStoredFilter[];
+  /** Type of entity */
+  entityType?: string;
+  /** Configurable columns. Is used in pair with entityType  */
+  configurableColumns?: IConfigurableColumnsBase[],
+  /** Pre-defined stored filters. configurable in the forms designer */
   predefinedFilters?: IStoredFilter[];
-  tableData?: object[];
-  filteredColumns?: ITableColumn[];
-  isFetchingTableData?: boolean;
-  hasFetchTableDataError?: boolean;
-  columnIdToToggle?: string;
-  quickSearch?: string;
-  pageSizeOptions?: number[];
-  selectedPageSize?: number;
-  currentPage?: number;
-  totalPages?: number;
-  totalRows?: number;
-  totalRowsBeforeFilter?: number;
-  quickFilters?: IQuickFilter[];
-  appliedFiltersColumnIds?: string[];
-  hasUnappliedChanges?: boolean;
-  showSaveFilterModal?: boolean;
-  tableConfigLoaded?: boolean;
-  tableSorting?: IColumnSorting[];
-  tableFilter?: ITableFilter[];
+
+  /** table columns */
+  columns?: ITableColumn[];
+  /** stored filters */
+  storedFilters?: IStoredFilter[];
+
+  /** Id of the parent entity. Is used for child tables */
   parentEntityId?: string;
-  onDblClick?: (...params: any[]) => void;
-  onSelectRow?: (index: number, row: any) => void;
-  selectedRow?: number;
-  dataStamp?: number;
-  saveFilterModalVisible?: boolean;
-  selectedStoredFilters?: IStoredFilter[];
+
+  /** Datatable data (fetched from the back-end) */
+  tableData?: object[];
+  /** Selected page size*/
+  selectedPageSize?: number;
+  /** Current page number*/
+  currentPage?: number;
+  /** Total number of pages */
+  totalPages?: number;
+  /** Total number of rows */
+  totalRows?: number;
+  /** Total number of rows before the filtration */
+  totalRowsBeforeFilter?: number;
+
+  /** Quick search string */
+  quickSearch?: string;
+  /** Columns sorting */
+  tableSorting?: IColumnSorting[];
+
+  /** Available page sizes */
+  pageSizeOptions?: number[];
+
+  /** Advanced filter: applied values */
+  tableFilter?: ITableFilter[];
+  /** Advanced filter: current editor state*/
+  tableFilterDirty?: ITableFilter[];
+
+  /** Selected filters (stored or predefined) */
   selectedStoredFilterIds?: string[],
 
-  /**
-   * The following fields will not be persisted in the redux store
-   */
-  columnIdToRemoveFromFilter?: string;
-  filterColumnId?: string;
-  filterOptionValue?: IndexColumnFilterOption;
-  filterValue?: ColumnFilter;
-  quickFilterIdToToggle?: string;
-  filterName?: string;
+  /** index of selected row */
+  selectedRow?: number;
+  /** List of Ids of selected rows */
   selectedIds?: string[];
+
+  /** @deprecated */
+  dataStamp?: number;
+
+  /** CRUD configuration */
   crudConfig?: ITableCrudConfig;
+  /** Row data, is used for CRUD operations */
   newOrEditableRowData?: IEditableRowState;
-  idOfItemToDeleteOrUpdate?: string;
+
+  /** Dblclick handler */
+  onDblClick?: (...params: any[]) => void;
+  /** Select row handler */
+  onSelectRow?: (index: number, row: any) => void;
+
+
+  //#region todo: review!
+  isFetchingTableData?: boolean;
+  hasFetchTableDataError?: boolean;
+  tableConfigLoaded?: boolean;
+
+  saveFilterModalVisible?: boolean;
+  //#endregion
 }
 
 export interface IPublicDataTableActions {
@@ -113,13 +136,13 @@ export interface IPublicDataTableActions {
 
 export interface IDataTableActionsContext
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags>,
-    IPublicDataTableActions {
+  IPublicDataTableActions {
   fetchTableData?: (payload: IGetDataPayload) => void;
   fetchTableConfig?: (id: string) => void;
   toggleColumnVisibility?: (val: string) => void;
   setCurrentPage?: (page: number) => void;
   changePageSize?: (size: number) => void;
-  toggleColumnFilter?: (ids: string[]) => void;
+  toggleColumnFilter?: (columnIds: string[]) => void;
   removeColumnFilter?: (columnIdToRemoveFromFilter: string) => void;
   changeFilterOption?: (filterColumnId: string, filterOptionValue: IndexColumnFilterOption) => void;
   changeFilter?: (filterColumnId: string, filterValue: ColumnFilter) => void;
@@ -139,6 +162,12 @@ export interface IDataTableActionsContext
   changeSelectedIds?: (selectedIds: string[]) => void;
   updateLocalTableData?: () => void;
   deleteRowItem?: (idOfItemToDeleteOrUpdate: string) => void;
+  getCurrentFilter: () => ITableFilter[];
+
+  /**
+   * Register columns in the table context. Is used for configurable tables
+   */
+  registerConfigurableColumns: (ownerId: string, columns: IConfigurableColumnsBase[]) => void;
   /* NEW_ACTION_ACTION_DECLARATIO_GOES_HERE */
 }
 
@@ -147,36 +176,30 @@ export const DATA_TABLE_CONTEXT_INITIAL_STATE: IDataTableStateContext = {
   isInProgress: {},
   error: {},
   actioned: {},
-  hiddenColumns: [],
   tableId: null,
   columns: [],
   storedFilters: [],
   tableData: [],
-  filteredColumns: [],
   isFetchingTableData: false,
   hasFetchTableDataError: null,
-  columnIdToToggle: null,
   pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
   selectedPageSize: DEFAULT_PAGE_SIZE_OPTIONS[1],
   currentPage: 1,
   totalPages: -1,
   totalRows: null,
   totalRowsBeforeFilter: null,
-  quickFilters: [],
-  appliedFiltersColumnIds: [],
-  hasUnappliedChanges: null,
   quickSearch: null,
-  showSaveFilterModal: null,
   tableConfigLoaded: false,
   tableSorting: [],
   tableFilter: [],
   parentEntityId: null,
   saveFilterModalVisible: false,
-  selectedStoredFilters: [],
   selectedIds: [],
+  configurableColumns: [],
+  tableFilterDirty: null,
 };
 
-export interface DataTableFullInstance extends IDataTableStateContext, IDataTableActionsContext {}
+export interface DataTableFullInstance extends IDataTableStateContext, IDataTableActionsContext { }
 
 export const DataTableStateContext = createContext<IDataTableStateContext>(DATA_TABLE_CONTEXT_INITIAL_STATE);
 

@@ -1,42 +1,44 @@
 import React, { FC } from 'react';
 import { ColumnItemFilter } from '../columnItemFilter';
-import { IndexColumnFilterOption, ITableColumn, ColumnFilter } from '../../providers/dataTable/interfaces';
+import { IndexColumnFilterOption, ITableColumn, ColumnFilter, ITableFilter } from '../../providers/dataTable/interfaces';
 
 interface IColumnFiltersBaseProps {
   columns: ITableColumn[];
-  appliedFiltersColumnIds: string[];
+  currentFilter?: ITableFilter[];
   changeFilterOption: (filterColumnId: string, filterOptionValue: IndexColumnFilterOption) => void;
   changeFilter: (filterColumnId: string, filterValue: any) => void;
-  toggleColumnFilter: (ids: string[]) => void;
+  toggleColumnFilter: (columnIds: string[]) => void;
   applyFilters: () => void;
 }
 
 export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
   columns,
-  appliedFiltersColumnIds,
   changeFilterOption,
   changeFilter,
   toggleColumnFilter,
   applyFilters,
+  currentFilter,
 }) => {
+  const filterableColumns = columns.filter(c => Boolean(currentFilter.find(f => f.columnId === c.id)));
+  
   return (
     <div className="sha-column-filters">
-      {columns.map(
+      {filterableColumns.map(
         ({
           id,
           accessor,
           header,
           dataType,
-          filter,
-          filterOption,
-          allowFilter,
+          isFilterable,
           referenceListName,
           referenceListNamespace,
           entityReferenceTypeShortAlias,
         }) => {
-          if (allowFilter) {
+          if (isFilterable) {
+
             const onRemoveFilter = (idOfFilter: string) => {
-              toggleColumnFilter(appliedFiltersColumnIds.filter(id => id !== idOfFilter));
+              const newIds = currentFilter.filter(f => f.columnId !== idOfFilter).map(f => f.columnId);
+              toggleColumnFilter(newIds);
             };
 
             const onChangeFilterOption = (filterId: string, fOption: IndexColumnFilterOption) => {
@@ -50,6 +52,8 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
                 changeFilter(filterId, fltr);
               }
             };
+
+            const existingFilter = currentFilter.find(f => f.columnId === id);
             return (
               <ColumnItemFilter
                 onRemoveFilter={onRemoveFilter}
@@ -60,9 +64,8 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
                   filterName: header,
                   accessor,
                   dataType,
-                  filter,
-                  filterOption,
-                  allowFilter,
+                  filter: existingFilter?.filter,
+                  filterOption: existingFilter?.filterOption,
                   applyFilters,
                   referenceListName,
                   referenceListNamespace,

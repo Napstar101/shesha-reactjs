@@ -12,6 +12,7 @@ export type IndexColumnDataType =
   | 'refList'
   | 'multiValueRefList'
   | 'entityReference'
+  | 'action'
   | 'other';
 
 export type IndexColumnFilterOption =
@@ -36,7 +37,6 @@ export interface ITableColumn {
   isHiddenByDefault: boolean;
   show?: boolean; // is visible on client
   dataType?: IndexColumnDataType;
-  allowFilter?: boolean;
   filterOption?: IndexColumnFilterOption;
   filter?: any;
   isFilterable: boolean;
@@ -48,11 +48,14 @@ export interface ITableColumn {
   name?: string;
   caption?: string;
   allowShowHide?: boolean;
-  width?: string;
+  //width?: string;
   referenceListName?: string;
   referenceListNamespace?: string;
   entityReferenceTypeShortAlias?: string;
   allowInherited?: boolean;
+
+  minWidth?: number;
+  maxWidth?: number;
 }
 
 export interface ICustomFilterOptions {
@@ -74,6 +77,8 @@ export interface IColumnSorting {
 
 export interface IGetDataPayload {
   readonly id: string;
+  readonly entityType: string;
+  readonly properties: string[];
   readonly pageSize: number;
   readonly currentPage: number;
   readonly sorting: IColumnSorting[];

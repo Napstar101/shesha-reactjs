@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, FormInstance } from 'antd';
+import { Form, Button } from 'antd';
 import { ITableViewSelectorProps } from './models';
 import TableViewSelectorSettingsModal from './tableViewSelectorSettingsModal';
 import { QueryBuilderProvider } from '../../../../../providers';
@@ -12,12 +12,11 @@ export interface IProps {
   onSave: (model: ITableViewSelectorProps) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: ITableViewSelectorProps) => void;
-  form: FormInstance;
 }
 
 function ColumnsSettings(props: IProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [form] = Form.useForm(props.form);
+  const [form] = Form.useForm();
   const { selectedComponentRef } = useForm();
 
   const columns = (selectedComponentRef.current?.columns as ITableColumn[]) || [];

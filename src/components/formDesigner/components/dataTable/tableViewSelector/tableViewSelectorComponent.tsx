@@ -25,14 +25,13 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
       filters: [],
     };
   },
-  settingsFormFactory: ({ model, onSave, onCancel, form, onValuesChange }) => {
+  settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
     return (
       <TableViewSelectorSettings
         model={model as ITableViewSelectorProps}
         onSave={onSave}
         onCancel={onCancel}
         onValuesChange={onValuesChange}
-        form={form}
       />
     );
   },

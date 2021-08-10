@@ -1,4 +1,4 @@
-const camelCase = require('camel-case');
+const camelCase = require('camelcase');
 const STORYBOOK_BASE_URL = process.env.STORYBOOK_BASE_URL;
 const ROOT_PATH = './src/apis';
 

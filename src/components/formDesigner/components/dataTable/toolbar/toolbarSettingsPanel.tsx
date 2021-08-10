@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Button, FormInstance } from 'antd';
+import { Form, Button } from 'antd';
 import { IToolbarProps } from './models';
 import { ToolbarSettingsModal } from './toolbarSettingsModal';
 import React from 'react';
@@ -9,12 +9,11 @@ export interface IProps {
   onSave: (model: IToolbarProps) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: IToolbarProps) => void;
-  form: FormInstance;
 }
 
 function ColumnsSettings(props: IProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [form] = Form.useForm(props.form);
+  const [form] = Form.useForm();
 
   const onValuesChange = (changedValues, values) => {
     if (props.onValuesChange) props.onValuesChange(changedValues, values);

@@ -1,20 +1,18 @@
 import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { useForm } from '../../../providers/form';
 import { ISettingsFormFactory } from '../../../interfaces';
-import { Empty, FormInstance, Form } from 'antd';
+import { Empty } from 'antd';
 import { useDebouncedCallback } from 'use-debounce';
 import { FormMarkup } from '../../../providers/form/models';
 import GenericSettingsForm from '../genericSettingsForm';
 
 export interface IProps {
-  form: FormInstance;
 }
 
-export const ComponentPropertiesPanel: FC<IProps> = ({ form }) => {
-  const { updateComponent, selectedComponentId: id, getComponentModel } = useForm();
+export const ComponentPropertiesPanel: FC<IProps> = () => {
+  const { updateComponent, selectedComponentId: id, getComponentModel, getToolboxComponent } = useForm();
   // note: we have to memoize the editor to prevent unneeded re-rendering and loosing of the focus
   const [editor, setEditor] = useState<ReactNode>(<></>);
-  const { getToolboxComponent } = useForm();
 
   const debouncedSave = useDebouncedCallback(
     values => {
@@ -44,14 +42,13 @@ export const ComponentPropertiesPanel: FC<IProps> = ({ form }) => {
   };
 
   const getDefaultFactory = (markup: FormMarkup): ISettingsFormFactory => {
-    return ({ model, onSave, onCancel, onValuesChange, form }) => {
+    return ({ model, onSave, onCancel, onValuesChange }) => {
       return (
         <GenericSettingsForm
           model={model}
           onSave={onSave}
           onCancel={onCancel}
           markup={markup}
-          form={form}
           onValuesChange={onValuesChange}
         />
       );
@@ -83,7 +80,6 @@ export const ComponentPropertiesPanel: FC<IProps> = ({ form }) => {
           onSave,
           onCancel,
           onValuesChange,
-          form,
         })}
       </>
     );
@@ -98,7 +94,8 @@ export const ComponentPropertiesPanel: FC<IProps> = ({ form }) => {
     return (
       <>
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Please select a component to begin editing"></Empty>
-        <Form form={form}></Form> {/* is used just to remove warning */}
+        {/* <Form form={form}></Form>  */}
+        {/* is used just to remove warning */}
       </>
     );
 
