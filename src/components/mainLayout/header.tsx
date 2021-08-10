@@ -19,7 +19,8 @@ interface ILayoutHeaderProps {
 
 const LayoutHeader: FC<ILayoutHeaderProps> = ({ collapsed, onSearch }) => {
   const { loginInfo, logoutUser } = useAuth();
-  const { accountDropdownListItems, actions } = useSidebarMenu();
+  const sidebar = useSidebarMenu(false);
+  const { accountDropdownListItems, actions } = sidebar || {};
 
   const menu = (
     <Menu>

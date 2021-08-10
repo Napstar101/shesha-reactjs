@@ -14,7 +14,9 @@ interface ISidebarMenuProps {
 export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
   const [openedKeys, setOpenedKeys] = useLocalStorage('openedSidebarKeys', null);
   const { router } = useShaRouting();
-  const { items } = useSidebarMenu();
+  const { getItems, isItemVisible } = useSidebarMenu();
+  
+  const items = getItems();
 
   const asPath = router?.asPath;
 
@@ -23,8 +25,8 @@ export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
   const currentPath =
     asPath === '/' ? asPath : (asPath ?? '').endsWith('/') ? (asPath ?? '').substr(0, asPath.length - 1) : asPath;
 
-  const selectedItem = items.find(item => item.target === currentPath);
-  const selectedKey = selectedItem?.key;
+  const selectedItem = items.find(item => item.targetUrl === currentPath);
+  const selectedKey = selectedItem?.id;
 
   const onOpenChange = (openKeys: React.Key[]) => {
     setOpenedKeys(openKeys);
@@ -41,7 +43,7 @@ export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
       onOpenChange={onOpenChange}
       theme={theme}
     >
-      {items.map(item => renderSidebarMenuItem(item))}
+      {items.map(item => renderSidebarMenuItem({...item, isItemVisible, router}))}
     </Menu>
   );
 };

@@ -146,7 +146,7 @@ const IconPicker: FC<IIconPickerProps> = ({ selectBtnSize = 'middle', value, onI
         </div>
         <div className="sha-icon-picker-icon-list">
           {Object.keys(memoizedActiveGroup).map(groupKey => (
-            <div className="sha-icon-picker-icon-list-group">
+            <div className="sha-icon-picker-icon-list-group" key={groupKey}>
               {memoizedActiveGroup[groupKey]?.length ? (
                 <div className="sha-icon-picker-icon-list-group-header">
                   <SectionSeparator sectionName={humanizeString(groupKey)} />
@@ -154,8 +154,8 @@ const IconPicker: FC<IIconPickerProps> = ({ selectBtnSize = 'middle', value, onI
               ) : null}
 
               <div className="sha-icon-picker-icon-list-group-body">
-                {memoizedActiveGroup[groupKey].map((item: ShaIconTypes) => (
-                  <span className="sha-icon-picker-icon-list-icon" onClick={() => handleIconSelection(item)}>
+                {memoizedActiveGroup[groupKey].map((item: ShaIconTypes, index) => (
+                  <span className="sha-icon-picker-icon-list-icon" onClick={() => handleIconSelection(item)} key={index}>
                     <ShaIcon iconName={item as any} style={{ fontSize: 30, transform: 'scale(.83)' }} />
                     <span className="sha-icon-picker-icon-list-icon-name">{item}</span>
                   </span>
