@@ -13,11 +13,10 @@ import { ISidebarMenuItem } from '../../interfaces/sidebar';
 const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, any>(
   {
     [SidebarMenuActionEnums.AddItem]: (state: ISidebarMenuConfiguratorStateContext) => {
-      
       const buttonProps: ISidebarMenuItem = {
-        id: uuid(),
-        itemType: 'button',
-        name: `New item`,
+        key: uuid(),
+        type: 'button',
+        title: `New item`,
         childItems: [],
       };
 
@@ -32,7 +31,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       return {
         ...state,
         items: newItems,
-        selectedItemId: buttonProps.id,
+        selectedItemId: buttonProps.key,
       };
     },
 
@@ -42,7 +41,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
     ) => {
       const { payload } = action;
 
-      const newItems = state.items.filter(item => item.id !== payload);
+      const newItems = state.items.filter(item => item.key !== payload);
 
       return {
         ...state,
@@ -51,7 +50,10 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       };
     },
 
-    [SidebarMenuActionEnums.SelectItem]: (state: ISidebarMenuConfiguratorStateContext, action: ReduxActions.Action<string>) => {
+    [SidebarMenuActionEnums.SelectItem]: (
+      state: ISidebarMenuConfiguratorStateContext,
+      action: ReduxActions.Action<string>
+    ) => {
       const { payload } = action;
 
       return {
@@ -117,15 +119,15 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
 
     [SidebarMenuActionEnums.AddGroup]: (state: ISidebarMenuConfiguratorStateContext) => {
       const groupProps: ISidebarMenuItem = {
-        id: uuid(),
-        itemType: 'group',
-        name: `New Group`,
+        key: uuid(),
+        type: 'group',
+        title: `New Group`,
         childItems: [],
       };
       return {
         ...state,
         items: [...state.items, groupProps],
-        selectedItemId: groupProps.id,
+        selectedItemId: groupProps.key,
       };
     },
 
@@ -135,7 +137,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
     ) => {
       const { payload } = action;
 
-      const newItems = state.items.filter(item => item.id !== payload);
+      const newItems = state.items.filter(item => item.key !== payload);
 
       return {
         ...state,

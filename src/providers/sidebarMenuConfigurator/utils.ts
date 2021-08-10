@@ -1,4 +1,4 @@
-import { ISidebarMenuItem } from "../../interfaces/sidebar";
+import { ISidebarMenuItem } from '../../interfaces/sidebar';
 
 export const getItemById = (items: ISidebarMenuItem[], id: string): ISidebarMenuItem => {
   const position = getItemPositionById(items, id);
@@ -25,7 +25,7 @@ export interface IItemPosition {
 export const getItemPositionById = (items: ISidebarMenuItem[], id: string): IItemPosition => {
   for (let index = 0; index < items.length; index++) {
     const item = items[index];
-    if (item.id === id)
+    if (item.key === id)
       return {
         ownerArray: items,
         index,

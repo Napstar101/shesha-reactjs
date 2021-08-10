@@ -1,7 +1,8 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 import ConfigurableForm from '../configurableForm';
-import { ISidebarMenuItem, ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../../providers';
+import { ISidebarMenuItem } from '../../../interfaces';
+import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../../providers';
 import AuthContainer from '../../authedContainer';
 import { MainLayout } from '../..';
 
@@ -12,22 +13,19 @@ export interface IIndexPageTemplateProps {
 export const IndexPageTemplate: Story<IIndexPageTemplateProps> = props => {
   const defaultItems: ISidebarMenuItem[] = [
     {
-      id: 'item1',
-      name: 'Item 1',
-      itemType: 'button',
-      targetUrl: '/page1'
+      key: 'item1',
+      title: 'Item 1',
+      target: '/page1',
     },
     {
-      id: 'item2',
-      name: 'Item 2',
-      itemType: 'button',
-      targetUrl: '/page2'
+      key: 'item2',
+      title: 'Item 2',
+      target: '/page2',
     },
     {
-      id: 'item3',
-      name: 'Item 3',
-      itemType: 'button',
-      targetUrl: '/page3'
+      key: 'item3',
+      title: 'Item 3',
+      target: '/page3',
     },
   ];
   return (
@@ -46,9 +44,9 @@ export const IndexPageTemplate: Story<IIndexPageTemplateProps> = props => {
                   console.log({
                     msg: 'customSubmit',
                     values,
-                    actionArgs
+                    actionArgs,
                   });
-                }
+                },
               }}
             ></ConfigurableForm>
           </MainLayout>

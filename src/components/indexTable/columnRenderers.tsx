@@ -60,41 +60,40 @@ export const renderers: ITableCustomTypesRender[] = [
     render: props => {
       const getActionProps = (data): IConfigurableActionColumnsProps => {
         return data?.column?.actionProps as IConfigurableActionColumnsProps;
-      }
+      };
 
       const clickHandler = (event, data) => {
         event.stopPropagation();
 
         const actionProps = getActionProps(data);
-        if (!actionProps)
-          return;
+        if (!actionProps) return;
 
-        switch(actionProps.action) {
+        switch (actionProps.action) {
           case 'navigate': {
             if (actionProps.targetUrl) {
               const preparedUrl =
                 actionProps.targetUrl.indexOf('{{') > -1
                   ? evaluateString(actionProps.targetUrl, { selectedRow: data.row.original })
                   : actionProps.targetUrl;
-    
+
               //router?.push(preparedUrl);
               console.log('prepared url: ' + preparedUrl);
               break;
             } else console.warn('tagret Url is not specified');
-            break;            
+            break;
           }
           default: {
             console.log(`unknown action: '${actionProps.action}'`);
           }
         }
       };
-      
+
       const actionProps = getActionProps(props);
       return (
         <a className="sha-link" onClick={e => clickHandler(e, props)}>
-          {actionProps.icon && <ShaIcon iconName={actionProps.icon as IconType}/>}
+          {actionProps.icon && <ShaIcon iconName={actionProps.icon as IconType} />}
         </a>
       );
     },
-  },  
+  },
 ];

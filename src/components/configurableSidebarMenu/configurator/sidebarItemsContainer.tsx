@@ -14,22 +14,10 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
   const { updateChildItems } = useSidebarMenuConfigurator();
 
   const renderItem = (itemProps: ISidebarMenuItem, index: number) => {
-    if (itemProps.itemType === 'group') {
-      return (
-        <SidebarMenuGroup
-          key={index}
-          index={[...props.index, index]}
-          {...itemProps}>
-        </SidebarMenuGroup>
-      );
+    if (itemProps.type === 'group') {
+      return <SidebarMenuGroup key={index} index={[...props.index, index]} {...itemProps}></SidebarMenuGroup>;
     } else {
-      return (
-        <SidebarMenuItem
-          key={index}
-          index={[...props.index, index]}
-          {...itemProps}>
-        </SidebarMenuItem>
-      );
+      return <SidebarMenuItem key={index} index={[...props.index, index]} {...itemProps}></SidebarMenuItem>;
     }
   };
 
@@ -37,7 +25,7 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
     const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     if (listChanged) {
-      const newChilds = newState.map<ISidebarMenuItem>(item => item as ISidebarMenuItem);
+      const newChilds = newState.map<ISidebarMenuItem>(item => item as any);
       updateChildItems({ index: props.index, childs: newChilds });
     }
     return;
@@ -47,7 +35,7 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
     <ReactSortable
       // onStart={onDragStart}
       // onEnd={onDragEnd}
-      list={props.items}
+      list={props.items as any}
       setList={onSetList}
       fallbackOnBody={true}
       swapThreshold={0.5}
@@ -63,9 +51,7 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
       scroll={true}
       bubbleScroll={true}
     >
-      {props.items.map(
-        (item, index) => renderItem(item, index)
-      )}
+      {props.items.map((item, index) => renderItem(item, index))}
     </ReactSortable>
   );
 };
