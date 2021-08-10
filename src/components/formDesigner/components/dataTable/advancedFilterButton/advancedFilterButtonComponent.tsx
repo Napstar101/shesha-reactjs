@@ -2,14 +2,14 @@ import { FC } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { FilterOutlined } from '@ant-design/icons';
-import { Alert, Button } from 'antd';
+import { Button } from 'antd';
 import { useForm } from '../../../../../providers/form';
 import settingsFormJson from './settingsForm.json';
 import { useDataTableStore } from '../../../../../providers';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
 
-export interface IPagerComponentProps extends IConfigurableFormComponent {}
+export interface IPagerComponentProps extends IConfigurableFormComponent { }
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -37,38 +37,24 @@ const AdvancedFilterButtonComponent: IToolboxComponent<IPagerComponentProps> = {
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
 };
 
-const NotConfiguredWarning: FC = () => {
-  return <Alert className="sha-designer-warning" message="Pager is not configured properly" type="warning" />;
-};
+export const AdvancedFilterButton: FC<IPagerComponentProps> = ({ }) => {
+  const {
+    isInProgress: { isFiltering },
+    setIsInProgressFlag,
+  } = useDataTableStore();
 
-export const AdvancedFilterButton: FC<IPagerComponentProps> = ({}) => {
-  const { formMode } = useForm();
-  const isDesignMode = formMode === 'designer';
+  const startFilteringColumns = () => setIsInProgressFlag({ isFiltering: true, isSelectingColumns: false });
 
-  try {
-    const {
-      tableId,
-      isInProgress: { isFiltering },
-      setIsInProgressFlag,
-    } = useDataTableStore();
-
-    if (!tableId && isDesignMode) return <NotConfiguredWarning></NotConfiguredWarning>;
-
-    const startFilteringColumns = () => setIsInProgressFlag({ isFiltering: true, isSelectingColumns: false });
-
-    return (
-      <Button
-        type="link"
-        disabled={!!isFiltering}
-        onClick={startFilteringColumns}
-        className="extra-btn filter"
-        icon={<FilterOutlined />}
-        size="small"
-      />
-    );
-  } catch (error) {
-    return <NotConfiguredWarning></NotConfiguredWarning>;
-  }
+  return (
+    <Button
+      type="link"
+      disabled={!!isFiltering}
+      onClick={startFilteringColumns}
+      className="extra-btn filter"
+      icon={<FilterOutlined />}
+      size="small"
+    />
+  );
 };
 
 export default AdvancedFilterButtonComponent;

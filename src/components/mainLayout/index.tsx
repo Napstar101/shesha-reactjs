@@ -4,15 +4,15 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import LayoutHeader from './header';
 import { MenuTheme } from 'antd/lib/menu/MenuContext';
-import IdleTimerRenderer from '../idleTimerRenderer';
 import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
-import { /*HtmlHead,*/ IHtmlHeadProps } from '../htmlHead';
+import { IHtmlHeadProps } from '../htmlHead';
 import LayoutHeading from '../layoutHeading';
 import SidebarMenu from '../sidebarMenu';
+import { withAuth } from '../../hocs';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-interface IMenuTriggerProps {
+export interface IMenuTriggerProps {
   collapsed: boolean;
 }
 
@@ -20,7 +20,7 @@ const MenuTrigger: FC<IMenuTriggerProps> = ({ collapsed }) => {
   return <span>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>;
 };
 
-interface IMainLayoutProps extends IHtmlHeadProps {
+export interface IMainLayoutProps extends IHtmlHeadProps {
   breadcrumb?: ReactNodeOrFunc;
   style?: CSSProperties;
   headerStyle?: CSSProperties;
@@ -47,28 +47,29 @@ interface IMainLayoutProps extends IHtmlHeadProps {
   headerControls?: ReactNodeOrFunc;
 }
 
-const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
-  title,
-  // description,
-  // ogImage,
-  // url,
-  breadcrumb,
-  children,
-  style,
-  headerStyle,
-  contentStyle,
-  layoutBackgroundStyle,
-  footer,
-  footerStyle,
-  theme = 'dark',
-  heading,
-  fixHeading = false,
-  showHeading = true,
-  reference,
-  noPadding = false,
-  toolbar,
-  headerControls,
-}) => {
+const DefaultLayout: FC<PropsWithChildren<IMainLayoutProps>> = props => {
+  const {
+    title,
+    // description,
+    // ogImage,
+    // url,
+    breadcrumb,
+    children,
+    style,
+    headerStyle,
+    contentStyle,
+    layoutBackgroundStyle,
+    footer,
+    footerStyle,
+    theme = 'dark',
+    heading,
+    fixHeading = false,
+    showHeading = true,
+    reference,
+    noPadding = false,
+    toolbar,
+    headerControls,
+  } = props;
   const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
@@ -85,6 +86,7 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
 
   const renderPageControls = () => {
     if (!headerControls && !reference) return null;
+
     return (
       <span style={{ minWidth: 'fit-content', margin: '0', marginRight: '1%' }}>
         <NodeOrFuncRenderer>{headerControls || reference}</NodeOrFuncRenderer>
@@ -121,6 +123,7 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
           overflow: 'auto',
           height: '100vh',
           position: 'fixed',
+          paddingTop: '48px',
           left: 0,
         }}
         theme={theme}
@@ -163,18 +166,6 @@ const MainLayout: FC<PropsWithChildren<IMainLayoutProps>> = ({
   );
 };
 
-// Pass Wrap it around AuthProvider
-const AuthenticatedLayout: FC<IMainLayoutProps> = props => {
-  return (
-    <>
-      <MainLayout {...props} />
-    </>
-  );
-  return (
-    <IdleTimerRenderer>
-      <MainLayout {...props} />
-    </IdleTimerRenderer>
-  );
-};
+const MainLayout = withAuth(DefaultLayout);
 
-export default AuthenticatedLayout;
+export default MainLayout;

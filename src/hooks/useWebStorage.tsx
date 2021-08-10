@@ -11,7 +11,7 @@ export function useWebStorage<T>(
     let item: any;
     try {
       // Get from local storage by key
-      item = window[storage].getItem(key);
+      item = window ? window[storage].getItem(key) : undefined;
       // Parse stored json or if none return initialValue
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
@@ -29,7 +29,8 @@ export function useWebStorage<T>(
       // Save state
       setStoredValue(valueToStore);
       // Save to local storage
-      window[storage].setItem(key, JSON.stringify(valueToStore));
+      if (window)
+        window[storage].setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
       // A more advanced implementation would handle the error case
       console.log(error);

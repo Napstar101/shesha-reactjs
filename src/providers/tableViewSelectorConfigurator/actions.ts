@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions';
 import { IUpdateChildItemsPayload, IUpdateItemSettingsPayload } from './contexts';
 //import { ITableViewSelectorConfiguratorStateContext } from './contexts';
 
-export enum ToolbarActionEnums {
+export enum ColumnsActionEnums {
   AddItem = 'ADD_BUTTON',
   DeleteItem = 'DELETE_BUTTON',
 
@@ -16,22 +16,22 @@ export enum ToolbarActionEnums {
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
-export const addButtonAction = createAction(ToolbarActionEnums.AddItem);
+export const addButtonAction = createAction(ColumnsActionEnums.AddItem);
 
-export const deleteButtonAction = createAction<string, string>(ToolbarActionEnums.DeleteItem, p => p);
+export const deleteButtonAction = createAction<string, string>(ColumnsActionEnums.DeleteItem, p => p);
 
-export const addGroupAction = createAction(ToolbarActionEnums.AddGroup);
-export const deleteGroupAction = createAction<string, string>(ToolbarActionEnums.DeleteGroup, p => p);
+export const addGroupAction = createAction(ColumnsActionEnums.AddGroup);
+export const deleteGroupAction = createAction<string, string>(ColumnsActionEnums.DeleteGroup, p => p);
 
-export const selectItemAction = createAction<string, string>(ToolbarActionEnums.SelectFilter, p => p);
+export const selectItemAction = createAction<string, string>(ColumnsActionEnums.SelectFilter, p => p);
 
 export const updateChildItemsAction = createAction<IUpdateChildItemsPayload, IUpdateChildItemsPayload>(
-  ToolbarActionEnums.UpdateChildItems,
+  ColumnsActionEnums.UpdateChildItems,
   p => p
 );
 
 export const updateItemAction = createAction<IUpdateItemSettingsPayload, IUpdateItemSettingsPayload>(
-  ToolbarActionEnums.UpdateItem,
+  ColumnsActionEnums.UpdateItem,
   p => p
 );
 

@@ -1,11 +1,13 @@
 import { createAction } from 'redux-actions';
-import { IShaRoutingStateContext } from './contexts';
+import { IRoute } from '../..';
 
-export enum ShaRoutingActionEnums {
-  DefaultAction = 'DEFAULT_ACTION',
+export enum RouteActionEnums {
+  GoingToRoute = 'GOING_TO_ROUTE',
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
-export const defaultAction = createAction<IShaRoutingStateContext>(ShaRoutingActionEnums.DefaultAction, () => ({}));
+export const goingToRouteAction = createAction<IRoute, string>(RouteActionEnums.GoingToRoute, nextRoute => ({
+  nextRoute,
+}));
 
 /* NEW_ACTION_GOES_HERE */

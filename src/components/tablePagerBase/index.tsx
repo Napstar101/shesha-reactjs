@@ -45,7 +45,7 @@ export const TablePagerBase: FC<ITablePagerBaseProps> = ({
       total={totalRows}
       pageSizeOptions={(pageSizeOptions || []).map(s => `${s}`)}
       current={currentPage}
-      defaultPageSize={selectedPageSize}
+      pageSize={selectedPageSize}
       showSizeChanger
       onChange={onPageNumberChange}
       onShowSizeChange={onShowSizeChange}

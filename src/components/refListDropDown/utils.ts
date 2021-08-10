@@ -56,7 +56,7 @@ export const saveListItems = (listName: string, listNamespace: string, reflListI
           }
         });
 
-        localStorage.setItem(CACHED_REF_LIST_ITEMS, JSON.stringify(cachedListItems));
+        localStorage?.setItem(CACHED_REF_LIST_ITEMS, JSON.stringify(cachedListItems));
       }
     } else {
       cachedListItems?.push({
@@ -69,7 +69,7 @@ export const saveListItems = (listName: string, listNamespace: string, reflListI
         ],
       });
 
-      localStorage.setItem(CACHED_REF_LIST_ITEMS, JSON.stringify(cachedListItems));
+      localStorage?.setItem(CACHED_REF_LIST_ITEMS, JSON.stringify(cachedListItems));
     }
   } else {
     // Create a new list and save it in the localStorage
@@ -80,7 +80,7 @@ export const saveListItems = (listName: string, listNamespace: string, reflListI
       },
     ];
 
-    localStorage.setItem(CACHED_REF_LIST_ITEMS, JSON.stringify(items));
+    localStorage?.setItem(CACHED_REF_LIST_ITEMS, JSON.stringify(items));
   }
 };
 

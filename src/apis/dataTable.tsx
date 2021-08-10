@@ -27,6 +27,10 @@ export interface DataTableColumnDto {
    * Caption
    */
   caption?: string | null;
+  /**
+   * Description
+   */
+  description?: string | null;
   allowShowHide?: boolean;
   /**
    * Data type
@@ -184,6 +188,29 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
+/**
+ * Get datatable columns input. Is used for tables with configurable columns
+ */
+export interface GetColumnsInput {
+  /**
+   * Type of entity
+   */
+  entityType: string;
+  /**
+   * List of property names
+   */
+  properties?: string[] | null;
+}
+
+export interface DataTableColumnDtoListAjaxResponse {
+  targetUrl?: string | null;
+  success?: boolean;
+  error?: ErrorInfo;
+  unAuthorizedRequest?: boolean;
+  __abp?: boolean;
+  result?: DataTableColumnDto[] | null;
+}
+
 export interface ColumnSortingDto {
   id?: string | null;
   desc?: boolean;
@@ -234,9 +261,13 @@ export interface SelectedStoredFilterDto {
  */
 export interface DataTableGetDataInput {
   /**
-   * Data table ID
+   * Data table configuration ID
    */
   id?: string | null;
+  /**
+   * Type of entity
+   */
+  entityType?: string | null;
   /**
    * Page size
    */
@@ -269,6 +300,10 @@ export interface DataTableGetDataInput {
    * Selected filters
    */
   selectedFilters?: SelectedStoredFilterDto[] | null;
+  /**
+   * List of properties to fetch, is used in pair with <seealso cref="P:Shesha.Web.DataTable.DataTableGetDataInput.EntityType" />
+   */
+  properties?: string[] | null;
 }
 
 /**
@@ -314,10 +349,6 @@ export interface FileStreamResultAjaxResponse {
 
 export interface DataTableGetConfigurationQueryParams {
   id?: string | null;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type DataTableGetConfigurationProps = Omit<
@@ -349,15 +380,41 @@ export const useDataTableGetConfiguration = (props: UseDataTableGetConfiguration
     props
   );
 
-export interface DataTableGetDataQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type DataTableGetColumnsProps = Omit<
+  MutateProps<DataTableColumnDtoListAjaxResponse, AjaxResponseBase, void, GetColumnsInput>,
+  'path' | 'verb'
+>;
+
+/**
+ * Returns datatable columns for configurable table. Accepts type of model(entity) and list of properties.
+ * Columns configuration is merged on the client side with configurable values
+ */
+export const DataTableGetColumns = (props: DataTableGetColumnsProps) => (
+  <Mutate<DataTableColumnDtoListAjaxResponse, AjaxResponseBase, void, GetColumnsInput>
+    verb="POST"
+    path={`/api/DataTable/GetColumns`}
+    {...props}
+  />
+);
+
+export type UseDataTableGetColumnsProps = Omit<
+  UseMutateProps<DataTableColumnDtoListAjaxResponse, void, GetColumnsInput>,
+  'path' | 'verb'
+>;
+
+/**
+ * Returns datatable columns for configurable table. Accepts type of model(entity) and list of properties.
+ * Columns configuration is merged on the client side with configurable values
+ */
+export const useDataTableGetColumns = (props: UseDataTableGetColumnsProps) =>
+  useMutate<DataTableColumnDtoListAjaxResponse, AjaxResponseBase, void, GetColumnsInput>(
+    'POST',
+    `/api/DataTable/GetColumns`,
+    props
+  );
 
 export type DataTableGetDataProps = Omit<
-  MutateProps<DataTableDataAjaxResponse, AjaxResponseBase, DataTableGetDataQueryParams, DataTableGetDataInput>,
+  MutateProps<DataTableDataAjaxResponse, AjaxResponseBase, void, DataTableGetDataInput>,
   'path' | 'verb'
 >;
 
@@ -365,7 +422,7 @@ export type DataTableGetDataProps = Omit<
  * Returns data for the DateTable control
  */
 export const DataTableGetData = (props: DataTableGetDataProps) => (
-  <Mutate<DataTableDataAjaxResponse, AjaxResponseBase, DataTableGetDataQueryParams, DataTableGetDataInput>
+  <Mutate<DataTableDataAjaxResponse, AjaxResponseBase, void, DataTableGetDataInput>
     verb="POST"
     path={`/api/DataTable/GetData`}
     {...props}
@@ -373,7 +430,7 @@ export const DataTableGetData = (props: DataTableGetDataProps) => (
 );
 
 export type UseDataTableGetDataProps = Omit<
-  UseMutateProps<DataTableDataAjaxResponse, DataTableGetDataQueryParams, DataTableGetDataInput>,
+  UseMutateProps<DataTableDataAjaxResponse, void, DataTableGetDataInput>,
   'path' | 'verb'
 >;
 
@@ -381,21 +438,14 @@ export type UseDataTableGetDataProps = Omit<
  * Returns data for the DateTable control
  */
 export const useDataTableGetData = (props: UseDataTableGetDataProps) =>
-  useMutate<DataTableDataAjaxResponse, AjaxResponseBase, DataTableGetDataQueryParams, DataTableGetDataInput>(
+  useMutate<DataTableDataAjaxResponse, AjaxResponseBase, void, DataTableGetDataInput>(
     'POST',
     `/api/DataTable/GetData`,
     props
   );
 
-export interface DataTableExportToExcelQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type DataTableExportToExcelProps = Omit<
-  MutateProps<FileStreamResultAjaxResponse, AjaxResponseBase, DataTableExportToExcelQueryParams, DataTableGetDataInput>,
+  MutateProps<FileStreamResultAjaxResponse, AjaxResponseBase, void, DataTableGetDataInput>,
   'path' | 'verb'
 >;
 
@@ -403,7 +453,7 @@ export type DataTableExportToExcelProps = Omit<
  * Exports DataTable to Excel
  */
 export const DataTableExportToExcel = (props: DataTableExportToExcelProps) => (
-  <Mutate<FileStreamResultAjaxResponse, AjaxResponseBase, DataTableExportToExcelQueryParams, DataTableGetDataInput>
+  <Mutate<FileStreamResultAjaxResponse, AjaxResponseBase, void, DataTableGetDataInput>
     verb="POST"
     path={`/api/DataTable/ExportToExcel`}
     {...props}
@@ -411,7 +461,7 @@ export const DataTableExportToExcel = (props: DataTableExportToExcelProps) => (
 );
 
 export type UseDataTableExportToExcelProps = Omit<
-  UseMutateProps<FileStreamResultAjaxResponse, DataTableExportToExcelQueryParams, DataTableGetDataInput>,
+  UseMutateProps<FileStreamResultAjaxResponse, void, DataTableGetDataInput>,
   'path' | 'verb'
 >;
 
@@ -419,7 +469,7 @@ export type UseDataTableExportToExcelProps = Omit<
  * Exports DataTable to Excel
  */
 export const useDataTableExportToExcel = (props: UseDataTableExportToExcelProps) =>
-  useMutate<FileStreamResultAjaxResponse, AjaxResponseBase, DataTableExportToExcelQueryParams, DataTableGetDataInput>(
+  useMutate<FileStreamResultAjaxResponse, AjaxResponseBase, void, DataTableGetDataInput>(
     'POST',
     `/api/DataTable/ExportToExcel`,
     props

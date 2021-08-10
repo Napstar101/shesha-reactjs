@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, FormInstance } from 'antd';
+import { Form } from 'antd';
 import { ConfigurableForm } from '../../components';
 import { IConfigurableFormComponent, FormMarkup } from '../../providers/form/models';
 
@@ -9,7 +9,6 @@ export interface IProps<TModel extends IConfigurableFormComponent> {
   onSave: (model: TModel) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: TModel) => void;
-  form: FormInstance;
 }
 
 function Settings<TModel extends IConfigurableFormComponent>({
@@ -17,9 +16,8 @@ function Settings<TModel extends IConfigurableFormComponent>({
   model,
   markup,
   onValuesChange,
-  form: providedForm,
 }: IProps<TModel>) {
-  const [form] = Form.useForm(providedForm);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     form.resetFields();

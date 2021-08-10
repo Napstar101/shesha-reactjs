@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, FormInstance, InputNumber } from 'antd';
+import { Form, Input, InputNumber } from 'antd';
 import { IColumnsComponentProps } from './columns';
 import ColumnsList from './columnsList';
 
@@ -8,11 +8,10 @@ export interface IProps {
   onSave: (model: IColumnsComponentProps) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: IColumnsComponentProps) => void;
-  form: FormInstance;
 }
 
-function ColumnsSettings({ onSave, model, onValuesChange, form: providedForm }: IProps) {
-  const [form] = Form.useForm(providedForm);
+function ColumnsSettings({ onSave, model, onValuesChange }: IProps) {
+  const [form] = Form.useForm();
 
   return (
     <Form form={form} onFinish={onSave} layout="vertical" onValuesChange={onValuesChange}>

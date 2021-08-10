@@ -8,12 +8,13 @@ import { useDataTableStore } from '../../providers';
 interface ISimpleIndexTableColumnFiltersProps {}
 
 export const IndexTableColumnFilters: FC<ISimpleIndexTableColumnFiltersProps> = () => {
-  const { appliedFiltersColumnIds } = useDataTableStore();
+  const { getCurrentFilter } = useDataTableStore();
+  
   return (
     <div className="sha-index-table-column-filters">
       <ColumnsFilterSelect />
 
-      {appliedFiltersColumnIds.length > 0 && <Divider />}
+      {getCurrentFilter().length > 0 && <Divider />}
 
       <ColumnFilters />
 
