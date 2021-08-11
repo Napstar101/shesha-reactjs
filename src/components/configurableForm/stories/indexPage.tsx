@@ -5,6 +5,7 @@ import { ISidebarMenuItem } from '../../../interfaces';
 import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../../providers';
 import AuthContainer from '../../authedContainer';
 import { MainLayout } from '../..';
+import { AppstoreOutlined, PieChartOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
 
 export interface IIndexPageTemplateProps {
   backendUrl: string;
@@ -13,19 +14,39 @@ export interface IIndexPageTemplateProps {
 export const IndexPageTemplate: Story<IIndexPageTemplateProps> = props => {
   const defaultItems: ISidebarMenuItem[] = [
     {
-      key: 'item1',
-      title: 'Item 1',
-      target: '/page1',
+      id: 'generalDashboard',
+      itemType: 'button',
+      buttonAction: 'navigate',
+      title: 'General Dashboard',
+      target: '/',
+      icon: 'PieChartOutlined',
     },
     {
-      key: 'item2',
-      title: 'Item 2',
-      target: '/page2',
-    },
-    {
-      key: 'item3',
-      title: 'Item 3',
-      target: '/page3',
+      id: 'administrationGroup',
+      itemType: 'group',
+      title: 'Administration',
+      icon: 'AppstoreOutlined',
+      childItems: [
+        {
+          id: 'users',
+          itemType: 'button',
+          buttonAction: 'navigate',
+          title: 'User Management',
+          target: '/users',
+          icon: 'UserOutlined',
+          //requiredPermissions: ['users'],
+        },
+        {
+          id: 'maintenance',
+          itemType: 'button',
+          buttonAction: 'navigate',
+          title: 'Maintenance',
+          target: '/maintenance',
+          icon: 'ToolOutlined',
+          requiredPermissions: ['maintenance'],
+          //isHidden: true, // remove after page fix
+        },
+      ],
     },
   ];
   return (

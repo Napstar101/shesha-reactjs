@@ -34,7 +34,7 @@
         {
             "id": "5d4d56fb-d7f8-4835-a529-c4fa93f3596d",
             "type": "textField",
-            "name": "name",
+            "name": "title",
             "label": "Title",
             "labelAlign": "right",
             "parentId": "root",
@@ -151,7 +151,7 @@
                         {
                             "id": "62ef6e50-8762-476a-8f52-1376d7b8006a",
                             "type": "textField",
-                            "name": "targetUrl",
+                            "name": "target",
                             "label": "Target Url",
                             "labelAlign": "right",
                             "parentId": "75407830-901f-41a0-bfa0-da18f043b299",
@@ -339,7 +339,7 @@
         {
             "id": "26c68b22-3211-475d-91e1-0745a4447329",
             "type": "textField",
-            "name": "permissions",
+            "name": "requiredPermissions",
             "label": "Permissions",
             "labelAlign": "right",
             "parentId": "root",

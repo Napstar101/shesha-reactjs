@@ -7,8 +7,9 @@ import { MenuTheme } from 'antd/lib/menu/MenuContext';
 import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
 import { IHtmlHeadProps } from '../htmlHead';
 import LayoutHeading from '../layoutHeading';
-import SidebarMenu from '../sidebarMenu';
 import { withAuth } from '../../hocs';
+import { useSidebarMenuDefaults } from '../../providers/sidebarMenu';
+import ConfigurableSidebarMenu from '../configurableSidebarMenu';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -71,6 +72,8 @@ const DefaultLayout: FC<PropsWithChildren<IMainLayoutProps>> = props => {
     headerControls,
   } = props;
   const [collapsed, setCollapsed] = useState(true);
+  const sidebarDefaults = useSidebarMenuDefaults();
+  const sidebarDefaultItems = sidebarDefaults?.items || [];  
 
   useEffect(() => {
     document.title = title || '';
@@ -128,7 +131,11 @@ const DefaultLayout: FC<PropsWithChildren<IMainLayoutProps>> = props => {
         }}
         theme={theme}
       >
-        <SidebarMenu theme={theme} />
+        <ConfigurableSidebarMenu
+          theme={theme}
+          id="9362F11A-EA9C-4152-9855-9516123467F7"
+          defaultSettings={{ items: sidebarDefaultItems }}
+        />
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={headerStyle}>

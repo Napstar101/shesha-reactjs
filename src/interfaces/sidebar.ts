@@ -4,13 +4,15 @@ export type SidebarItemType = 'button' | 'separator' | 'group';
 export type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction';
 
 export interface ISidebarMenuItem {
-  key: string;
+  id: string;
   title: string;
-  icon?: ReactNode;
-  target?: string;
-  isHidden?: boolean;
-  childItems?: ISidebarMenuItem[];
   tooltip?: ReactNode | string;
-  type?: string;
+  itemType: SidebarItemType;
+  buttonAction?: ButtonActionType;
+  target?: string;
+  icon?: ReactNode | string;
+  isHidden?: boolean;
+  visibility?: string;
   requiredPermissions?: string[];
+  childItems?: ISidebarMenuItem[];
 }

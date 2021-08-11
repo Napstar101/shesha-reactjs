@@ -22,14 +22,20 @@ export interface IProps extends ISidebarMenuItem {
 
 // Note: Have to use function instead of react control. It's a known issue, you can only pass MenuItem or MenuGroup as Menu's children. See https://github.com/ant-design/ant-design/issues/4853
 export const renderSidebarMenuItem = (props: IProps) => {
-  const { key, title, icon, childItems, target, isSubMenu } = props;
+  const { id: key, title: title, icon, childItems, target: target, isSubMenu } = props;
   const asPath = props.router?.asPath;
 
   if (!props.isItemVisible(props)) return null;
 
-  const renderedIcon = icon ? <ShaIcon iconName={icon as IconType}></ShaIcon> : null;
+  const renderedIcon = icon 
+    ? typeof(icon) === 'string'
+      ? <ShaIcon iconName={icon as IconType}></ShaIcon> 
+      : React.isValidElement(icon)
+        ? icon
+        : null
+    : null;
 
-  if (childItems)
+  if (childItems && childItems.length > 0)
     return (
       <SubMenu
         key={key}

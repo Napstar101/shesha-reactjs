@@ -13,8 +13,15 @@ export interface IIconPickerProps extends IconBaseProps {
 const ShaIcon: FC<IIconPickerProps> = ({ iconName = 'WarningFilled', ...props }) => {
   const icons = require('@ant-design/icons');
 
-  const IconComponent = icons[iconName];
+  if (!icons[iconName])
+  {
+    console.log('icon not found:');
+    console.log(iconName);
+    return null;
+  }
 
+  const IconComponent = icons[iconName];
+  
   return <IconComponent {...props} />;
 };
 

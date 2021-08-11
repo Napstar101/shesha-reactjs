@@ -25,7 +25,7 @@ export interface IItemPosition {
 export const getItemPositionById = (items: ISidebarMenuItem[], id: string): IItemPosition => {
   for (let index = 0; index < items.length; index++) {
     const item = items[index];
-    if (item.key === id)
+    if (item.id === id)
       return {
         ownerArray: items,
         index,

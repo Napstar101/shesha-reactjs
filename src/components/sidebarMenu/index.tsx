@@ -26,7 +26,7 @@ export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
     asPath === '/' ? asPath : (asPath ?? '').endsWith('/') ? (asPath ?? '').substr(0, asPath.length - 1) : asPath;
 
   const selectedItem = items.find(item => item.target === currentPath);
-  const selectedKey = selectedItem?.key;
+  const selectedKey = selectedItem?.id;
 
   const onOpenChange = (openKeys: React.Key[]) => {
     setOpenedKeys(openKeys);

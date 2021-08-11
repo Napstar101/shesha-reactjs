@@ -13,23 +13,11 @@ export interface IOverlayProps {
   children?: React.ReactElement;
 }
 
-/*
-  <Component
-    defaultSettings={...}
-    id="myid"
-  >
-    {(settings) => {
-
-    }}
-  </Component>
-*/
-
 export type ConfigurableComponentChildrenFn<TSettings = any> = (
   componentState: IComponentStateProps<TSettings>,
   BlockOverlay: (props: IOverlayProps) => React.ReactElement
 ) => React.ReactNode | null;
 
-//export type SettingsEditorRenderer<TSettings = any> = (settings: TSettings, onSave: (settings: TSettings) => void) => ReactNode;
 export interface ISettingsEditorProps<TSettings = any> {
   settings: TSettings,
   onSave: (settings: TSettings) => void,

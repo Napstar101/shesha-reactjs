@@ -14,8 +14,8 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
   {
     [SidebarMenuActionEnums.AddItem]: (state: ISidebarMenuConfiguratorStateContext) => {
       const buttonProps: ISidebarMenuItem = {
-        key: uuid(),
-        type: 'button',
+        id: uuid(),
+        itemType: 'button',
         title: `New item`,
         childItems: [],
       };
@@ -31,7 +31,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       return {
         ...state,
         items: newItems,
-        selectedItemId: buttonProps.key,
+        selectedItemId: buttonProps.id,
       };
     },
 
@@ -41,7 +41,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
     ) => {
       const { payload } = action;
 
-      const newItems = state.items.filter(item => item.key !== payload);
+      const newItems = state.items.filter(item => item.id !== payload);
 
       return {
         ...state,
@@ -119,15 +119,15 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
 
     [SidebarMenuActionEnums.AddGroup]: (state: ISidebarMenuConfiguratorStateContext) => {
       const groupProps: ISidebarMenuItem = {
-        key: uuid(),
-        type: 'group',
+        id: uuid(),
+        itemType: 'group',
         title: `New Group`,
         childItems: [],
       };
       return {
         ...state,
         items: [...state.items, groupProps],
-        selectedItemId: groupProps.key,
+        selectedItemId: groupProps.id,
       };
     },
 
@@ -137,7 +137,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
     ) => {
       const { payload } = action;
 
-      const newItems = state.items.filter(item => item.key !== payload);
+      const newItems = state.items.filter(item => item.id !== payload);
 
       return {
         ...state,

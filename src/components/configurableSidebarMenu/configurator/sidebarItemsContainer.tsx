@@ -14,10 +14,10 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
   const { updateChildItems } = useSidebarMenuConfigurator();
 
   const renderItem = (itemProps: ISidebarMenuItem, index: number) => {
-    if (itemProps.type === 'group') {
-      return <SidebarMenuGroup key={index} index={[...props.index, index]} {...itemProps}></SidebarMenuGroup>;
+    if (itemProps.itemType === 'group') {
+      return <SidebarMenuGroup id={index} index={[...props.index, index]} {...itemProps}></SidebarMenuGroup>;
     } else {
-      return <SidebarMenuItem key={index} index={[...props.index, index]} {...itemProps}></SidebarMenuItem>;
+      return <SidebarMenuItem id={index} index={[...props.index, index]} {...itemProps}></SidebarMenuItem>;
     }
   };
 

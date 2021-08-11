@@ -15,17 +15,26 @@ export const SidebarMenuItem: FC<IProps> = props => {
   const { deleteItem, selectedItemId } = useSidebarMenuConfigurator();
 
   const onDeleteClick = () => {
-    deleteItem(props.key);
+    deleteItem(props.id);
   };
 
   let classes = ['sha-sidebar-item'];
-  if (selectedItemId === props.key) classes.push('selected');
+  if (selectedItemId === props.id) classes.push('selected');
+
+  const { icon } = props;
+  const renderedIcon = icon
+    ? typeof (icon) === 'string'
+      ? <ShaIcon iconName={icon as IconType}></ShaIcon>
+      : React.isValidElement(icon)
+        ? icon
+        : null
+    : null;
 
   return (
     <div className={classes.reduce((a, c) => a + ' ' + c)}>
       <div className="sha-sidebar-item-header">
-        <DragHandle id={props.key}></DragHandle>
-        {props.icon && <ShaIcon iconName={props.icon as IconType} />}
+        <DragHandle id={props.id}></DragHandle>
+        {renderedIcon}
         <span className="sha-sidebar-item-name">{props.title}</span>
         {props.tooltip && (
           <Tooltip title={props.tooltip}>
