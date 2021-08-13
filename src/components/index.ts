@@ -3,6 +3,8 @@ export { default as ConfigurableLogo } from './configurableLogo';
 export { default as GenericCreateModal } from './crudViews/createModal';
 export { default as GenericEditModal } from './crudViews/editModal';
 export { default as GenericDetailsPage } from './crudViews/detailsPage';
+export { default as GenericDualEditDetailsPage } from './crudViews/dualEditDetailsPage';
+
 export { default as GenericEditPage } from './crudViews/editPage';
 export { default as GenericIndexPage } from './crudViews/indexPage';
 export { default as GenericCreatePage } from './crudViews/createPage';
