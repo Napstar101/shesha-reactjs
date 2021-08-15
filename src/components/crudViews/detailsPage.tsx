@@ -8,6 +8,7 @@ import { FormMarkup, IFormActions } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
 import { CommonCrudHandles } from './interfaces';
+import { DEFAULT_FILTERS, filterGenericModelData, IGenericFormFilter } from './utils';
 
 export interface IDetailsPageProps {
   /**
@@ -74,6 +75,11 @@ export interface IDetailsPageProps {
    * Form Values. If passed, model will be overridden to FormValues, m.
    */
   formValues?: any;
+
+  /**
+   * Handles Form Filters. Filters initial model
+   */
+  formFilters?: IGenericFormFilter;
 }
 
 const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, forwardedRef) => {
@@ -102,7 +108,9 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
     }
   }, [props?.formValues]);
 
-  const model = serverData?.result;
+  const filters = props.formFilters || DEFAULT_FILTERS;
+
+  const model = filterGenericModelData(serverData?.result, filters) as any;
 
   const { formItemLayout } = useUi();
 

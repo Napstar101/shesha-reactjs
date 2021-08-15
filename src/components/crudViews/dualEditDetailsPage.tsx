@@ -9,6 +9,7 @@ import { useShaRouting } from '../../providers/shaRouting';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { CommonCrudHandles } from './interfaces';
 import { IDataFetcher, IDataMutator, UseGenericGetProps } from './models';
+import { DEFAULT_FILTERS, filterGenericModelData, IGenericFormFilter } from './utils';
 
 export type DualEditDetailsFormType = 'Edit' | 'Details';
 
@@ -97,6 +98,11 @@ export interface IDualEditDetailsPageProps {
    * Handles Close event. Only applicable if formType is Edit
    */
   onClose?: (form?: FormInstance) => void;
+
+  /**
+   * Handles Form Filters. Filters initial model
+   */
+  formFilters?: IGenericFormFilter;
 }
 
 const DualEditDetailsPage = forwardRef<CommonCrudHandles, IDualEditDetailsPageProps>((props, forwardedRef) => {
@@ -140,7 +146,9 @@ const DualEditDetailsPage = forwardRef<CommonCrudHandles, IDualEditDetailsPagePr
     }
   }, [loading]);
 
-  const model = serverData?.result;
+  const filters = props.formFilters || DEFAULT_FILTERS;
+
+  const model = filterGenericModelData(serverData?.result, filters) as any;
 
   const renderTitle = () => {
     const { title } = props;
