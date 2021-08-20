@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Button, Form, Modal, Spin } from 'antd';
 import { ValidationErrors, ConfigurableForm } from '../';
 import { FormInstance } from 'antd/lib/form';
@@ -42,7 +42,15 @@ interface IModalProps {
    */
   prepareValues?: (values: any) => any;
 
+  /**
+   * A boolean value that allows multiple records to be save on form
+   */
   keepModalOpenAfterSave?: boolean;
+
+  /**
+   * Allows changing of caption of the Save/Submit in the modal
+   */
+  saveCaption?: string | ReactNode;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -54,6 +62,7 @@ const ModalForm: FC<IModalProps> = ({
   formPath,
   prepareValues,
   keepModalOpenAfterSave,
+  saveCaption = 'Save',
 }) => {
   const { mutate: save, error, loading } = updater({});
 
@@ -98,7 +107,7 @@ const ModalForm: FC<IModalProps> = ({
         <div>
           <Button onClick={handleCancel}>Cancel</Button>
           <Button type="primary" onClick={onSubmit}>
-            Save
+            {saveCaption}
           </Button>
           {keepModalOpenAfterSave && (
             <Button type="primary" onClick={onSubmitKeepOpen}>
