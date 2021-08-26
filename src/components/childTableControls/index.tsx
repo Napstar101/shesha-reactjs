@@ -6,12 +6,13 @@ import GlobalTableFilter from '../globalTableFilter';
 import TablePager from '../tablePager';
 import { IToolbarItem } from '../../interfaces/toolbar';
 import { v4 as uuid } from 'uuid';
+import { ICrudState } from '../../providers/dataTable/interfaces';
 
 export interface IChildTableControlsProps {
   header?: string;
   showRefreshBtn?: boolean;
   showPagination?: boolean;
-  crud?: boolean;
+  crud?: boolean | ICrudState;
   toolbarItems?: IToolbarItem[];
 }
 
