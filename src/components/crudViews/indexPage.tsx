@@ -62,6 +62,11 @@ export interface IIndexPageProps {
    * The props for the modal used to add an entity
    */
   createModalProps?: ICreateModalProps | null;
+
+  /**
+   * A callback for when the file export has succeeded
+   */
+  onExportSuccess?: () => void;
 }
 
 const TableWithControls: FC<IIndexPageProps> = props => {

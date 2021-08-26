@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { DataTableConfigDto } from '../../apis/dataTable';
 import { IFlagsSetters, IFlagsState } from '../../interfaces';
 import { IConfigurableColumnsBase } from '../datatableColumnsConfigurator/models';
 import {
@@ -58,7 +59,7 @@ export interface IDataTableStateContext
   /** Type of entity */
   entityType?: string;
   /** Configurable columns. Is used in pair with entityType  */
-  configurableColumns?: IConfigurableColumnsBase[],
+  configurableColumns?: IConfigurableColumnsBase[];
   /** Pre-defined stored filters. configurable in the forms designer */
   predefinedFilters?: IStoredFilter[];
 
@@ -97,7 +98,7 @@ export interface IDataTableStateContext
   tableFilterDirty?: ITableFilter[];
 
   /** Selected filters (stored or predefined) */
-  selectedStoredFilterIds?: string[],
+  selectedStoredFilterIds?: string[];
 
   /** index of selected row */
   selectedRow?: number;
@@ -117,7 +118,6 @@ export interface IDataTableStateContext
   /** Select row handler */
   onSelectRow?: (index: number, row: any) => void;
 
-
   //#region todo: review!
   isFetchingTableData?: boolean;
   hasFetchTableDataError?: boolean;
@@ -136,7 +136,7 @@ export interface IPublicDataTableActions {
 
 export interface IDataTableActionsContext
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags>,
-  IPublicDataTableActions {
+    IPublicDataTableActions {
   fetchTableData?: (payload: IGetDataPayload) => void;
   fetchTableConfig?: (id: string) => void;
   toggleColumnVisibility?: (val: string) => void;
@@ -199,8 +199,18 @@ export const DATA_TABLE_CONTEXT_INITIAL_STATE: IDataTableStateContext = {
   tableFilterDirty: null,
 };
 
-export interface DataTableFullInstance extends IDataTableStateContext, IDataTableActionsContext { }
+export interface DataTableFullInstance extends IDataTableStateContext, IDataTableActionsContext {}
 
 export const DataTableStateContext = createContext<IDataTableStateContext>(DATA_TABLE_CONTEXT_INITIAL_STATE);
 
 export const DataTableActionsContext = createContext<IDataTableActionsContext>(undefined);
+
+export const DEFAULT_TABLE_CONFIG_RESULT: DataTableConfigDto = {
+  pageSize: 10,
+  columns: [],
+  storedFilters: [],
+  createUrl: null,
+  detailsUrl: null,
+  updateUrl: null,
+  deleteUrl: null,
+};

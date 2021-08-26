@@ -52,4 +52,12 @@ export interface IShaDataTableProps extends ICrudProps {
   customTypeEditors?: ITableCustomTypeEditor[];
   onRowsChanged?: (rows: object[]) => void;
   tableRef?: MutableRefObject<Partial<DataTableFullInstance> | null>;
+  /**
+   * A callback for when the file export has succeeded
+   */
+  onExportSuccess?: () => void;
+  /**
+   * A callback for when the file export has failed
+   */
+  onExportError?: () => void;
 }

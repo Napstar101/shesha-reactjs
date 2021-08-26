@@ -15,7 +15,8 @@ export default {
 } as Meta;
 
 const tableProps: IShaDataTableProps = {
-  id: 'Persons_Index',
+  id: 'Applications_Admin_DG_Final_Index',
+  // id: 'Persons_Index',
   header: 'List of People',
   crud: true,
   actionColumns: [
@@ -26,6 +27,12 @@ const tableProps: IShaDataTableProps = {
       },
     },
   ],
+  onExportSuccess: () => {
+    console.log('Components/IndexTableFull export succeeded');
+  },
+  onExportError: () => {
+    console.log('Components/IndexTableFull export error');
+  }
 };
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable

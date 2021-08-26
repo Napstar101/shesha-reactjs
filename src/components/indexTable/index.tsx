@@ -52,6 +52,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   tableRef,
   crudMode = 'inline',
   onRowsChanged,
+  onExportSuccess,
+  onExportError
 }) => {
   const store = useDataTableStore();
   const { headers } = useAuthState();
@@ -59,6 +61,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   if (tableRef) tableRef.current = store;
 
   const { router } = useShaRouting();
+
   const {
     tableData,
     isFetchingTableData,
@@ -81,7 +84,21 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     cancelCreateOrEditRowData,
     updateLocalTableData,
     deleteRowItem,
+    succeeded: {
+      exportToExcel: exportToExcelSuccess
+    },
+    error: {
+      exportToExcel: exportToExcelError
+    },
   } = useDataTableStore();
+
+  if (exportToExcelSuccess && onExportSuccess) {
+    onExportSuccess();
+  }
+
+  if (exportToExcelError && onExportError) {
+    onExportError();
+  }
 
   const [preparedColumns, setPreparedColumns] = useState<Column<any>[]>([]);
 
@@ -586,6 +603,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         <ValidationErrors error={createError?.data} />
         <ValidationErrors error={updateError?.data} />
         <ValidationErrors error={deleteError?.data} />
+        {exportToExcelError && <ValidationErrors error={"Error occurred while exporting to excel"} />}
       </div>
 
       {/* {useMultiselect ? <MultiselectWithState {...tableProps} /> : <ReactTable {...tableProps} />} */}

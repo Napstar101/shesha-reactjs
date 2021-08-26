@@ -177,20 +177,20 @@ const ReactTable: FC<IReactTableProps> = ({
       onRowDoubleClick(row?.original);
     }
   };
-
+  
   return (
     <Spin
       spinning={loading}
       indicator={
         <span style={{ display: 'flex', alignItems: 'center' }}>
-          <LoadingOutlined style={{ fontSize: 24 }} spin />{' '}
+          <LoadingOutlined style={{ fontSize: 24 }} spin />
           <span style={{ marginLeft: 12, fontSize: 14, color: 'black' }}>loading...</span>
         </span>
       }
     >
       <div className="sha-react-table">
         <table {...getTableProps()} className="sha-table">
-          {headerGroups.map(headerGroup => (
+          {columns?.length > 1 && headerGroups.map(headerGroup => (
             <div
               {...headerGroup.getHeaderGroupProps({
                 // style: { paddingRight: '15px' },

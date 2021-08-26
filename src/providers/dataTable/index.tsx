@@ -10,6 +10,7 @@ import {
   IDataTableStateContext,
   IDataTableUserConfig,
   DEFAULT_DT_USER_CONFIG,
+  DEFAULT_TABLE_CONFIG_RESULT,
 } from './contexts';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
@@ -67,14 +68,19 @@ import { useSheshaApplication } from '../sheshaApplication';
 interface IDataTableProviderProps extends ICrudProps {
   /** Table configuration Id */
   tableId?: string;
+
   /** Type of entity */
   entityType?: string;
+
   /** Id of the user config, is used for saving of the user settings (sorting, paging etc) to the local storage. `tableId` is used if missing  */
   userConfigId?: string;  
+
   /** Table title */
   title?: string;
+
   /** Id of the parent entity */
   parentEntityId?: string;
+
   /**
    * @deprecated pass this on an `IndexTable` level
    */
@@ -250,7 +256,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   // fetch table data when configuration is available
   useEffect(() => {
     if (!isFetchingTableConfig && tableConfig) {
-      dispatch(fetchTableConfigSuccessAction({ tableConfig: tableConfig.result, userConfig: userDTSettings }));
+      dispatch(fetchTableConfigSuccessAction({ tableConfig: tableConfig.result ?? {
+        id: tableId,
+        ...DEFAULT_TABLE_CONFIG_RESULT,
+      }, userConfig: userDTSettings }));
 
       //#region HACK - the value is not populated. I need to investigate why and remove this manual setting
       defaultFilter?.forEach(element => {
@@ -305,7 +314,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     const payload = getFetchTableDataPayload();
 
     dispatch(exportToExcelRequestAction());
-
+    
     axios({
       url: `${backendUrl}` + (getExportToExcelPath ?? `/api/DataTable/ExportToExcel`),
       method: 'POST',
@@ -315,7 +324,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     })
       .then(response => {
         dispatch(exportToExcelSuccessAction());
-        FileSaver.saveAs(new Blob([response.data]), 'Export.xlsx');
+        FileSaver.saveAs(new Blob([response.data]), 'Export.xlsx');   
       })
       .catch(() => {
         dispatch(exportToExcelErrorAction());

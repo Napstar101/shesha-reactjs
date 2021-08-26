@@ -31,6 +31,8 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
   toolbarItems,
   toolbarExtra,
   tableRef,
+  onExportSuccess,
+  onExportError
 }) => {
   const {
     isInProgress: { isFiltering, isSelectingColumns, exportToExcel: isExportingToExcel },
@@ -94,6 +96,8 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
           deleteConfirmationMessage={deleteConfirmationMessage}
           selectedRowIndex={selectedRowIndex}
           onSelectRow={onSelectRow}
+          onExportSuccess={onExportSuccess}
+          onExportError={onExportError}
           customTypeRenders={customTypeRenders}
           tableRef={tableRef}
         />
