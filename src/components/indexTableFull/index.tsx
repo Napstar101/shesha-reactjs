@@ -87,7 +87,7 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
             icon: <DownloadOutlined />,
             onClick: () => setCrudRowData(),
             disabled: !!newOrEditableRowData,
-            hide: (typeof crud !== 'boolean' && !(crud as ICrudState).create ) || !!newOrEditableRowData
+            hide: !crud || (typeof crud !== 'boolean' && !(crud as ICrudState)?.create ) || !!newOrEditableRowData
           },
         ]}
         elementsRight={toolbarExtra}
