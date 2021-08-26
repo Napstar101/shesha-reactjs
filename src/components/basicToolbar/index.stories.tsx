@@ -3,10 +3,10 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ICustomFileProps } from '../customFile';
 import BasicToolbar from '.';
-import { StepForwardOutlined } from '@ant-design/icons';
+import { StepBackwardFilled, StepForwardOutlined } from '@ant-design/icons';
 
 export default {
-  title: 'Components/Temp/BasicToolbar',
+  title: 'Components/BasicToolbar',
   component: BasicToolbar,
 } as Meta;
 
@@ -17,12 +17,14 @@ const Template: Story<ICustomFileProps> = args => (
     {
       id: 'string',
       title: 'ReactNode',
-      icon: <StepForwardOutlined />
+      icon: <StepBackwardFilled />,
+      tooltip: 'StepBackwardFilled Tooltip'
     },
     {
       id: 'string',
       title: 'ReactNode 2',
-      icon: <StepForwardOutlined />
+      icon: <StepForwardOutlined />,
+      tooltip: 'StepForwardOutlined Tooltip'
     }
   ]} />
 );

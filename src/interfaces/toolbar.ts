@@ -8,5 +8,10 @@ export interface IToolbarItem {
   onClick?: (args: any) => void;
   hide?: boolean;
   disabled?: boolean;
+  /**
+   * @deprecated - use tooltip instead
+   */
   tooltipName?: string;
+
+  tooltip?: string;
 }
