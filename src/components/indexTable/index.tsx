@@ -53,7 +53,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   crudMode = 'inline',
   onRowsChanged,
   onExportSuccess,
-  onExportError
+  onExportError,
+
 }) => {
   const store = useDataTableStore();
   const { headers } = useAuthState();
@@ -179,6 +180,17 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   // console.log('crudMode: ', newOrEditableRowData);
 
+  // Crud is either boolean or ICrudState, so here we're just return allowed crud actions
+  const getAllowedCrudActions = () => {
+    if (typeof crud === 'boolean') {
+      return crudActionColumns;
+    } else {
+      const allowedActions = Object.keys(crud);
+
+      return crudActionColumns.filter(({ type }) =>  allowedActions.includes(type));
+    }
+  }
+
   // We are making sure that we only update the columns
   useEffect(() => {
     const localPreparedColumns = columns
@@ -238,7 +250,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       };
     });
 
-    const allActionColumns = [...(actionColumns || []), ...(crud ? crudActionColumns : [])];
+    const allActionColumns = [...(actionColumns || []), ...(crud ? getAllowedCrudActions() : [])];
 
     // Now add a list of urls
     allActionColumns
@@ -246,6 +258,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         let show = !!(Boolean(d?.onClick) || d?.type);
 
         if (crud) {
+          // const enableAllCrudModes = typeof crud === 'boolean';
+
           const isCreateOrEditMode = newOrEditableRowData?.mode === 'create' || newOrEditableRowData?.mode === 'edit';
           const isSaveOrCancelType = d.type === 'create' || d?.type === 'cancel';
           const isDeleteOrUpdate = d.type === 'delete' || d?.type === 'update';

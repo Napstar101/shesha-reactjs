@@ -10,6 +10,7 @@ import TablePager from '../tablePager';
 import { IToolbarItem } from '../../interfaces';
 import IndexToolbar from '../indexToolbar';
 import { DownloadOutlined } from '@ant-design/icons';
+import { ICrudState } from '../../providers/dataTable/interfaces';
 
 export interface IIndexTableFullProps extends IShaDataTableProps {
   toolbarItems?: IToolbarItem[];
@@ -32,13 +33,20 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
   toolbarExtra,
   tableRef,
   onExportSuccess,
-  onExportError
+  onExportError,
+  crud,
+  crudMode = 'inline',
 }) => {
   const {
     isInProgress: { isFiltering, isSelectingColumns, exportToExcel: isExportingToExcel },
     setIsInProgressFlag,
     exportToExcel,
+    newOrEditableRowData,
+    setCrudRowData
   } = useDataTableStore();
+
+  console.log('IndexTableFull crud, crudMode, newOrEditableRowData: ', crud, crudMode, newOrEditableRowData);
+  
 
   const toggleFieldPropertiesSidebar = () =>
     !isSelectingColumns && !isFiltering
@@ -74,6 +82,13 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
             onClick: exportToExcel,
             disabled: isExportingToExcel,
           },
+          {
+            title: 'Create New',
+            icon: <DownloadOutlined />,
+            onClick: () => setCrudRowData(),
+            disabled: !!newOrEditableRowData,
+            hide: (typeof crud !== 'boolean' && !(crud as ICrudState).create ) || !!newOrEditableRowData
+          },
         ]}
         elementsRight={toolbarExtra}
         className="sha-index-toolbar-full-table"
@@ -100,6 +115,8 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
           onExportError={onExportError}
           customTypeRenders={customTypeRenders}
           tableRef={tableRef}
+          crud={crud}
+          crudMode={crudMode}
         />
 
         {paginationPlacement === 'bottom' && (

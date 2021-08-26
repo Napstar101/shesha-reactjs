@@ -452,12 +452,15 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     });
   };
 
+  // console.log('newOrEditableRowData: ', newOrEditableRowData);
+  
+
   /**
    *
    * @param newOrEditableRowData - data to update. If empty, it'll initialize new item creation
    */
   const setCrudRowData = (newOrEditableRowData?: IEditableRowState) => {
-    if (newOrEditableRowData) {
+    if (newOrEditableRowData && typeof newOrEditableRowData !== 'function') {
       dispatch(setCreateOrEditRowDataAction(newOrEditableRowData));
     } else {
       initializeNewDataCreation();

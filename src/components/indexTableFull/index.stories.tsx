@@ -40,9 +40,7 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 // Create a master template for mapping args to render the Button component
 const Template: Story<IShaDataTableProps> = args => {
   const tableRef = useRef();
-
-  console.log('tableRef', tableRef?.current);
-
+  
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>

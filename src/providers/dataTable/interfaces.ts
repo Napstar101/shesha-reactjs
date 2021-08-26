@@ -157,13 +157,20 @@ export interface IEditableRowState {
   mode: 'create' | 'edit' | 'read';
 }
 
+export interface ICrudState {
+  create?: boolean;
+  // read?: boolean; // You don't need this
+  update?: boolean;
+  delete?: boolean;
+}
+
 export interface ICrudProps {
   /**
    * whether this table supports CRUD functionality or not
    *
    * This should be removed later in favor of just checking the crud-related properties of the config
    */
-  crud?: boolean;
+  crud?: boolean | ICrudState;
 
   /**
    * Whether saving of table row items should be locally or not.
