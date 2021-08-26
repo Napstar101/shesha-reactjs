@@ -27,6 +27,7 @@ export { default as HierarchicalCheckList } from './hierarchicalCheckList';
 export { CheckListSelectionType, ICheckListItemSelection } from './hierarchicalCheckList/interface';
 
 export { default as BasicToolbar } from './basicToolbar';
+export { default as BooleanDropDown } from './booleanDropDown';
 export { default as HtmlHead } from './htmlHead';
 export { default as LayoutHeading } from './layoutHeading';
 export { default as NodeOrFuncRenderer } from './nodeOrFuncRenderer';
