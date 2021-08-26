@@ -103,6 +103,11 @@ export interface IDualEditDetailsPageProps {
    * Handles Form Filters. Filters initial model
    */
   formFilters?: IGenericFormFilter;
+
+  /**
+   * A function to prepare modal values
+   */
+  prepareValues?: (values: any) => any;
 }
 
 const DualEditDetailsPage = forwardRef<CommonCrudHandles, IDualEditDetailsPageProps>((props, forwardedRef) => {
@@ -185,7 +190,9 @@ const DualEditDetailsPage = forwardRef<CommonCrudHandles, IDualEditDetailsPagePr
 
   const handleSubmit = values => {
     const postData = { ...values, id: model.id };
-    save(postData).then(handleClose);
+    const preparedValues = typeof props?.prepareValues === 'function' ? props?.prepareValues(postData) : postData;
+
+    save(preparedValues).then(handleClose);
   };
 
   const toolbar = () => {
