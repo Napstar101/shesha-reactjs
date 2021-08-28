@@ -9,7 +9,7 @@ interface IColumnEditFieldProps {
 
 export const ColumnDetailsField: FC<IColumnEditFieldProps> = ({ dataType = 'string', value }) => {
   const columnRender = renderers?.find(({ key }) => key === dataType)?.render;
-
+  
   if (columnRender) {
     return <Fragment>{columnRender({ value })}</Fragment>;
   }

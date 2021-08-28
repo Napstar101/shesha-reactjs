@@ -42,7 +42,7 @@ export interface IExtendedModalProps extends ModalProps {
 export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   crud,
   saveLocally,
-  useMultiselect,
+  useMultiselect: useMultiSelect,
   actionColumns,
   selectedRowIndex,
   onSelectRow,
@@ -185,7 +185,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     if (typeof crud === 'boolean') {
       return crudActionColumns;
     } else {
-      const allowedActions = Object.keys(crud);
+      const allowedActions = [...Object.keys(crud), 'create', 'cancel'];
 
       return crudActionColumns.filter(({ type }) =>  allowedActions.includes(type));
     }
@@ -208,7 +208,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
           const _data = newOrEditableRowDataRef?.current?.data || {};
 
-          if (props?.row?.original?.Id === newOrEditableRowData?.id && crudMode === 'inline') {
+          if (props?.row?.original?.Id === newOrEditableRowData?.id && crudMode === 'inline' && columnItem?.isEditable) {
             const editProps: IColumnEditFieldProps = {
               id: columnItem?.id,
               dataType: columnItem?.dataType,
@@ -252,14 +252,12 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
     const allActionColumns = [...(actionColumns || []), ...(crud ? getAllowedCrudActions() : [])];
 
-    // Now add a list of urls
+    // Now add a list of actions
     allActionColumns
       ?.filter(d => {
         let show = !!(Boolean(d?.onClick) || d?.type);
 
         if (crud) {
-          // const enableAllCrudModes = typeof crud === 'boolean';
-
           const isCreateOrEditMode = newOrEditableRowData?.mode === 'create' || newOrEditableRowData?.mode === 'edit';
           const isSaveOrCancelType = d.type === 'create' || d?.type === 'cancel';
           const isDeleteOrUpdate = d.type === 'delete' || d?.type === 'update';
@@ -270,6 +268,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
               show = false;
             }
           } else {
+
             if (!isDeleteOrUpdate) {
               show = false;
             }
@@ -289,7 +288,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
             const callback = () =>
               setCrudRowData({
                 id: currentId,
-                data: props?.original,
+                data: props?.row?.original,
                 mode: 'edit',
               });
 
@@ -318,7 +317,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
             setCrudRowData({
               id: currentId,
               mode: 'read',
-              data: props.original,
+              data: props?.row?.original,
             });
           }
 
@@ -342,6 +341,12 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           disableSortBy: true,
           disableResizing: true,
           Cell: props => {
+
+            // Do not show the save or cancel button for rows which are not currently the ones being edited
+            if ((data?.type === 'create' || data?.type === 'cancel') && props?.row?.original?.Id !== newOrEditableRowData?.id) {
+              return null;
+            }
+            
             return (
               <a className="sha-link" onClick={e => clickHandler(e, props)}>
                 {getDefaultActionColumns(data)}
@@ -350,7 +355,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           },
         });
       });
-
+    
     setPreparedColumns(localPreparedColumns);
   }, [columns, newOrEditableRowData?.id]);
 
@@ -393,8 +398,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   };
 
   const deleteItem = (itemId: string) => {
-    console.log('deleteItem itemId', itemId);
-
     const deleteCallback = saveLocally
       ? () => deleteRowItem(itemId)
       : () => {
@@ -458,7 +461,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   const defaultSorting = tableSorting
     ? tableSorting.map<SortingRule<string>>(c => ({ id: c.id, desc: c.desc }))
     : columns
-        .filter(c => c.defaultSorting != null)
+        .filter(c => c.defaultSorting !== null)
         .map<SortingRule<string>>(c => ({ id: c.id, desc: c.defaultSorting === 1 }));
 
   const isLoading = isFetchingTableData || isCreating || isUpdating || isDeleting;
@@ -470,16 +473,19 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         : tableData
       : tableData;
 
+
   const memoizedColumns = useMemo(() => {
     return columns?.filter(({ isVisible, isHiddenByDefault }) => isVisible && !isHiddenByDefault);
   }, [columns]);
-
+  
   const tableProps: IReactTableProps = {
     // ref: reactTableRef,
     data,
-    defaultSorting,
-    useMultiSelect: useMultiselect,
-    disableSortBy: Boolean(newOrEditableRowData?.id),
+    // Disable sorting if we're in create mode so that the new row is always the first
+    defaultSorting: newOrEditableRowData?.mode === 'create' ? null: defaultSorting,
+    disableSortBy: Boolean(newOrEditableRowData?.id), // Disable sorting if we're creating or editing so that
+    useMultiSelect,
+    // disableSortBy: false, // Do not disable sorting
     onSelectRow,
     onRowDoubleClick: dblClickHandler,
     columns: preparedColumns?.map(column => {
@@ -581,6 +587,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   }, [crudMode, newOrEditableRowData?.id]);
 
   const renderDetails = () => {
+    
     return (
       <Modal
         title="Details"

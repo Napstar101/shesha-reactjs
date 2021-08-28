@@ -2,6 +2,9 @@ import React, { FC } from 'react';
 import { Pagination } from 'antd';
 
 interface ITablePagerBaseProps {
+  /** Whether this component */
+  disabled?: boolean;
+
   /** The options for page sizes */
   pageSizeOptions: number[];
 
@@ -22,6 +25,7 @@ interface ITablePagerBaseProps {
 }
 
 export const TablePagerBase: FC<ITablePagerBaseProps> = ({
+  disabled = false,
   pageSizeOptions,
   currentPage,
   totalRows,
@@ -50,6 +54,7 @@ export const TablePagerBase: FC<ITablePagerBaseProps> = ({
       onChange={onPageNumberChange}
       onShowSizeChange={onShowSizeChange}
       showLessItems
+      disabled={disabled}
       showTotal={(total, range) => (total > 0 ? `${range[0]}-${range[1]} of ${total} items` : '0 items found')} // todo: add `filtered from xxx` here if needed
     />
   );

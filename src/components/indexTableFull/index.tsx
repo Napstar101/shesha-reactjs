@@ -45,9 +45,6 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
     setCrudRowData
   } = useDataTableStore();
 
-  console.log('IndexTableFull crud, crudMode, newOrEditableRowData: ', crud, crudMode, newOrEditableRowData);
-  
-
   const toggleFieldPropertiesSidebar = () =>
     !isSelectingColumns && !isFiltering
       ? setIsInProgressFlag({ isFiltering: true })

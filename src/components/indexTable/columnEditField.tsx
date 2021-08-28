@@ -4,9 +4,10 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import moment, { Moment, isMoment } from 'moment';
 import { IndexColumnDataType } from '../../providers/dataTable/interfaces';
 import RefListDropDown, { IRefListDropDownOption } from '../refListDropDown';
-import EntityDropdown, { IAutocompleteResultItem } from '../entityDropdown';
-import { ReferenceListItemDto } from '../../apis/referenceList';
+import EntityDropdown from '../entityDropdown';
 import { IColumnEditFieldProps } from './interfaces';
+import { IGuidNullableEntityWithDisplayNameDto, IReferenceListItemDto, IReferenceListItemValueDto } from '../../interfaces/shesha';
+import FormItem from 'antd/lib/form/FormItem';
 
 // (alias) type IndexColumnDataType = "string" | "number" | "boolean" | "date" | "datetime" | "time" | "refList" | "multiValueRefList" | "entityReference" | "other"
 
@@ -24,9 +25,6 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
   } = props;
   // console.log('ColumnEditField stateValue', stateValue);
 
-  // if (dataType) {
-  //   return <Input />
-  // }
   const placeholder = [
     'entityReference',
     'date',
@@ -103,13 +101,14 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
     return <Checkbox onChange={onChange}>Yes</Checkbox>;
   };
 
+  // {['refList', 'multiValueRefList'].includes(dataType) && renderRenderReflistDropdown()}
   const renderRenderReflistDropdown = () => {
     const placeholder = `Select ${caption}`;
 
     const onChange = (_: number | number[], option: any) => {
       const val =
         dataType === 'multiValueRefList'
-          ? (option as IRefListDropDownOption[])?.map<ReferenceListItemDto>(({ children, value }) => ({
+          ? (option as IRefListDropDownOption[])?.map<IReferenceListItemDto>(({ children, value }) => ({
               itemValue: value as number,
               item: children,
             }))
@@ -121,10 +120,17 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
       handleChange(name, val);
     };
 
+    const getMultiValueRefListValues = () => 
+      (stateValue as [])
+      ?.map(item => typeof item === 'object' ? (item as IReferenceListItemValueDto)?.itemValue : item )
+      ?.filter(Boolean)
+    
+    const getReferenceListItemValue = () => (typeof stateValue === 'string' ? stateValue : (stateValue as IReferenceListItemValueDto)?.itemValue)
+
     const val =
       dataType === 'multiValueRefList'
-        ? (stateValue as ReferenceListItemDto[]).map(({ itemValue }) => itemValue).filter(Boolean)
-        : (stateValue as ReferenceListItemDto)?.itemValue;
+        ? getMultiValueRefListValues()
+        : getReferenceListItemValue();
 
     return (
       <RefListDropDown
@@ -140,8 +146,9 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
     );
   };
 
+  // dataType === 'entityReference' && renderEntityDropdown()
   const renderEntityDropdown = () => {
-    const value = (stateValue as IAutocompleteResultItem)?.value;
+    const value = typeof stateValue === 'object' ? (stateValue as IGuidNullableEntityWithDisplayNameDto)?.displayText : stateValue;
 
     const onChange = (_: number | number[], option: any) => {
       const { children, value } = option as IRefListDropDownOption;
@@ -156,23 +163,26 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
         onChange={onChange}
         size="small"
         placeholder={placeholder}
+        style={{ width: '100%' }}
       />
     );
   };
 
   return (
     <div className="column-item-filter">
-      {dataType === 'string' && renderFilterInput()}
+      <FormItem>
+        {dataType === 'string' && renderFilterInput()}
 
-      {dataType === 'number' && renderFilterInput('number')}
+        {dataType === 'number' && renderFilterInput('number')}
 
-      {['date', 'datetime'].includes(dataType) && renderDateInput()}
+        {['date', 'datetime'].includes(dataType) && renderDateInput()}
 
-      {dataType === 'boolean' && renderBooleanInput()}
+        {dataType === 'boolean' && renderBooleanInput()}
 
-      {dataType === 'entityReference' && renderEntityDropdown()}
+        {dataType === 'entityReference' && renderEntityDropdown()}
 
-      {['refList', 'multiValueRefList'].includes(dataType) && renderRenderReflistDropdown()}
+        {['refList', 'multiValueRefList'].includes(dataType) && renderRenderReflistDropdown()}
+      </FormItem>
     </div>
   );
 };

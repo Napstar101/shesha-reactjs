@@ -41,6 +41,7 @@ export interface ITableColumn {
   filter?: any;
   isFilterable: boolean;
   isSortable: boolean;
+  isEditable?: boolean;
   defaultSorting?: SortDirection;
   columnId?: string;
   propertyName?: string;

@@ -18,7 +18,10 @@ const tableProps: IShaDataTableProps = {
   id: 'Applications_Admin_DG_Final_Index',
   // id: 'Persons_Index',
   header: 'List of People',
-  crud: true,
+  crud: {
+    update: true,
+    create: true,
+  },
   actionColumns: [
     {
       icon: <SearchOutlined />,

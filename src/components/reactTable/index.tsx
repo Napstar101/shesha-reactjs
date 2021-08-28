@@ -74,7 +74,7 @@ const ReactTable: FC<IReactTableProps> = ({
     }),
     []
   );
-
+  
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state } = useTable(
     {
       columns,

@@ -452,9 +452,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     });
   };
 
-  // console.log('newOrEditableRowData: ', newOrEditableRowData);
-  
-
   /**
    *
    * @param newOrEditableRowData - data to update. If empty, it'll initialize new item creation

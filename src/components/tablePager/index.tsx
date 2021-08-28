@@ -5,11 +5,27 @@ import { useDataTable } from '../../providers';
 interface ITablePagerProps {}
 
 export const TablePager: FC<ITablePagerProps> = () => {
-  const { pageSizeOptions, currentPage, totalRows, selectedPageSize, setCurrentPage, changePageSize } = useDataTable();
+  const { 
+    pageSizeOptions, 
+    currentPage, 
+    totalRows, 
+    selectedPageSize, 
+    setCurrentPage, 
+    changePageSize, 
+    newOrEditableRowData 
+  } = useDataTable();
 
   return (
     <TablePagerBase
-      {...{ pageSizeOptions, currentPage, totalRows, selectedPageSize, setCurrentPage, changePageSize }}
+      {...{ 
+        pageSizeOptions, 
+        currentPage, 
+        totalRows, 
+        selectedPageSize, 
+        setCurrentPage, 
+        changePageSize, 
+        disabled: !!newOrEditableRowData
+      }}
     />
   );
 };

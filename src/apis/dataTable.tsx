@@ -68,6 +68,11 @@ export interface DataTableColumnDto {
    * Indicates is column filterable or not
    */
   isFilterable?: boolean;
+
+  /**
+   * Indicates is column editable or not
+   */
+  isEditable?: boolean;
   /**
    * Indicates is column sortable or not
    */
