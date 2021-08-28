@@ -2,8 +2,7 @@ import React, { FC } from 'react';
 import { ConfigurableComponent, ISettingsEditorProps } from '../configurableComponent';
 import { ErrorBoundary } from '../errorBoundary/errorBoundary';
 import { SidebarMenu } from '../sidebarMenu';
-import { ISidebarMenuItem } from '../../interfaces';
-import { SidebarMenuProvider,  } from '../../providers/sidebarMenu';
+import { ISidebarMenuItem, SidebarMenuProvider,  } from '../../providers/sidebarMenu';
 import ComponentSettingsModal from './settingsModal';
 import { MenuTheme } from 'antd/lib/menu/MenuContext';
 
