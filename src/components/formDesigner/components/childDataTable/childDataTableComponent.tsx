@@ -11,9 +11,16 @@ import { useDataTableState } from '../../../../providers';
 import DataTableProvider from '../../../../providers/dataTable';
 import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
+const MAX_CRUD_OPTIONS = 3; // create | update | delete
+const ALL_CRUD_OPTIONS = ["create", "update", "delete"];
+
 export interface IChildDataTableProps extends IConfigurableFormComponent {
   tableConfigId?: string;
   parentEntityId?: string;
+  crud?: boolean;
+  enableAllCrudOptions?: boolean;
+  crudMode?: 'inline' | 'dialog';
+  crudOptions?: string[];
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -23,7 +30,16 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
   name: 'Child DataTable',
   icon: <TableOutlined />,
   factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IChildDataTableProps;
+    const {
+      parentEntityId,
+      tableConfigId,
+      label,
+      crud,
+      crudOptions,
+      enableAllCrudOptions,
+      crudMode
+    } = model as IChildDataTableProps;
+    
     const { formMode, visibleComponentIds, formData } = useForm();
 
     const tableRef = useRef<DataTableFullInstance>(null);
@@ -42,22 +58,28 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
     //const { formData } = useForm();
     //const parentEntityId = evaluateValue(customProps.parentEntityId, { data: formData });
 
+    const selectedOptions = {};
+
+    if (crud && !enableAllCrudOptions) {
+      (crudOptions?.length ? crudOptions : ALL_CRUD_OPTIONS)?.forEach(option => {
+        selectedOptions[option] = true;
+      });
+    }
+    
     const tableProps: IChildTableProps = {
-      id: customProps.tableConfigId,
-      header: customProps.label,
-      // extra: (
-      //   <Button icon={<UserAddOutlined />} size="small" onClick={onExtraClick}>
-      //     Add
-      //   </Button>
-      // ),
-      // deleteRow: (id: string) => deleteShaRoleAppointedPerson({ id }),
-      // editClick: onEditClick,
+      id: tableConfigId,
+      header: label,
+      crud: crud
+        ? enableAllCrudOptions || (crudOptions?.length === MAX_CRUD_OPTIONS ? true : selectedOptions)
+        : false,
+      crudMode,
     };
 
     if (!tableProps.id) return <Alert message="Child DataTable is not configured properly" type="warning" showIcon />;
+
     const { parentEntityId: currentParentEntityId } = useDataTableState();
 
-    const evaluatedParentEntityId = evaluateValue(customProps.parentEntityId, { data: formData });
+    const evaluatedParentEntityId = evaluateValue(parentEntityId, { data: formData });
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);

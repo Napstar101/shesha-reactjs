@@ -9,6 +9,7 @@ export interface IProps {
   model: IConfigurableFormComponent;
   readonly children?: React.ReactNode;
   valuePropName?: string;
+  initialValue?: any;
   /** Custom visibility code
    * available variables:
    * value - value of the current component
@@ -18,7 +19,7 @@ export interface IProps {
   customVisibility?: string;
 }
 
-const FormItem: FC<IProps> = ({ children, model, valuePropName }) => {
+const FormItem: FC<IProps> = ({ children, model, valuePropName, initialValue }) => {
   const { formMode, visibleComponentIds } = useForm();
 
   const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
@@ -32,6 +33,8 @@ const FormItem: FC<IProps> = ({ children, model, valuePropName }) => {
       labelAlign={model.labelAlign}
       hidden={isHidden}
       valuePropName={valuePropName}
+      // initialValue={initialValue}
+      initialValue={model.defaultValue || initialValue}
       tooltip={model.description}
       rules={isHidden ? [] : getValidationRules(model)}
     >

@@ -11,11 +11,10 @@ export interface ILabelValue<TValue = any> {
 export interface IDropdownProps extends IConfigurableFormComponent {
   dataSourceType: DataSourceType;
   values?: ILabelValue[];
-
   referenceListNamespace?: string;
   referenceListName?: string;
-
   value?: any;
   onChange?: any;
   hideBorder?: boolean;
+  mode?: 'multiple' | 'tags';
 }

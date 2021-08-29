@@ -29,6 +29,79 @@
     "label": "Hidden"
   },
   {
+    "id": "cc67960e-77e3-40f2-89cc-f18f94678cce",
+    "type": "sectionSeparator",
+    "name": "separatorVisibility",
+    "parentId": "root",
+    "label": "Crud functionality"
+  },
+  {
+    "id": "eed7d45e-c7e3-4a27-987b-dc525c412448",
+    "type": "checkbox",
+    "name": "crud",
+    "parentId": "root",
+    "label": "Is Crud"
+  },
+  {
+    "id": "26724351-0ad3-495d-9f97-2edee5c89eb2",
+    "type": "checkbox",
+    "name": "enableAllCrudOptions",
+    "parentId": "root",
+    "label": "Enable all CRUD options",
+    "customVisibility": "return data.crud;",
+    "defaultValue": true
+  },
+  {
+    "id": "252b47a0-0822-11ec-9a03-0242ac130003",
+    "type": "dropdown",
+    "name": "crudOptions",
+    "parentId": "root",
+    "label": "Crud options",
+    "customVisibility": "return data.crud && !data.enableAllCrudOptions;",
+    "values": [
+      {
+        "label": "create",
+        "value": "create",
+        "id": "252b43ae-0822-11ec-9a03-0242ac130003"
+      },
+      {
+        "label": "update",
+        "value": "update",
+        "id": "252b45f2-0822-11ec-9a03-0242ac130003"
+      },
+      {
+        "label": "delete",
+        "value": "delete",
+        "id": "252b46d8-0822-11ec-9a03-0242ac130003"
+      }
+    ],
+    "mode": "multiple",
+    "defaultValue": ["create", "update", "delete"],
+    "dataSourceType": "values"
+  },
+  {
+    "id": "f43ab602-082c-11ec-9a03-0242ac130003",
+    "type": "dropdown",
+    "name": "crudMode",
+    "parentId": "root",
+    "label": "Crud mode",
+    "customVisibility": "return data.crud;",
+    "values": [
+      {
+        "label": "inline",
+        "value": "inline",
+        "id": "f43ab832-082c-11ec-9a03-0242ac130003"
+      },
+      {
+        "label": "dialog",
+        "value": "dialog",
+        "id": "f43abad0-082c-11ec-9a03-0242ac130003"
+      }
+    ],
+    "defaultValue": "inline",
+    "dataSourceType": "values"
+  },
+  {
     "id": "c093d393-f49f-4809-978b-7fb45d91d3e9",
     "type": "sectionSeparator",
     "name": "sectionSeparator3",

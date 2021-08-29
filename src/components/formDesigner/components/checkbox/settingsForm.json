@@ -50,6 +50,13 @@
     "label": "Hidden"
   },
   {
+    "id": "f43abbca-082c-11ec-9a03-0242ac130003",
+    "type": "checkbox",
+    "name": "defaultValue",
+    "parentId": "root",
+    "label": "Default Checked"
+  },
+  {
     "id": "c6885251-96a6-40ce-99b2-4b5209a9e01c",
     "type": "checkbox",
     "name": "hideLabel",

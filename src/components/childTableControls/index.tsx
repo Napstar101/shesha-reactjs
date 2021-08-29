@@ -22,6 +22,7 @@ export const ChildTableControls: FC<IChildTableControlsProps> = ({
   crud,
   toolbarItems,
 }) => {
+  
   const {
     isInProgress: { isFiltering, isSelectingColumns, exportToExcel: isExportingToExcel },
     setIsInProgressFlag,
@@ -68,7 +69,7 @@ export const ChildTableControls: FC<IChildTableControlsProps> = ({
       <div className="index-table-controls-right">
         <GlobalTableFilter />
 
-        {crud && (
+        {(typeof crud === 'boolean' && crud|| (crud as ICrudState)?.create) && (
           <Button
             type="link"
             disabled={Boolean(newOrEditableRowData?.id)}

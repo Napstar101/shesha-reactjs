@@ -37,6 +37,8 @@ export const Dropdown: FC<IDropdownProps> = ({
   disabled,
   referenceListNamespace,
   referenceListName,
+  mode,
+  defaultValue,
 }) => {
   // todo: implement referencelist provider with cache support and promise result
   const { refetch: refListFetch, loading: refListLoading, data: refListItems } = useReferenceListGetItems({
@@ -71,13 +73,18 @@ export const Dropdown: FC<IDropdownProps> = ({
   const options = getOptions() || [];
   const loading = refListLoading;
 
+  
+  
+
   return (
     <Select
       onChange={onChange}
-      value={options.length > 0 ? value : null}
+      value={options.length > 0 ? (value || defaultValue) : null}
+      defaultValue={defaultValue}
       bordered={!hideBorder}
       disabled={disabled}
       loading={loading}
+      mode={mode}
     >
       {options.map((option, index) => (
         <Select.Option key={index} value={option.value}>

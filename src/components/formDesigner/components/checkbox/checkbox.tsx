@@ -11,14 +11,15 @@ export interface ICheckboxProps extends IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const TextField: IToolboxComponent<ICheckboxProps> = {
+const CheckboxComponent: IToolboxComponent<ICheckboxProps> = {
   type: 'checkbox',
   name: 'Checkbox',
   icon: <CheckSquareOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: ICheckboxProps) => {
+
     return (
-      <FormItem model={model} valuePropName="checked">
-        <Checkbox disabled={model.disabled}></Checkbox>
+      <FormItem model={model} valuePropName="checked" initialValue={model?.defaultValue}>
+        <Checkbox disabled={model.disabled} />
       </FormItem>
     );
   },
@@ -26,4 +27,4 @@ const TextField: IToolboxComponent<ICheckboxProps> = {
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
 };
 
-export default TextField;
+export default CheckboxComponent;

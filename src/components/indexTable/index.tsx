@@ -182,6 +182,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   // Crud is either boolean or ICrudState, so here we're just return allowed crud actions
   const getAllowedCrudActions = () => {
+    // console.log('getAllowedCrudActions ');
+    
     if (typeof crud === 'boolean') {
       return crudActionColumns;
     } else {
@@ -190,7 +192,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       return crudActionColumns.filter(({ type }) =>  allowedActions.includes(type));
     }
   }
-
+  
   // We are making sure that we only update the columns
   useEffect(() => {
     const localPreparedColumns = columns
@@ -357,7 +359,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       });
     
     setPreparedColumns(localPreparedColumns);
-  }, [columns, newOrEditableRowData?.id]);
+  }, [columns, newOrEditableRowData?.id, crud]);
 
   /**
    * Returns a default action column icon

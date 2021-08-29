@@ -29,13 +29,16 @@ export interface IComponentValidationRules {
 /**
  * Base model of the configurable component
  */
-export interface IConfigurableFormComponent extends IFormComponentContainer {
+export interface  IConfigurableFormComponent extends IFormComponentContainer {
   /** component name */
   name: string;
+
   /** The label for this field that will appear next to it. */
   label?: string;
+
   /** Type of the component */
   type: string;
+
   /** Description of the field, is used for tooltips */
   description?: string;
 
@@ -44,10 +47,13 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
 
   /** Hidden field is still a part of the form but not visible on it */
   hidden?: boolean;
+
   /** Hide label of the field */
   hideLabel?: boolean;
+
   /** Position of the label */
   labelAlign?: LabelAlign;
+
   disabled?: boolean; // todo: move to the model level
 
   /** Custom visibility code */
