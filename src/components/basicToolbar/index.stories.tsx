@@ -26,9 +26,11 @@ const Template: Story<ICustomFileProps> = args => (
       icon: <StepForwardOutlined />,
       tooltip: 'StepForwardOutlined Tooltip'
     }
-  ]} />
+  ]} {...args} />
 );
 
 export const Basic = Template.bind({});
+
+export const Advanced = Template.bind({});
 
 Basic.args = { ...customFileProps };
