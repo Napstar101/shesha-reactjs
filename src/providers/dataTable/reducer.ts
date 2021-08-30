@@ -212,7 +212,7 @@ const reducer = handleActions<IDataTableStateContext, any>(
           header: column.caption,
           isVisible: column.isVisible,
           isSortable: column.isSortable,
-          isEditable: column.isFilterable,
+          isEditable: column.isEditable,
           isHiddenByDefault: column.isHiddenByDefault,
           isFilterable: column.isFilterable,
           entityReferenceTypeShortAlias: column.entityReferenceTypeShortAlias,
