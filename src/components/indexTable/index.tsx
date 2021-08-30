@@ -210,7 +210,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
           const _data = newOrEditableRowDataRef?.current?.data || {};
 
-          if (props?.row?.original?.Id === newOrEditableRowData?.id && crudMode === 'inline' && columnItem?.isEditable) {
+          if (props?.row?.original?.Id === newOrEditableRowData?.id && crudMode === 'inline' && columnItem?.isEditable) {            
             const editProps: IColumnEditFieldProps = {
               id: columnItem?.id,
               dataType: columnItem?.dataType,
