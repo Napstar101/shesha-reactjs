@@ -1,4 +1,5 @@
 export { default as AppEditModeToggler } from './appConfigurator/editModeToggler';
+export { default as BasicDisplayFormItem } from './basicDisplayFormItem';
 export { default as ConfigurableLogo } from './configurableLogo';
 export { default as GenericCreateModal } from './crudViews/createModal';
 export { default as GenericEditModal } from './crudViews/editModal';

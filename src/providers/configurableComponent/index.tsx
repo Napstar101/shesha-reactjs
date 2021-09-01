@@ -42,7 +42,7 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
     id: id,
   });  
 
-  const { loading: isFetching, error: fetchingError, data: fetchingResponse, refetch } = useConfigurableComponentGet({ lazy: true, id: id });
+  const { loading: isFetching, error: fetchingError, data: fetchingResponse, refetch } = useConfigurableComponentGet({ lazy: true, id });
 
   const doFetch = () => {
     dispatch(loadRequestAction({ id }));

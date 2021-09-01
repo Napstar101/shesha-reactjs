@@ -36,6 +36,7 @@ import ValidationErrors from '../../../components/formDesigner/components/valida
 import IconPicker from '../../../components/formDesigner/components/iconPicker';
 
 import { IToolboxComponentGroup } from '../../../interfaces/formDesigner';
+import DisplayFormItem from '../../../components/formDesigner/components/basicDisplayFormItem';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -56,7 +57,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   },
   {
     name: 'Static',
-    components: [Alert, ValidationErrors],
+    components: [Alert, ValidationErrors, DisplayFormItem],
   },
   {
     name: 'Layout',

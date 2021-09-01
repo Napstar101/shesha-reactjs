@@ -3,11 +3,13 @@ import { IConfigurableFormComponent } from '../../../providers/form/models';
 import { Form } from 'antd';
 import { useForm } from '../../../providers/form';
 import { getFieldNameFromExpression, getValidationRules } from '../../../providers/form/utils';
+import classNames from "classnames";
 import './styles.less';
 
 export interface IProps {
   model: IConfigurableFormComponent;
   readonly children?: React.ReactNode;
+  className?: string;
   valuePropName?: string;
   initialValue?: any;
   /** Custom visibility code
@@ -19,7 +21,7 @@ export interface IProps {
   customVisibility?: string;
 }
 
-const FormItem: FC<IProps> = ({ children, model, valuePropName, initialValue }) => {
+const FormItem: FC<IProps> = ({ children, model, valuePropName, initialValue, className }) => {
   const { formMode, visibleComponentIds } = useForm();
 
   const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
@@ -27,7 +29,8 @@ const FormItem: FC<IProps> = ({ children, model, valuePropName, initialValue }) 
 
   return (
     <Form.Item
-      className={`${model.hideLabel ? 'form-item-hidden' : ''}`}
+      className={classNames(className, { 'form-item-hidden' : model.hideLabel })}
+      // className={`${model.hideLabel ? 'form-item-hidden' : ''}`}
       name={getFieldNameFromExpression(model.name)}
       label={model.hideLabel ? null : model.label}
       labelAlign={model.labelAlign}
