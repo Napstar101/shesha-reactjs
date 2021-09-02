@@ -19,9 +19,15 @@ const BasicDisplayFormItemComponent: IToolboxComponent<IBasicDisplayFormItemProp
   factory: (model: IBasicDisplayFormItemProps) => {
     const { formData } = useForm();
 
+    const getDisplayValue = () => {
+      const value = _.get(formData, model?.name);
+
+      return typeof value === 'object' ? null : _.get(formData, model?.name);
+    }
+    
     return (
       <FormItem model={model} className="display-form-item">
-        <span>{_.get(formData, model?.name)}</span>
+        <span>{formData ? getDisplayValue() : ''}</span>
       </FormItem>
     );
   },
