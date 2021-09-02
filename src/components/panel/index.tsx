@@ -27,6 +27,7 @@ export const CollapsiblePanel: FC<ICollapsiblePanelProps> = ({
   noContentPadding,
   loading,
   className,
+  style,
 }) => {
   return (
     <Collapse
@@ -34,6 +35,7 @@ export const CollapsiblePanel: FC<ICollapsiblePanelProps> = ({
       onChange={onChange}
       expandIconPosition={expandIconPosition}
       className={classNames('sha-collapsible-panel', className, { 'no-content-padding': noContentPadding })}
+      style={style}
     >
       <Panel header={<span className={`ant-collapse-header-text`}>{header || ' '}</span>} key="1" extra={extra}>
         <Skeleton loading={loading}>{children}</Skeleton>
