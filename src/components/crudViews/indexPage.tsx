@@ -127,10 +127,10 @@ const TableWithControls: FC<IIndexPageProps> = props => {
   );
 };
 
-const IndexPage: FC<IIndexPageProps> = props => (
+const GenericIndexPage: FC<IIndexPageProps> = props => (
   <DataTableProvider tableId={props.tableConfigId}>
-    <TableWithControls {...props}></TableWithControls>
+    <TableWithControls {...props} />
   </DataTableProvider>
 );
 
-export default IndexPage;
+export default GenericIndexPage;
