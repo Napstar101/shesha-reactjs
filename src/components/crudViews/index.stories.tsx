@@ -84,7 +84,7 @@ const RowSelectionsTemplate: Story<IIndexPageProps> = () => {
         </UiProvider>
       </AuthContainer>
     </ShaApplicationProvider>
-  );
+  ); 
 };
 
 export const Basic = Template.bind({});

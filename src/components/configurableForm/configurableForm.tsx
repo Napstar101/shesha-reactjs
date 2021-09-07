@@ -37,7 +37,7 @@ export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
             context={context}
             formRef={formRef}
           >
-            <ConfigurableFormRenderer {...restProps}></ConfigurableFormRenderer>
+            <ConfigurableFormRenderer {...restProps} />
           </FormProvider>
         </div>
       )}

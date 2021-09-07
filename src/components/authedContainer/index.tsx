@@ -45,7 +45,7 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
   return (
     <>
       <div className="sha-storybook-authenticated-container">
-        {!layout ||
+        {layout ||
           (!isLoggedIn && (
             <Fragment>
               <div className="sha-storybook-authenticated-action-btn">

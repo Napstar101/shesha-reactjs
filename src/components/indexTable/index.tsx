@@ -146,6 +146,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   const handleSelectRow = onSelectRow || onSelectRowDeprecated;
   const dblClickHandler = onDblClick || onDblClickDeprecated;
 
+  
+
   useEffect(() => {
     if (Boolean(handleSelectRow)) handleSelectRow(null, null);
   }, [
@@ -157,7 +159,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     currentPage,
     selectedPageSize,
     tableFilter,
-    dblClickHandler,
+    // dblClickHandler,
     selectedRow,
     parentEntityId,
     quickSearch,

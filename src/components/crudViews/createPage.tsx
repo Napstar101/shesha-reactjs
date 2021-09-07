@@ -66,6 +66,7 @@ const CreateForm: NextPage<ICreatePageProps> = ({
     <MainLayout title={title} toolbar={actionButtonPosition === 'top' ? <IndexToolbar items={toolbarItems} /> : null}>
       <Spin spinning={saveInProgress} tip="Please wait...">
         <ValidationErrors error={saveError?.data} />
+        
         <ConfigurableForm
           mode="edit"
           {...formItemLayout}
