@@ -37,6 +37,7 @@ import IconPicker from '../../../components/formDesigner/components/iconPicker';
 
 import { IToolboxComponentGroup } from '../../../interfaces/formDesigner';
 import DisplayFormItem from '../../../components/formDesigner/components/basicDisplayFormItem';
+import EntityPickerComponent from '../../../components/formDesigner/components/entityPicker';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -75,6 +76,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       Notes,
       IconPicker,
       QueryBuilderComponent,
+      EntityPickerComponent,
     ],
   },
   {

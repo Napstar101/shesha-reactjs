@@ -18,6 +18,7 @@ export interface IEntityPickerProps {
   loading?: boolean;
   name?: string;
   size?: SizeType;
+  title?: string;
 }
 
 export interface IEntityPickerState {
@@ -34,13 +35,17 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   loading,
   value,
   name,
-  size
+  size,
+  title = "Select Item"
 }) => {
   const [state, setState] = useState<IEntityPickerState>({
     showModal: false,
     selectedRowIndex: -1,
     selectedValue: ''
   });
+
+  // console.log('EntityPicker state: ', state);
+  
     
   const toggleModalVisibility = () => setState((current) => ({...current, showModal: !current?.showModal }));
 
@@ -118,7 +123,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
       </div>
 
       <Modal
-        title="Entity Picker"
+        title={title || 'Select Item'}
         className="entity-picker-modal"
         visible={state?.showModal}
         onOk={toggleModalVisibility}
