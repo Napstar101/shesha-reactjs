@@ -21,6 +21,7 @@ export interface IChildTableProps extends ICrudProps {
   toolbarItemsPlacement?: 'panelHeader' | 'panelBody';
   alert?: string;
   paginationMode?: 'scroll' | 'pagination';
+  crudCreateEntityPickerId?: string;
 }
 
 export const ChildDataTable: FC<IChildTableProps> = ({
@@ -36,8 +37,10 @@ export const ChildDataTable: FC<IChildTableProps> = ({
   paginationMode = 'scroll',
   customTypeEditors,
   toolbarItems,
+  crudCreateEntityPickerId
 }) => {
   const store = useDataTableStore();
+  const { crudConfig  } = store;
 
   if (tableRef) tableRef.current = store;
 

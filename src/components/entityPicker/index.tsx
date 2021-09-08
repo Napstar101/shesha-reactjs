@@ -87,7 +87,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
     if (row && Object.keys(row).length) {
       selectedValue = displayEntityKey
         ? row[displayEntityKey]
-        : row.displayName || row.DisplayName || row.name || row.Name;
+        : row?.displayName || row?.DisplayName || row?.name || row?.Name;
     }
 
     setState({

@@ -144,9 +144,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   }, [newOrEditableRowData]);
 
   const handleSelectRow = onSelectRow || onSelectRowDeprecated;
-  const dblClickHandler = onDblClick || onDblClickDeprecated;
 
-  
+  const dblClickHandler = onDblClick || onDblClickDeprecated;
 
   useEffect(() => {
     if (Boolean(handleSelectRow)) handleSelectRow(null, null);
