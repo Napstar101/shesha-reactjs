@@ -37,10 +37,9 @@ export const ChildDataTable: FC<IChildTableProps> = ({
   paginationMode = 'scroll',
   customTypeEditors,
   toolbarItems,
-  crudCreateEntityPickerId
 }) => {
   const store = useDataTableStore();
-  const { crudConfig  } = store;
+
 
   if (tableRef) tableRef.current = store;
 
