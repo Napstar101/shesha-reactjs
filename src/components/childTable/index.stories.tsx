@@ -5,7 +5,7 @@ import ChildDataTable, { IChildTableProps } from './';
 import DataTableProvider from '../../providers/dataTable';
 import { SearchOutlined } from '@ant-design/icons';
 import JobTitleFieldEditor from './jobTitleFieldEditor';
-import { ChildTable, IDataTableInstance, ShaApplicationProvider } from '../..';
+import { ChildTable, EntityPicker, IDataTableInstance, ShaApplicationProvider } from '../..';
 import AuthContainer from '../authedContainer';
 
 export default {
@@ -62,7 +62,16 @@ const Template: Story<IExtendedChildTableProps> = args => {
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer>
         <DataTableProvider tableId={args?.id} parentEntityId={args?.parentEntityId} >
-          <ChildTable {...args} tableRef={tableRef} />
+          <ChildTable {...args} tableRef={tableRef} toolbarItems={[
+            // {
+            //   title: 'Add something',
+            //   render: () => <Button size="small">Do Something</Button>
+            // },
+            {
+              title: 'Picker',
+              render: () => <EntityPicker tableId="Students_Picker_Index" useButtonPicker pickerButtonProps={{size: 'small'}} />
+            }
+          ]} />
         </DataTableProvider>
       </AuthContainer>
     </ShaApplicationProvider>

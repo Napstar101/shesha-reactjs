@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Modal, Input, Button } from 'antd';
+import { Modal, Input, Button, ButtonProps } from 'antd';
 import IndexTable from '../indexTable';
 import { IAnyObject } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
@@ -19,6 +19,8 @@ export interface IEntityPickerProps {
   name?: string;
   size?: SizeType;
   title?: string;
+  useButtonPicker?: boolean;
+  pickerButtonProps?: ButtonProps
 }
 
 export interface IEntityPickerState {
@@ -36,6 +38,8 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   value,
   name,
   size,
+  useButtonPicker,
+  pickerButtonProps,
   title = "Select Item"
 }) => {
   const [state, setState] = useState<IEntityPickerState>({
@@ -43,10 +47,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
     selectedRowIndex: -1,
     selectedValue: ''
   });
-
-  // console.log('EntityPicker state: ', state);
   
-    
   const toggleModalVisibility = () => setState((current) => ({...current, showModal: !current?.showModal }));
 
   const onDblClick = (row: IAnyObject) => {
@@ -97,29 +98,38 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
     });
   };
 
+  const handleButtonPickerClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event?.stopPropagation();
+    setState({...state, showModal: true });
+  }
+
   return (
     <div className="entity-picker-container">
       <div>
-        <Input.Group compact className="picker-input-group">
-          <Input
-            allowClear
-            className="picker-input-group-input"
-            value={state?.selectedValue || value}
-            onChange={clearAll}
-            disabled={disabled}
-            name={name}
-            size={size}
-          />
+        {useButtonPicker ?
+          <Button onClick={handleButtonPickerClick} size={size} {...(pickerButtonProps || {})}>{title}</Button>
+          :
+          <Input.Group compact className="picker-input-group">
+            <Input
+              allowClear
+              className="picker-input-group-input"
+              value={state?.selectedValue || value}
+              onChange={clearAll}
+              disabled={disabled}
+              name={name}
+              size={size}
+            />
 
-          <Button
-            onClick={toggleModalVisibility}
-            className="picker-input-group-ellipsis"
-            disabled={disabled}
-            loading={loading ?? false}
-            size={size}
-            icon={<EllipsisOutlined />}
-          />
-        </Input.Group>
+            <Button
+              onClick={toggleModalVisibility}
+              className="picker-input-group-ellipsis"
+              disabled={disabled}
+              loading={loading ?? false}
+              size={size}
+              icon={<EllipsisOutlined />}
+            />
+          </Input.Group>
+        }
       </div>
 
       <Modal

@@ -17,10 +17,10 @@ export interface IIndexPageProps extends Omit<IIndexTableFullProps, 'id'> {
   loading?: boolean;
 }
 
-const TableWithControls: FC<IIndexPageProps> = props => {
+const TableWithControls: FC<IIndexPageProps> = ({ loading = false, ...props}) => {
   return (
     <MainLayout title={props.title} showHeading={false} noPadding >
-      <ShaSpin spinning={props?.loading}>
+      <ShaSpin spinning={loading}>
         <IndexTableFull
           id={props.tableConfigId}
           header={props.title}

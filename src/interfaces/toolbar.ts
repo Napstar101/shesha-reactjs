@@ -8,6 +8,7 @@ export interface IToolbarItem {
   onClick?: (args: any) => void;
   hide?: boolean;
   disabled?: boolean;
+  render?: () => ReactNode;
   /**
    * @deprecated - use tooltip instead
    */

@@ -27,27 +27,32 @@ export const ActionButtonGroup: FC<IActionButtonGroupProps> = ({ items, classNam
       <div className="sha-index-toolbar-left">
         <Fragment>
           <Fragment>
-            {items.map(({ title, icon, onClick, hide, className, disabled, tooltipName }) =>
-              !hide ? (
-                <Tooltip title={tooltipName} placement="right" key={nanoid()}>
-                  <Button
-                    onClick={event => {
-                      event?.stopPropagation();
-                      onClick(event);
-                    }}
-                    disabled={disabled}
-                    className={`toolbar-item ${disabled ? 'disabled' : ''} ${className || ''}`}
-                    key={uuid()}
-                    type="link"
-                    icon={icon}
-                    size={btnSize}
-                  >
-                    {title}
-                  </Button>
-                </Tooltip>
-              ) : (
-                undefined
-              )
+            {items
+              ?.filter(({ hide }) => !hide)
+              ?.map(({ title, icon, onClick, className, disabled, tooltipName, render }) => {
+                if (render && typeof render === 'function') {
+                  return render();
+                }
+
+                return (
+                  <Tooltip title={tooltipName} placement="right" key={nanoid()}>
+                    <Button
+                      onClick={event => {
+                        event?.stopPropagation();
+                        onClick(event);
+                      }}
+                      disabled={disabled}
+                      className={`toolbar-item ${disabled ? 'disabled' : ''} ${className || ''}`}
+                      key={uuid()}
+                      type="link"
+                      icon={icon}
+                      size={btnSize}
+                    >
+                      {title}
+                    </Button>
+                  </Tooltip>
+                )
+              }
             )}
           </Fragment>
         </Fragment>
