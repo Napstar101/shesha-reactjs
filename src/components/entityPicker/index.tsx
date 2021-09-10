@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Modal, Input, Button, ButtonProps } from 'antd';
+import { Modal, Input, Button, ButtonProps, ModalProps } from 'antd';
 import IndexTable from '../indexTable';
 import { IAnyObject } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
@@ -12,6 +12,7 @@ import { EllipsisOutlined } from '@ant-design/icons';
 export interface IEntityPickerProps {
   tableId?: string;
   onChange?: (value: string, data: IAnyObject) => void;
+  onSelect?: (data: IAnyObject) => void;
   value?: any;
   displayEntityKey?: string;
   disabled?: boolean;
@@ -21,6 +22,7 @@ export interface IEntityPickerProps {
   title?: string;
   useButtonPicker?: boolean;
   pickerButtonProps?: ButtonProps
+  
 }
 
 export interface IEntityPickerState {
@@ -32,7 +34,7 @@ export interface IEntityPickerState {
 export const EntityPicker: FC<IEntityPickerProps> = ({
   tableId,
   displayEntityKey = 'displayName',
-  onChange,
+  onChange = null,
   disabled,
   loading,
   value,
@@ -40,6 +42,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   size,
   useButtonPicker,
   pickerButtonProps,
+  onSelect,
   title = "Select Item"
 }) => {
   const [state, setState] = useState<IEntityPickerState>({
@@ -47,13 +50,17 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
     selectedRowIndex: -1,
     selectedValue: ''
   });
-  
+
   const toggleModalVisibility = () => setState((current) => ({...current, showModal: !current?.showModal }));
 
   const onDblClick = (row: IAnyObject) => {
-    handleOnChange(row);
+    if (onSelect) {
+      onSelect(row);
+    } else {
+      handleOnChange(row);
+      setSelectedRow(row);
+    }
 
-    setSelectedRow(row);
     toggleModalVisibility();
   };
 
@@ -103,6 +110,11 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
     setState({...state, showModal: true });
   }
 
+  console.log('onChange: ', onChange);
+  
+
+  const footerProps: ModalProps = Boolean(onChange) ? {} : { footer: null };
+
   return (
     <div className="entity-picker-container">
       <div>
@@ -141,8 +153,9 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
         width="60%"
         okText="Select"
         okButtonProps={{
-          disabled: !state?.selectedValue,
+          disabled: !state?.selectedValue || !onChange,
         }}
+        {...footerProps}
       >
         <DataTableProvider tableId={tableId} onDblClick={onDblClick}>
           <GlobalTableFilter

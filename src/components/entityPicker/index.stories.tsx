@@ -55,7 +55,8 @@ const Template: Story<IEntityPickerProps> = args => {
                 name="entityPicker"
                 displayEntityKey="FullName"
                 {...args}
-                onChange={(value, selectedRow) => setState({ ...state, value, selectedRow})}
+                // onChange={(value, selectedRow) => setState({ ...state, value, selectedRow})}
+                onSelect={(selectedRow) => setState({ ...state, selectedRow})}
                 value={state?.value}
               />
             </Form.Item>
