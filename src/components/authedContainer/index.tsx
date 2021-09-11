@@ -71,12 +71,20 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
             </SidebarMenuProvider>
           </ShaRoutingProvider>
         ) : (
-          <Alert
-            message="Not authorized"
-            description="Please make sure you are authorized before accessing this content"
-            showIcon
-            type="warning"
-          />
+          <Fragment>
+            <div className="sha-storybook-authenticated-action-btn">
+              <Button type="primary" onClick={showSignInModal}>
+                Authorize
+              </Button>
+            </div>
+            <Alert
+              message="Not authorized"
+              description="Please make sure you are authorized before accessing this content"
+              showIcon
+              type="warning"
+            />
+
+          </Fragment>
         )}
 
         <Modal

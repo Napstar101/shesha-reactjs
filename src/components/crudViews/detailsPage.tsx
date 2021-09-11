@@ -71,6 +71,8 @@ export interface IDetailsPageProps {
    */
   onDataLoaded?: (model: any) => void;
 
+  onFormValuesChange?: (changedValues: any, values: any) => void;
+
   /**
    * Form Values. If passed, model will be overridden to FormValues, m.
    */
@@ -157,6 +159,7 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
               markup={props.markup}
               initialValues={model}
               actions={props.formActions}
+              onValuesChange={props?.onFormValuesChange}
             />
             {typeof props?.footer === 'function' ? props?.footer(model) : props?.footer}
           </>

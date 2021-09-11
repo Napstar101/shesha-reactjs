@@ -71,7 +71,6 @@ const RowSelectionsTemplate: Story<IIndexPageProps> = () => {
         <UiProvider>
           <SimpleIndexPage
             title="All Payments"
-            id="Invoice_Index"
             tableConfigId="Invoice_Index"
             toolbarItems={[{
               title: 'Create Payment Pack',
