@@ -187,4 +187,6 @@ export interface ICrudProps {
   crudMode?: 'inline' | 'dialog';
 
   pickerOptions?: boolean;
+
+  crudParentEntityKey?: string;
 }

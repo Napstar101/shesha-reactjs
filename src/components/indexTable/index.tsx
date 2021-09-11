@@ -54,7 +54,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   onRowsChanged,
   onExportSuccess,
   onExportError,
-
+  crudParentEntityKey = 'parentEntity'
 }) => {
   const store = useDataTableStore();
   const { headers } = useAuthState();
@@ -430,13 +430,28 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     } else {
       let mutateHttp = updateItemHttp;
       let payload = newOrEditableRowData?.data;
-      payload.parentEntity = { id: parentEntityId };
+      payload[crudParentEntityKey] = { id: parentEntityId };
 
       if (newOrEditableRowData?.mode === 'create') {
         mutateHttp = createItemHttp;
 
         delete payload.Id; // Remove the id because we are saving a new one
       }
+
+      // For Entity reference objects, the object will be something like ColumnName: { value: string, displayText: string }
+      // But the server expects ColumnName: { id: string }. So we just to replace value with id. Let's go
+      Object.keys(payload).forEach(key => {
+        const prop = payload[key];
+        // TODO: check if column type is entityReference. Anyway, for now it is, but you never know
+        if (typeof prop === 'object' && 'value' in prop) {
+
+          payload[key] = {
+            id: payload[key]['value']
+          }
+
+          delete payload[key]['value'];
+        }
+      })
 
       mutateHttp(payload)
         .then(() => {
