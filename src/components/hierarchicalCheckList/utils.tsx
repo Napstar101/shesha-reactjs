@@ -2,7 +2,7 @@ import { CheckSquareOutlined, CloseSquareOutlined } from '@ant-design/icons';
 import { Key } from 'react';
 import _ from 'lodash';
 import { CheckListSelectionType, ICheckListItemSelection, IDataNode, ISaveSelectionsInput } from './interface';
-import { CheckListItemModel, SaveSelectionInput } from '../../apis/checkList';
+import { CheckListItemModel } from '../../apis/checkList';
 import { treeToList } from '../../utils/tree';
 import React from 'react';
 
