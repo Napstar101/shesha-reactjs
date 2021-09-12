@@ -51,6 +51,8 @@ interface IModalProps {
    * Allows changing of caption of the Save/Submit in the modal
    */
   saveCaption?: string | ReactNode;
+
+  onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -63,6 +65,7 @@ const ModalForm: FC<IModalProps> = ({
   prepareValues,
   keepModalOpenAfterSave,
   saveCaption = 'Save',
+  onFieldsChange
 }) => {
   const { mutate: save, error, loading } = updater({});
 
@@ -119,7 +122,15 @@ const ModalForm: FC<IModalProps> = ({
     >
       <Spin spinning={loading} tip="Please wait...">
         <ValidationErrors error={error?.data}></ValidationErrors>
-        <ConfigurableForm mode="edit" {...formItemLayout} form={form} onFinish={onFinish} path={formPath} />
+        
+        <ConfigurableForm
+          mode="edit"
+          {...formItemLayout}
+          form={form}
+          onFinish={onFinish}
+          path={formPath}
+          onFieldsChange={onFieldsChange}
+        />
       </Spin>
     </Modal>
   );

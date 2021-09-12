@@ -15,6 +15,7 @@ interface IModalProps {
   onCancel: (form: FormInstance) => void;
   onSuccess: (form: FormInstance) => void;
   prepareValues?: (values: any) => any;
+  onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -27,6 +28,7 @@ const ModalForm: FC<IModalProps> = ({
   title,
   formPath,
   prepareValues,
+  onFieldsChange
 }) => {
   const { loading: loadingInProgress, refetch: doFetch, error: fetchError, data: fetchedData } = fetcher({
     lazy: true,
@@ -80,6 +82,7 @@ const ModalForm: FC<IModalProps> = ({
             onFinish={handleSubmit}
             path={formPath}
             initialValues={model}
+            onFieldsChange={onFieldsChange}
           />
         )}
       </Spin>
