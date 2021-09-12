@@ -45,6 +45,25 @@
     "validate": { "required": true }
   },
   {
+    "id": "8340f638-c466-448e-99cd-fb8c544fe02a",
+    "type": "textArea",
+    "name": "description",
+    "parentId": "root",
+    "hidden": false,
+    "customVisibility": null,
+    "label": "Description",
+    "autoSize": false,
+    "showCount": false,
+    "allowClear": true
+  },
+  {
+    "id": "65aef83a-ea37-480a-9d77-ee4f4e229a70",
+    "type": "checkbox",
+    "name": "showIcon",
+    "parentId": "root",
+    "label": "Show Icon"
+  },
+  {
     "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
     "type": "checkbox",
     "name": "hidden",
