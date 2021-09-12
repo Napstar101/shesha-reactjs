@@ -219,7 +219,7 @@ const Checklist: ForwardRefRenderFunction<HierarchicalCheckListHandle, IHierarch
   // Memoize the selections selectedKeys
   const selectedKeys = useMemo(() => {
     if (onSelectionsChange) {
-      onSelectionsChange(filterOnSelectionsChange(selections, { id, ownerId, ownerType }));
+      onSelectionsChange(filterOnSelectionsChange(selections, { id, ownerId, ownerType, }));
     }
 
     return selections

@@ -66,6 +66,7 @@ export { default as ConfigurableForm } from './components/configurableForm/confi
 
 export * from './utils';
 export * from './interfaces';
+export * from './components/hierarchicalCheckList/interface'
 export * from './providers';
 export * from './components';
 export * from './hocs';

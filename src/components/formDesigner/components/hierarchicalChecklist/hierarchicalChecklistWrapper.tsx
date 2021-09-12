@@ -13,9 +13,6 @@ export const HierarchicalCheckListWrapper: FC<IHierarchicalChecklistWrapperProps
   
     // note2: I see you have two modes of the HierarchicalCheckList which depends on the dropdown
     // just add some checks in this wrapper to prevent usage of null value and onChange
-  
-    
-    
     <HierarchicalCheckList
       {...rest}
       onSelectionsChange={selections => {
