@@ -8,6 +8,7 @@ import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
+import { TabsType } from 'antd/lib/tabs';
 
 const { TabPane } = Tabs;
 
@@ -20,6 +21,8 @@ export interface ITabProps {
 
 export interface ITabsComponentProps extends IConfigurableFormComponent {
   tabs: ITabProps[];
+  defaultActiveKey?: string;
+  tabType?: TabsType;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -32,20 +35,22 @@ const TabsComponent: IToolboxComponent<ITabsComponentProps> = {
     const { formMode, visibleComponentIds } = useForm();
 
     const size = 'small';
-    const { tabs } = model as ITabsComponentProps;
+    const { tabs, defaultActiveKey, tabType = 'card' } = model as ITabsComponentProps;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+
     if (isHidden) return null;
 
+    const actionKey = defaultActiveKey || (tabs?.length && tabs[0]?.key);
+
     return (
-      <Tabs defaultActiveKey="0" size={size} type="card">
-        {tabs &&
-          tabs.map((t, index) => (
-            <TabPane key={index} tab={t.title}>
-              <ComponentsContainer containerId={t.id}></ComponentsContainer>
-            </TabPane>
-          ))}
+      <Tabs defaultActiveKey={actionKey} size={size} type={tabType}>
+        {tabs?.map(({ id, key, title }) => (
+          <TabPane key={key} tab={title}>
+            <ComponentsContainer containerId={id} />
+          </TabPane>
+        ))}
       </Tabs>
     );
   },
