@@ -16,6 +16,7 @@ interface IModalProps {
   onSuccess: (form: FormInstance) => void;
   prepareValues?: (values: any) => any;
   onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
+  beforeSubmit?: (form: any) => boolean;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -28,7 +29,8 @@ const ModalForm: FC<IModalProps> = ({
   title,
   formPath,
   prepareValues,
-  onFieldsChange
+  onFieldsChange,
+  beforeSubmit
 }) => {
   const { loading: loadingInProgress, refetch: doFetch, error: fetchError, data: fetchedData } = fetcher({
     lazy: true,
@@ -49,6 +51,10 @@ const ModalForm: FC<IModalProps> = ({
   const handleSubmit = values => {
     // We must always use updated values, in case the user had prepared values by then also update the values in the form
     const preparedValues = typeof prepareValues === 'function' ? {...prepareValues(values), ...values } : values;
+
+    if (beforeSubmit && !beforeSubmit(preparedValues)) {
+      return;
+    }
 
     save(preparedValues).then(() => {
       onSuccess(form);

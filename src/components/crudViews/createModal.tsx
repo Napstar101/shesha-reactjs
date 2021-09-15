@@ -53,6 +53,8 @@ interface IModalProps {
   saveCaption?: string | ReactNode;
 
   onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
+
+  beforeSubmit?: (form: any) => boolean;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -65,7 +67,8 @@ const ModalForm: FC<IModalProps> = ({
   prepareValues,
   keepModalOpenAfterSave,
   saveCaption = 'Save',
-  onFieldsChange
+  onFieldsChange,
+  beforeSubmit
 }) => {
   const { mutate: save, error, loading } = updater({});
 
@@ -88,6 +91,10 @@ const ModalForm: FC<IModalProps> = ({
   const onFinish = (values: any) => {
     // We must always use updated values, in case the user had prepared values by then also update the values in the form
     const preparedValues = typeof prepareValues === 'function' ? {...prepareValues(values), ...values } : values;
+
+    if (beforeSubmit && !beforeSubmit(preparedValues)) {
+      return;
+    }
 
     save(preparedValues).then(() => {
       onSuccess(form, localKeepOpen);
