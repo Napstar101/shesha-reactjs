@@ -23,7 +23,6 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
     value: stateValue,
     onChange: handleChange,
   } = props;
-  // console.log('ColumnEditField stateValue', stateValue);
 
   const placeholder = [
     'entityReference',
@@ -58,7 +57,7 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
         placeholder={placeholder}
         type="number"
         min={0}
-        value={(stateValue || 0) as number}
+        value={typeof stateValue === 'number' ? stateValue : parseFloat(stateValue.replace(/,/g, ''))}
       />
     );
   };
