@@ -37,8 +37,9 @@ const ModalForm: FC<IModalProps> = ({
   });
 
   const fetchData = async () => {
-    await doFetch({ queryParams: { id: id } });
+    await doFetch({ queryParams: { id } });
   };
+
   // fetch data on page load
   useEffect(() => {
     fetchData();

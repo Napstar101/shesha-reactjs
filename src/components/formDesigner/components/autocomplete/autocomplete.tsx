@@ -4,7 +4,7 @@ import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/fo
 import { FileSearchOutlined } from '@ant-design/icons';
 import FormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import { Autocomplete, AutocompleteDatasourceType } from '../../../autocomplete';
+import { Autocomplete, AutocompleteDataSourceType } from '../../../autocomplete';
 import { useForm } from '../../../../providers/form';
 import { replaceTags, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
@@ -12,7 +12,8 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   entityTypeShortAlias?: string;
   hideBorder?: boolean;
   dataSourceUrl?: string;
-  dataSourceType: AutocompleteDatasourceType;
+  dataSourceType: AutocompleteDataSourceType;
+  mode?: "tags" | "multiple";
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -39,7 +40,8 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
           bordered={!customProps.hideBorder}
           dataSourceUrl={dataSourceUrl}
           dataSourceType={customProps.dataSourceType}
-        ></Autocomplete>
+          mode={customProps?.mode}
+        />
       </FormItem>
     );
   },

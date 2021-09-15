@@ -6,7 +6,7 @@ import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { useDebouncedCallback } from 'use-debounce';
 import qs from 'qs';
 
-export type AutocompleteDatasourceType = 'entitiesList' | 'url';
+export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
 export interface IAutocompleteProps {
   /**
@@ -57,7 +57,7 @@ export interface IAutocompleteProps {
   /**
    * Data source of this Autocomplete
    */
-  dataSourceType: AutocompleteDatasourceType;
+  dataSourceType: AutocompleteDataSourceType;
 
   /**
    * Styles to apply to the select component that gets rendered by this control
@@ -68,6 +68,11 @@ export interface IAutocompleteProps {
    * The size of the control
    */
   size?: SizeType;
+
+  /**
+   * The size of the control
+   */
+  mode?: 'multiple' | 'tags';
 }
 
 export interface UrlFetcherQueryParams {
@@ -92,7 +97,7 @@ const getQueryString = (url: string) => {
 /**
  * A component for working with dynamic autocomplete
  */
-export const Autocomplete: FC<IAutocompleteProps> = props => {
+export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, ...props }) => {
   const entityFetcher = useAutocompleteList({ lazy: true });
   const urlFetcher = useGet<any, any, UrlFetcherQueryParams>(trimQueryString(props.dataSourceUrl) || '', {
     lazy: true,
@@ -193,6 +198,7 @@ export const Autocomplete: FC<IAutocompleteProps> = props => {
       bordered={props.bordered}
       style={props.style}
       size={props.size}
+      mode={mode}
     >
       {options}
     </Select>
