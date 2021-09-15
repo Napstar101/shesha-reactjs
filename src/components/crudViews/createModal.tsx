@@ -86,7 +86,8 @@ const ModalForm: FC<IModalProps> = ({
   };
 
   const onFinish = (values: any) => {
-    const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
+    // We must always use updated values, in case the user had prepared values by then also update the values in the form
+    const preparedValues = typeof prepareValues === 'function' ? {...prepareValues(values), ...values } : values;
 
     save(preparedValues).then(() => {
       onSuccess(form, localKeepOpen);
