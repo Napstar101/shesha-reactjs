@@ -71,34 +71,13 @@ export interface StoredFileDtoListAjaxResponse {
   result?: StoredFileDto[] | null;
 }
 
-/**
- * Stored File version info
- */
 export interface StoredFileVersionInfoDto {
   id?: string;
-  /**
-   * Date of the upload
-   */
   dateUploaded?: string | null;
-  /**
-   * File size
-   */
   size?: number | null;
-  /**
-   * User uploaded this version
-   */
   uploadedBy?: string | null;
-  /**
-   * File name
-   */
   fileName?: string | null;
-  /**
-   * Version number
-   */
   versionNo?: number;
-  /**
-   * Url for version downloading
-   */
   url?: string | null;
 }
 
@@ -121,24 +100,24 @@ export interface StoredFileDownloadQueryParams {
 }
 
 export type StoredFileDownloadProps = Omit<
-  GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams>,
+  GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams, void>,
   'path'
 >;
 
 export const StoredFileDownload = (props: StoredFileDownloadProps) => (
-  <Get<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams>
+  <Get<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams, void>
     path={`/api/StoredFile/Download`}
     {...props}
   />
 );
 
 export type UseStoredFileDownloadProps = Omit<
-  UseGetProps<FileStreamResultAjaxResponse, StoredFileDownloadQueryParams>,
+  UseGetProps<FileStreamResultAjaxResponse, StoredFileDownloadQueryParams, void>,
   'path'
 >;
 
 export const useStoredFileDownload = (props: UseStoredFileDownloadProps) =>
-  useGet<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams>(
+  useGet<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams, void>(
     `/api/StoredFile/Download`,
     props
   );
@@ -151,12 +130,12 @@ export interface StoredFileUploadQueryParams {
 }
 
 export type StoredFileUploadProps = Omit<
-  MutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void>,
+  MutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const StoredFileUpload = (props: StoredFileUploadProps) => (
-  <Mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void>
+  <Mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void, void>
     verb="POST"
     path={`/api/StoredFile/Upload`}
     {...props}
@@ -164,12 +143,12 @@ export const StoredFileUpload = (props: StoredFileUploadProps) => (
 );
 
 export type UseStoredFileUploadProps = Omit<
-  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileUploadQueryParams, void>,
+  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileUploadQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const useStoredFileUpload = (props: UseStoredFileUploadProps) =>
-  useMutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void>(
+  useMutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void, void>(
     'POST',
     `/api/StoredFile/Upload`,
     props
@@ -183,12 +162,12 @@ export interface StoredFileUploadNewVersionQueryParams {
 }
 
 export type StoredFileUploadNewVersionProps = Omit<
-  MutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void>,
+  MutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const StoredFileUploadNewVersion = (props: StoredFileUploadNewVersionProps) => (
-  <Mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void>
+  <Mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void, void>
     verb="POST"
     path={`/api/StoredFile/UploadNewVersion`}
     {...props}
@@ -196,33 +175,21 @@ export const StoredFileUploadNewVersion = (props: StoredFileUploadNewVersionProp
 );
 
 export type UseStoredFileUploadNewVersionProps = Omit<
-  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileUploadNewVersionQueryParams, void>,
+  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileUploadNewVersionQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const useStoredFileUploadNewVersion = (props: UseStoredFileUploadNewVersionProps) =>
-  useMutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void>(
+  useMutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void, void>(
     'POST',
     `/api/StoredFile/UploadNewVersion`,
     props
   );
 
 export interface StoredFileDeleteQueryParams {
-  /**
-   * File Id
-   */
   fileId: string;
-  /**
-   * Id of the owner entity
-   */
   ownerId?: string | null;
-  /**
-   * Type short alias of the owner entity
-   */
   ownerType?: string | null;
-  /**
-   * Property name of the owner entity. Is used for direct links only (when owner references file using foreign key)
-   */
   propertyName?: string | null;
   /**
    * The requested API version
@@ -231,15 +198,12 @@ export interface StoredFileDeleteQueryParams {
 }
 
 export type StoredFileDeleteProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
-/**
- * Delete file
- */
 export const StoredFileDelete = (props: StoredFileDeleteProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void>
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void, void>
     verb="DELETE"
     path={`/api/StoredFile/Delete`}
     {...props}
@@ -247,40 +211,22 @@ export const StoredFileDelete = (props: StoredFileDeleteProps) => (
 );
 
 export type UseStoredFileDeleteProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, StoredFileDeleteQueryParams, void>,
+  UseMutateProps<BooleanAjaxResponse, StoredFileDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
-/**
- * Delete file
- */
 export const useStoredFileDelete = (props: UseStoredFileDeleteProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void>(
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void, void>(
     'DELETE',
     `/api/StoredFile/Delete`,
     props
   );
 
 export interface StoredFileDownloadZipQueryParams {
-  /**
-   * Set to true to get files of all categories
-   */
   allCategories?: boolean;
-  /**
-   * Id of the owner entity
-   */
   ownerId: string;
-  /**
-   * Type short alias of the owner entity
-   */
   ownerType: string;
-  /**
-   * Category of the file. Is used to split attachments into groups
-   */
   filesCategory?: number | null;
-  /**
-   * Property name of the owner entity. Is used for direct links only (when owner references file using foreign key)
-   */
   propertyName?: string | null;
   /**
    * The requested API version
@@ -289,54 +235,33 @@ export interface StoredFileDownloadZipQueryParams {
 }
 
 export type StoredFileDownloadZipProps = Omit<
-  GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams>,
+  GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams, void>,
   'path'
 >;
 
-/**
- * Download zip archive of all files linked to a specified entity
- */
 export const StoredFileDownloadZip = (props: StoredFileDownloadZipProps) => (
-  <Get<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams>
+  <Get<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams, void>
     path={`/api/StoredFile/DownloadZip`}
     {...props}
   />
 );
 
 export type UseStoredFileDownloadZipProps = Omit<
-  UseGetProps<FileStreamResultAjaxResponse, StoredFileDownloadZipQueryParams>,
+  UseGetProps<FileStreamResultAjaxResponse, StoredFileDownloadZipQueryParams, void>,
   'path'
 >;
 
-/**
- * Download zip archive of all files linked to a specified entity
- */
 export const useStoredFileDownloadZip = (props: UseStoredFileDownloadZipProps) =>
-  useGet<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams>(
+  useGet<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams, void>(
     `/api/StoredFile/DownloadZip`,
     props
   );
 
 export interface StoredFileFilesListQueryParams {
-  /**
-   * Id of the owner entity
-   */
   ownerId: string;
-  /**
-   * Type short alias of the owner entity
-   */
   ownerType: string;
-  /**
-   * Category of the file. Is used to split attachments into groups
-   */
   filesCategory?: number | null;
-  /**
-   * Property name of the owner entity. Is used for direct links only (when owner references file using foreign key)
-   */
   propertyName?: string | null;
-  /**
-   * Set to true to get files of all categories
-   */
   allCategories?: boolean;
   /**
    * The requested API version
@@ -345,30 +270,24 @@ export interface StoredFileFilesListQueryParams {
 }
 
 export type StoredFileFilesListProps = Omit<
-  GetProps<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams>,
+  GetProps<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams, void>,
   'path'
 >;
 
-/**
- * Get list of files attached to a specified entity
- */
 export const StoredFileFilesList = (props: StoredFileFilesListProps) => (
-  <Get<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams>
+  <Get<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams, void>
     path={`/api/StoredFile/FilesList`}
     {...props}
   />
 );
 
 export type UseStoredFileFilesListProps = Omit<
-  UseGetProps<StoredFileDtoListAjaxResponse, StoredFileFilesListQueryParams>,
+  UseGetProps<StoredFileDtoListAjaxResponse, StoredFileFilesListQueryParams, void>,
   'path'
 >;
 
-/**
- * Get list of files attached to a specified entity
- */
 export const useStoredFileFilesList = (props: UseStoredFileFilesListProps) =>
-  useGet<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams>(
+  useGet<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams, void>(
     `/api/StoredFile/FilesList`,
     props
   );
@@ -381,15 +300,12 @@ export interface StoredFileCreateOrUpdateQueryParams {
 }
 
 export type StoredFileCreateOrUpdateProps = Omit<
-  MutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void>,
+  MutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void, void>,
   'path' | 'verb'
 >;
 
-/**
- * Update existing file
- */
 export const StoredFileCreateOrUpdate = (props: StoredFileCreateOrUpdateProps) => (
-  <Mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void>
+  <Mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void, void>
     verb="PUT"
     path={`/api/StoredFile`}
     {...props}
@@ -397,15 +313,12 @@ export const StoredFileCreateOrUpdate = (props: StoredFileCreateOrUpdateProps) =
 );
 
 export type UseStoredFileCreateOrUpdateProps = Omit<
-  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileCreateOrUpdateQueryParams, void>,
+  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileCreateOrUpdateQueryParams, void, void>,
   'path' | 'verb'
 >;
 
-/**
- * Update existing file
- */
 export const useStoredFileCreateOrUpdate = (props: UseStoredFileCreateOrUpdateProps) =>
-  useMutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void>(
+  useMutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void, void>(
     'PUT',
     `/api/StoredFile`,
     props
@@ -420,24 +333,24 @@ export interface StoredFileGetQueryParams {
 }
 
 export type StoredFileGetProps = Omit<
-  GetProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams>,
+  GetProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams, void>,
   'path'
 >;
 
-/**
- * Get file by id
- */
 export const StoredFileGet = (props: StoredFileGetProps) => (
-  <Get<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams> path={`/api/StoredFile`} {...props} />
+  <Get<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams, void>
+    path={`/api/StoredFile`}
+    {...props}
+  />
 );
 
-export type UseStoredFileGetProps = Omit<UseGetProps<StoredFileDtoAjaxResponse, StoredFileGetQueryParams>, 'path'>;
+export type UseStoredFileGetProps = Omit<
+  UseGetProps<StoredFileDtoAjaxResponse, StoredFileGetQueryParams, void>,
+  'path'
+>;
 
-/**
- * Get file by id
- */
 export const useStoredFileGet = (props: UseStoredFileGetProps) =>
-  useGet<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams>(`/api/StoredFile`, props);
+  useGet<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams, void>(`/api/StoredFile`, props);
 
 export interface StoredFileDeleteFileQueryParams {
   id?: string;
@@ -448,15 +361,12 @@ export interface StoredFileDeleteFileQueryParams {
 }
 
 export type StoredFileDeleteFileProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void, void>,
   'path' | 'verb'
 >;
 
-/**
- * Delete file
- */
 export const StoredFileDeleteFile = (props: StoredFileDeleteFileProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void>
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void, void>
     verb="DELETE"
     path={`/api/StoredFile`}
     {...props}
@@ -464,32 +374,20 @@ export const StoredFileDeleteFile = (props: StoredFileDeleteFileProps) => (
 );
 
 export type UseStoredFileDeleteFileProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, StoredFileDeleteFileQueryParams, void>,
+  UseMutateProps<BooleanAjaxResponse, StoredFileDeleteFileQueryParams, void, void>,
   'path' | 'verb'
 >;
 
-/**
- * Delete file
- */
 export const useStoredFileDeleteFile = (props: UseStoredFileDeleteFileProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void>(
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void, void>(
     'DELETE',
     `/api/StoredFile`,
     props
   );
 
 export interface StoredFileGetEntityPropertyQueryParams {
-  /**
-   * Property name of the owner entity. Is used for direct links only (when owner references file using foreign key)
-   */
   propertyName?: string | null;
-  /**
-   * Id of the owner entity
-   */
   ownerId: string;
-  /**
-   * Type short alias of the owner entity
-   */
   ownerType: string;
   /**
    * The requested API version
@@ -498,30 +396,24 @@ export interface StoredFileGetEntityPropertyQueryParams {
 }
 
 export type StoredFileGetEntityPropertyProps = Omit<
-  GetProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams>,
+  GetProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams, void>,
   'path'
 >;
 
-/**
- * Get file as property of the entity
- */
 export const StoredFileGetEntityProperty = (props: StoredFileGetEntityPropertyProps) => (
-  <Get<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams>
+  <Get<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams, void>
     path={`/api/StoredFile/EntityProperty`}
     {...props}
   />
 );
 
 export type UseStoredFileGetEntityPropertyProps = Omit<
-  UseGetProps<StoredFileDtoAjaxResponse, StoredFileGetEntityPropertyQueryParams>,
+  UseGetProps<StoredFileDtoAjaxResponse, StoredFileGetEntityPropertyQueryParams, void>,
   'path'
 >;
 
-/**
- * Get file as property of the entity
- */
 export const useStoredFileGetEntityProperty = (props: UseStoredFileGetEntityPropertyProps) =>
-  useGet<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams>(
+  useGet<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams, void>(
     `/api/StoredFile/EntityProperty`,
     props
   );
@@ -533,31 +425,50 @@ export interface StoredFileGetFileVersionsQueryParams {
   'api-version'?: string;
 }
 
-export type StoredFileGetFileVersionsProps = Omit<
-  GetProps<StoredFileVersionInfoDtoListAjaxResponse, AjaxResponseBase, StoredFileGetFileVersionsQueryParams>,
-  'path'
-> & { fileId: string };
+export interface StoredFileGetFileVersionsPathParams {
+  fileId: string;
+}
 
-/**
- * Get versions of the file with specified Id
- */
+export type StoredFileGetFileVersionsProps = Omit<
+  GetProps<
+    StoredFileVersionInfoDtoListAjaxResponse,
+    AjaxResponseBase,
+    StoredFileGetFileVersionsQueryParams,
+    StoredFileGetFileVersionsPathParams
+  >,
+  'path'
+> &
+  StoredFileGetFileVersionsPathParams;
+
 export const StoredFileGetFileVersions = ({ fileId, ...props }: StoredFileGetFileVersionsProps) => (
-  <Get<StoredFileVersionInfoDtoListAjaxResponse, AjaxResponseBase, StoredFileGetFileVersionsQueryParams>
+  <Get<
+    StoredFileVersionInfoDtoListAjaxResponse,
+    AjaxResponseBase,
+    StoredFileGetFileVersionsQueryParams,
+    StoredFileGetFileVersionsPathParams
+  >
     path={`/api/StoredFile/StoredFile/${fileId}/Versions`}
     {...props}
   />
 );
 
 export type UseStoredFileGetFileVersionsProps = Omit<
-  UseGetProps<StoredFileVersionInfoDtoListAjaxResponse, StoredFileGetFileVersionsQueryParams>,
+  UseGetProps<
+    StoredFileVersionInfoDtoListAjaxResponse,
+    StoredFileGetFileVersionsQueryParams,
+    StoredFileGetFileVersionsPathParams
+  >,
   'path'
-> & { fileId: string };
+> &
+  StoredFileGetFileVersionsPathParams;
 
-/**
- * Get versions of the file with specified Id
- */
 export const useStoredFileGetFileVersions = ({ fileId, ...props }: UseStoredFileGetFileVersionsProps) =>
-  useGet<StoredFileVersionInfoDtoListAjaxResponse, AjaxResponseBase, StoredFileGetFileVersionsQueryParams>(
-    `/api/StoredFile/StoredFile/${fileId}/Versions`,
-    props
-  );
+  useGet<
+    StoredFileVersionInfoDtoListAjaxResponse,
+    AjaxResponseBase,
+    StoredFileGetFileVersionsQueryParams,
+    StoredFileGetFileVersionsPathParams
+  >(({ fileId }: StoredFileGetFileVersionsPathParams) => `/api/StoredFile/StoredFile/${fileId}/Versions`, {
+    pathParams: { fileId },
+    ...props,
+  });

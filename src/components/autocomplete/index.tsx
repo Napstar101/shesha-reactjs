@@ -5,8 +5,15 @@ import { useGet } from 'restful-react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { useDebouncedCallback } from 'use-debounce';
 import qs from 'qs';
+import { IGuidNullableEntityWithDisplayNameDto } from '../..';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
+
+interface IDropdownOptionData {
+  key?: string;
+  value?: string;
+  children?: any;
+}
 
 export interface IAutocompleteProps {
   /**
@@ -73,6 +80,8 @@ export interface IAutocompleteProps {
    * The size of the control
    */
   mode?: 'multiple' | 'tags';
+
+  allowClear?: boolean;
 }
 
 export interface UrlFetcherQueryParams {
@@ -97,7 +106,7 @@ const getQueryString = (url: string) => {
 /**
  * A component for working with dynamic autocomplete
  */
-export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, ...props }) => {
+export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,...props }) => {
   const entityFetcher = useAutocompleteList({ lazy: true });
   const urlFetcher = useGet<any, any, UrlFetcherQueryParams>(trimQueryString(props.dataSourceUrl) || '', {
     lazy: true,
@@ -107,6 +116,21 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, ...props }) 
     props.dataSourceType === 'entitiesList' ? entityFetcher : props.dataSourceType === 'url' ? urlFetcher : null;
 
   const [autocompleteText, setAutocompleteText] = useState(null);
+
+  const getValue = () => {
+    const value = typeof props?.value === 'string'
+    ? props?.value
+    : (props?.value as [])?.map((item) => {
+
+      if (typeof item === 'string') {
+        return item;
+      }
+
+      return (item as IGuidNullableEntityWithDisplayNameDto)?.id;
+    })
+
+    return value;
+  }
 
   const dofetchItems = (term: string) => {
     // if value is specified but displayText is not specified - fetch text from the server
@@ -180,6 +204,17 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, ...props }) 
     }
   };
 
+  const handleChange = (value: string, option: any) => {
+    if (mode === 'multiple' || mode === 'tags') {
+      const values: IGuidNullableEntityWithDisplayNameDto[] = (option as IDropdownOptionData[])
+        .map(({ key, children }) => ({ id: key, displayText: children }));
+
+        onChange(values, values);
+    } else {
+      onChange(value, option);
+    }
+  }
+
   return (
     <Select
       showSearch
@@ -189,11 +224,12 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, ...props }) 
       onSearch={handleSearch}
       defaultValue={props.value}
       notFoundContent={null}
-      onChange={props.onChange}
+      onChange={handleChange}
       allowClear={true}
       loading={itemsFetcher?.loading}
       placeholder={props.placeHolder}
-      value={props.value}
+      value={getValue()}
+      // value={props.value}
       disabled={props.disabled}
       bordered={props.bordered}
       style={props.style}

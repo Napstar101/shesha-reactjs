@@ -5,106 +5,9 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-export interface UserLogin {
-  id?: number;
-  tenantId?: number | null;
-  userId?: number;
-  loginProvider: string;
-  providerKey: string;
-}
-
-export interface UserRole {
-  id?: number;
-  creationTime?: string;
-  creatorUserId?: number | null;
-  tenantId?: number | null;
-  userId?: number;
-  roleId?: number;
-}
-
-export interface UserClaim {
-  id?: number;
-  creationTime?: string;
-  creatorUserId?: number | null;
-  tenantId?: number | null;
-  userId?: number;
-  claimType?: string | null;
-  claimValue?: string | null;
-}
-
-export interface UserPermissionSetting {
-  id?: number;
-  creationTime?: string;
-  creatorUserId?: number | null;
-  tenantId?: number | null;
-  name: string;
-  isGranted?: boolean;
-  userId?: number;
-}
-
-export interface Setting {
-  id?: number;
-  creationTime?: string;
-  creatorUserId?: number | null;
-  lastModificationTime?: string | null;
-  lastModifierUserId?: number | null;
-  tenantId?: number | null;
-  userId?: number | null;
-  name: string;
-  value?: string | null;
-}
-
-export interface UserToken {
-  id?: number;
-  tenantId?: number | null;
-  userId?: number;
-  loginProvider?: string | null;
-  name?: string | null;
-  value?: string | null;
-  expireDate?: string | null;
-}
-
-export interface User {
-  id?: number;
-  creationTime?: string;
-  creatorUserId?: number | null;
-  lastModificationTime?: string | null;
-  lastModifierUserId?: number | null;
-  isDeleted?: boolean;
-  deleterUserId?: number | null;
-  deletionTime?: string | null;
-  authenticationSource?: string | null;
-  userName: string;
-  tenantId?: number | null;
-  name: string;
-  surname: string;
-  fullName?: string | null;
-  password: string;
-  emailConfirmationCode?: string | null;
-  passwordResetCode?: string | null;
-  lockoutEndDateUtc?: string | null;
-  accessFailedCount?: number;
-  isLockoutEnabled?: boolean;
-  phoneNumber?: string | null;
-  isPhoneNumberConfirmed?: boolean;
-  securityStamp?: string | null;
-  isTwoFactorEnabled?: boolean;
-  logins?: UserLogin[] | null;
-  roles?: UserRole[] | null;
-  claims?: UserClaim[] | null;
-  permissions?: UserPermissionSetting[] | null;
-  settings?: Setting[] | null;
-  isEmailConfirmed?: boolean;
-  isActive?: boolean;
-  normalizedUserName: string;
-  normalizedEmailAddress: string;
-  concurrencyStamp?: string | null;
-  tokens?: UserToken[] | null;
-  deleterUser?: User;
-  creatorUser?: User;
-  lastModifierUser?: User;
-  lastLoginDate?: string | null;
-  emailAddress?: string | null;
+export interface NDADetailsDto {
+  personId?: string;
+  hasAcceptedDeclaration?: boolean;
 }
 
 export interface ValidationErrorInfo {
@@ -119,13 +22,13 @@ export interface ErrorInfo {
   validationErrors?: ValidationErrorInfo[] | null;
 }
 
-export interface UserAjaxResponse {
+export interface NDADetailsDtoAjaxResponse {
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
-  result?: User;
+  result?: NDADetailsDto;
 }
 
 export interface AjaxResponseBase {
@@ -134,16 +37,6 @@ export interface AjaxResponseBase {
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
-}
-
-export interface GuidNullableEntityWithDisplayNameDto {
-  id?: string | null;
-  displayText?: string | null;
-}
-
-export interface ReferenceListItemValueDto {
-  item?: string | null;
-  itemValue?: number | null;
 }
 
 export interface StoredFileDto {
@@ -156,122 +49,996 @@ export interface StoredFileDto {
   type?: string | null;
 }
 
-export interface ApplicationResponse {
-  id?: string;
-  name?: string | null;
-  surname?: string | null;
-  idNumber?: string | null;
-  dateOfBirth?: string | null;
-  cellphone?: string | null;
-  email?: string | null;
-  residentialAddress?: string | null;
-  province?: GuidNullableEntityWithDisplayNameDto;
-  applicationStatus?: ReferenceListItemValueDto;
-  region?: GuidNullableEntityWithDisplayNameDto;
-  registeredMember?: GuidNullableEntityWithDisplayNameDto;
-  branch?: GuidNullableEntityWithDisplayNameDto;
-  supportingDoc?: StoredFileDto;
-  applicationDate?: string | null;
+export interface StudentApplicationDocumentsResponse {
+  entityForm?: StoredFileDto;
+  letterOfUndertaking?: StoredFileDto;
+  bursaryContract?: StoredFileDto;
+  confirmationOfBankAccount?: StoredFileDto;
 }
 
-export interface ApplicationResponseAjaxResponse {
+export interface StudentApplicationDocumentsResponseAjaxResponse {
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
-  result?: ApplicationResponse;
+  result?: StudentApplicationDocumentsResponse;
 }
 
-export interface ApplicationsApplyForMembershipQueryParams {
+export interface ReferenceListItemValueDto {
+  item?: string | null;
+  itemValue?: number | null;
+}
+
+export interface AddressDto {
+  id?: string;
+  addressType?: number | null;
+  fullAddress?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  addressLine3?: string | null;
+  suburb?: string | null;
+  town?: string | null;
+  poBox?: string | null;
+  locationType?: number | null;
+  houseNumber?: string | null;
+  buildingComplexName?: string | null;
+  streetName?: string | null;
+  suburbTownship?: string | null;
+  sectionExtension?: string | null;
+  city?: string | null;
+  province?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
+export interface GuidNullableEntityWithDisplayNameDto {
+  id?: string | null;
+  displayText?: string | null;
+}
+
+export interface UserDto {
+  id?: number;
+  userName: string;
+  name: string;
+  surname: string;
+  emailAddress: string;
+  isActive?: boolean;
+  fullName?: string | null;
+  lastLoginTime?: string | null;
+  creationTime?: string;
+  roleNames?: string[] | null;
+}
+
+export interface StudentResponse {
+  id?: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  mobileNumber1?: string | null;
+  mobileNumber2?: string | null;
   /**
-   * The requested API version
+   * This must be used as a telephone number
    */
-  'api-version'?: string;
+  officeNumber?: string | null;
+  emailAddress1?: string | null;
+  identityNumber?: string | null;
+  title?: ReferenceListItemValueDto;
+  passportNumber?: string | null;
+  /**
+   * South African ID Number.
+   */
+  saidNumber?: string | null;
+  gender?: ReferenceListItemValueDto;
+  dateOfBirth?: string | null;
+  hasDisability?: boolean | null;
+  /**
+   * For Passportabd and assylumn seaker the value is goung to be be false
+   * For SA ID which is not verifired by DHA the value is going to be false
+   * else true
+   */
+  hasVerifiedSAIDNumberByDHA?: boolean | null;
+  /**
+   * Date that the Office Bearer was created
+   */
+  creationTime?: string | null;
+  mobileNumber?: string | null;
+  emailAddress?: string | null;
+  race?: ReferenceListItemValueDto;
+  residentialAddress?: AddressDto;
+  physicalAddress?: AddressDto;
+  studentNumber?: string | null;
+  age?: string | null;
+  highestGrade?: ReferenceListItemValueDto;
+  isDisabled?: boolean;
+  district?: GuidNullableEntityWithDisplayNameDto;
+  municipality?: GuidNullableEntityWithDisplayNameDto;
+  council?: string | null;
+  wardNumber?: string | null;
+  isSouthAfrican?: boolean;
+  isKznResident?: boolean;
+  hasRecievedOrientationInvite?: boolean;
+  user?: UserDto;
+  fullName?: string | null;
 }
 
-export type ApplicationsApplyForMembershipProps = Omit<
-  MutateProps<UserAjaxResponse, AjaxResponseBase, ApplicationsApplyForMembershipQueryParams, void>,
-  'path' | 'verb'
->;
+export interface ParentDto {
+  identityNumber?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  gender?: ReferenceListItemValueDto;
+  /**
+   * Cellphone
+   */
+  mobileNumber1?: string | null;
+  /**
+   * Alternative number
+   */
+  mobileNumber2?: string | null;
+  /**
+   * Email Address
+   */
+  emailAddress1?: string | null;
+  race?: ReferenceListItemValueDto;
+  incomeRange?: ReferenceListItemValueDto;
+  isEmployed?: boolean | null;
+  employer?: string | null;
+  employerAddress?: AddressDto;
+  isMissing?: boolean | null;
+  reasonForMissing?: ReferenceListItemValueDto;
+  fullName?: string | null;
+}
 
-export const ApplicationsApplyForMembership = (props: ApplicationsApplyForMembershipProps) => (
-  <Mutate<UserAjaxResponse, AjaxResponseBase, ApplicationsApplyForMembershipQueryParams, void>
-    verb="POST"
-    path={`/api/services/Gma/Applications/ApplyForMembership`}
+export type RefListDocumentVerificarionStatus = number;
+
+export interface DocumentVerificationDto {
+  id?: string | null;
+  ownerId?: string | null;
+  verificationStatus?: RefListDocumentVerificarionStatus;
+  file?: StoredFileDto;
+  filePropertyName?: string | null;
+}
+
+export interface ApplicationFiles {
+  id?: string;
+  certifiedIDFile?: DocumentVerificationDto;
+  motivationLetterFile?: DocumentVerificationDto;
+  matricResultFile?: DocumentVerificationDto;
+  proofOfResidenceFile?: DocumentVerificationDto;
+  certifiedIDCopyOfParentAFile?: DocumentVerificationDto;
+  certifiedIDCopyOfParentBFile?: DocumentVerificationDto;
+  deathCertificateFile?: DocumentVerificationDto;
+  affidavitFile?: DocumentVerificationDto;
+  parentAProofOfIncomeFile?: DocumentVerificationDto;
+  parentBProofOfIncomeFile?: DocumentVerificationDto;
+  feeAccountStatementFile?: DocumentVerificationDto;
+  proofOfRegistrationFile?: DocumentVerificationDto;
+  statementOfResultFile?: DocumentVerificationDto;
+  orientationNoticeFile?: DocumentVerificationDto;
+  declarationOfAttendanceFile?: DocumentVerificationDto;
+  entityFormFile?: DocumentVerificationDto;
+  confirmationOfBankAccountFile?: DocumentVerificationDto;
+  leaseAgreementFile?: DocumentVerificationDto;
+  bursaryContractFile?: DocumentVerificationDto;
+  letterOfUndertakingFile?: DocumentVerificationDto;
+  regretLetterFile?: DocumentVerificationDto;
+  provisionalAcceptanceLetterFile?: DocumentVerificationDto;
+}
+
+export interface ApplicationDto {
+  id?: string;
+  student?: StudentResponse;
+  referral?: GuidNullableEntityWithDisplayNameDto;
+  schoolName?: string | null;
+  isTertiaryEnrolled?: boolean;
+  feesAmount?: number;
+  institution?: GuidNullableEntityWithDisplayNameDto;
+  appliedQualificationName?: string | null;
+  intendedStudyYears?: string | null;
+  enrolledQualificationName?: string | null;
+  currentYearOfStudy?: ReferenceListItemValueDto;
+  remainingStudyYears?: string | null;
+  studyStartYear?: string | null;
+  studyCompletionYear?: string | null;
+  areFeesOutstanding?: boolean;
+  passedSubjectsCsv?: string | null;
+  remainingSubjectsCsv?: string | null;
+  hasFailedStudies?: boolean;
+  failedYearsCsv?: string | null;
+  hasRewrittenExams?: boolean;
+  rewrittenExamsCsv?: string | null;
+  qualificationMajorSubjectsCsv?: string | null;
+  hasProvisionalAcceptance?: boolean;
+  hasCriminalConviction?: boolean;
+  hasConsultedVCouncilor?: boolean;
+  hasReceivedPublicBursary?: boolean;
+  hasAppliedToOtherSponsor?: boolean;
+  nameOfSponsor?: string | null;
+  obligationToSponsor?: string | null;
+  isObligationsFullfilled?: boolean;
+  isOfferSent?: boolean;
+  isOfferResponded?: boolean;
+  isHomeAdddressVerified?: boolean;
+  isEmployementVerified?: boolean;
+  isTetiaryAcceptanceVerified?: boolean;
+  isReportCardVerified?: boolean;
+  applicationDate?: string | null;
+  offerExpiryDate?: string | null;
+  applicationStatus?: ReferenceListItemValueDto;
+  reasonForNotRecommending?: ReferenceListItemValueDto;
+  isTermsAndConditionAccepted?: boolean;
+  publicBursaryStartDate?: string | null;
+  publicBursaryEndDate?: string | null;
+  onBoardingProcessStatus?: ReferenceListItemValueDto;
+  parentA?: ParentDto;
+  parentB?: ParentDto;
+  applicationFiles?: ApplicationFiles;
+  documentsStatus?: ReferenceListItemValueDto;
+  clerkDecision?: ReferenceListItemValueDto;
+  commiteeDecision?: ReferenceListItemValueDto;
+  bursaryUnitDecision?: ReferenceListItemValueDto;
+  dgDecision?: ReferenceListItemValueDto;
+  applicationType?: ReferenceListItemValueDto;
+  failedYear?: string | null;
+  motivation?: string | null;
+  letterOfUndertakingFile?: StoredFileDto;
+  regretLetterFile?: StoredFileDto;
+  bursaryContractFile?: StoredFileDto;
+}
+
+export interface ApplicationDtoAjaxResponse {
+  targetUrl?: string | null;
+  success?: boolean;
+  error?: ErrorInfo;
+  unAuthorizedRequest?: boolean;
+  __abp?: boolean;
+  result?: ApplicationDto;
+}
+
+export interface ApplicationsStatsResponse {
+  numApplicationsAwaitingProccessing?: number;
+  numApplicationsAwaitingCommitee?: number;
+  numApplicationsAwaitingBursaryUnit?: number;
+  numApplicationsDueForDG?: number;
+  totalQAFinal?: number;
+  totalQAAwarded?: number;
+  totalQANotAwarded?: number;
+}
+
+export interface ApplicationsStatsResponseAjaxResponse {
+  targetUrl?: string | null;
+  success?: boolean;
+  error?: ErrorInfo;
+  unAuthorizedRequest?: boolean;
+  __abp?: boolean;
+  result?: ApplicationsStatsResponse;
+}
+
+export interface CheckListItemSelectionDto {
+  checkListItemId?: string;
+  selection?: number | null;
+  comments?: string | null;
+  name?: string | null;
+}
+
+export interface SaveSelectionInput {
+  id: string;
+  ownerType: string;
+  ownerId: string;
+  selection: CheckListItemSelectionDto[];
+}
+
+export interface ProcessApplicationInput {
+  id?: string;
+  isRecommended?: boolean;
+  processApplicationCheckList?: SaveSelectionInput;
+  outStandingDocumentsCheckList?: SaveSelectionInput;
+}
+
+export type RefListReasonForNotRecommending = number;
+
+export interface CommiteeRecomendInput {
+  id?: string;
+  isRecommended?: boolean;
+  reasonForNotRecommending?: RefListReasonForNotRecommending;
+  comment?: string | null;
+}
+
+export interface CreateNDASelectionDto {
+  id?: string;
+  ndaSelectionChecklist?: SaveSelectionInput;
+}
+
+export interface CreateNDASelectionDtoAjaxResponse {
+  targetUrl?: string | null;
+  success?: boolean;
+  error?: ErrorInfo;
+  unAuthorizedRequest?: boolean;
+  __abp?: boolean;
+  result?: CreateNDASelectionDto;
+}
+
+export interface VerificationStatusInput {
+  id?: string;
+  fileId?: string;
+  ownerId?: string;
+  verificationStatus?: RefListDocumentVerificarionStatus;
+}
+
+export interface DocumentVerificationDtoAjaxResponse {
+  targetUrl?: string | null;
+  success?: boolean;
+  error?: ErrorInfo;
+  unAuthorizedRequest?: boolean;
+  __abp?: boolean;
+  result?: DocumentVerificationDto;
+}
+
+export type ApplicationResultsAction = number;
+
+export interface ApplicationActionInput {
+  action?: ApplicationResultsAction;
+}
+
+export interface ApplicationDGResultsUpdate {
+  id?: string;
+  dgDecision?: ReferenceListItemValueDto;
+}
+
+export interface ApplicationEducationDetailsUpdate {
+  schoolName?: string | null;
+  isTertiaryEnrolled?: boolean;
+  institution?: GuidNullableEntityWithDisplayNameDto;
+  highestGrade?: ReferenceListItemValueDto;
+  appliedQualificationName?: string | null;
+  studentNumber?: string | null;
+  intendedStudyYears?: string | null;
+  enrolledQualificationName?: string | null;
+  currentYearOfStudy?: ReferenceListItemValueDto;
+  remainingStudyYears?: string | null;
+  studyStartYear?: string | null;
+  studyCompletionYear?: string | null;
+  areFeesOutstanding?: boolean;
+  hasFailedStudies?: boolean;
+  hasRewrittenExams?: boolean;
+  isTermsAndConditionAccepted?: boolean;
+  isTetiaryAcceptanceVerified?: boolean;
+  numberOfStudyYears?: string | null;
+  failedYear?: string | null;
+}
+
+export interface ApplicationParentDetailsUpdate {
+  parentA?: ParentDto;
+  parentB?: ParentDto;
+}
+
+export interface ApplicationDeclarationUpdate {
+  hasCriminalConviction?: boolean;
+  applicationDate?: string | null;
+  hasConsultedVCouncilor?: boolean;
+  hasReceivedPublicBursary?: boolean;
+  publicBursaryStartDate?: string | null;
+  publicBursaryEndDate?: string | null;
+  hasAppliedToOtherSponsor?: boolean;
+  nameOfSponsor?: string | null;
+  obligationToSponsor?: string | null;
+  isObligationsFullfilled?: boolean;
+}
+
+export interface ApplicationsGetNDADetailsPathParams {
+  id: string;
+}
+
+export type ApplicationsGetNDADetailsProps = Omit<
+  GetProps<NDADetailsDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetNDADetailsPathParams>,
+  'path'
+> &
+  ApplicationsGetNDADetailsPathParams;
+
+export const ApplicationsGetNDADetails = ({ id, ...props }: ApplicationsGetNDADetailsProps) => (
+  <Get<NDADetailsDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetNDADetailsPathParams>
+    path={`/api/v1/BursMan/Applications/GetNDADetails/${id}`}
     {...props}
   />
 );
 
-export type UseApplicationsApplyForMembershipProps = Omit<
-  UseMutateProps<UserAjaxResponse, ApplicationsApplyForMembershipQueryParams, void>,
-  'path' | 'verb'
->;
+export type UseApplicationsGetNDADetailsProps = Omit<
+  UseGetProps<NDADetailsDtoAjaxResponse, void, ApplicationsGetNDADetailsPathParams>,
+  'path'
+> &
+  ApplicationsGetNDADetailsPathParams;
 
-export const useApplicationsApplyForMembership = (props: UseApplicationsApplyForMembershipProps) =>
-  useMutate<UserAjaxResponse, AjaxResponseBase, ApplicationsApplyForMembershipQueryParams, void>(
-    'POST',
-    `/api/services/Gma/Applications/ApplyForMembership`,
-    props
+export const useApplicationsGetNDADetails = ({ id, ...props }: UseApplicationsGetNDADetailsProps) =>
+  useGet<NDADetailsDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetNDADetailsPathParams>(
+    ({ id }: ApplicationsGetNDADetailsPathParams) => `/api/v1/BursMan/Applications/GetNDADetails/${id}`,
+    { pathParams: { id }, ...props }
   );
 
-export interface ApplicationsGetQueryParams {
-  id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
+export interface ApplicationsGetStudentDocumentsPathParams {
+  id: string;
+}
+
+export type ApplicationsGetStudentDocumentsProps = Omit<
+  GetProps<
+    StudentApplicationDocumentsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetStudentDocumentsPathParams
+  >,
+  'path'
+> &
+  ApplicationsGetStudentDocumentsPathParams;
+
+export const ApplicationsGetStudentDocuments = ({ id, ...props }: ApplicationsGetStudentDocumentsProps) => (
+  <Get<
+    StudentApplicationDocumentsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetStudentDocumentsPathParams
+  >
+    path={`/api/v1/BursMan/Applications/Documents/Students/${id}`}
+    {...props}
+  />
+);
+
+export type UseApplicationsGetStudentDocumentsProps = Omit<
+  UseGetProps<StudentApplicationDocumentsResponseAjaxResponse, void, ApplicationsGetStudentDocumentsPathParams>,
+  'path'
+> &
+  ApplicationsGetStudentDocumentsPathParams;
+
+export const useApplicationsGetStudentDocuments = ({ id, ...props }: UseApplicationsGetStudentDocumentsProps) =>
+  useGet<
+    StudentApplicationDocumentsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetStudentDocumentsPathParams
+  >(({ id }: ApplicationsGetStudentDocumentsPathParams) => `/api/v1/BursMan/Applications/Documents/Students/${id}`, {
+    pathParams: { id },
+    ...props,
+  });
+
+export interface ApplicationsGetPathParams {
+  id: string;
 }
 
 export type ApplicationsGetProps = Omit<
-  GetProps<ApplicationResponseAjaxResponse, AjaxResponseBase, ApplicationsGetQueryParams>,
+  GetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetPathParams>,
   'path'
->;
+> &
+  ApplicationsGetPathParams;
 
-export const ApplicationsGet = (props: ApplicationsGetProps) => (
-  <Get<ApplicationResponseAjaxResponse, AjaxResponseBase, ApplicationsGetQueryParams>
-    path={`/api/services/Gma/Applications/Get`}
+export const ApplicationsGet = ({ id, ...props }: ApplicationsGetProps) => (
+  <Get<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetPathParams>
+    path={`/api/v1/BursMan/Applications/${id}`}
     {...props}
   />
 );
 
 export type UseApplicationsGetProps = Omit<
-  UseGetProps<ApplicationResponseAjaxResponse, ApplicationsGetQueryParams>,
+  UseGetProps<ApplicationDtoAjaxResponse, void, ApplicationsGetPathParams>,
   'path'
->;
+> &
+  ApplicationsGetPathParams;
 
-export const useApplicationsGet = (props: UseApplicationsGetProps) =>
-  useGet<ApplicationResponseAjaxResponse, AjaxResponseBase, ApplicationsGetQueryParams>(
-    `/api/services/Gma/Applications/Get`,
-    props
+export const useApplicationsGet = ({ id, ...props }: UseApplicationsGetProps) =>
+  useGet<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetPathParams>(
+    ({ id }: ApplicationsGetPathParams) => `/api/v1/BursMan/Applications/${id}`,
+    { pathParams: { id }, ...props }
   );
 
-export interface ApplicationsGetCurrentUserApplicationQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
-export type ApplicationsGetCurrentUserApplicationProps = Omit<
-  GetProps<ApplicationResponseAjaxResponse, AjaxResponseBase, ApplicationsGetCurrentUserApplicationQueryParams>,
+export type ApplicationsGetMyApplicationProps = Omit<
+  GetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
-export const ApplicationsGetCurrentUserApplication = (props: ApplicationsGetCurrentUserApplicationProps) => (
-  <Get<ApplicationResponseAjaxResponse, AjaxResponseBase, ApplicationsGetCurrentUserApplicationQueryParams>
-    path={`/api/services/Gma/Applications/GetCurrentUserApplication`}
+export const ApplicationsGetMyApplication = (props: ApplicationsGetMyApplicationProps) => (
+  <Get<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>
+    path={`/api/v1/BursMan/Applications/MyApplication`}
     {...props}
   />
 );
 
-export type UseApplicationsGetCurrentUserApplicationProps = Omit<
-  UseGetProps<ApplicationResponseAjaxResponse, ApplicationsGetCurrentUserApplicationQueryParams>,
+export type UseApplicationsGetMyApplicationProps = Omit<UseGetProps<ApplicationDtoAjaxResponse, void, void>, 'path'>;
+
+export const useApplicationsGetMyApplication = (props: UseApplicationsGetMyApplicationProps) =>
+  useGet<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>(`/api/v1/BursMan/Applications/MyApplication`, props);
+
+export type ApplicationsGetApplicationsStatsProps = Omit<
+  GetProps<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
-export const useApplicationsGetCurrentUserApplication = (props: UseApplicationsGetCurrentUserApplicationProps) =>
-  useGet<ApplicationResponseAjaxResponse, AjaxResponseBase, ApplicationsGetCurrentUserApplicationQueryParams>(
-    `/api/services/Gma/Applications/GetCurrentUserApplication`,
+export const ApplicationsGetApplicationsStats = (props: ApplicationsGetApplicationsStatsProps) => (
+  <Get<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, void>
+    path={`/api/v1/BursMan/Applications/GetApplicationsStats`}
+    {...props}
+  />
+);
+
+export type UseApplicationsGetApplicationsStatsProps = Omit<
+  UseGetProps<ApplicationsStatsResponseAjaxResponse, void, void>,
+  'path'
+>;
+
+export const useApplicationsGetApplicationsStats = (props: UseApplicationsGetApplicationsStatsProps) =>
+  useGet<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/v1/BursMan/Applications/GetApplicationsStats`,
     props
   );
+
+export type ApplicationsProcessApplicationProps = Omit<
+  MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ProcessApplicationInput, void>,
+  'path' | 'verb'
+>;
+
+export const ApplicationsProcessApplication = (props: ApplicationsProcessApplicationProps) => (
+  <Mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ProcessApplicationInput, void>
+    verb="POST"
+    path={`/api/v1/BursMan/Applications/ProcessApplication`}
+    {...props}
+  />
+);
+
+export type UseApplicationsProcessApplicationProps = Omit<
+  UseMutateProps<ApplicationDtoAjaxResponse, void, ProcessApplicationInput, void>,
+  'path' | 'verb'
+>;
+
+export const useApplicationsProcessApplication = (props: UseApplicationsProcessApplicationProps) =>
+  useMutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ProcessApplicationInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/ProcessApplication`,
+    props
+  );
+
+export type ApplicationsCommiteeReccomendProps = Omit<
+  MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>,
+  'path' | 'verb'
+>;
+
+export const ApplicationsCommiteeReccomend = (props: ApplicationsCommiteeReccomendProps) => (
+  <Mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>
+    verb="POST"
+    path={`/api/v1/BursMan/Applications/CommiteeRecommend`}
+    {...props}
+  />
+);
+
+export type UseApplicationsCommiteeReccomendProps = Omit<
+  UseMutateProps<ApplicationDtoAjaxResponse, void, CommiteeRecomendInput, void>,
+  'path' | 'verb'
+>;
+
+export const useApplicationsCommiteeReccomend = (props: UseApplicationsCommiteeReccomendProps) =>
+  useMutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/CommiteeRecommend`,
+    props
+  );
+
+export type ApplicationsBursaryCommiteeReccomendProps = Omit<
+  MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>,
+  'path' | 'verb'
+>;
+
+export const ApplicationsBursaryCommiteeReccomend = (props: ApplicationsBursaryCommiteeReccomendProps) => (
+  <Mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>
+    verb="POST"
+    path={`/api/v1/BursMan/Applications/BursaryCommiteeRecommend`}
+    {...props}
+  />
+);
+
+export type UseApplicationsBursaryCommiteeReccomendProps = Omit<
+  UseMutateProps<ApplicationDtoAjaxResponse, void, CommiteeRecomendInput, void>,
+  'path' | 'verb'
+>;
+
+export const useApplicationsBursaryCommiteeReccomend = (props: UseApplicationsBursaryCommiteeReccomendProps) =>
+  useMutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/BursaryCommiteeRecommend`,
+    props
+  );
+
+export type ApplicationsCreateNDASelectionProps = Omit<
+  MutateProps<CreateNDASelectionDtoAjaxResponse, AjaxResponseBase, void, CreateNDASelectionDto, void>,
+  'path' | 'verb'
+>;
+
+export const ApplicationsCreateNDASelection = (props: ApplicationsCreateNDASelectionProps) => (
+  <Mutate<CreateNDASelectionDtoAjaxResponse, AjaxResponseBase, void, CreateNDASelectionDto, void>
+    verb="POST"
+    path={`/api/v1/BursMan/Applications/CreateNDASelection`}
+    {...props}
+  />
+);
+
+export type UseApplicationsCreateNDASelectionProps = Omit<
+  UseMutateProps<CreateNDASelectionDtoAjaxResponse, void, CreateNDASelectionDto, void>,
+  'path' | 'verb'
+>;
+
+export const useApplicationsCreateNDASelection = (props: UseApplicationsCreateNDASelectionProps) =>
+  useMutate<CreateNDASelectionDtoAjaxResponse, AjaxResponseBase, void, CreateNDASelectionDto, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/CreateNDASelection`,
+    props
+  );
+
+export type ApplicationsCreateProps = Omit<
+  MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationDto, void>,
+  'path' | 'verb'
+>;
+
+export const ApplicationsCreate = (props: ApplicationsCreateProps) => (
+  <Mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationDto, void>
+    verb="POST"
+    path={`/api/v1/BursMan/Applications`}
+    {...props}
+  />
+);
+
+export type UseApplicationsCreateProps = Omit<
+  UseMutateProps<ApplicationDtoAjaxResponse, void, ApplicationDto, void>,
+  'path' | 'verb'
+>;
+
+export const useApplicationsCreate = (props: UseApplicationsCreateProps) =>
+  useMutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationDto, void>(
+    'POST',
+    `/api/v1/BursMan/Applications`,
+    props
+  );
+
+export type ApplicationsUpdateDocumentVerificationStatusProps = Omit<
+  MutateProps<DocumentVerificationDtoAjaxResponse, AjaxResponseBase, void, VerificationStatusInput, void>,
+  'path' | 'verb'
+>;
+
+export const ApplicationsUpdateDocumentVerificationStatus = (
+  props: ApplicationsUpdateDocumentVerificationStatusProps
+) => (
+  <Mutate<DocumentVerificationDtoAjaxResponse, AjaxResponseBase, void, VerificationStatusInput, void>
+    verb="POST"
+    path={`/api/v1/BursMan/Applications/UpdateDocumentVerificationStatus`}
+    {...props}
+  />
+);
+
+export type UseApplicationsUpdateDocumentVerificationStatusProps = Omit<
+  UseMutateProps<DocumentVerificationDtoAjaxResponse, void, VerificationStatusInput, void>,
+  'path' | 'verb'
+>;
+
+export const useApplicationsUpdateDocumentVerificationStatus = (
+  props: UseApplicationsUpdateDocumentVerificationStatusProps
+) =>
+  useMutate<DocumentVerificationDtoAjaxResponse, AjaxResponseBase, void, VerificationStatusInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/UpdateDocumentVerificationStatus`,
+    props
+  );
+
+export type ApplicationsActionApplicationsResultsProps = Omit<
+  MutateProps<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationActionInput, void>,
+  'path' | 'verb'
+>;
+
+/**
+ * {}
+ */
+export const ApplicationsActionApplicationsResults = (props: ApplicationsActionApplicationsResultsProps) => (
+  <Mutate<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationActionInput, void>
+    verb="POST"
+    path={`/api/v1/BursMan/Applications/ActionApplicationsResults`}
+    {...props}
+  />
+);
+
+export type UseApplicationsActionApplicationsResultsProps = Omit<
+  UseMutateProps<ApplicationsStatsResponseAjaxResponse, void, ApplicationActionInput, void>,
+  'path' | 'verb'
+>;
+
+/**
+ * {}
+ */
+export const useApplicationsActionApplicationsResults = (props: UseApplicationsActionApplicationsResultsProps) =>
+  useMutate<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationActionInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/ActionApplicationsResults`,
+    props
+  );
+
+export interface ApplicationsUpdateDGResultsQueryParams {
+  id?: string;
+}
+
+export type ApplicationsUpdateDGResultsProps = Omit<
+  MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsUpdateDGResultsQueryParams,
+    ApplicationDGResultsUpdate,
+    void
+  >,
+  'path' | 'verb'
+>;
+
+export const ApplicationsUpdateDGResults = (props: ApplicationsUpdateDGResultsProps) => (
+  <Mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsUpdateDGResultsQueryParams,
+    ApplicationDGResultsUpdate,
+    void
+  >
+    verb="PUT"
+    path={`/api/v1/BursMan/Applications/UpdateDGResults`}
+    {...props}
+  />
+);
+
+export type UseApplicationsUpdateDGResultsProps = Omit<
+  UseMutateProps<ApplicationDtoAjaxResponse, ApplicationsUpdateDGResultsQueryParams, ApplicationDGResultsUpdate, void>,
+  'path' | 'verb'
+>;
+
+export const useApplicationsUpdateDGResults = (props: UseApplicationsUpdateDGResultsProps) =>
+  useMutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsUpdateDGResultsQueryParams,
+    ApplicationDGResultsUpdate,
+    void
+  >('PUT', `/api/v1/BursMan/Applications/UpdateDGResults`, props);
+
+export interface ApplicationsUpdateEducationDetailsPathParams {
+  id: string;
+}
+
+export type ApplicationsUpdateEducationDetailsProps = Omit<
+  MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationEducationDetailsUpdate,
+    ApplicationsUpdateEducationDetailsPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsUpdateEducationDetailsPathParams;
+
+export const ApplicationsUpdateEducationDetails = ({ id, ...props }: ApplicationsUpdateEducationDetailsProps) => (
+  <Mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationEducationDetailsUpdate,
+    ApplicationsUpdateEducationDetailsPathParams
+  >
+    verb="PUT"
+    path={`/api/v1/BursMan/Applications/${id}/Education-Details`}
+    {...props}
+  />
+);
+
+export type UseApplicationsUpdateEducationDetailsProps = Omit<
+  UseMutateProps<
+    ApplicationDtoAjaxResponse,
+    void,
+    ApplicationEducationDetailsUpdate,
+    ApplicationsUpdateEducationDetailsPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsUpdateEducationDetailsPathParams;
+
+export const useApplicationsUpdateEducationDetails = ({ id, ...props }: UseApplicationsUpdateEducationDetailsProps) =>
+  useMutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationEducationDetailsUpdate,
+    ApplicationsUpdateEducationDetailsPathParams
+  >(
+    'PUT',
+    ({ id }: ApplicationsUpdateEducationDetailsPathParams) => `/api/v1/BursMan/Applications/${id}/Education-Details`,
+    { pathParams: { id }, ...props }
+  );
+
+export interface ApplicationsUpdateFinancialDetailsPathParams {
+  id: string;
+}
+
+export type ApplicationsUpdateFinancialDetailsProps = Omit<
+  MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationParentDetailsUpdate,
+    ApplicationsUpdateFinancialDetailsPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsUpdateFinancialDetailsPathParams;
+
+export const ApplicationsUpdateFinancialDetails = ({ id, ...props }: ApplicationsUpdateFinancialDetailsProps) => (
+  <Mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationParentDetailsUpdate,
+    ApplicationsUpdateFinancialDetailsPathParams
+  >
+    verb="PUT"
+    path={`/api/v1/BursMan/Applications/${id}/Financial-Details`}
+    {...props}
+  />
+);
+
+export type UseApplicationsUpdateFinancialDetailsProps = Omit<
+  UseMutateProps<
+    ApplicationDtoAjaxResponse,
+    void,
+    ApplicationParentDetailsUpdate,
+    ApplicationsUpdateFinancialDetailsPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsUpdateFinancialDetailsPathParams;
+
+export const useApplicationsUpdateFinancialDetails = ({ id, ...props }: UseApplicationsUpdateFinancialDetailsProps) =>
+  useMutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationParentDetailsUpdate,
+    ApplicationsUpdateFinancialDetailsPathParams
+  >(
+    'PUT',
+    ({ id }: ApplicationsUpdateFinancialDetailsPathParams) => `/api/v1/BursMan/Applications/${id}/Financial-Details`,
+    { pathParams: { id }, ...props }
+  );
+
+export interface ApplicationsUpdateDeclarationsPathParams {
+  id: string;
+}
+
+export type ApplicationsUpdateDeclarationsProps = Omit<
+  MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationDeclarationUpdate,
+    ApplicationsUpdateDeclarationsPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsUpdateDeclarationsPathParams;
+
+export const ApplicationsUpdateDeclarations = ({ id, ...props }: ApplicationsUpdateDeclarationsProps) => (
+  <Mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationDeclarationUpdate,
+    ApplicationsUpdateDeclarationsPathParams
+  >
+    verb="PUT"
+    path={`/api/v1/BursMan/Applications/${id}/Declarations`}
+    {...props}
+  />
+);
+
+export type UseApplicationsUpdateDeclarationsProps = Omit<
+  UseMutateProps<
+    ApplicationDtoAjaxResponse,
+    void,
+    ApplicationDeclarationUpdate,
+    ApplicationsUpdateDeclarationsPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsUpdateDeclarationsPathParams;
+
+export const useApplicationsUpdateDeclarations = ({ id, ...props }: UseApplicationsUpdateDeclarationsProps) =>
+  useMutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationDeclarationUpdate,
+    ApplicationsUpdateDeclarationsPathParams
+  >('PUT', ({ id }: ApplicationsUpdateDeclarationsPathParams) => `/api/v1/BursMan/Applications/${id}/Declarations`, {
+    pathParams: { id },
+    ...props,
+  });
+
+export interface ApplicationsSubmitPathParams {
+  id: string;
+}
+
+export type ApplicationsSubmitProps = Omit<
+  MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void, ApplicationsSubmitPathParams>,
+  'path' | 'verb'
+> &
+  ApplicationsSubmitPathParams;
+
+export const ApplicationsSubmit = ({ id, ...props }: ApplicationsSubmitProps) => (
+  <Mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void, ApplicationsSubmitPathParams>
+    verb="PUT"
+    path={`/api/v1/BursMan/Applications/${id}/Submit`}
+    {...props}
+  />
+);
+
+export type UseApplicationsSubmitProps = Omit<
+  UseMutateProps<ApplicationDtoAjaxResponse, void, void, ApplicationsSubmitPathParams>,
+  'path' | 'verb'
+> &
+  ApplicationsSubmitPathParams;
+
+export const useApplicationsSubmit = ({ id, ...props }: UseApplicationsSubmitProps) =>
+  useMutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void, ApplicationsSubmitPathParams>(
+    'PUT',
+    ({ id }: ApplicationsSubmitPathParams) => `/api/v1/BursMan/Applications/${id}/Submit`,
+    { pathParams: { id }, ...props }
+  );
+
+export interface ApplicationsActionOfferQueryParams {
+  onboardingStatus?: number;
+}
+
+export interface ApplicationsActionOfferPathParams {
+  id: string;
+}
+
+export type ApplicationsActionOfferProps = Omit<
+  MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsActionOfferQueryParams,
+    void,
+    ApplicationsActionOfferPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsActionOfferPathParams;
+
+export const ApplicationsActionOffer = ({ id, ...props }: ApplicationsActionOfferProps) => (
+  <Mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsActionOfferQueryParams,
+    void,
+    ApplicationsActionOfferPathParams
+  >
+    verb="PUT"
+    path={`/api/v1/BursMan/Applications/${id}/ActionOffer`}
+    {...props}
+  />
+);
+
+export type UseApplicationsActionOfferProps = Omit<
+  UseMutateProps<
+    ApplicationDtoAjaxResponse,
+    ApplicationsActionOfferQueryParams,
+    void,
+    ApplicationsActionOfferPathParams
+  >,
+  'path' | 'verb'
+> &
+  ApplicationsActionOfferPathParams;
+
+export const useApplicationsActionOffer = ({ id, ...props }: UseApplicationsActionOfferProps) =>
+  useMutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsActionOfferQueryParams,
+    void,
+    ApplicationsActionOfferPathParams
+  >('PUT', ({ id }: ApplicationsActionOfferPathParams) => `/api/v1/BursMan/Applications/${id}/ActionOffer`, {
+    pathParams: { id },
+    ...props,
+  });

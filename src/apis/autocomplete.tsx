@@ -5,9 +5,6 @@ import { Get, GetProps, useGet, UseGetProps } from 'restful-react';
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-/**
- * Generic DTO of the simple autocomplete item
- */
 export interface AutocompleteItemDto {
   value?: string | null;
   displayText?: string | null;
@@ -26,12 +23,12 @@ export interface ErrorInfo {
 }
 
 export interface AutocompleteItemDtoListAjaxResponse {
-  result?: AutocompleteItemDto[] | null;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: AutocompleteItemDto[] | null;
 }
 
 export interface AjaxResponseBase {
@@ -47,27 +44,31 @@ export interface AutocompleteListQueryParams {
   typeShortAlias?: string | null;
   allowInherited?: boolean;
   selectedValue?: string | null;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type AutocompleteListProps = Omit<
-  GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams>,
+  GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>,
   'path'
 >;
 
 export const AutocompleteList = (props: AutocompleteListProps) => (
-  <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams>
+  <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>
     path={`/api/Autocomplete/List`}
     {...props}
   />
 );
 
 export type UseAutocompleteListProps = Omit<
-  UseGetProps<AutocompleteItemDtoListAjaxResponse, AutocompleteListQueryParams>,
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AutocompleteListQueryParams, void>,
   'path'
 >;
 
 export const useAutocompleteList = (props: UseAutocompleteListProps) =>
-  useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams>(
+  useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>(
     `/api/Autocomplete/List`,
     props
   );

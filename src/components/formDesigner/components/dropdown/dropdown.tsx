@@ -20,7 +20,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
     const customProps = model as IDropdownProps;
     return (
       <FormItem model={model}>
-        <Dropdown {...customProps}></Dropdown>
+        <Dropdown {...customProps} />
       </FormItem>
     );
   },
@@ -73,11 +73,9 @@ export const Dropdown: FC<IDropdownProps> = ({
   const options = getOptions() || [];
   const loading = refListLoading;
 
-  
-  
-
   return (
     <Select
+      allowClear
       onChange={onChange}
       value={options.length > 0 ? (value || defaultValue) : null}
       defaultValue={defaultValue}

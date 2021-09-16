@@ -42,6 +42,7 @@
     "less-compile.js"
   ],
   "exclude": [
+    "**/src/apis",
     "node_modules",
     "build",
     "dist",

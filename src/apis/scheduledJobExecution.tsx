@@ -5,21 +5,9 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-/**
- * Represents event log item logged by Shesha.Scheduler.SignalR.SignalrAppender
- */
 export interface EventLogItem {
-  /**
-   * Logged message
-   */
   message?: string | null;
-  /**
-   * Event timestamp
-   */
   timeStamp?: string;
-  /**
-   * Level (info/warn/error)
-   */
   level?: string | null;
 }
 
@@ -61,25 +49,13 @@ export interface FileStreamResultAjaxResponse {
   result?: string | null;
 }
 
-/**
- * Generic entity Dto with display text
- */
 export interface Int64NullableEntityWithDisplayNameDto {
   id?: number | null;
-  /**
-   * Entity display name
-   */
   displayText?: string | null;
 }
 
-/**
- * Generic entity Dto with display text
- */
 export interface GuidNullableEntityWithDisplayNameDto {
   id?: string | null;
-  /**
-   * Entity display name
-   */
   displayText?: string | null;
 }
 
@@ -90,20 +66,11 @@ export interface ReferenceListItemValueDto {
 
 export interface ScheduledJobExecutionDto {
   id?: string;
-  /**
-   * Datetime of the execution start
-   */
   startedOn?: string | null;
-  /**
-   * Datetime of the execution finish
-   */
   finishedOn?: string | null;
   startedBy?: Int64NullableEntityWithDisplayNameDto;
   job?: GuidNullableEntityWithDisplayNameDto;
   trigger?: GuidNullableEntityWithDisplayNameDto;
-  /**
-   * Error message
-   */
   errorMessage?: string | null;
   status?: ReferenceListItemValueDto;
 }
@@ -140,38 +107,29 @@ export interface ScheduledJobExecutionGetEventLogItemsQueryParams {
 }
 
 export type ScheduledJobExecutionGetEventLogItemsProps = Omit<
-  GetProps<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams>,
+  GetProps<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams, void>,
   'path'
 >;
 
-/**
- * Get event log items for the specified job execution
- */
 export const ScheduledJobExecutionGetEventLogItems = (props: ScheduledJobExecutionGetEventLogItemsProps) => (
-  <Get<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams>
+  <Get<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams, void>
     path={`/api/services/Scheduler/ScheduledJobExecution/GetEventLogItems`}
     {...props}
   />
 );
 
 export type UseScheduledJobExecutionGetEventLogItemsProps = Omit<
-  UseGetProps<EventLogItemListAjaxResponse, ScheduledJobExecutionGetEventLogItemsQueryParams>,
+  UseGetProps<EventLogItemListAjaxResponse, ScheduledJobExecutionGetEventLogItemsQueryParams, void>,
   'path'
 >;
 
-/**
- * Get event log items for the specified job execution
- */
 export const useScheduledJobExecutionGetEventLogItems = (props: UseScheduledJobExecutionGetEventLogItemsProps) =>
-  useGet<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams>(
+  useGet<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams, void>(
     `/api/services/Scheduler/ScheduledJobExecution/GetEventLogItems`,
     props
   );
 
 export interface ScheduledJobExecutionDownloadLogFileQueryParams {
-  /**
-   * Id of the scheduled job execution
-   */
   id?: string;
   /**
    * The requested API version
@@ -180,30 +138,24 @@ export interface ScheduledJobExecutionDownloadLogFileQueryParams {
 }
 
 export type ScheduledJobExecutionDownloadLogFileProps = Omit<
-  GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams>,
+  GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams, void>,
   'path'
 >;
 
-/**
- * Download log file of the job execution
- */
 export const ScheduledJobExecutionDownloadLogFile = (props: ScheduledJobExecutionDownloadLogFileProps) => (
-  <Get<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams>
+  <Get<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams, void>
     path={`/api/services/Scheduler/ScheduledJobExecution/DownloadLogFile`}
     {...props}
   />
 );
 
 export type UseScheduledJobExecutionDownloadLogFileProps = Omit<
-  UseGetProps<FileStreamResultAjaxResponse, ScheduledJobExecutionDownloadLogFileQueryParams>,
+  UseGetProps<FileStreamResultAjaxResponse, ScheduledJobExecutionDownloadLogFileQueryParams, void>,
   'path'
 >;
 
-/**
- * Download log file of the job execution
- */
 export const useScheduledJobExecutionDownloadLogFile = (props: UseScheduledJobExecutionDownloadLogFileProps) =>
-  useGet<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams>(
+  useGet<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams, void>(
     `/api/services/Scheduler/ScheduledJobExecution/DownloadLogFile`,
     props
   );
@@ -217,24 +169,24 @@ export interface ScheduledJobExecutionGetQueryParams {
 }
 
 export type ScheduledJobExecutionGetProps = Omit<
-  GetProps<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams>,
+  GetProps<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams, void>,
   'path'
 >;
 
 export const ScheduledJobExecutionGet = (props: ScheduledJobExecutionGetProps) => (
-  <Get<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams>
+  <Get<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams, void>
     path={`/api/services/Scheduler/ScheduledJobExecution/Get`}
     {...props}
   />
 );
 
 export type UseScheduledJobExecutionGetProps = Omit<
-  UseGetProps<ScheduledJobExecutionDtoAjaxResponse, ScheduledJobExecutionGetQueryParams>,
+  UseGetProps<ScheduledJobExecutionDtoAjaxResponse, ScheduledJobExecutionGetQueryParams, void>,
   'path'
 >;
 
 export const useScheduledJobExecutionGet = (props: UseScheduledJobExecutionGetProps) =>
-  useGet<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams>(
+  useGet<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams, void>(
     `/api/services/Scheduler/ScheduledJobExecution/Get`,
     props
   );
@@ -253,28 +205,36 @@ export type ScheduledJobExecutionGetAllProps = Omit<
   GetProps<
     ScheduledJobExecutionDtoPagedResultDtoAjaxResponse,
     AjaxResponseBase,
-    ScheduledJobExecutionGetAllQueryParams
+    ScheduledJobExecutionGetAllQueryParams,
+    void
   >,
   'path'
 >;
 
 export const ScheduledJobExecutionGetAll = (props: ScheduledJobExecutionGetAllProps) => (
-  <Get<ScheduledJobExecutionDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetAllQueryParams>
+  <Get<
+    ScheduledJobExecutionDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionGetAllQueryParams,
+    void
+  >
     path={`/api/services/Scheduler/ScheduledJobExecution/GetAll`}
     {...props}
   />
 );
 
 export type UseScheduledJobExecutionGetAllProps = Omit<
-  UseGetProps<ScheduledJobExecutionDtoPagedResultDtoAjaxResponse, ScheduledJobExecutionGetAllQueryParams>,
+  UseGetProps<ScheduledJobExecutionDtoPagedResultDtoAjaxResponse, ScheduledJobExecutionGetAllQueryParams, void>,
   'path'
 >;
 
 export const useScheduledJobExecutionGetAll = (props: UseScheduledJobExecutionGetAllProps) =>
-  useGet<ScheduledJobExecutionDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetAllQueryParams>(
-    `/api/services/Scheduler/ScheduledJobExecution/GetAll`,
-    props
-  );
+  useGet<
+    ScheduledJobExecutionDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionGetAllQueryParams,
+    void
+  >(`/api/services/Scheduler/ScheduledJobExecution/GetAll`, props);
 
 export interface ScheduledJobExecutionCreateQueryParams {
   /**
@@ -288,7 +248,8 @@ export type ScheduledJobExecutionCreateProps = Omit<
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
     ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >,
   'path' | 'verb'
 >;
@@ -298,7 +259,8 @@ export const ScheduledJobExecutionCreate = (props: ScheduledJobExecutionCreatePr
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
     ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >
     verb="POST"
     path={`/api/services/Scheduler/ScheduledJobExecution/Create`}
@@ -310,7 +272,8 @@ export type UseScheduledJobExecutionCreateProps = Omit<
   UseMutateProps<
     ScheduledJobExecutionDtoAjaxResponse,
     ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >,
   'path' | 'verb'
 >;
@@ -320,7 +283,8 @@ export const useScheduledJobExecutionCreate = (props: UseScheduledJobExecutionCr
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
     ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >('POST', `/api/services/Scheduler/ScheduledJobExecution/Create`, props);
 
 export interface ScheduledJobExecutionUpdateQueryParams {
@@ -335,7 +299,8 @@ export type ScheduledJobExecutionUpdateProps = Omit<
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
     ScheduledJobExecutionUpdateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >,
   'path' | 'verb'
 >;
@@ -345,7 +310,8 @@ export const ScheduledJobExecutionUpdate = (props: ScheduledJobExecutionUpdatePr
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
     ScheduledJobExecutionUpdateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >
     verb="PUT"
     path={`/api/services/Scheduler/ScheduledJobExecution/Update`}
@@ -357,7 +323,8 @@ export type UseScheduledJobExecutionUpdateProps = Omit<
   UseMutateProps<
     ScheduledJobExecutionDtoAjaxResponse,
     ScheduledJobExecutionUpdateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >,
   'path' | 'verb'
 >;
@@ -367,7 +334,8 @@ export const useScheduledJobExecutionUpdate = (props: UseScheduledJobExecutionUp
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
     ScheduledJobExecutionUpdateQueryParams,
-    ScheduledJobExecutionDto
+    ScheduledJobExecutionDto,
+    void
   >('PUT', `/api/services/Scheduler/ScheduledJobExecution/Update`, props);
 
 export interface ScheduledJobExecutionDeleteQueryParams {
@@ -379,12 +347,12 @@ export interface ScheduledJobExecutionDeleteQueryParams {
 }
 
 export type ScheduledJobExecutionDeleteProps = Omit<
-  MutateProps<void, unknown, ScheduledJobExecutionDeleteQueryParams, void>,
+  MutateProps<void, unknown, ScheduledJobExecutionDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const ScheduledJobExecutionDelete = (props: ScheduledJobExecutionDeleteProps) => (
-  <Mutate<void, unknown, ScheduledJobExecutionDeleteQueryParams, void>
+  <Mutate<void, unknown, ScheduledJobExecutionDeleteQueryParams, void, void>
     verb="DELETE"
     path={`/api/services/Scheduler/ScheduledJobExecution/Delete`}
     {...props}
@@ -392,12 +360,12 @@ export const ScheduledJobExecutionDelete = (props: ScheduledJobExecutionDeletePr
 );
 
 export type UseScheduledJobExecutionDeleteProps = Omit<
-  UseMutateProps<void, ScheduledJobExecutionDeleteQueryParams, void>,
+  UseMutateProps<void, ScheduledJobExecutionDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const useScheduledJobExecutionDelete = (props: UseScheduledJobExecutionDeleteProps) =>
-  useMutate<void, unknown, ScheduledJobExecutionDeleteQueryParams, void>(
+  useMutate<void, unknown, ScheduledJobExecutionDeleteQueryParams, void, void>(
     'DELETE',
     `/api/services/Scheduler/ScheduledJobExecution/Delete`,
     props

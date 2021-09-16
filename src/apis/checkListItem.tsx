@@ -9,26 +9,11 @@ export interface GuidEntityDto {
   id?: string;
 }
 
-/**
- * Check list item DTO for tree component
- */
 export interface CheckListTreeItemDto {
   id?: string;
-  /**
-   * Name
-   */
   name?: string | null;
-  /**
-   * Parent Id
-   */
   parentId?: string | null;
-  /**
-   * Order Index
-   */
   orderIndex?: number;
-  /**
-   * If true, indicates that item has child items
-   */
   hasChilds?: boolean;
 }
 
@@ -61,17 +46,8 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
-/**
- * Input to get child check list items
- */
 export interface GetChildCheckListItemsInput {
-  /**
-   * Id of the checklist
-   */
   checkListId?: string;
-  /**
-   * Id of the parent item
-   */
   parentId?: string | null;
 }
 
@@ -84,21 +60,9 @@ export interface CheckListTreeItemDtoListAjaxResponse {
   result?: CheckListTreeItemDto[] | null;
 }
 
-/**
- * Move check list item input
- */
 export interface UpdateChildItemsInput {
-  /**
-   * Id of the check list
-   */
   checkListId?: string;
-  /**
-   * Id of the new parent item
-   */
   parentId?: string | null;
-  /**
-   * List of child item ids
-   */
   childIds?: string[] | null;
 }
 
@@ -107,43 +71,16 @@ export interface ReferenceListItemValueDto {
   itemValue?: number | null;
 }
 
-/**
- * CheckListItem DTO
- */
 export interface CheckListItemDto {
   id?: string;
-  /**
-   * Id of the check list which current item belongs to
-   */
   checkListId?: string;
-  /**
-   * Parent item id
-   */
   parentId?: string | null;
-  /**
-   * Order index of the item
-   */
   orderIndex?: number;
   itemType?: ReferenceListItemValueDto;
-  /**
-   * Item name
-   */
   name?: string | null;
-  /**
-   * Item description
-   */
   description?: string | null;
-  /**
-   * If true, the user is able to add comments to this item/group
-   */
   allowAddComments?: boolean;
-  /**
-   * Heading of the comments box
-   */
   commentsHeading?: string | null;
-  /**
-   * Custom visibility of comments (javascript expression)
-   */
   commentsVisibilityExpression?: string | null;
 }
 
@@ -178,15 +115,18 @@ export interface CheckListItemGetTreeItemQueryParams {
 }
 
 export type CheckListItemGetTreeItemProps = Omit<
-  MutateProps<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetTreeItemQueryParams, GuidEntityDto>,
+  MutateProps<
+    CheckListTreeItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemGetTreeItemQueryParams,
+    GuidEntityDto,
+    void
+  >,
   'path' | 'verb'
 >;
 
-/**
- * Returns child areas of the specified parent
- */
 export const CheckListItemGetTreeItem = (props: CheckListItemGetTreeItemProps) => (
-  <Mutate<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetTreeItemQueryParams, GuidEntityDto>
+  <Mutate<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetTreeItemQueryParams, GuidEntityDto, void>
     verb="POST"
     path={`/api/services/app/CheckListItem/GetTreeItem`}
     {...props}
@@ -194,19 +134,18 @@ export const CheckListItemGetTreeItem = (props: CheckListItemGetTreeItemProps) =
 );
 
 export type UseCheckListItemGetTreeItemProps = Omit<
-  UseMutateProps<CheckListTreeItemDtoAjaxResponse, CheckListItemGetTreeItemQueryParams, GuidEntityDto>,
+  UseMutateProps<CheckListTreeItemDtoAjaxResponse, CheckListItemGetTreeItemQueryParams, GuidEntityDto, void>,
   'path' | 'verb'
 >;
 
-/**
- * Returns child areas of the specified parent
- */
 export const useCheckListItemGetTreeItem = (props: UseCheckListItemGetTreeItemProps) =>
-  useMutate<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetTreeItemQueryParams, GuidEntityDto>(
-    'POST',
-    `/api/services/app/CheckListItem/GetTreeItem`,
-    props
-  );
+  useMutate<
+    CheckListTreeItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemGetTreeItemQueryParams,
+    GuidEntityDto,
+    void
+  >('POST', `/api/services/app/CheckListItem/GetTreeItem`, props);
 
 export interface CheckListItemGetChildTreeItemsQueryParams {
   /**
@@ -220,20 +159,19 @@ export type CheckListItemGetChildTreeItemsProps = Omit<
     CheckListTreeItemDtoListAjaxResponse,
     AjaxResponseBase,
     CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput
+    GetChildCheckListItemsInput,
+    void
   >,
   'path' | 'verb'
 >;
 
-/**
- * Returns child items of the specified parent
- */
 export const CheckListItemGetChildTreeItems = (props: CheckListItemGetChildTreeItemsProps) => (
   <Mutate<
     CheckListTreeItemDtoListAjaxResponse,
     AjaxResponseBase,
     CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput
+    GetChildCheckListItemsInput,
+    void
   >
     verb="POST"
     path={`/api/services/app/CheckListItem/GetChildTreeItems`}
@@ -245,20 +183,19 @@ export type UseCheckListItemGetChildTreeItemsProps = Omit<
   UseMutateProps<
     CheckListTreeItemDtoListAjaxResponse,
     CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput
+    GetChildCheckListItemsInput,
+    void
   >,
   'path' | 'verb'
 >;
 
-/**
- * Returns child items of the specified parent
- */
 export const useCheckListItemGetChildTreeItems = (props: UseCheckListItemGetChildTreeItemsProps) =>
   useMutate<
     CheckListTreeItemDtoListAjaxResponse,
     AjaxResponseBase,
     CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput
+    GetChildCheckListItemsInput,
+    void
   >('POST', `/api/services/app/CheckListItem/GetChildTreeItems`, props);
 
 export interface CheckListItemUpdateChildItemsQueryParams {
@@ -269,15 +206,12 @@ export interface CheckListItemUpdateChildItemsQueryParams {
 }
 
 export type CheckListItemUpdateChildItemsProps = Omit<
-  MutateProps<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput>,
+  MutateProps<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>,
   'path' | 'verb'
 >;
 
-/**
- * Moves Area to a new parent
- */
 export const CheckListItemUpdateChildItems = (props: CheckListItemUpdateChildItemsProps) => (
-  <Mutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput>
+  <Mutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>
     verb="POST"
     path={`/api/services/app/CheckListItem/UpdateChildItems`}
     {...props}
@@ -285,15 +219,12 @@ export const CheckListItemUpdateChildItems = (props: CheckListItemUpdateChildIte
 );
 
 export type UseCheckListItemUpdateChildItemsProps = Omit<
-  UseMutateProps<void, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput>,
+  UseMutateProps<void, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>,
   'path' | 'verb'
 >;
 
-/**
- * Moves Area to a new parent
- */
 export const useCheckListItemUpdateChildItems = (props: UseCheckListItemUpdateChildItemsProps) =>
-  useMutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput>(
+  useMutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>(
     'POST',
     `/api/services/app/CheckListItem/UpdateChildItems`,
     props
@@ -308,12 +239,12 @@ export interface CheckListItemDeleteQueryParams {
 }
 
 export type CheckListItemDeleteProps = Omit<
-  MutateProps<void, unknown, CheckListItemDeleteQueryParams, void>,
+  MutateProps<void, unknown, CheckListItemDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const CheckListItemDelete = (props: CheckListItemDeleteProps) => (
-  <Mutate<void, unknown, CheckListItemDeleteQueryParams, void>
+  <Mutate<void, unknown, CheckListItemDeleteQueryParams, void, void>
     verb="DELETE"
     path={`/api/services/app/CheckListItem/Delete`}
     {...props}
@@ -321,12 +252,12 @@ export const CheckListItemDelete = (props: CheckListItemDeleteProps) => (
 );
 
 export type UseCheckListItemDeleteProps = Omit<
-  UseMutateProps<void, CheckListItemDeleteQueryParams, void>,
+  UseMutateProps<void, CheckListItemDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListItemDelete = (props: UseCheckListItemDeleteProps) =>
-  useMutate<void, unknown, CheckListItemDeleteQueryParams, void>(
+  useMutate<void, unknown, CheckListItemDeleteQueryParams, void, void>(
     'DELETE',
     `/api/services/app/CheckListItem/Delete`,
     props
@@ -341,24 +272,24 @@ export interface CheckListItemGetQueryParams {
 }
 
 export type CheckListItemGetProps = Omit<
-  GetProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams>,
+  GetProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>,
   'path'
 >;
 
 export const CheckListItemGet = (props: CheckListItemGetProps) => (
-  <Get<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams>
+  <Get<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>
     path={`/api/services/app/CheckListItem/Get`}
     {...props}
   />
 );
 
 export type UseCheckListItemGetProps = Omit<
-  UseGetProps<CheckListItemDtoAjaxResponse, CheckListItemGetQueryParams>,
+  UseGetProps<CheckListItemDtoAjaxResponse, CheckListItemGetQueryParams, void>,
   'path'
 >;
 
 export const useCheckListItemGet = (props: UseCheckListItemGetProps) =>
-  useGet<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams>(
+  useGet<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>(
     `/api/services/app/CheckListItem/Get`,
     props
   );
@@ -374,24 +305,24 @@ export interface CheckListItemGetAllQueryParams {
 }
 
 export type CheckListItemGetAllProps = Omit<
-  GetProps<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams>,
+  GetProps<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams, void>,
   'path'
 >;
 
 export const CheckListItemGetAll = (props: CheckListItemGetAllProps) => (
-  <Get<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams>
+  <Get<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams, void>
     path={`/api/services/app/CheckListItem/GetAll`}
     {...props}
   />
 );
 
 export type UseCheckListItemGetAllProps = Omit<
-  UseGetProps<CheckListItemDtoPagedResultDtoAjaxResponse, CheckListItemGetAllQueryParams>,
+  UseGetProps<CheckListItemDtoPagedResultDtoAjaxResponse, CheckListItemGetAllQueryParams, void>,
   'path'
 >;
 
 export const useCheckListItemGetAll = (props: UseCheckListItemGetAllProps) =>
-  useGet<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams>(
+  useGet<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams, void>(
     `/api/services/app/CheckListItem/GetAll`,
     props
   );
@@ -404,12 +335,12 @@ export interface CheckListItemCreateQueryParams {
 }
 
 export type CheckListItemCreateProps = Omit<
-  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto>,
+  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const CheckListItemCreate = (props: CheckListItemCreateProps) => (
-  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto>
+  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto, void>
     verb="POST"
     path={`/api/services/app/CheckListItem/Create`}
     {...props}
@@ -417,12 +348,12 @@ export const CheckListItemCreate = (props: CheckListItemCreateProps) => (
 );
 
 export type UseCheckListItemCreateProps = Omit<
-  UseMutateProps<CheckListItemDtoAjaxResponse, CheckListItemCreateQueryParams, CheckListItemDto>,
+  UseMutateProps<CheckListItemDtoAjaxResponse, CheckListItemCreateQueryParams, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListItemCreate = (props: UseCheckListItemCreateProps) =>
-  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto>(
+  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto, void>(
     'POST',
     `/api/services/app/CheckListItem/Create`,
     props
@@ -436,12 +367,12 @@ export interface CheckListItemUpdateQueryParams {
 }
 
 export type CheckListItemUpdateProps = Omit<
-  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto>,
+  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const CheckListItemUpdate = (props: CheckListItemUpdateProps) => (
-  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto>
+  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto, void>
     verb="PUT"
     path={`/api/services/app/CheckListItem/Update`}
     {...props}
@@ -449,12 +380,12 @@ export const CheckListItemUpdate = (props: CheckListItemUpdateProps) => (
 );
 
 export type UseCheckListItemUpdateProps = Omit<
-  UseMutateProps<CheckListItemDtoAjaxResponse, CheckListItemUpdateQueryParams, CheckListItemDto>,
+  UseMutateProps<CheckListItemDtoAjaxResponse, CheckListItemUpdateQueryParams, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListItemUpdate = (props: UseCheckListItemUpdateProps) =>
-  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto>(
+  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto, void>(
     'PUT',
     `/api/services/app/CheckListItem/Update`,
     props

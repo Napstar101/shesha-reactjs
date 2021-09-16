@@ -282,6 +282,7 @@ export const ColumnItemFilter: FC<IColumnItemFilterProps> = ({
       <Select
         size="small"
         //mode={dataType === 'refList' ? null : 'multiple'}
+        allowClear
         mode="multiple"
         style={{ width: '100%' }}
         onChange={onChange}

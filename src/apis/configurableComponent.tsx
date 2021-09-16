@@ -5,30 +5,12 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-/**
- * Configurable Component DTO
- */
 export interface ConfigurableComponentDto {
   id?: string;
-  /**
-   * Form path/id is used to identify a form
-   */
   path?: string | null;
-  /**
-   * Form name
-   */
   name?: string | null;
-  /**
-   * Description
-   */
   description?: string | null;
-  /**
-   * Settings in JSON format
-   */
   settings?: string | null;
-  /**
-   * Type of the form model
-   */
   modelType?: string | null;
 }
 
@@ -61,46 +43,92 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
-/**
- * Update component settings input
- */
 export interface ConfigurableComponentUpdateSettingsInput {
   id?: string;
-  /**
-   * Settings in JSON format
-   */
   settings?: string | null;
 }
 
+export interface ConfigurableComponentGetQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
+export interface ConfigurableComponentGetPathParams {
+  id: string;
+}
+
 export type ConfigurableComponentGetProps = Omit<
-  GetProps<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void>,
+  GetProps<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentGetQueryParams,
+    ConfigurableComponentGetPathParams
+  >,
   'path'
-> & { id: string };
+> &
+  ConfigurableComponentGetPathParams;
 
 export const ConfigurableComponentGet = ({ id, ...props }: ConfigurableComponentGetProps) => (
-  <Get<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void>
+  <Get<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentGetQueryParams,
+    ConfigurableComponentGetPathParams
+  >
     path={`/api/services/ConfigurableComponents/${id}`}
     {...props}
   />
 );
 
-export type UseConfigurableComponentGetProps = Omit<UseGetProps<ConfigurableComponentDtoAjaxResponse, void>, 'path'> & {
-  id: string;
-};
+export type UseConfigurableComponentGetProps = Omit<
+  UseGetProps<
+    ConfigurableComponentDtoAjaxResponse,
+    ConfigurableComponentGetQueryParams,
+    ConfigurableComponentGetPathParams
+  >,
+  'path'
+> &
+  ConfigurableComponentGetPathParams;
 
 export const useConfigurableComponentGet = ({ id, ...props }: UseConfigurableComponentGetProps) =>
-  useGet<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void>(
-    `/api/services/ConfigurableComponents/${id}`,
-    props
-  );
+  useGet<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentGetQueryParams,
+    ConfigurableComponentGetPathParams
+  >(({ id }: ConfigurableComponentGetPathParams) => `/api/services/ConfigurableComponents/${id}`, {
+    pathParams: { id },
+    ...props,
+  });
+
+export interface ConfigurableComponentUpdateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type ConfigurableComponentUpdateProps = Omit<
-  MutateProps<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>,
+  MutateProps<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentUpdateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >,
   'path' | 'verb'
 >;
 
 export const ConfigurableComponentUpdate = (props: ConfigurableComponentUpdateProps) => (
-  <Mutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>
+  <Mutate<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentUpdateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >
     verb="PUT"
     path={`/api/services/ConfigurableComponents`}
     {...props}
@@ -108,24 +136,50 @@ export const ConfigurableComponentUpdate = (props: ConfigurableComponentUpdatePr
 );
 
 export type UseConfigurableComponentUpdateProps = Omit<
-  UseMutateProps<ConfigurableComponentDtoAjaxResponse, void, ConfigurableComponentDto>,
+  UseMutateProps<
+    ConfigurableComponentDtoAjaxResponse,
+    ConfigurableComponentUpdateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >,
   'path' | 'verb'
 >;
 
 export const useConfigurableComponentUpdate = (props: UseConfigurableComponentUpdateProps) =>
-  useMutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>(
-    'PUT',
-    `/api/services/ConfigurableComponents`,
-    props
-  );
+  useMutate<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentUpdateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >('PUT', `/api/services/ConfigurableComponents`, props);
+
+export interface ConfigurableComponentCreateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type ConfigurableComponentCreateProps = Omit<
-  MutateProps<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>,
+  MutateProps<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentCreateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >,
   'path' | 'verb'
 >;
 
 export const ConfigurableComponentCreate = (props: ConfigurableComponentCreateProps) => (
-  <Mutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>
+  <Mutate<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentCreateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >
     verb="POST"
     path={`/api/services/ConfigurableComponents`}
     {...props}
@@ -133,24 +187,55 @@ export const ConfigurableComponentCreate = (props: ConfigurableComponentCreatePr
 );
 
 export type UseConfigurableComponentCreateProps = Omit<
-  UseMutateProps<ConfigurableComponentDtoAjaxResponse, void, ConfigurableComponentDto>,
+  UseMutateProps<
+    ConfigurableComponentDtoAjaxResponse,
+    ConfigurableComponentCreateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >,
   'path' | 'verb'
 >;
 
 export const useConfigurableComponentCreate = (props: UseConfigurableComponentCreateProps) =>
-  useMutate<ConfigurableComponentDtoAjaxResponse, AjaxResponseBase, void, ConfigurableComponentDto>(
-    'POST',
-    `/api/services/ConfigurableComponents`,
-    props
-  );
+  useMutate<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentCreateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >('POST', `/api/services/ConfigurableComponents`, props);
+
+export interface ConfigurableComponentUpdateSettingsQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
+export interface ConfigurableComponentUpdateSettingsPathParams {
+  id: string;
+}
 
 export type ConfigurableComponentUpdateSettingsProps = Omit<
-  MutateProps<void, unknown, void, ConfigurableComponentUpdateSettingsInput>,
+  MutateProps<
+    void,
+    unknown,
+    ConfigurableComponentUpdateSettingsQueryParams,
+    ConfigurableComponentUpdateSettingsInput,
+    ConfigurableComponentUpdateSettingsPathParams
+  >,
   'path' | 'verb'
-> & { id: string };
+> &
+  ConfigurableComponentUpdateSettingsPathParams;
 
 export const ConfigurableComponentUpdateSettings = ({ id, ...props }: ConfigurableComponentUpdateSettingsProps) => (
-  <Mutate<void, unknown, void, ConfigurableComponentUpdateSettingsInput>
+  <Mutate<
+    void,
+    unknown,
+    ConfigurableComponentUpdateSettingsQueryParams,
+    ConfigurableComponentUpdateSettingsInput,
+    ConfigurableComponentUpdateSettingsPathParams
+  >
     verb="PUT"
     path={`/api/services/ConfigurableComponents/${id}/Settings`}
     {...props}
@@ -158,13 +243,25 @@ export const ConfigurableComponentUpdateSettings = ({ id, ...props }: Configurab
 );
 
 export type UseConfigurableComponentUpdateSettingsProps = Omit<
-  UseMutateProps<void, void, ConfigurableComponentUpdateSettingsInput>,
+  UseMutateProps<
+    void,
+    ConfigurableComponentUpdateSettingsQueryParams,
+    ConfigurableComponentUpdateSettingsInput,
+    ConfigurableComponentUpdateSettingsPathParams
+  >,
   'path' | 'verb'
-> & { id: string };
+> &
+  ConfigurableComponentUpdateSettingsPathParams;
 
 export const useConfigurableComponentUpdateSettings = ({ id, ...props }: UseConfigurableComponentUpdateSettingsProps) =>
-  useMutate<void, unknown, void, ConfigurableComponentUpdateSettingsInput>(
+  useMutate<
+    void,
+    unknown,
+    ConfigurableComponentUpdateSettingsQueryParams,
+    ConfigurableComponentUpdateSettingsInput,
+    ConfigurableComponentUpdateSettingsPathParams
+  >(
     'PUT',
-    `/api/services/ConfigurableComponents/${id}/Settings`,
-    props
+    ({ id }: ConfigurableComponentUpdateSettingsPathParams) => `/api/services/ConfigurableComponents/${id}/Settings`,
+    { pathParams: { id }, ...props }
   );

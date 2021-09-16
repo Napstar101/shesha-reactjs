@@ -5,22 +5,11 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-/**
- * Check list item selection made by the user
- */
 export interface CheckListItemSelectionDto {
-  /**
-   * Check list item id
-   */
   checkListItemId?: string;
-  /**
-   * User selection (yes = 1, no = 2, na = 3), see Shesha.Domain.Enums.RefListCheckListSelectionType
-   */
   selection?: number | null;
-  /**
-   * User comments
-   */
   comments?: string | null;
+  name?: string | null;
 }
 
 export interface ValidationErrorInfo {
@@ -52,79 +41,28 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
-/**
- * Save check list selection input
- */
 export interface SaveSelectionInput {
-  /**
-   * Owner entity Id
-   */
   id: string;
-  /**
-   * Owner entity type short alias
-   */
   ownerType: string;
-  /**
-   * Check list id
-   */
   ownerId: string;
-  /**
-   * User selection
-   */
   selection: CheckListItemSelectionDto[];
 }
 
-/**
- * Check list item model
- */
 export interface CheckListItemModel {
   id?: string;
-  /**
-   * Item type (group = 1, two state = 2, tri state = 3), see Shesha.Domain.Enums.RefListCheckListItemType
-   */
   itemType?: number;
-  /**
-   * Item name
-   */
   name?: string | null;
-  /**
-   * Item description
-   */
   description?: string | null;
-  /**
-   * If true, the user is able to add comments to this item/group
-   */
   allowAddComments?: boolean;
-  /**
-   * Heading of the comments box
-   */
   commentsHeading?: string | null;
-  /**
-   * Custom visibility of comments (javascript expression)
-   */
   commentsVisibilityExpression?: string | null;
-  /**
-   * Child items
-   */
   childItems?: CheckListItemModel[] | null;
 }
 
-/**
- * Checklist model
- */
 export interface CheckListModel {
   id?: string;
-  /**
-   * Name of the check list
-   */
   name?: string | null;
-  /**
-   * Description
-   */
   description?: string | null;
-  /**
-   * Items of the check list
-   */
   items?: CheckListItemModel[] | null;
 }
 
@@ -137,18 +75,9 @@ export interface CheckListModelAjaxResponse {
   result?: CheckListModel;
 }
 
-/**
- * CheckList DTO
- */
 export interface CheckListDto {
   id?: string;
-  /**
-   * Name of the check list
-   */
   name?: string | null;
-  /**
-   * Description
-   */
   description?: string | null;
 }
 
@@ -176,13 +105,7 @@ export interface CheckListDtoPagedResultDtoAjaxResponse {
 }
 
 export interface CheckListGetSelectionQueryParams {
-  /**
-   * Owner entity type short alias
-   */
   ownerType: string;
-  /**
-   * Owner entity Id
-   */
   ownerId: string;
   /**
    * The requested API version
@@ -190,34 +113,50 @@ export interface CheckListGetSelectionQueryParams {
   'api-version'?: string;
 }
 
-export type CheckListGetSelectionProps = Omit<
-  GetProps<CheckListItemSelectionDtoListAjaxResponse, AjaxResponseBase, CheckListGetSelectionQueryParams>,
-  'path'
-> & { id: string };
+export interface CheckListGetSelectionPathParams {
+  id: string;
+}
 
-/**
- * Get user selection
- */
+export type CheckListGetSelectionProps = Omit<
+  GetProps<
+    CheckListItemSelectionDtoListAjaxResponse,
+    AjaxResponseBase,
+    CheckListGetSelectionQueryParams,
+    CheckListGetSelectionPathParams
+  >,
+  'path'
+> &
+  CheckListGetSelectionPathParams;
+
 export const CheckListGetSelection = ({ id, ...props }: CheckListGetSelectionProps) => (
-  <Get<CheckListItemSelectionDtoListAjaxResponse, AjaxResponseBase, CheckListGetSelectionQueryParams>
+  <Get<
+    CheckListItemSelectionDtoListAjaxResponse,
+    AjaxResponseBase,
+    CheckListGetSelectionQueryParams,
+    CheckListGetSelectionPathParams
+  >
     path={`/checkList/${id}/selection`}
     {...props}
   />
 );
 
 export type UseCheckListGetSelectionProps = Omit<
-  UseGetProps<CheckListItemSelectionDtoListAjaxResponse, CheckListGetSelectionQueryParams>,
+  UseGetProps<
+    CheckListItemSelectionDtoListAjaxResponse,
+    CheckListGetSelectionQueryParams,
+    CheckListGetSelectionPathParams
+  >,
   'path'
-> & { id: string };
+> &
+  CheckListGetSelectionPathParams;
 
-/**
- * Get user selection
- */
 export const useCheckListGetSelection = ({ id, ...props }: UseCheckListGetSelectionProps) =>
-  useGet<CheckListItemSelectionDtoListAjaxResponse, AjaxResponseBase, CheckListGetSelectionQueryParams>(
-    `/checkList/${id}/selection`,
-    props
-  );
+  useGet<
+    CheckListItemSelectionDtoListAjaxResponse,
+    AjaxResponseBase,
+    CheckListGetSelectionQueryParams,
+    CheckListGetSelectionPathParams
+  >(({ id }: CheckListGetSelectionPathParams) => `/checkList/${id}/selection`, { pathParams: { id }, ...props });
 
 export interface CheckListSaveSelectionQueryParams {
   /**
@@ -226,16 +165,18 @@ export interface CheckListSaveSelectionQueryParams {
   'api-version'?: string;
 }
 
-export type CheckListSaveSelectionProps = Omit<
-  MutateProps<void, unknown, CheckListSaveSelectionQueryParams, SaveSelectionInput>,
-  'path' | 'verb'
-> & { id: string };
+export interface CheckListSaveSelectionPathParams {
+  id: string;
+}
 
-/**
- * Save user selection
- */
+export type CheckListSaveSelectionProps = Omit<
+  MutateProps<void, unknown, CheckListSaveSelectionQueryParams, SaveSelectionInput, CheckListSaveSelectionPathParams>,
+  'path' | 'verb'
+> &
+  CheckListSaveSelectionPathParams;
+
 export const CheckListSaveSelection = ({ id, ...props }: CheckListSaveSelectionProps) => (
-  <Mutate<void, unknown, CheckListSaveSelectionQueryParams, SaveSelectionInput>
+  <Mutate<void, unknown, CheckListSaveSelectionQueryParams, SaveSelectionInput, CheckListSaveSelectionPathParams>
     verb="POST"
     path={`/checkList/${id}/selection`}
     {...props}
@@ -243,18 +184,16 @@ export const CheckListSaveSelection = ({ id, ...props }: CheckListSaveSelectionP
 );
 
 export type UseCheckListSaveSelectionProps = Omit<
-  UseMutateProps<void, CheckListSaveSelectionQueryParams, SaveSelectionInput>,
+  UseMutateProps<void, CheckListSaveSelectionQueryParams, SaveSelectionInput, CheckListSaveSelectionPathParams>,
   'path' | 'verb'
-> & { id: string };
+> &
+  CheckListSaveSelectionPathParams;
 
-/**
- * Save user selection
- */
 export const useCheckListSaveSelection = ({ id, ...props }: UseCheckListSaveSelectionProps) =>
-  useMutate<void, unknown, CheckListSaveSelectionQueryParams, SaveSelectionInput>(
+  useMutate<void, unknown, CheckListSaveSelectionQueryParams, SaveSelectionInput, CheckListSaveSelectionPathParams>(
     'POST',
-    `/checkList/${id}/selection`,
-    props
+    ({ id }: CheckListSaveSelectionPathParams) => `/checkList/${id}/selection`,
+    { pathParams: { id }, ...props }
   );
 
 export interface CheckListGetCheckListTreeQueryParams {
@@ -264,34 +203,46 @@ export interface CheckListGetCheckListTreeQueryParams {
   'api-version'?: string;
 }
 
-export type CheckListGetCheckListTreeProps = Omit<
-  GetProps<CheckListModelAjaxResponse, AjaxResponseBase, CheckListGetCheckListTreeQueryParams>,
-  'path'
-> & { id: string };
+export interface CheckListGetCheckListTreePathParams {
+  id: string;
+}
 
-/**
- * Get check list tree
- */
+export type CheckListGetCheckListTreeProps = Omit<
+  GetProps<
+    CheckListModelAjaxResponse,
+    AjaxResponseBase,
+    CheckListGetCheckListTreeQueryParams,
+    CheckListGetCheckListTreePathParams
+  >,
+  'path'
+> &
+  CheckListGetCheckListTreePathParams;
+
 export const CheckListGetCheckListTree = ({ id, ...props }: CheckListGetCheckListTreeProps) => (
-  <Get<CheckListModelAjaxResponse, AjaxResponseBase, CheckListGetCheckListTreeQueryParams>
+  <Get<
+    CheckListModelAjaxResponse,
+    AjaxResponseBase,
+    CheckListGetCheckListTreeQueryParams,
+    CheckListGetCheckListTreePathParams
+  >
     path={`/checkList/${id}/tree`}
     {...props}
   />
 );
 
 export type UseCheckListGetCheckListTreeProps = Omit<
-  UseGetProps<CheckListModelAjaxResponse, CheckListGetCheckListTreeQueryParams>,
+  UseGetProps<CheckListModelAjaxResponse, CheckListGetCheckListTreeQueryParams, CheckListGetCheckListTreePathParams>,
   'path'
-> & { id: string };
+> &
+  CheckListGetCheckListTreePathParams;
 
-/**
- * Get check list tree
- */
 export const useCheckListGetCheckListTree = ({ id, ...props }: UseCheckListGetCheckListTreeProps) =>
-  useGet<CheckListModelAjaxResponse, AjaxResponseBase, CheckListGetCheckListTreeQueryParams>(
-    `/checkList/${id}/tree`,
-    props
-  );
+  useGet<
+    CheckListModelAjaxResponse,
+    AjaxResponseBase,
+    CheckListGetCheckListTreeQueryParams,
+    CheckListGetCheckListTreePathParams
+  >(({ id }: CheckListGetCheckListTreePathParams) => `/checkList/${id}/tree`, { pathParams: { id }, ...props });
 
 export interface CheckListGetQueryParams {
   id?: string;
@@ -302,21 +253,24 @@ export interface CheckListGetQueryParams {
 }
 
 export type CheckListGetProps = Omit<
-  GetProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams>,
+  GetProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams, void>,
   'path'
 >;
 
 export const CheckListGet = (props: CheckListGetProps) => (
-  <Get<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams>
+  <Get<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams, void>
     path={`/api/services/app/CheckList/Get`}
     {...props}
   />
 );
 
-export type UseCheckListGetProps = Omit<UseGetProps<CheckListDtoAjaxResponse, CheckListGetQueryParams>, 'path'>;
+export type UseCheckListGetProps = Omit<UseGetProps<CheckListDtoAjaxResponse, CheckListGetQueryParams, void>, 'path'>;
 
 export const useCheckListGet = (props: UseCheckListGetProps) =>
-  useGet<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams>(`/api/services/app/CheckList/Get`, props);
+  useGet<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams, void>(
+    `/api/services/app/CheckList/Get`,
+    props
+  );
 
 export interface CheckListGetAllQueryParams {
   sorting?: string | null;
@@ -329,24 +283,24 @@ export interface CheckListGetAllQueryParams {
 }
 
 export type CheckListGetAllProps = Omit<
-  GetProps<CheckListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListGetAllQueryParams>,
+  GetProps<CheckListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListGetAllQueryParams, void>,
   'path'
 >;
 
 export const CheckListGetAll = (props: CheckListGetAllProps) => (
-  <Get<CheckListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListGetAllQueryParams>
+  <Get<CheckListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListGetAllQueryParams, void>
     path={`/api/services/app/CheckList/GetAll`}
     {...props}
   />
 );
 
 export type UseCheckListGetAllProps = Omit<
-  UseGetProps<CheckListDtoPagedResultDtoAjaxResponse, CheckListGetAllQueryParams>,
+  UseGetProps<CheckListDtoPagedResultDtoAjaxResponse, CheckListGetAllQueryParams, void>,
   'path'
 >;
 
 export const useCheckListGetAll = (props: UseCheckListGetAllProps) =>
-  useGet<CheckListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListGetAllQueryParams>(
+  useGet<CheckListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListGetAllQueryParams, void>(
     `/api/services/app/CheckList/GetAll`,
     props
   );
@@ -359,12 +313,12 @@ export interface CheckListCreateQueryParams {
 }
 
 export type CheckListCreateProps = Omit<
-  MutateProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListCreateQueryParams, CheckListDto>,
+  MutateProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListCreateQueryParams, CheckListDto, void>,
   'path' | 'verb'
 >;
 
 export const CheckListCreate = (props: CheckListCreateProps) => (
-  <Mutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListCreateQueryParams, CheckListDto>
+  <Mutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListCreateQueryParams, CheckListDto, void>
     verb="POST"
     path={`/api/services/app/CheckList/Create`}
     {...props}
@@ -372,12 +326,12 @@ export const CheckListCreate = (props: CheckListCreateProps) => (
 );
 
 export type UseCheckListCreateProps = Omit<
-  UseMutateProps<CheckListDtoAjaxResponse, CheckListCreateQueryParams, CheckListDto>,
+  UseMutateProps<CheckListDtoAjaxResponse, CheckListCreateQueryParams, CheckListDto, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListCreate = (props: UseCheckListCreateProps) =>
-  useMutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListCreateQueryParams, CheckListDto>(
+  useMutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListCreateQueryParams, CheckListDto, void>(
     'POST',
     `/api/services/app/CheckList/Create`,
     props
@@ -391,12 +345,12 @@ export interface CheckListUpdateQueryParams {
 }
 
 export type CheckListUpdateProps = Omit<
-  MutateProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListUpdateQueryParams, CheckListDto>,
+  MutateProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListUpdateQueryParams, CheckListDto, void>,
   'path' | 'verb'
 >;
 
 export const CheckListUpdate = (props: CheckListUpdateProps) => (
-  <Mutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListUpdateQueryParams, CheckListDto>
+  <Mutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListUpdateQueryParams, CheckListDto, void>
     verb="PUT"
     path={`/api/services/app/CheckList/Update`}
     {...props}
@@ -404,12 +358,12 @@ export const CheckListUpdate = (props: CheckListUpdateProps) => (
 );
 
 export type UseCheckListUpdateProps = Omit<
-  UseMutateProps<CheckListDtoAjaxResponse, CheckListUpdateQueryParams, CheckListDto>,
+  UseMutateProps<CheckListDtoAjaxResponse, CheckListUpdateQueryParams, CheckListDto, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListUpdate = (props: UseCheckListUpdateProps) =>
-  useMutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListUpdateQueryParams, CheckListDto>(
+  useMutate<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListUpdateQueryParams, CheckListDto, void>(
     'PUT',
     `/api/services/app/CheckList/Update`,
     props
@@ -423,17 +377,27 @@ export interface CheckListDeleteQueryParams {
   'api-version'?: string;
 }
 
-export type CheckListDeleteProps = Omit<MutateProps<void, unknown, CheckListDeleteQueryParams, void>, 'path' | 'verb'>;
+export type CheckListDeleteProps = Omit<
+  MutateProps<void, unknown, CheckListDeleteQueryParams, void, void>,
+  'path' | 'verb'
+>;
 
 export const CheckListDelete = (props: CheckListDeleteProps) => (
-  <Mutate<void, unknown, CheckListDeleteQueryParams, void>
+  <Mutate<void, unknown, CheckListDeleteQueryParams, void, void>
     verb="DELETE"
     path={`/api/services/app/CheckList/Delete`}
     {...props}
   />
 );
 
-export type UseCheckListDeleteProps = Omit<UseMutateProps<void, CheckListDeleteQueryParams, void>, 'path' | 'verb'>;
+export type UseCheckListDeleteProps = Omit<
+  UseMutateProps<void, CheckListDeleteQueryParams, void, void>,
+  'path' | 'verb'
+>;
 
 export const useCheckListDelete = (props: UseCheckListDeleteProps) =>
-  useMutate<void, unknown, CheckListDeleteQueryParams, void>('DELETE', `/api/services/app/CheckList/Delete`, props);
+  useMutate<void, unknown, CheckListDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/app/CheckList/Delete`,
+    props
+  );

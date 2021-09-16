@@ -5,24 +5,18 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-/**
- * Generic entity Dto with display text
- */
 export interface GuidNullableEntityWithDisplayNameDto {
-  displayText?: string | null;
   id?: string | null;
+  displayText?: string | null;
 }
 
-/**
- * Dto of the Shesha.Domain.ReferenceListItem
- */
 export interface ReferenceListItemDto {
+  id?: string;
   item?: string | null;
   itemValue?: number;
   description?: string | null;
   orderIndex?: number;
   referenceList?: GuidNullableEntityWithDisplayNameDto;
-  id?: string;
 }
 
 export interface ValidationErrorInfo {
@@ -38,12 +32,12 @@ export interface ErrorInfo {
 }
 
 export interface ReferenceListItemDtoListAjaxResponse {
-  result?: ReferenceListItemDto[] | null;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: ReferenceListItemDto[] | null;
 }
 
 export interface AjaxResponseBase {
@@ -54,138 +48,148 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
-/**
- * Dto of the Shesha.Domain.ReferenceList
- */
 export interface ReferenceListDto {
+  id?: string;
   name?: string | null;
   description?: string | null;
   hardLinkToApplication?: boolean;
   namespace?: string | null;
   noSelectionValue?: number | null;
-  id?: string;
 }
 
 export interface ReferenceListDtoAjaxResponse {
-  result?: ReferenceListDto;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: ReferenceListDto;
 }
 
 export interface ReferenceListDtoPagedResultDto {
-  totalCount?: number;
   items?: ReferenceListDto[] | null;
+  totalCount?: number;
 }
 
 export interface ReferenceListDtoPagedResultDtoAjaxResponse {
-  result?: ReferenceListDtoPagedResultDto;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: ReferenceListDtoPagedResultDto;
 }
 
 export interface ReferenceListGetItemsQueryParams {
   namespace?: string | null;
   name?: string | null;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type ReferenceListGetItemsProps = Omit<
-  GetProps<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams>,
+  GetProps<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams, void>,
   'path'
 >;
 
-/**
- * Get ReferenceList Items
- */
 export const ReferenceListGetItems = (props: ReferenceListGetItemsProps) => (
-  <Get<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams>
+  <Get<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams, void>
     path={`/api/services/app/ReferenceList/GetItems`}
     {...props}
   />
 );
 
 export type UseReferenceListGetItemsProps = Omit<
-  UseGetProps<ReferenceListItemDtoListAjaxResponse, ReferenceListGetItemsQueryParams>,
+  UseGetProps<ReferenceListItemDtoListAjaxResponse, ReferenceListGetItemsQueryParams, void>,
   'path'
 >;
 
-/**
- * Get ReferenceList Items
- */
 export const useReferenceListGetItems = (props: UseReferenceListGetItemsProps) =>
-  useGet<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams>(
+  useGet<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams, void>(
     `/api/services/app/ReferenceList/GetItems`,
     props
   );
 
 export interface ReferenceListGetQueryParams {
-  Id?: string;
+  id?: string;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type ReferenceListGetProps = Omit<
-  GetProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams>,
+  GetProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams, void>,
   'path'
 >;
 
 export const ReferenceListGet = (props: ReferenceListGetProps) => (
-  <Get<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams>
+  <Get<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams, void>
     path={`/api/services/app/ReferenceList/Get`}
     {...props}
   />
 );
 
 export type UseReferenceListGetProps = Omit<
-  UseGetProps<ReferenceListDtoAjaxResponse, ReferenceListGetQueryParams>,
+  UseGetProps<ReferenceListDtoAjaxResponse, ReferenceListGetQueryParams, void>,
   'path'
 >;
 
 export const useReferenceListGet = (props: UseReferenceListGetProps) =>
-  useGet<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams>(
+  useGet<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams, void>(
     `/api/services/app/ReferenceList/Get`,
     props
   );
 
 export interface ReferenceListGetAllQueryParams {
-  Sorting?: string | null;
-  SkipCount?: number;
-  MaxResultCount?: number;
+  sorting?: string | null;
+  skipCount?: number;
+  maxResultCount?: number;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type ReferenceListGetAllProps = Omit<
-  GetProps<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams>,
+  GetProps<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams, void>,
   'path'
 >;
 
 export const ReferenceListGetAll = (props: ReferenceListGetAllProps) => (
-  <Get<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams>
+  <Get<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams, void>
     path={`/api/services/app/ReferenceList/GetAll`}
     {...props}
   />
 );
 
 export type UseReferenceListGetAllProps = Omit<
-  UseGetProps<ReferenceListDtoPagedResultDtoAjaxResponse, ReferenceListGetAllQueryParams>,
+  UseGetProps<ReferenceListDtoPagedResultDtoAjaxResponse, ReferenceListGetAllQueryParams, void>,
   'path'
 >;
 
 export const useReferenceListGetAll = (props: UseReferenceListGetAllProps) =>
-  useGet<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams>(
+  useGet<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams, void>(
     `/api/services/app/ReferenceList/GetAll`,
     props
   );
 
+export interface ReferenceListCreateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
 export type ReferenceListCreateProps = Omit<
-  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto>,
+  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListCreateQueryParams, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const ReferenceListCreate = (props: ReferenceListCreateProps) => (
-  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto>
+  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListCreateQueryParams, ReferenceListDto, void>
     verb="POST"
     path={`/api/services/app/ReferenceList/Create`}
     {...props}
@@ -193,24 +197,31 @@ export const ReferenceListCreate = (props: ReferenceListCreateProps) => (
 );
 
 export type UseReferenceListCreateProps = Omit<
-  UseMutateProps<ReferenceListDtoAjaxResponse, void, ReferenceListDto>,
+  UseMutateProps<ReferenceListDtoAjaxResponse, ReferenceListCreateQueryParams, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const useReferenceListCreate = (props: UseReferenceListCreateProps) =>
-  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto>(
+  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListCreateQueryParams, ReferenceListDto, void>(
     'POST',
     `/api/services/app/ReferenceList/Create`,
     props
   );
 
+export interface ReferenceListUpdateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
 export type ReferenceListUpdateProps = Omit<
-  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto>,
+  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListUpdateQueryParams, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const ReferenceListUpdate = (props: ReferenceListUpdateProps) => (
-  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto>
+  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListUpdateQueryParams, ReferenceListDto, void>
     verb="PUT"
     path={`/api/services/app/ReferenceList/Update`}
     {...props}
@@ -218,28 +229,32 @@ export const ReferenceListUpdate = (props: ReferenceListUpdateProps) => (
 );
 
 export type UseReferenceListUpdateProps = Omit<
-  UseMutateProps<ReferenceListDtoAjaxResponse, void, ReferenceListDto>,
+  UseMutateProps<ReferenceListDtoAjaxResponse, ReferenceListUpdateQueryParams, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const useReferenceListUpdate = (props: UseReferenceListUpdateProps) =>
-  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto>(
+  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListUpdateQueryParams, ReferenceListDto, void>(
     'PUT',
     `/api/services/app/ReferenceList/Update`,
     props
   );
 
 export interface ReferenceListDeleteQueryParams {
-  Id?: string;
+  id?: string;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type ReferenceListDeleteProps = Omit<
-  MutateProps<void, unknown, ReferenceListDeleteQueryParams, void>,
+  MutateProps<void, unknown, ReferenceListDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const ReferenceListDelete = (props: ReferenceListDeleteProps) => (
-  <Mutate<void, unknown, ReferenceListDeleteQueryParams, void>
+  <Mutate<void, unknown, ReferenceListDeleteQueryParams, void, void>
     verb="DELETE"
     path={`/api/services/app/ReferenceList/Delete`}
     {...props}
@@ -247,12 +262,12 @@ export const ReferenceListDelete = (props: ReferenceListDeleteProps) => (
 );
 
 export type UseReferenceListDeleteProps = Omit<
-  UseMutateProps<void, ReferenceListDeleteQueryParams, void>,
+  UseMutateProps<void, ReferenceListDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const useReferenceListDelete = (props: UseReferenceListDeleteProps) =>
-  useMutate<void, unknown, ReferenceListDeleteQueryParams, void>(
+  useMutate<void, unknown, ReferenceListDeleteQueryParams, void, void>(
     'DELETE',
     `/api/services/app/ReferenceList/Delete`,
     props
