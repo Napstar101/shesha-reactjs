@@ -18,6 +18,7 @@ export interface IChildTableProps extends ICrudProps {
   customTypeEditors?: ITableCustomTypeEditor[];
   tableRef?: MutableRefObject<IDataTableInstance | null>;
   onRowsChanged?: (rows: object[]) => void;
+  onDblClick?: (data: any) => void;
   toolbarItemsPlacement?: 'panelHeader' | 'panelBody';
   alert?: string;
   paginationMode?: 'scroll' | 'pagination';
@@ -33,6 +34,7 @@ export const ChildDataTable: FC<IChildTableProps> = ({
   tableRef,
   crudMode,
   onRowsChanged,
+  onDblClick,
   alert,
   paginationMode = 'scroll',
   customTypeEditors,
@@ -94,6 +96,7 @@ export const ChildDataTable: FC<IChildTableProps> = ({
           saveLocally={saveLocally}
           tableRef={tableRef}
           onRowsChanged={onRowsChanged}
+          onDblClick={onDblClick}
           crudMode={crudMode}
           customTypeEditors={customTypeEditors}
         />
