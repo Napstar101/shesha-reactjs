@@ -19,7 +19,7 @@ export interface IAutocompleteProps {
   /**
    * The value of the autocomplete
    */
-  value?: string;
+  value?: any;
 
   /**
    * The text to display on the autocomplete
@@ -118,21 +118,29 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
   const [autocompleteText, setAutocompleteText] = useState(null);
 
   const getValue = () => {
-    const value = typeof props?.value === 'string'
-    ? props?.value
-    : (props?.value as [])?.map((item) => {
+    console.log(props?.value);
+    
 
-      if (typeof item === 'string') {
-        return item;
-      }
+    if (typeof props?.value === 'string') {
+      return props?.value
+    } else if (Array.isArray(props?.value)) {
+      return props?.value?.map((item) => {
 
-      return (item as IGuidNullableEntityWithDisplayNameDto)?.id;
-    })
+        if (typeof item === 'string') {
+          return item;
+        }
+  
+        return (item as IGuidNullableEntityWithDisplayNameDto)?.displayText;
+      });
+    }
+    else if(typeof props?.value === 'object') {
+      return props?.value?.displayText;
+    }
 
-    return value;
+    return null;
   }
 
-  const dofetchItems = (term: string) => {
+  const doFetchItems = (term: string) => {
     // if value is specified but displayText is not specified - fetch text from the server
     if (props.dataSourceType === 'entitiesList') {
       entityFetcher.refetch({
@@ -149,7 +157,7 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
       const queryParams = {
         ...getQueryString(props.dataSourceUrl),
         term: term,
-        selectedValue: props.value,
+        // selectedValue: props.value,
       };
       urlFetcher.refetch({
         queryParams: queryParams,
@@ -158,7 +166,7 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
   };
 
   useEffect(() => {
-    dofetchItems(null);
+    doFetchItems(null);
   }, [props.dataSourceType]);
 
   const getFetchedItems = (): AutocompleteItemDto[] => {
@@ -173,9 +181,9 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
     }
   };
 
-  const debouncedfetchItems = useDebouncedCallback<(value: string) => void>(
+  const debouncedFetchItems = useDebouncedCallback<(value: string) => void>(
     value => {
-      dofetchItems(value);
+      doFetchItems(value);
     },
     // delay in ms
     200
@@ -200,7 +208,7 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
   const handleSearch = (value: any) => {
     setAutocompleteText(value);
     if (value) {
-      debouncedfetchItems(value);
+      debouncedFetchItems(value);
     }
   };
 
@@ -215,6 +223,9 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
     }
   }
 
+  console.log("getValue(): ", getValue());
+  
+
   return (
     <Select
       showSearch
@@ -222,7 +233,7 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
       showArrow={false}
       filterOption={false}
       onSearch={handleSearch}
-      defaultValue={props.value}
+      defaultValue={getValue()}
       notFoundContent={null}
       onChange={handleChange}
       allowClear={true}
@@ -234,7 +245,7 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
       bordered={props.bordered}
       style={props.style}
       size={props.size}
-      mode={mode}
+      mode={props?.value ? mode : undefined} // When mode is multiple and props.value is null, the control shows an empty tag
     >
       {options}
     </Select>
