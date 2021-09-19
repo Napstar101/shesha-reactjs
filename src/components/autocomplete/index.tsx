@@ -1,11 +1,12 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { Select } from 'antd';
-import { AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
+import { AjaxResponseBase, AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
 import { useGet } from 'restful-react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { useDebouncedCallback } from 'use-debounce';
 import qs from 'qs';
 import { IGuidNullableEntityWithDisplayNameDto } from '../..';
+import _ from 'lodash';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
@@ -18,11 +19,16 @@ interface IDropdownOptionData {
 export interface IAutocompleteProps {
   /**
    * The value of the autocomplete
+   *
+   * If the value is of this form, then we do not need to fetch items from the server
    */
-  value?: any;
+  value?: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]; // string | string[]
+
+  defaultValue?: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]; // string | string[]
 
   /**
    * The text to display on the autocomplete
+   * @deprecated - the property is no longer needed since the type of the value has changed
    */
   displayText?: string;
 
@@ -106,58 +112,60 @@ const getQueryString = (url: string) => {
 /**
  * A component for working with dynamic autocomplete
  */
-export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,...props }) => {
+ export const Autocomplete: FC<IAutocompleteProps> = ({
+  value,
+  placeHolder,
+  typeShortAlias,
+  allowInherited,
+  onChange,
+  disabled,
+  bordered,
+  dataSourceUrl,
+  dataSourceType,
+  style,
+  size,
+  mode,
+}) => {
   const entityFetcher = useAutocompleteList({ lazy: true });
-  const urlFetcher = useGet<any, any, UrlFetcherQueryParams>(trimQueryString(props.dataSourceUrl) || '', {
+
+  const urlFetcher = useGet<any, AjaxResponseBase, UrlFetcherQueryParams, void>(trimQueryString(dataSourceUrl) || '', {
     lazy: true,
   });
 
-  const itemsFetcher =
-    props.dataSourceType === 'entitiesList' ? entityFetcher : props.dataSourceType === 'url' ? urlFetcher : null;
+  const itemsFetcher = dataSourceType === 'entitiesList' ? entityFetcher : dataSourceType === 'url' ? urlFetcher : null;
 
   const [autocompleteText, setAutocompleteText] = useState(null);
 
   const getValue = () => {
-    console.log(props?.value);
-    
-
-    if (typeof props?.value === 'string') {
-      return props?.value
-    } else if (Array.isArray(props?.value)) {
-      return props?.value?.map((item) => {
-
-        if (typeof item === 'string') {
-          return item;
-        }
-  
-        return (item as IGuidNullableEntityWithDisplayNameDto)?.displayText;
+    if (Array.isArray(value)) {
+      return (value as IGuidNullableEntityWithDisplayNameDto[])?.map(({ id }) => {
+        return id;
       });
-    }
-    else if(typeof props?.value === 'object') {
-      return props?.value?.displayText;
+    } else if (typeof value === 'object') {
+      return value?.id;
     }
 
     return null;
-  }
+  };
 
   const doFetchItems = (term: string) => {
     // if value is specified but displayText is not specified - fetch text from the server
-    if (props.dataSourceType === 'entitiesList') {
+    if (dataSourceType === 'entitiesList') {
       entityFetcher.refetch({
         queryParams: {
           term: term,
-          typeShortAlias: props.typeShortAlias,
-          allowInherited: props.allowInherited,
-          selectedValue: props.value,
+          typeShortAlias: typeShortAlias,
+          allowInherited: allowInherited,
+          // selectedValue: value, // This worked if value was a string, but now it's either an object or a list of object
         },
       });
     }
 
-    if (props.dataSourceType === 'url' && props.dataSourceUrl) {
+    if (dataSourceType === 'url' && dataSourceUrl) {
       const queryParams = {
-        ...getQueryString(props.dataSourceUrl),
+        ...getQueryString(dataSourceUrl),
         term: term,
-        // selectedValue: props.value,
+        // selectedValue: value,
       };
       urlFetcher.refetch({
         queryParams: queryParams,
@@ -167,43 +175,61 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
 
   useEffect(() => {
     doFetchItems(null);
-  }, [props.dataSourceType]);
+  }, [dataSourceType]);
 
   const getFetchedItems = (): AutocompleteItemDto[] => {
-    switch (props.dataSourceType) {
+    switch (dataSourceType) {
       case 'entitiesList':
         return entityFetcher.data?.result;
 
       case 'url':
         return urlFetcher.data?.result;
       default:
-        return null;
+        return [];
     }
   };
 
   const debouncedFetchItems = useDebouncedCallback<(value: string) => void>(
-    value => {
+    (value) => {
       doFetchItems(value);
     },
     // delay in ms
     200
   );
 
-  const data = getFetchedItems() || [];
-  const options =
-    Boolean(autocompleteText) || Boolean(data)
-      ? data?.map(d => (
-          <Select.Option value={d.value} key={d.value}>
-            {d.displayText}
-          </Select.Option>
-        ))
-      : props.value
-      ? [
-          <Select.Option value={props.value} key={props.value}>
-            {props.displayText}
-          </Select.Option>,
-        ]
-      : [];
+  const options: AutocompleteItemDto[] = useMemo(() => {
+    const fetchedData = getFetchedItems();
+
+    const values: AutocompleteItemDto[] = Array.isArray(value)
+      ? value
+      : [
+          {
+            value: value?.id,
+            displayText: value?.displayText,
+          },
+        ];
+
+    if (fetchedData?.length) {
+      // Make sure you merge with the passed values in case the selected values are not part of the returned items from search
+      return _.uniqBy([...fetchedData, ...values], 'id');
+    } else {
+      // If you have
+      //    a value
+      // but do not have
+      //    term
+      //    options
+      // then your options are your values depending on the size of your values
+      if (value) {
+        if (Array.isArray(value)) {
+          return value?.map(({ id: value, displayText }) => ({ value, displayText }));
+        } else if (typeof value === 'object') {
+          return values;
+        }
+      }
+
+      return [];
+    }
+  }, [value, autocompleteText, entityFetcher || urlFetcher]);
 
   const handleSearch = (value: any) => {
     setAutocompleteText(value);
@@ -214,17 +240,15 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
 
   const handleChange = (value: string, option: any) => {
     if (mode === 'multiple' || mode === 'tags') {
-      const values: IGuidNullableEntityWithDisplayNameDto[] = (option as IDropdownOptionData[])
-        .map(({ key, children }) => ({ id: key, displayText: children }));
+      const values: IGuidNullableEntityWithDisplayNameDto[] = (option as IDropdownOptionData[]).map(
+        ({ key, children }) => ({ id: key, displayText: children })
+      );
 
-        onChange(values, values);
+      onChange(values, values);
     } else {
       onChange(value, option);
     }
-  }
-
-  console.log("getValue(): ", getValue());
-  
+  };
 
   return (
     <Select
@@ -233,21 +257,25 @@ export const Autocomplete: FC<IAutocompleteProps> = ({ mode = null, onChange ,..
       showArrow={false}
       filterOption={false}
       onSearch={handleSearch}
-      defaultValue={getValue()}
+      defaultValue={getValue() as any} // Type 'string | string[]' is not assignable to type 'string'. Type 'string[]' is not assignable to type 'string'.
       notFoundContent={null}
       onChange={handleChange}
       allowClear={true}
       loading={itemsFetcher?.loading}
-      placeholder={props.placeHolder}
-      value={getValue()}
-      // value={props.value}
-      disabled={props.disabled}
-      bordered={props.bordered}
-      style={props.style}
-      size={props.size}
-      mode={props?.value ? mode : undefined} // When mode is multiple and props.value is null, the control shows an empty tag
+      placeholder={placeHolder}
+      value={getValue() as any}
+      // value={value}
+      disabled={disabled}
+      bordered={bordered}
+      style={style}
+      size={size}
+      mode={value ? mode : undefined} // When mode is multiple and value is null, the control shows an empty tag
     >
-      {options}
+      {options?.map(({ value, displayText }) => (
+        <Select.Option value={value} key={value}>
+          {displayText}
+        </Select.Option>
+      ))}
     </Select>
   );
 };

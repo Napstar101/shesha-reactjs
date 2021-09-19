@@ -24,7 +24,7 @@ const EntityAutocompleteWidget: EntityAutocompleteWidgetType = {
         onChange={onChange}
         style={{ minWidth: '150px' }}
         size="small"
-      ></Autocomplete>
+      />
     );
   },
 };

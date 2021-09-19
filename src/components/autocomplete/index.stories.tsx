@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import Autocomplete, { IAutocompleteProps } from './';
 import { Button, Form } from 'antd';
 import AuthContainer from '../authedContainer';
-import { ShaApplicationProvider } from '../../providers';
+import { ShaApplicationProvider, useUi } from '../../providers';
 
 export default {
   title: 'Components/Autocomplete',
@@ -21,12 +21,18 @@ const autocompleteProps: IAutocompleteProps = {
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
+
+
 // Create a master template for mapping args to render the Button component
 const Template: Story<IAutocompleteProps> = args => {
+  const [state, setState] = useState({});
+
   const [form] = Form.useForm();
+
   const onFinish = (data: any) => {
-    console.log("onFinish data ", data);
-  } 
+    console.log('onFinish data ', data);
+    setState(data);
+  };
 
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
@@ -72,8 +78,17 @@ const Template: Story<IAutocompleteProps> = args => {
                 }
               ]
             })}>Set Fields</Button>
-             <Button onClick={() => form?.submit()} type="primary">Submit</Button>
+
+            <Button onClick={() => form?.resetFields()} style={{margin: '0 12px'}}>Clear fields</Button>
+
+            <Button onClick={() => form?.submit()} type="primary">
+              Submit
+            </Button>
           </Form>
+        </div>
+
+        <div>
+          <pre>{JSON.stringify(state, null, 2)}</pre>
         </div>
       </AuthContainer>
     </ShaApplicationProvider>
