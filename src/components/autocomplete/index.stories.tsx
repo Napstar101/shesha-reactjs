@@ -5,7 +5,6 @@ import Autocomplete, { IAutocompleteProps } from './';
 import { Button, Form } from 'antd';
 import AuthContainer from '../authedContainer';
 import { ShaApplicationProvider } from '../../providers';
-import { GooglePlacesAutocomplete } from '..';
 
 export default {
   title: 'Components/Autocomplete',
