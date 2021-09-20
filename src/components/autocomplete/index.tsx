@@ -128,9 +128,12 @@ const getQueryString = (url: string) => {
 }) => {
   const entityFetcher = useAutocompleteList({ lazy: true });
 
-  const urlFetcher = useGet<any, AjaxResponseBase, UrlFetcherQueryParams, void>(trimQueryString(dataSourceUrl) || '', {
-    lazy: true,
-  });
+  const urlFetcher = useGet<any, AjaxResponseBase, UrlFetcherQueryParams, void>(
+    decodeURI(trimQueryString(dataSourceUrl)) || '',
+    {
+      lazy: true,
+    }
+  );
 
   const itemsFetcher = dataSourceType === 'entitiesList' ? entityFetcher : dataSourceType === 'url' ? urlFetcher : null;
 
@@ -211,7 +214,7 @@ const getQueryString = (url: string) => {
 
     if (fetchedData?.length) {
       // Make sure you merge with the passed values in case the selected values are not part of the returned items from search
-      return _.uniqBy([...fetchedData, ...values], 'id');
+      return _.uniqBy([...fetchedData, ...values], 'value');
     } else {
       // If you have
       //    a value
@@ -231,6 +234,8 @@ const getQueryString = (url: string) => {
     }
   }, [value, autocompleteText, entityFetcher || urlFetcher]);
 
+  // console.log('options: ', options);
+
   const handleSearch = (value: any) => {
     setAutocompleteText(value);
     if (value) {
@@ -239,14 +244,19 @@ const getQueryString = (url: string) => {
   };
 
   const handleChange = (value: string, option: any) => {
-    if (mode === 'multiple' || mode === 'tags') {
-      const values: IGuidNullableEntityWithDisplayNameDto[] = (option as IDropdownOptionData[]).map(
-        ({ key, children }) => ({ id: key, displayText: children })
-      );
-
-      onChange(values, values);
+    if (mode === 'multiple' || (mode === 'tags' && Array.isArray(option))) {
+      if (Array.isArray(value)) {
+        const values: IGuidNullableEntityWithDisplayNameDto[] = (option as IDropdownOptionData[])?.map(
+          ({ key, children }) => ({ id: key, displayText: children })
+        );
+        onChange(values, values);
+      } else {
+        const val = { id: value, displayText: option?.children };
+        onChange([val], [val]);
+      }
     } else {
-      onChange(value, option);
+      const val = { id: value, displayText: option?.children };
+      onChange(val, val);
     }
   };
 
