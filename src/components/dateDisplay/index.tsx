@@ -5,9 +5,12 @@ import { tolocalIsoDate } from '../../utils/date';
 import { TooltipPlacement } from 'antd/lib/tooltip';
 
 interface IDateDisplayProps {
+  /**
+   * @deprecated - use children instead
+   */
   date?: string;
   format?: string;
-  children: string;
+  children?: string;
   showTooltip?: boolean;
   dateAgo?: boolean;
   tooltipPlacement?: TooltipPlacement;
