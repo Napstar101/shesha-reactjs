@@ -1,14 +1,12 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { DataTableProvider, ShaApplicationProvider, UiProvider } from '../../providers';
+import { ShaApplicationProvider, UiProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, GenericIndexPage, SimpleIndexPage } from '../..';
 import { IIndexPageProps } from './indexPage';
 import { useAreaCreate } from '../../apis/area';
 import { useState } from 'react';
-import MainLayout from '../mainLayout';
-import IndexTableFull from '../indexTableFull';
 import { PlusOutlined } from '@ant-design/icons';
 
 export default {

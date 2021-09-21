@@ -54,7 +54,7 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
           id={checklistId}
           ownerType={ownerType}
           ownerId={ownerId}
-          readOnly={customProps?.readOnly}
+          readOnly={customProps?.disabled}
           dropdown={customProps?.dropdown}
           saveLocally={customProps?.saveLocally}
           hint={customProps?.customHint}

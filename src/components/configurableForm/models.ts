@@ -3,7 +3,7 @@ import { ColProps } from 'antd/lib/col';
 import { FormInstance } from 'antd/lib/form';
 import { FormLayout } from 'antd/lib/form/Form';
 import { ConfigurableFormInstance } from '../../providers/form/contexts';
-import { FormMode, Store, IConfigurableFormBaseProps, IFormActions } from '../../providers/form/models';
+import { FormMode, Store, IConfigurableFormBaseProps, IFormActions, IFormSections } from '../../providers/form/models';
 import { ValidateErrorEntity } from '../../interfaces';
 
 export interface IConfigurableFormRendererProps<Values = any, FieldData = any> {
@@ -18,6 +18,7 @@ export interface IConfigurableFormRendererProps<Values = any, FieldData = any> {
   onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
   form?: FormInstance<any>;
   actions?: IFormActions;
+  sections?: IFormSections;
   context?: any; // todo: make generic
   //onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
 }

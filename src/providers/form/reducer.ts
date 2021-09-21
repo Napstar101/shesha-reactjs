@@ -228,12 +228,15 @@ const reducer = handleActions<IFormStateContext, any>(
       };
     },
 
-    [FormActionEnums.SetValidationErrors]: (state: IFormStateContext, action: ReduxActions.Action<IFormValidationErrors>) => {
+    [FormActionEnums.SetValidationErrors]: (
+      state: IFormStateContext,
+      action: ReduxActions.Action<IFormValidationErrors>
+    ) => {
       const { payload } = action;
 
       return {
         ...state,
-        validationErrors: payload ? {...payload} : null,
+        validationErrors: payload ? { ...payload } : null,
       };
     },
 

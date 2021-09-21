@@ -8,6 +8,8 @@ import {
   IFormAction,
   FormMarkup,
   FormMarkupWithSettings,
+  IFormSection,
+  IFormSections,
 } from './models';
 import Mustache from 'mustache';
 import { IToolboxComponentBase, IToolboxComponentGroup, IToolboxComponents } from '../../interfaces';
@@ -322,6 +324,19 @@ export const convertActions = (ownerId: string, actions: IFormActions): IFormAct
       body: actions[key],
     });
   }
+  return result;
+};
+
+export const convertSectionsToList = (ownerId: string, sections: IFormSections): IFormSection[] => {
+  let result: IFormSection[] = [];
+  for (let key in sections) {
+    result.push({
+      owner: ownerId,
+      name: key,
+      body: sections[key],
+    });
+  }
+
   return result;
 };
 

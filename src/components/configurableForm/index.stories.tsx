@@ -2,22 +2,12 @@ import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ConfigurableForm from './configurableForm';
-import { Col, Form, Row } from 'antd';
+import { Alert, Col, Form, Row } from 'antd';
 import { IConfigurableFormProps } from './models';
 import { ShaApplicationProvider, ShaRoutingProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { IndexPageTemplate } from './stories/indexPage';
 // import { useApplicationsApplyForMembership } from '../../apis/applications';
-import { useMutate } from 'restful-react';
-
-const useApplyForMembership = () => {
-  const fetcher = useMutate({
-    path: '/api/services/Gma/Applications/ApplyForMembership',
-    verb: 'POST',
-  });
-
-  return fetcher;
-};
 
 export default {
   title: 'Components/ConfigurableForm',
@@ -31,22 +21,13 @@ const configurableFormProps: IConfigurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IConfigurableFormProps> = args => {
+const Template: Story<IConfigurableFormProps> = () => {
   const [form] = Form.useForm();
 
-  const { loading, mutate } = useMutate({
-    path: '/api/services/Gma/Applications/ApplyForMembership',
-    verb: 'POST',
-  });
+
 
   const onFinish = (data: any) => {
-    mutate(data)
-      .then(response => {
-        console.log('rest response', response);
-      })
-      .catch(error => {
-        console.log('rest error: ', error);
-      });
+    console.log("onFinish data: ", data);
   };
 
   return (
@@ -55,7 +36,15 @@ const Template: Story<IConfigurableFormProps> = args => {
         <ShaRoutingProvider>
           <Row>
             <Col span={24}>
-              <ConfigurableForm mode="edit" path="/members/apply" onFinish={onFinish} form={form} />
+              <ConfigurableForm
+                mode="edit"
+                path="/settings/forms/playground"
+                onFinish={onFinish}
+                form={form}
+                sections={{
+                  middleSection: () => <Alert message="This is a custom section" description="" />
+                }}
+              />
             </Col>
           </Row>
         </ShaRoutingProvider>
