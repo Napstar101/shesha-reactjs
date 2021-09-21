@@ -10,6 +10,7 @@ import { IToolbarItem } from '../../interfaces';
 import { SaveOutlined, CloseOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import PageBtnContainer from '../pageBtnContainer';
 import { useShaRouting } from '../../providers/shaRouting';
+import { IFormActions, IFormSections } from '../../providers/form/models';
 
 interface ICreatePageProps {
   title?: string;
@@ -19,6 +20,15 @@ interface ICreatePageProps {
   prepareValues?: (values: any) => any;
   initialValues?: any;
   actionButtonPosition?: 'top' | 'bottom';
+  /**
+   * Form actions. Page-specific actions which can be executed from the configurable form
+   */
+  formActions?: IFormActions;
+
+  /**
+    * Form sections. Form-specific sections which can be rendered within the configurable form
+    */
+  formSections?: IFormSections;
 }
 
 const CreateForm: NextPage<ICreatePageProps> = ({
@@ -28,6 +38,8 @@ const CreateForm: NextPage<ICreatePageProps> = ({
   formPath,
   prepareValues,
   initialValues,
+  formActions,
+  formSections,
   actionButtonPosition = 'top',
 }) => {
   const { mutate: save, error: saveError, loading: saveInProgress } = updater({});
@@ -74,6 +86,8 @@ const CreateForm: NextPage<ICreatePageProps> = ({
           onFinish={handleSubmit}
           path={formPath || router.pathname}
           initialValues={initialValues}
+          actions={formActions}
+          sections={formSections}
         />
 
         {actionButtonPosition === 'bottom' && (

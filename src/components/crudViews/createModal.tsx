@@ -5,6 +5,7 @@ import { FormInstance } from 'antd/lib/form';
 import { useUi } from '../../providers';
 import { IDataMutator } from './models';
 import { useState } from 'react';
+import { IFormActions, IFormSections } from '../../providers/form/models';
 
 interface IModalProps {
   /**
@@ -55,6 +56,10 @@ interface IModalProps {
   onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
 
   beforeSubmit?: (form: any) => boolean;
+
+  actions?: IFormActions;
+
+  sections?: IFormSections;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -68,7 +73,9 @@ const ModalForm: FC<IModalProps> = ({
   keepModalOpenAfterSave,
   saveCaption = 'Save',
   onFieldsChange,
-  beforeSubmit
+  beforeSubmit,
+  actions,
+  sections,
 }) => {
   const { mutate: save, error, loading } = updater({});
 
@@ -138,6 +145,8 @@ const ModalForm: FC<IModalProps> = ({
           onFinish={onFinish}
           path={formPath}
           onFieldsChange={onFieldsChange}
+          actions={actions}
+          sections={sections}
         />
       </Spin>
     </Modal>

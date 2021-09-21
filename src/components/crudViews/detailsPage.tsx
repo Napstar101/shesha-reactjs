@@ -4,7 +4,7 @@ import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
 import { MainLayout, IndexToolbar, ValidationErrors, ConfigurableForm } from '../';
 import { useUi } from '../../providers';
-import { FormMarkup, IFormActions } from '../../providers/form/models';
+import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
 import { CommonCrudHandles } from './interfaces';
@@ -60,6 +60,11 @@ export interface IDetailsPageProps {
    * Form actions. Page-specific actions which can be executed from the configurable form
    */
   formActions?: IFormActions;
+
+  /**
+   * Form sections. Form-specific sections which can be rendered within the configurable form
+   */
+  formSections?: IFormSections;
 
   /**
    * ref object
@@ -159,6 +164,7 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
               markup={props.markup}
               initialValues={model}
               actions={props.formActions}
+              sections={props.formSections}
               onValuesChange={props?.onFormValuesChange}
             />
             {typeof props?.footer === 'function' ? props?.footer(model) : props?.footer}

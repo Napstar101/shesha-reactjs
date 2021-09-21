@@ -4,6 +4,7 @@ import { ValidationErrors, ConfigurableForm } from '../';
 import { FormInstance } from 'antd/lib/form';
 import { useUi } from '../../providers';
 import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
+import { IFormActions, IFormSections } from '../../providers/form/models';
 
 interface IModalProps {
   id: string;
@@ -17,6 +18,8 @@ interface IModalProps {
   prepareValues?: (values: any) => any;
   onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
   beforeSubmit?: (form: any) => boolean;
+  actions?: IFormActions;
+  sections?: IFormSections;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -30,7 +33,9 @@ const ModalForm: FC<IModalProps> = ({
   formPath,
   prepareValues,
   onFieldsChange,
-  beforeSubmit
+  beforeSubmit,
+  actions,
+  sections
 }) => {
   const { loading: loadingInProgress, refetch: doFetch, error: fetchError, data: fetchedData } = fetcher({
     lazy: true,
@@ -91,6 +96,8 @@ const ModalForm: FC<IModalProps> = ({
             path={formPath}
             initialValues={model}
             onFieldsChange={onFieldsChange}
+            actions={actions}
+            sections={sections}
           />
         )}
       </Spin>
