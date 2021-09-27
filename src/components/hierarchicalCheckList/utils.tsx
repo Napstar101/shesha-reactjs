@@ -1,8 +1,8 @@
 import { CheckSquareOutlined, CloseSquareOutlined } from '@ant-design/icons';
 import { Key } from 'react';
 import _ from 'lodash';
-import { ICheckListItemSelection, IDataNode } from './interface';
-import { CheckListItemModel, SaveSelectionInput } from '../../apis/checkList';
+import { CheckListSelectionType, ICheckListItemSelection, IDataNode, ISaveSelectionsInput } from './interface';
+import { CheckListItemModel } from '../../apis/checkList';
 import { treeToList } from '../../utils/tree';
 import React from 'react';
 
@@ -131,16 +131,30 @@ export function deepFlattenTree<T>(r: T[], a: T[], key: keyof T) {
 export const filterOnSelectionsChange = (
   selections: ICheckListItemSelection[],
   { id, ownerId, ownerType }: { id: string; ownerId: string; ownerType: string }
-): SaveSelectionInput => ({
-  id,
-  ownerId,
-  ownerType,
-  selection: selections.map(({ checkListItemId, selection, comments }) => ({
-    checkListItemId,
-    selection,
-    comments,
-  })),
-});
+): ISaveSelectionsInput => {
+  let allChecked = true;
+
+  let response: ISaveSelectionsInput = {
+    id,
+    ownerId,
+    ownerType,
+    selection: selections.map(({ checkListItemId, selection, comments }) => {
+      if (selection !== CheckListSelectionType.Yes && allChecked) {
+        allChecked = false
+      }
+
+      return {
+        checkListItemId,
+        selection,
+        comments,
+      }
+    })
+  }
+
+  return {...response, allChecked };
+}
+  
+
 
 type ChecklistErrorTypes =
   | 'noCommentsNoSelections'

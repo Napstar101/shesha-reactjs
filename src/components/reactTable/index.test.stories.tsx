@@ -5,7 +5,6 @@ import { ShaApplicationProvider, UiProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, GenericIndexPage } from '../..';
 import { IIndexPageProps } from '../crudViews/indexPage';
-import { useMembersCreate } from '../../apis/members';
 
 export default {
   title: 'Components/TestReactTable',
@@ -32,10 +31,7 @@ const Template: Story<IIndexPageProps> = () => {
           // tableConfigId="Members_Index"
           detailsUrl={(id) => `/members/details?id=${id}`}
           editUrl={(id) => `/members/edit?id=${id}`}
-          createModalProps={{
-            updater: useMembersCreate,
-            formPath: '/members/create',
-          }}
+
         />
         </UiProvider>
       </AuthContainer>

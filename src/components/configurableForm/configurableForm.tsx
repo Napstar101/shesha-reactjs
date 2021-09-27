@@ -7,9 +7,7 @@ import EditViewMsg from '../appConfigurator/editViewMsg';
 import { useShaRouting } from '../../providers/shaRouting';
 
 export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
-  console.log('ConfigurableForm props: ', props);
-  
-  const { id, markup, mode, path, actions, context, formRef, ...restProps } = props;
+  const { id, markup, mode, path, actions, sections, context, formRef, ...restProps } = props;
 
   const handleEditMode = Boolean(id) || Boolean(path);
   const { router } = useShaRouting();
@@ -34,10 +32,11 @@ export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
             path={path}
             form={restProps.form}
             actions={actions}
+            sections={sections}
             context={context}
             formRef={formRef}
           >
-            <ConfigurableFormRenderer {...restProps}></ConfigurableFormRenderer>
+            <ConfigurableFormRenderer {...restProps} />
           </FormProvider>
         </div>
       )}

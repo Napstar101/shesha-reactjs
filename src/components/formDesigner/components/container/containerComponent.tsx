@@ -44,7 +44,7 @@ const ContainerComponent: IToolboxComponent<IContainerComponentProps> = {
         containerId={model.id}
         direction={customProps.direction}
         justifyContent={customProps.direction === 'horizontal' ? customProps?.justifyContent : null}
-      ></ComponentsContainer>
+      />
     );
   },
   settingsFormMarkup: settingsForm,

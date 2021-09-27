@@ -1,3 +1,4 @@
+export { default as Autocomplete } from './autocomplete';
 export { default as AppEditModeToggler } from './appConfigurator/editModeToggler';
 export { default as BasicDisplayFormItem } from './basicDisplayFormItem';
 export { default as ConfigurableLogo } from './configurableLogo';
@@ -6,7 +7,6 @@ export { default as GenericEditModal } from './crudViews/editModal';
 export { default as GenericDetailsPage } from './crudViews/detailsPage';
 export { default as GenericDualEditDetailsPage } from './crudViews/dualEditDetailsPage';
 export { default as SimpleIndexPage } from './crudViews/simpleIndexPage';
-
 export { default as GenericEditPage } from './crudViews/editPage';
 export { default as GenericIndexPage } from './crudViews/indexPage';
 export { default as GenericCreatePage } from './crudViews/createPage';
@@ -19,7 +19,6 @@ export { binaryToList } from './multiReadCheckBoxrefList';
 export { default as SimpleLayoutHeading } from './simpleLayoutHeading';
 export { default as PageBtnContainer } from './pageBtnContainer';
 export { default as ReactTable } from './reactTable';
-
 export { default as ConfigurableFormComponent } from './formDesigner/configurableFormComponent';
 export { default as ConfigurableForm } from './configurableForm/configurableForm';
 export { default as FormDesigner } from './formDesigner/formDesigner';

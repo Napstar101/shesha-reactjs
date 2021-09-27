@@ -4,10 +4,10 @@ import React, { MutableRefObject } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { useForm } from '../../../../providers';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { IHierarchicalCheckListProps } from '../../../hierarchicalCheckList';
 import { CheckListSelectionType, ISaveSelectionsInput } from '../../../hierarchicalCheckList/interface';
-import FormItem from '../formItem';
+import FormItem, { IShaFormItemProps } from '../formItem';
 import HierarchicalCheckListWrapper from './hierarchicalChecklistWrapper';
 import settingsFormJson from './settingsForm.json';
 
@@ -35,9 +35,10 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
     const customProps = model as IHierarchicalChecklistProps;
 
     const { formData } = useForm();
-    const ownerType = formData?.ownerType || customProps?.ownerType;
-    const checklistId = formData?.checklistId || customProps?.checklistId;
-    const ownerId = formData?.ownerId || customProps?.ownerId;
+
+    const ownerType = evaluateValue(formData?.ownerType || customProps?.ownerType, { data: formData });
+    const ownerId = evaluateValue(formData?.ownerId || customProps?.ownerId, { data: formData });
+    const checklistId = evaluateValue(formData?.checklistId || customProps?.checklistId, { data: formData });
 
     const renderChecklist = () => {
       if (!isUuid(checklistId)) {
@@ -53,7 +54,7 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
           id={checklistId}
           ownerType={ownerType}
           ownerId={ownerId}
-          readOnly={customProps?.readOnly}
+          readOnly={customProps?.disabled}
           dropdown={customProps?.dropdown}
           saveLocally={customProps?.saveLocally}
           hint={customProps?.customHint}
@@ -65,8 +66,10 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
+    const wrapperColProps: Omit<IShaFormItemProps, 'model'> = customProps?.dropdown ? {} : { wrapperCol: { span: 24 } };
+
     return (
-      <FormItem model={customProps?.dropdown ? model : { ...model, hideLabel: true }}>{renderChecklist()}</FormItem>
+      <FormItem {...wrapperColProps } model={customProps?.dropdown ? model : { ...model, hideLabel: true }}>{renderChecklist()}</FormItem>
     );
   },
   settingsFormMarkup: settingsForm,
@@ -77,7 +80,7 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
     const customModel: IHierarchicalChecklistProps = {
       ...checklistModel,
       ownerId: '{data.ownerId}',
-      checklistId: '{data.checklistId}',
+      checklistId: '{data.checklist.id}',
       ownerType: '',
     };
     return customModel;

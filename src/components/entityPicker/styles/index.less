@@ -16,12 +16,29 @@
   }
 }
 
-.entity-picker-modal-pager-container {
-  display: flex;
-  justify-content: flex-end;
-  margin: @padding-lg 0;
+.entity-picker-modal {
+  .sha-global-table-filter {
+    margin: unset !important;
+    width: 100%;
+    padding: unset;
+  }
 
-  .ant-pagination-options-size-changer {
-    margin-right: 0 !important;
+  .sha-react-table {
+    margin: unset;
+  }
+
+  .entity-picker-modal-pager-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: @padding-lg 0;
+
+    .ant-pagination-options-size-changer {
+      margin-right: 0 !important;
+    }
+  }
+
+  .ant-modal-footer {
+    padding: 24px;
+    padding-top: 12px;
   }
 }

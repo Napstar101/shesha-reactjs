@@ -37,6 +37,8 @@ import IconPicker from '../../../components/formDesigner/components/iconPicker';
 
 import { IToolboxComponentGroup } from '../../../interfaces/formDesigner';
 import DisplayFormItem from '../../../components/formDesigner/components/basicDisplayFormItem';
+import EntityPickerComponent from '../../../components/formDesigner/components/entityPicker';
+import Section from '../../../components/formDesigner/components/section';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -57,7 +59,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   },
   {
     name: 'Static',
-    components: [Alert, ValidationErrors, DisplayFormItem],
+    components: [Alert, ValidationErrors, DisplayFormItem, Section],
   },
   {
     name: 'Layout',
@@ -75,6 +77,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       Notes,
       IconPicker,
       QueryBuilderComponent,
+      EntityPickerComponent,
     ],
   },
   {

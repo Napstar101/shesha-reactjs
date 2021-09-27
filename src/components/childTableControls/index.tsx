@@ -84,22 +84,29 @@ export const ChildTableControls: FC<IChildTableControlsProps> = ({
 
         {toolbarItems
           ?.filter(({ hide }) => !hide)
-          ?.map(({ className, title, icon, onClick, disabled }) => (
-            <Button
-              type="link"
-              key={uuid()}
-              disabled={disabled}
-              onClick={event => {
-                event?.stopPropagation();
-                onClick(event);
-              }}
-              className={'extra-btn' + className && ` ${className}`}
-              icon={icon}
-              size="small"
-            >
-              {title}
-            </Button>
-          ))}
+          ?.map(({ className, title, icon, onClick, disabled, render }) => {
+
+            if (render && typeof render === 'function') {
+              return render();
+            }
+            
+            return (
+              <Button
+                type="link"
+                key={uuid()}
+                disabled={disabled}
+                onClick={event => {
+                  event?.stopPropagation();
+                  onClick(event);
+                }}
+                className={'extra-btn' + className && ` ${className}`}
+                icon={icon}
+                size="small"
+              >
+                {title}
+              </Button>
+            )
+          })}
 
         <Button
           type="link"

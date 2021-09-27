@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { MainLayout } from '../';
+import { MainLayout, ShaSpin } from '../';
 import IndexTableFull, { IIndexTableFullProps } from '../indexTableFull';
 import DataTableProvider from '../../providers/dataTable';
 
-export interface IIndexPageProps extends IIndexTableFullProps {
+export interface IIndexPageProps extends Omit<IIndexTableFullProps, 'id'> {
   /**
    * Page title
    */
@@ -13,17 +13,21 @@ export interface IIndexPageProps extends IIndexTableFullProps {
    * The id for the table
    */
   tableConfigId: string;
+
+  loading?: boolean;
 }
 
-const TableWithControls: FC<IIndexPageProps> = props => {
-
+const TableWithControls: FC<IIndexPageProps> = ({ loading = false, ...props}) => {
   return (
-    <MainLayout title={props.title} showHeading={false} noPadding>
-      <IndexTableFull
-        id={props.tableConfigId}
-        header={props.title}
-        {...props}
+    <MainLayout title={props.title} showHeading={false} noPadding >
+      <ShaSpin spinning={loading}>
+        <IndexTableFull
+          id={props.tableConfigId}
+          header={props.title}
+          {...props}
+          
       />
+      </ShaSpin>
     </MainLayout>
   );
 };

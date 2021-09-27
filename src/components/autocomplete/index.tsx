@@ -1,21 +1,34 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { Select } from 'antd';
-import { AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
+import { AjaxResponseBase, AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
 import { useGet } from 'restful-react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { useDebouncedCallback } from 'use-debounce';
 import qs from 'qs';
+import { IGuidNullableEntityWithDisplayNameDto } from '../..';
+import _ from 'lodash';
 
-export type AutocompleteDatasourceType = 'entitiesList' | 'url';
+export type AutocompleteDataSourceType = 'entitiesList' | 'url';
+
+interface IDropdownOptionData {
+  key?: string;
+  value?: string;
+  children?: any;
+}
 
 export interface IAutocompleteProps {
   /**
    * The value of the autocomplete
+   *
+   * If the value is of this form, then we do not need to fetch items from the server
    */
-  value?: string;
+  value?: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]; // string | string[]
+
+  defaultValue?: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]; // string | string[]
 
   /**
    * The text to display on the autocomplete
+   * @deprecated - the property is no longer needed since the type of the value has changed
    */
   displayText?: string;
 
@@ -57,7 +70,7 @@ export interface IAutocompleteProps {
   /**
    * Data source of this Autocomplete
    */
-  dataSourceType: AutocompleteDatasourceType;
+  dataSourceType: AutocompleteDataSourceType;
 
   /**
    * Styles to apply to the select component that gets rendered by this control
@@ -68,6 +81,13 @@ export interface IAutocompleteProps {
    * The size of the control
    */
   size?: SizeType;
+
+  /**
+   * The size of the control
+   */
+  mode?: 'multiple' | 'tags';
+
+  allowClear?: boolean;
 }
 
 export interface UrlFetcherQueryParams {
@@ -92,35 +112,63 @@ const getQueryString = (url: string) => {
 /**
  * A component for working with dynamic autocomplete
  */
-export const Autocomplete: FC<IAutocompleteProps> = props => {
+ export const Autocomplete: FC<IAutocompleteProps> = ({
+  value,
+  placeHolder,
+  typeShortAlias,
+  allowInherited,
+  onChange,
+  disabled,
+  bordered,
+  dataSourceUrl,
+  dataSourceType,
+  style,
+  size,
+  mode,
+}) => {
   const entityFetcher = useAutocompleteList({ lazy: true });
-  const urlFetcher = useGet<any, any, UrlFetcherQueryParams>(trimQueryString(props.dataSourceUrl) || '', {
-    lazy: true,
-  });
 
-  const itemsFetcher =
-    props.dataSourceType === 'entitiesList' ? entityFetcher : props.dataSourceType === 'url' ? urlFetcher : null;
+  const urlFetcher = useGet<any, AjaxResponseBase, UrlFetcherQueryParams, void>(
+    decodeURI(trimQueryString(dataSourceUrl)) || '',
+    {
+      lazy: true,
+    }
+  );
+
+  const itemsFetcher = dataSourceType === 'entitiesList' ? entityFetcher : dataSourceType === 'url' ? urlFetcher : null;
 
   const [autocompleteText, setAutocompleteText] = useState(null);
 
-  const dofetchItems = (term: string) => {
+  const getValue = () => {
+    if (Array.isArray(value)) {
+      return (value as IGuidNullableEntityWithDisplayNameDto[])?.map(({ id }) => {
+        return id;
+      });
+    } else if (typeof value === 'object') {
+      return value?.id;
+    }
+
+    return null;
+  };
+
+  const doFetchItems = (term: string) => {
     // if value is specified but displayText is not specified - fetch text from the server
-    if (props.dataSourceType === 'entitiesList') {
+    if (dataSourceType === 'entitiesList') {
       entityFetcher.refetch({
         queryParams: {
           term: term,
-          typeShortAlias: props.typeShortAlias,
-          allowInherited: props.allowInherited,
-          selectedValue: props.value,
+          typeShortAlias: typeShortAlias,
+          allowInherited: allowInherited,
+          // selectedValue: value, // This worked if value was a string, but now it's either an object or a list of object
         },
       });
     }
 
-    if (props.dataSourceType === 'url' && props.dataSourceUrl) {
+    if (dataSourceType === 'url' && dataSourceUrl) {
       const queryParams = {
-        ...getQueryString(props.dataSourceUrl),
+        ...getQueryString(dataSourceUrl),
         term: term,
-        selectedValue: props.value,
+        // selectedValue: value,
       };
       urlFetcher.refetch({
         queryParams: queryParams,
@@ -129,49 +177,86 @@ export const Autocomplete: FC<IAutocompleteProps> = props => {
   };
 
   useEffect(() => {
-    dofetchItems(null);
-  }, [props.dataSourceType]);
+    doFetchItems(null);
+  }, [dataSourceType]);
 
   const getFetchedItems = (): AutocompleteItemDto[] => {
-    switch (props.dataSourceType) {
+    switch (dataSourceType) {
       case 'entitiesList':
         return entityFetcher.data?.result;
 
       case 'url':
         return urlFetcher.data?.result;
       default:
-        return null;
+        return [];
     }
   };
 
-  const debouncedfetchItems = useDebouncedCallback<(value: string) => void>(
-    value => {
-      dofetchItems(value);
+  const debouncedFetchItems = useDebouncedCallback<(value: string) => void>(
+    (value) => {
+      doFetchItems(value);
     },
     // delay in ms
     200
   );
 
-  const data = getFetchedItems() || [];
-  const options =
-    Boolean(autocompleteText) || Boolean(data)
-      ? data?.map(d => (
-          <Select.Option value={d.value} key={d.value}>
-            {d.displayText}
-          </Select.Option>
-        ))
-      : props.value
-      ? [
-          <Select.Option value={props.value} key={props.value}>
-            {props.displayText}
-          </Select.Option>,
-        ]
-      : [];
+  const options: AutocompleteItemDto[] = useMemo(() => {
+    const fetchedData = getFetchedItems();
+
+    const values: AutocompleteItemDto[] = Array.isArray(value)
+      ? value
+      : [
+          {
+            value: value?.id,
+            displayText: value?.displayText,
+          },
+        ];
+
+    if (fetchedData?.length) {
+      // Make sure you merge with the passed values in case the selected values are not part of the returned items from search
+      return _.uniqBy([...fetchedData, ...values], 'value');
+    } else {
+      // If you have
+      //    a value
+      // but do not have
+      //    term
+      //    options
+      // then your options are your values depending on the size of your values
+      if (value) {
+        if (Array.isArray(value)) {
+          return value?.map(({ id: value, displayText }) => ({ value, displayText }));
+        } else if (typeof value === 'object') {
+          return values;
+        }
+      }
+
+      return [];
+    }
+  }, [value, autocompleteText, entityFetcher || urlFetcher]);
+
+  // console.log('options: ', options);
 
   const handleSearch = (value: any) => {
     setAutocompleteText(value);
     if (value) {
-      debouncedfetchItems(value);
+      debouncedFetchItems(value);
+    }
+  };
+
+  const handleChange = (value: string, option: any) => {
+    if (mode === 'multiple' || (mode === 'tags' && Array.isArray(option))) {
+      if (Array.isArray(value)) {
+        const values: IGuidNullableEntityWithDisplayNameDto[] = (option as IDropdownOptionData[])?.map(
+          ({ key, children }) => ({ id: key, displayText: children })
+        );
+        onChange(values, values);
+      } else {
+        const val = { id: value, displayText: option?.children };
+        onChange([val], [val]);
+      }
+    } else {
+      const val = { id: value, displayText: option?.children };
+      onChange(val, val);
     }
   };
 
@@ -182,19 +267,25 @@ export const Autocomplete: FC<IAutocompleteProps> = props => {
       showArrow={false}
       filterOption={false}
       onSearch={handleSearch}
-      defaultValue={props.value}
+      defaultValue={getValue() as any} // Type 'string | string[]' is not assignable to type 'string'. Type 'string[]' is not assignable to type 'string'.
       notFoundContent={null}
-      onChange={props.onChange}
+      onChange={handleChange}
       allowClear={true}
       loading={itemsFetcher?.loading}
-      placeholder={props.placeHolder}
-      value={props.value}
-      disabled={props.disabled}
-      bordered={props.bordered}
-      style={props.style}
-      size={props.size}
+      placeholder={placeHolder}
+      value={getValue() as any}
+      // value={value}
+      disabled={disabled}
+      bordered={bordered}
+      style={style}
+      size={size}
+      mode={value ? mode : undefined} // When mode is multiple and value is null, the control shows an empty tag
     >
-      {options}
+      {options?.map(({ value, displayText }) => (
+        <Select.Option value={value} key={value}>
+          {displayText}
+        </Select.Option>
+      ))}
     </Select>
   );
 };

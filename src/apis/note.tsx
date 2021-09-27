@@ -5,46 +5,19 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-/**
- * Generic entity Dto with display text
- */
 export interface GuidEntityWithDisplayNameDto {
   id?: string;
-  /**
-   * Entity display name
-   */
   displayText?: string | null;
 }
 
 export interface NoteDto {
   id?: string;
-  /**
-   * Id of the owner entity
-   */
   ownerId: string;
-  /**
-   * Type short alias of the owner entity
-   */
   ownerType: string;
-  /**
-   * Creation time
-   */
   creationTime?: string | null;
-  /**
-   * Category of the note. Is used to split notes into groups
-   */
   category?: number | null;
-  /**
-   * Note importance (priority)
-   */
   priority?: number | null;
-  /**
-   * Id of the parent note
-   */
   parentId?: string | null;
-  /**
-   * Text
-   */
   noteText: string;
   author?: GuidEntityWithDisplayNameDto;
 }
@@ -80,29 +53,11 @@ export interface AjaxResponseBase {
 
 export interface CreateNoteDto {
   id?: string;
-  /**
-   * Id of the owner entity
-   */
   ownerId: string;
-  /**
-   * Type short alias of the owner entity
-   */
   ownerType: string;
-  /**
-   * Category of the note. Is used to split notes into groups
-   */
   category?: number | null;
-  /**
-   * Note importance (priority)
-   */
   priority?: number | null;
-  /**
-   * Id of the parent note
-   */
   parentId?: string | null;
-  /**
-   * Text
-   */
   noteText: string;
 }
 
@@ -131,40 +86,16 @@ export interface NoteDtoPagedResultDtoAjaxResponse {
 
 export interface UpdateNoteDto {
   id?: string;
-  /**
-   * Category of the note. Is used to split notes into groups
-   */
   category?: number | null;
-  /**
-   * Note importance (priority)
-   */
   priority?: number | null;
-  /**
-   * Id of the parent note
-   */
   parentId?: string | null;
-  /**
-   * Text
-   */
   noteText: string;
 }
 
 export interface NoteGetListQueryParams {
-  /**
-   * Id of the owner entity
-   */
   ownerId: string;
-  /**
-   * Type short alias of the owner entity
-   */
   ownerType: string;
-  /**
-   * Category of the note. Is used to split notes into groups
-   */
   category?: number | null;
-  /**
-   * Set to true to get notes of all categories
-   */
   allCategories?: boolean;
   /**
    * The requested API version
@@ -173,21 +104,24 @@ export interface NoteGetListQueryParams {
 }
 
 export type NoteGetListProps = Omit<
-  GetProps<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams>,
+  GetProps<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>,
   'path'
 >;
 
 export const NoteGetList = (props: NoteGetListProps) => (
-  <Get<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams>
+  <Get<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>
     path={`/api/services/app/Note/GetList`}
     {...props}
   />
 );
 
-export type UseNoteGetListProps = Omit<UseGetProps<NoteDtoListAjaxResponse, NoteGetListQueryParams>, 'path'>;
+export type UseNoteGetListProps = Omit<UseGetProps<NoteDtoListAjaxResponse, NoteGetListQueryParams, void>, 'path'>;
 
 export const useNoteGetList = (props: UseNoteGetListProps) =>
-  useGet<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams>(`/api/services/app/Note/GetList`, props);
+  useGet<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>(
+    `/api/services/app/Note/GetList`,
+    props
+  );
 
 export interface NoteCreateQueryParams {
   /**
@@ -197,12 +131,12 @@ export interface NoteCreateQueryParams {
 }
 
 export type NoteCreateProps = Omit<
-  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto>,
+  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const NoteCreate = (props: NoteCreateProps) => (
-  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto>
+  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>
     verb="POST"
     path={`/api/services/app/Note/Create`}
     {...props}
@@ -210,12 +144,12 @@ export const NoteCreate = (props: NoteCreateProps) => (
 );
 
 export type UseNoteCreateProps = Omit<
-  UseMutateProps<NoteDtoAjaxResponse, NoteCreateQueryParams, CreateNoteDto>,
+  UseMutateProps<NoteDtoAjaxResponse, NoteCreateQueryParams, CreateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const useNoteCreate = (props: UseNoteCreateProps) =>
-  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto>(
+  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>(
     'POST',
     `/api/services/app/Note/Create`,
     props
@@ -229,16 +163,19 @@ export interface NoteGetQueryParams {
   'api-version'?: string;
 }
 
-export type NoteGetProps = Omit<GetProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams>, 'path'>;
+export type NoteGetProps = Omit<GetProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>, 'path'>;
 
 export const NoteGet = (props: NoteGetProps) => (
-  <Get<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams> path={`/api/services/app/Note/Get`} {...props} />
+  <Get<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>
+    path={`/api/services/app/Note/Get`}
+    {...props}
+  />
 );
 
-export type UseNoteGetProps = Omit<UseGetProps<NoteDtoAjaxResponse, NoteGetQueryParams>, 'path'>;
+export type UseNoteGetProps = Omit<UseGetProps<NoteDtoAjaxResponse, NoteGetQueryParams, void>, 'path'>;
 
 export const useNoteGet = (props: UseNoteGetProps) =>
-  useGet<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams>(`/api/services/app/Note/Get`, props);
+  useGet<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>(`/api/services/app/Note/Get`, props);
 
 export interface NoteGetAllQueryParams {
   keyword?: string | null;
@@ -251,21 +188,24 @@ export interface NoteGetAllQueryParams {
 }
 
 export type NoteGetAllProps = Omit<
-  GetProps<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams>,
+  GetProps<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>,
   'path'
 >;
 
 export const NoteGetAll = (props: NoteGetAllProps) => (
-  <Get<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams>
+  <Get<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>
     path={`/api/services/app/Note/GetAll`}
     {...props}
   />
 );
 
-export type UseNoteGetAllProps = Omit<UseGetProps<NoteDtoPagedResultDtoAjaxResponse, NoteGetAllQueryParams>, 'path'>;
+export type UseNoteGetAllProps = Omit<
+  UseGetProps<NoteDtoPagedResultDtoAjaxResponse, NoteGetAllQueryParams, void>,
+  'path'
+>;
 
 export const useNoteGetAll = (props: UseNoteGetAllProps) =>
-  useGet<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams>(
+  useGet<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>(
     `/api/services/app/Note/GetAll`,
     props
   );
@@ -278,12 +218,12 @@ export interface NoteUpdateQueryParams {
 }
 
 export type NoteUpdateProps = Omit<
-  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto>,
+  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const NoteUpdate = (props: NoteUpdateProps) => (
-  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto>
+  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>
     verb="PUT"
     path={`/api/services/app/Note/Update`}
     {...props}
@@ -291,12 +231,12 @@ export const NoteUpdate = (props: NoteUpdateProps) => (
 );
 
 export type UseNoteUpdateProps = Omit<
-  UseMutateProps<NoteDtoAjaxResponse, NoteUpdateQueryParams, UpdateNoteDto>,
+  UseMutateProps<NoteDtoAjaxResponse, NoteUpdateQueryParams, UpdateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const useNoteUpdate = (props: UseNoteUpdateProps) =>
-  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto>(
+  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>(
     'PUT',
     `/api/services/app/Note/Update`,
     props
@@ -310,13 +250,17 @@ export interface NoteDeleteQueryParams {
   'api-version'?: string;
 }
 
-export type NoteDeleteProps = Omit<MutateProps<void, unknown, NoteDeleteQueryParams, void>, 'path' | 'verb'>;
+export type NoteDeleteProps = Omit<MutateProps<void, unknown, NoteDeleteQueryParams, void, void>, 'path' | 'verb'>;
 
 export const NoteDelete = (props: NoteDeleteProps) => (
-  <Mutate<void, unknown, NoteDeleteQueryParams, void> verb="DELETE" path={`/api/services/app/Note/Delete`} {...props} />
+  <Mutate<void, unknown, NoteDeleteQueryParams, void, void>
+    verb="DELETE"
+    path={`/api/services/app/Note/Delete`}
+    {...props}
+  />
 );
 
-export type UseNoteDeleteProps = Omit<UseMutateProps<void, NoteDeleteQueryParams, void>, 'path' | 'verb'>;
+export type UseNoteDeleteProps = Omit<UseMutateProps<void, NoteDeleteQueryParams, void, void>, 'path' | 'verb'>;
 
 export const useNoteDelete = (props: UseNoteDeleteProps) =>
-  useMutate<void, unknown, NoteDeleteQueryParams, void>('DELETE', `/api/services/app/Note/Delete`, props);
+  useMutate<void, unknown, NoteDeleteQueryParams, void, void>('DELETE', `/api/services/app/Note/Delete`, props);

@@ -30,7 +30,8 @@ const Template: Story<IFormDesignerStoryProps> = args => (
 export const TableContextProps = Template.bind({});
 
 TableContextProps.args = {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs-columns-editor\\src\\components\\formDesigner\\components\\dataTable\\tableContext\\settingsForm.json'
+  formPath: '/settings/forms/playground'
+  // formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs-columns-editor\\src\\components\\formDesigner\\components\\dataTable\\tableContext\\settingsForm.json'
 };
 
 export const IndexPage = Template.bind({});

@@ -4,7 +4,7 @@ import { Form, Spin } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import { useUi } from '../../providers';
-import { FormMarkup, IFormActions } from '../../providers/form/models';
+import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
 import { IToolbarItem } from '../../interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
@@ -30,6 +30,11 @@ export interface IEditPageProps {
    * Form actions. Page-specific actions which can be executed from the configurable form
    */
   formActions?: IFormActions;
+
+  /**
+   * Form sections. Form-specific sections which can be rendered within the configurable form
+   */
+  formSections?: IFormSections;
 
   /**
    * ref object
@@ -134,6 +139,7 @@ const EditPage = forwardRef<CommonCrudHandles, IEditPageProps>((props, forwarded
             path={props?.formPath || router.pathname}
             initialValues={model}
             actions={props.formActions}
+            sections={props.formSections}
           />
         )}
       </MainLayout>

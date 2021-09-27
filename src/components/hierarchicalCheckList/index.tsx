@@ -193,6 +193,8 @@ const Checklist: ForwardRefRenderFunction<HierarchicalCheckListHandle, IHierarch
 
   const treeRef = useRef(null);
 
+  // TODO: Consolidate the states to avoid many rerenders when you have to set multiple values, one after the other
+
   // This property is set when a selection is being made
   const [disableTree, setDisableTree] = useState(false);
   const [isDropdownTreeOverlayVisible, setIsDropdownTreeOverlayVisible] = useState(false);
@@ -217,7 +219,7 @@ const Checklist: ForwardRefRenderFunction<HierarchicalCheckListHandle, IHierarch
   // Memoize the selections selectedKeys
   const selectedKeys = useMemo(() => {
     if (onSelectionsChange) {
-      onSelectionsChange(filterOnSelectionsChange(selections, { id, ownerId, ownerType }));
+      onSelectionsChange(filterOnSelectionsChange(selections, { id, ownerId, ownerType, }));
     }
 
     return selections

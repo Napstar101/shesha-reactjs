@@ -4,6 +4,7 @@ import { ValidationErrors, ConfigurableForm } from '../';
 import { FormInstance } from 'antd/lib/form';
 import { useUi } from '../../providers';
 import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
+import { IFormActions, IFormSections } from '../../providers/form/models';
 
 interface IModalProps {
   id: string;
@@ -15,6 +16,10 @@ interface IModalProps {
   onCancel: (form: FormInstance) => void;
   onSuccess: (form: FormInstance) => void;
   prepareValues?: (values: any) => any;
+  onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
+  beforeSubmit?: (form: any) => boolean;
+  actions?: IFormActions;
+  sections?: IFormSections;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -27,14 +32,19 @@ const ModalForm: FC<IModalProps> = ({
   title,
   formPath,
   prepareValues,
+  onFieldsChange,
+  beforeSubmit,
+  actions,
+  sections
 }) => {
   const { loading: loadingInProgress, refetch: doFetch, error: fetchError, data: fetchedData } = fetcher({
     lazy: true,
   });
 
   const fetchData = async () => {
-    await doFetch({ queryParams: { id: id } });
+    await doFetch({ queryParams: { id } });
   };
+
   // fetch data on page load
   useEffect(() => {
     fetchData();
@@ -45,7 +55,12 @@ const ModalForm: FC<IModalProps> = ({
   const [form] = Form.useForm();
 
   const handleSubmit = values => {
-    const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
+    // We must always use updated values, in case the user had prepared values by then also update the values in the form
+    const preparedValues = typeof prepareValues === 'function' ? {...prepareValues(values), ...values } : values;
+
+    if (beforeSubmit && !beforeSubmit(preparedValues)) {
+      return;
+    }
 
     save(preparedValues).then(() => {
       onSuccess(form);
@@ -80,6 +95,9 @@ const ModalForm: FC<IModalProps> = ({
             onFinish={handleSubmit}
             path={formPath}
             initialValues={model}
+            onFieldsChange={onFieldsChange}
+            actions={actions}
+            sections={sections}
           />
         )}
       </Spin>

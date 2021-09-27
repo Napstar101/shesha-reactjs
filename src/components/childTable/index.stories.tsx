@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ChildDataTable, { IChildTableProps } from './';
 import DataTableProvider from '../../providers/dataTable';
 import { SearchOutlined } from '@ant-design/icons';
 import JobTitleFieldEditor from './jobTitleFieldEditor';
-import { ChildTable } from '../..';
+import { ChildTable, EntityPicker, IDataTableInstance, ShaApplicationProvider } from '../..';
 import AuthContainer from '../authedContainer';
 
 export default {
@@ -48,14 +48,35 @@ const inlineEditingWithCustomEditorsTableProps: IExtendedChildTableProps = {
   ],
 };
 
+const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
+
 // Create a master template for mapping args to render the Button component
-const Template: Story<IExtendedChildTableProps> = args => (
-  <AuthContainer>
-    <DataTableProvider tableId={args?.id} parentEntityId={args?.parentEntityId}>
-      <ChildTable {...args} />
-    </DataTableProvider>
-  </AuthContainer>
-);
+const Template: Story<IExtendedChildTableProps> = args => {
+  const tableRef = useRef<IDataTableInstance>(null);
+
+  useEffect(() => {
+    console.log('ChildDataTable Template tableRef?.current: ', tableRef?.current);
+  }, [tableRef]);
+
+  return (
+    <ShaApplicationProvider backendUrl={backendUrl}>
+      <AuthContainer>
+        <DataTableProvider tableId={args?.id} parentEntityId={args?.parentEntityId} >
+          <ChildTable {...args} tableRef={tableRef} toolbarItems={[
+            // {
+            //   title: 'Add something',
+            //   render: () => <Button size="small">Do Something</Button>
+            // },
+            {
+              title: 'Picker',
+              render: () => <EntityPicker tableId="Students_Picker_Index" useButtonPicker pickerButtonProps={{size: 'small'}} />
+            }
+          ]} />
+        </DataTableProvider>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  );
+}
 
 export const SimpleChildTable = Template.bind({});
 SimpleChildTable.args = { label: 'Simple', ...simpleTableProps };

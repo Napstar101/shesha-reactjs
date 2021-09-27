@@ -17,7 +17,7 @@ import {
   IFormSettings,
   DEFAULT_FORM_SETTINGS,
 } from './contexts';
-import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings } from './models';
+import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   componentAddAction,
@@ -53,6 +53,7 @@ import {
   getVisibleComponentIds,
   toolbarGroupsToComponents,
   getComponentsAndSettings,
+  convertSectionsToList,
 } from './utils';
 import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
@@ -67,6 +68,7 @@ export interface IFormProviderProps {
   mode: FormMode;
   form?: FormInstance<any>;
   actions?: IFormActions;
+  sections?: IFormSections;
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
   toolboxComponentGroups?: IToolboxComponentGroup[];
@@ -80,6 +82,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   mode,
   form,
   actions,
+  sections,
   context,
   formRef,
   toolboxComponentGroups,
@@ -101,6 +104,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     components: formComponents || [],
     form: form,
     actions: convertActions(null, actions),
+    sections: convertSectionsToList(null, sections),
     context: context,
     toolboxComponentGroups: actualComponentGroups,
     ...flatComponents,
@@ -138,6 +142,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     components: [],
     formSettings: DEFAULT_FORM_SETTINGS,
   };
+
   const parseForm = (formJson: string): FormMarkupWithSettings => {
     try {
       const parsed = formJson ? JSON.parse(formJson) : null;
@@ -308,6 +313,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   const startDragging = () => {
     dispatch(startDraggingAction());
   };
+
   const endDragging = () => {
     dispatch(endDraggingAction());
   };
@@ -382,6 +388,22 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     return null;
   };
 
+  const getSection = (id: string, name: string) => {
+    // search requested section in all parents and fallback to form
+    let currentId = id;
+
+    do {
+      let component = state.present.allComponents[currentId];
+
+      let action = state.present.sections.find(a => a.owner == component?.parentId && a.name == name);
+      if (action) return (data) => action.body(data);
+
+      currentId = component?.parentId;
+    } while (currentId);
+
+    return null;
+  };
+
   const updateFormSettings = (settings: IFormSettings) => {
     dispatch(updateFormSettingsAction(settings));
   };
@@ -408,6 +430,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     setSelectedComponent,
     registerActions,
     getAction,
+    getSection,
     updateFormSettings,
     getToolboxComponent,
     /* NEW_ACTION_GOES_HERE */

@@ -96,4 +96,8 @@ export interface ICheckListItemSelection extends CheckListItemSelectionDto {
   isNew?: boolean;
 }
 
-export interface ISaveSelectionsInput extends SaveSelectionInput {}
+export interface ISaveSelectionsInput extends SaveSelectionInput {
+  allChecked?: boolean;
+}
+
+export interface ISelectionsChangeValue extends ISaveSelectionsInput {}

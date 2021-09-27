@@ -27,6 +27,7 @@ export const ColumnsFilterSelectBase: FC<IColumnsFilterSelectBaseProps> = ({
     <div className="columns-filter-select">
       <span className="label">Filter by</span>
       <Select
+        allowClear
         size="small"
         mode="multiple"
         onChange={handleToggleColumnFilter}

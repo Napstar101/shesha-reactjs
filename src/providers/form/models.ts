@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { IAsyncValidationError } from '../../interfaces';
 import { IFormSettings } from './contexts';
 
@@ -29,7 +30,7 @@ export interface IComponentValidationRules {
 /**
  * Base model of the configurable component
  */
-export interface  IConfigurableFormComponent extends IFormComponentContainer {
+export interface IConfigurableFormComponent extends IFormComponentContainer {
   /** component name */
   name: string;
 
@@ -112,6 +113,8 @@ export interface IConfigurableFormBaseProps {
 
 export type FormAction = (values?: any, parameters?: any) => void;
 
+export type FormSection = (data?: any) => ReactNode;
+
 export interface IFormActionDesc {
   url: string;
   params: any;
@@ -119,6 +122,10 @@ export interface IFormActionDesc {
 
 export interface IFormActions {
   [key: string]: FormAction;
+}
+
+export interface IFormSections {
+  [key: string]: FormSection;
 }
 
 /** Form action available in the designer */
@@ -129,4 +136,14 @@ export interface IFormAction {
   name: string;
   /** Action body */
   body: (values?: any, parameters?: any) => void;
+}
+
+/** Form section available in the designer */
+export interface IFormSection {
+  /** Action owner (id of the owner component or null - form) */
+  owner?: string;
+  /** Action name */
+  name: string;
+  /** Action body */
+  body: (data?: any) => ReactNode;
 }

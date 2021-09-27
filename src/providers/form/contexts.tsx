@@ -9,6 +9,8 @@ import {
   IFormActions,
   IFormAction,
   FormAction,
+  FormSection,
+  IFormSection,
 } from './models';
 import { FormInstance } from 'antd';
 import { StateWithHistory } from 'redux-undo';
@@ -61,6 +63,7 @@ export interface IFormStateContext
   isDebug: boolean;
   form?: FormInstance<any>;
   actions: IFormAction[];
+  sections: IFormSection[];
   context?: any; // todo: make generic
   formSettings: IFormSettings;
 
@@ -154,6 +157,7 @@ export interface IFormActionsContext
   setSelectedComponent: (id: string, componentRef?: MutableRefObject<any>) => void;
   registerActions: (id: string, actions: IFormActions) => void;
   getAction: (id: string, name: string) => FormAction;
+  getSection: (id: string, name: string) => FormSection;
   updateFormSettings: (settings: IFormSettings) => void;
 
   getToolboxComponent: (type: string) => IToolboxComponentBase;
@@ -184,6 +188,7 @@ export const FORM_CONTEXT_INITIAL_STATE: IFormStateContext = {
   isDragging: false,
   isDebug: false,
   actions: [],
+  sections: [],
   context: null,
   formSettings: DEFAULT_FORM_SETTINGS,
   toolboxComponentGroups: defaultToolboxComponents,

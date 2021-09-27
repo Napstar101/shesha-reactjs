@@ -31,3 +31,7 @@ yarn-error.log*
 boilerplate
 preview-head.html
 src/components/crudViews/playgroud.stories.tsx
+src/apis/reportingReport.tsx
+src/apis/reportingReportParameter.tsx
+src/components/crudViews/editModal.stories.tsx
+*.playground.stories.tsx

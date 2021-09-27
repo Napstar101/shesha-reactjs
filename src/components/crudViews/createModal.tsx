@@ -5,6 +5,7 @@ import { FormInstance } from 'antd/lib/form';
 import { useUi } from '../../providers';
 import { IDataMutator } from './models';
 import { useState } from 'react';
+import { IFormActions, IFormSections } from '../../providers/form/models';
 
 interface IModalProps {
   /**
@@ -51,6 +52,14 @@ interface IModalProps {
    * Allows changing of caption of the Save/Submit in the modal
    */
   saveCaption?: string | ReactNode;
+
+  onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
+
+  beforeSubmit?: (form: any) => boolean;
+
+  actions?: IFormActions;
+
+  sections?: IFormSections;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -63,6 +72,10 @@ const ModalForm: FC<IModalProps> = ({
   prepareValues,
   keepModalOpenAfterSave,
   saveCaption = 'Save',
+  onFieldsChange,
+  beforeSubmit,
+  actions,
+  sections,
 }) => {
   const { mutate: save, error, loading } = updater({});
 
@@ -83,7 +96,12 @@ const ModalForm: FC<IModalProps> = ({
   };
 
   const onFinish = (values: any) => {
-    const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
+    // We must always use updated values, in case the user had prepared values by then also update the values in the form
+    const preparedValues = typeof prepareValues === 'function' ? {...prepareValues(values), ...values } : values;
+
+    if (beforeSubmit && !beforeSubmit(preparedValues)) {
+      return;
+    }
 
     save(preparedValues).then(() => {
       onSuccess(form, localKeepOpen);
@@ -119,7 +137,17 @@ const ModalForm: FC<IModalProps> = ({
     >
       <Spin spinning={loading} tip="Please wait...">
         <ValidationErrors error={error?.data}></ValidationErrors>
-        <ConfigurableForm mode="edit" {...formItemLayout} form={form} onFinish={onFinish} path={formPath} />
+        
+        <ConfigurableForm
+          mode="edit"
+          {...formItemLayout}
+          form={form}
+          onFinish={onFinish}
+          path={formPath}
+          onFieldsChange={onFieldsChange}
+          actions={actions}
+          sections={sections}
+        />
       </Spin>
     </Modal>
   );

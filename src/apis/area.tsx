@@ -7,9 +7,6 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export type RefListAreaType = number;
 
-/**
- * Generic DTO of the simple autocomplete item
- */
 export interface AutocompleteItemDto {
   value?: string | null;
   displayText?: string | null;
@@ -57,14 +54,8 @@ export interface AreaUpdateDto {
   areaType?: ReferenceListItemValueDto;
 }
 
-/**
- * Generic entity Dto with display text
- */
 export interface GuidNullableEntityWithDisplayNameDto {
   id?: string | null;
-  /**
-   * Entity display name
-   */
   displayText?: string | null;
 }
 
@@ -157,24 +148,24 @@ export interface AreaAutocompleteQueryParams {
 }
 
 export type AreaAutocompleteProps = Omit<
-  GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams>,
+  GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams, void>,
   'path'
 >;
 
 export const AreaAutocomplete = (props: AreaAutocompleteProps) => (
-  <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams>
+  <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams, void>
     path={`/api/services/app/Area/Autocomplete`}
     {...props}
   />
 );
 
 export type UseAreaAutocompleteProps = Omit<
-  UseGetProps<AutocompleteItemDtoListAjaxResponse, AreaAutocompleteQueryParams>,
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AreaAutocompleteQueryParams, void>,
   'path'
 >;
 
 export const useAreaAutocomplete = (props: UseAreaAutocompleteProps) =>
-  useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams>(
+  useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams, void>(
     `/api/services/app/Area/Autocomplete`,
     props
   );
@@ -189,24 +180,24 @@ export interface AreaCascadeSelectQueryParams {
 }
 
 export type AreaCascadeSelectProps = Omit<
-  GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams>,
+  GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams, void>,
   'path'
 >;
 
 export const AreaCascadeSelect = (props: AreaCascadeSelectProps) => (
-  <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams>
+  <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams, void>
     path={`/api/services/app/Area/CascadeSelect`}
     {...props}
   />
 );
 
 export type UseAreaCascadeSelectProps = Omit<
-  UseGetProps<AutocompleteItemDtoListAjaxResponse, AreaCascadeSelectQueryParams>,
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AreaCascadeSelectQueryParams, void>,
   'path'
 >;
 
 export const useAreaCascadeSelect = (props: UseAreaCascadeSelectProps) =>
-  useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams>(
+  useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams, void>(
     `/api/services/app/Area/CascadeSelect`,
     props
   );
@@ -219,12 +210,12 @@ export interface AreaUpdateQueryParams {
 }
 
 export type AreaUpdateProps = Omit<
-  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto>,
+  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>,
   'path' | 'verb'
 >;
 
 export const AreaUpdate = (props: AreaUpdateProps) => (
-  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto>
+  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>
     verb="PUT"
     path={`/api/services/app/Area/Update`}
     {...props}
@@ -232,12 +223,12 @@ export const AreaUpdate = (props: AreaUpdateProps) => (
 );
 
 export type UseAreaUpdateProps = Omit<
-  UseMutateProps<AreaDtoAjaxResponse, AreaUpdateQueryParams, AreaUpdateDto>,
+  UseMutateProps<AreaDtoAjaxResponse, AreaUpdateQueryParams, AreaUpdateDto, void>,
   'path' | 'verb'
 >;
 
 export const useAreaUpdate = (props: UseAreaUpdateProps) =>
-  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto>(
+  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>(
     'PUT',
     `/api/services/app/Area/Update`,
     props
@@ -251,16 +242,19 @@ export interface AreaGetQueryParams {
   'api-version'?: string;
 }
 
-export type AreaGetProps = Omit<GetProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams>, 'path'>;
+export type AreaGetProps = Omit<GetProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>, 'path'>;
 
 export const AreaGet = (props: AreaGetProps) => (
-  <Get<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams> path={`/api/services/app/Area/Get`} {...props} />
+  <Get<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>
+    path={`/api/services/app/Area/Get`}
+    {...props}
+  />
 );
 
-export type UseAreaGetProps = Omit<UseGetProps<AreaDtoAjaxResponse, AreaGetQueryParams>, 'path'>;
+export type UseAreaGetProps = Omit<UseGetProps<AreaDtoAjaxResponse, AreaGetQueryParams, void>, 'path'>;
 
 export const useAreaGet = (props: UseAreaGetProps) =>
-  useGet<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams>(`/api/services/app/Area/Get`, props);
+  useGet<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>(`/api/services/app/Area/Get`, props);
 
 export interface AreaGetChildTreeItemsQueryParams {
   /**
@@ -270,15 +264,18 @@ export interface AreaGetChildTreeItemsQueryParams {
 }
 
 export type AreaGetChildTreeItemsProps = Omit<
-  MutateProps<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, AreaGetChildTreeItemsQueryParams, GetChildAreasInput>,
+  MutateProps<
+    AreaTreeItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    AreaGetChildTreeItemsQueryParams,
+    GetChildAreasInput,
+    void
+  >,
   'path' | 'verb'
 >;
 
-/**
- * Returns child areas of the specified parent
- */
 export const AreaGetChildTreeItems = (props: AreaGetChildTreeItemsProps) => (
-  <Mutate<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, AreaGetChildTreeItemsQueryParams, GetChildAreasInput>
+  <Mutate<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, AreaGetChildTreeItemsQueryParams, GetChildAreasInput, void>
     verb="POST"
     path={`/api/services/app/Area/GetChildTreeItems`}
     {...props}
@@ -286,19 +283,18 @@ export const AreaGetChildTreeItems = (props: AreaGetChildTreeItemsProps) => (
 );
 
 export type UseAreaGetChildTreeItemsProps = Omit<
-  UseMutateProps<AreaTreeItemDtoListAjaxResponse, AreaGetChildTreeItemsQueryParams, GetChildAreasInput>,
+  UseMutateProps<AreaTreeItemDtoListAjaxResponse, AreaGetChildTreeItemsQueryParams, GetChildAreasInput, void>,
   'path' | 'verb'
 >;
 
-/**
- * Returns child areas of the specified parent
- */
 export const useAreaGetChildTreeItems = (props: UseAreaGetChildTreeItemsProps) =>
-  useMutate<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, AreaGetChildTreeItemsQueryParams, GetChildAreasInput>(
-    'POST',
-    `/api/services/app/Area/GetChildTreeItems`,
-    props
-  );
+  useMutate<
+    AreaTreeItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    AreaGetChildTreeItemsQueryParams,
+    GetChildAreasInput,
+    void
+  >('POST', `/api/services/app/Area/GetChildTreeItems`, props);
 
 export interface AreaGetTreeItemQueryParams {
   /**
@@ -308,15 +304,12 @@ export interface AreaGetTreeItemQueryParams {
 }
 
 export type AreaGetTreeItemProps = Omit<
-  MutateProps<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto>,
+  MutateProps<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>,
   'path' | 'verb'
 >;
 
-/**
- * Returns child areas of the specified parent
- */
 export const AreaGetTreeItem = (props: AreaGetTreeItemProps) => (
-  <Mutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto>
+  <Mutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>
     verb="POST"
     path={`/api/services/app/Area/GetTreeItem`}
     {...props}
@@ -324,15 +317,12 @@ export const AreaGetTreeItem = (props: AreaGetTreeItemProps) => (
 );
 
 export type UseAreaGetTreeItemProps = Omit<
-  UseMutateProps<AreaTreeItemDtoAjaxResponse, AreaGetTreeItemQueryParams, GuidEntityDto>,
+  UseMutateProps<AreaTreeItemDtoAjaxResponse, AreaGetTreeItemQueryParams, GuidEntityDto, void>,
   'path' | 'verb'
 >;
 
-/**
- * Returns child areas of the specified parent
- */
 export const useAreaGetTreeItem = (props: UseAreaGetTreeItemProps) =>
-  useMutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto>(
+  useMutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>(
     'POST',
     `/api/services/app/Area/GetTreeItem`,
     props
@@ -345,20 +335,26 @@ export interface AreaDeleteQueryParams {
   'api-version'?: string;
 }
 
-export type AreaDeleteProps = Omit<MutateProps<void, unknown, AreaDeleteQueryParams, GuidEntityDto>, 'path' | 'verb'>;
+export type AreaDeleteProps = Omit<
+  MutateProps<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>,
+  'path' | 'verb'
+>;
 
 export const AreaDelete = (props: AreaDeleteProps) => (
-  <Mutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto>
+  <Mutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>
     verb="POST"
     path={`/api/services/app/Area/Delete`}
     {...props}
   />
 );
 
-export type UseAreaDeleteProps = Omit<UseMutateProps<void, AreaDeleteQueryParams, GuidEntityDto>, 'path' | 'verb'>;
+export type UseAreaDeleteProps = Omit<
+  UseMutateProps<void, AreaDeleteQueryParams, GuidEntityDto, void>,
+  'path' | 'verb'
+>;
 
 export const useAreaDelete = (props: UseAreaDeleteProps) =>
-  useMutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto>('POST', `/api/services/app/Area/Delete`, props);
+  useMutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>('POST', `/api/services/app/Area/Delete`, props);
 
 export interface AreaMoveAreaQueryParams {
   /**
@@ -368,28 +364,29 @@ export interface AreaMoveAreaQueryParams {
 }
 
 export type AreaMoveAreaProps = Omit<
-  MutateProps<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput>,
+  MutateProps<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>,
   'path' | 'verb'
 >;
 
-/**
- * Moves Area to a new parent
- */
 export const AreaMoveArea = (props: AreaMoveAreaProps) => (
-  <Mutate<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput>
+  <Mutate<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>
     verb="POST"
     path={`/api/services/app/Area/MoveArea`}
     {...props}
   />
 );
 
-export type UseAreaMoveAreaProps = Omit<UseMutateProps<void, AreaMoveAreaQueryParams, MoveAreaInput>, 'path' | 'verb'>;
+export type UseAreaMoveAreaProps = Omit<
+  UseMutateProps<void, AreaMoveAreaQueryParams, MoveAreaInput, void>,
+  'path' | 'verb'
+>;
 
-/**
- * Moves Area to a new parent
- */
 export const useAreaMoveArea = (props: UseAreaMoveAreaProps) =>
-  useMutate<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput>('POST', `/api/services/app/Area/MoveArea`, props);
+  useMutate<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>(
+    'POST',
+    `/api/services/app/Area/MoveArea`,
+    props
+  );
 
 export interface AreaCreateQueryParams {
   /**
@@ -399,12 +396,12 @@ export interface AreaCreateQueryParams {
 }
 
 export type AreaCreateProps = Omit<
-  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto>,
+  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>,
   'path' | 'verb'
 >;
 
 export const AreaCreate = (props: AreaCreateProps) => (
-  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto>
+  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>
     verb="POST"
     path={`/api/services/app/Area/Create`}
     {...props}
@@ -412,12 +409,12 @@ export const AreaCreate = (props: AreaCreateProps) => (
 );
 
 export type UseAreaCreateProps = Omit<
-  UseMutateProps<AreaDtoAjaxResponse, AreaCreateQueryParams, AreaCreateDto>,
+  UseMutateProps<AreaDtoAjaxResponse, AreaCreateQueryParams, AreaCreateDto, void>,
   'path' | 'verb'
 >;
 
 export const useAreaCreate = (props: UseAreaCreateProps) =>
-  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto>(
+  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>(
     'POST',
     `/api/services/app/Area/Create`,
     props
@@ -434,21 +431,24 @@ export interface AreaGetAllQueryParams {
 }
 
 export type AreaGetAllProps = Omit<
-  GetProps<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams>,
+  GetProps<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>,
   'path'
 >;
 
 export const AreaGetAll = (props: AreaGetAllProps) => (
-  <Get<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams>
+  <Get<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>
     path={`/api/services/app/Area/GetAll`}
     {...props}
   />
 );
 
-export type UseAreaGetAllProps = Omit<UseGetProps<AreaDtoPagedResultDtoAjaxResponse, AreaGetAllQueryParams>, 'path'>;
+export type UseAreaGetAllProps = Omit<
+  UseGetProps<AreaDtoPagedResultDtoAjaxResponse, AreaGetAllQueryParams, void>,
+  'path'
+>;
 
 export const useAreaGetAll = (props: UseAreaGetAllProps) =>
-  useGet<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams>(
+  useGet<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>(
     `/api/services/app/Area/GetAll`,
     props
   );

@@ -1,18 +1,42 @@
 import React, { FC, useState } from 'react';
-import { Modal, Input, Button } from 'antd';
-import _ from 'lodash';
+import { Modal, Input, Button, ButtonProps } from 'antd';
 import IndexTable from '../indexTable';
 import { IAnyObject } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
 import GlobalTableFilter from '../globalTableFilter';
 import TablePager from '../tablePager';
+import _ from 'lodash';
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import { EllipsisOutlined } from '@ant-design/icons';
 
-interface IEntityPickerProps {
+export interface IEntityPickerProps {
   tableId?: string;
   onChange?: (value: string, data: IAnyObject) => void;
+  onSelect?: (data: IAnyObject) => void;
+  value?: any;
   displayEntityKey?: string;
   disabled?: boolean;
   loading?: boolean;
+  name?: string;
+  size?: SizeType;
+  title?: string;
+  useButtonPicker?: boolean;
+  pickerButtonProps?: ButtonProps
+  parentEntityId?: string;
+  defaultValue?: string;
+}
+
+export interface IEntityPickerState {
+  showModal?: boolean;
+  selectedRowIndex?: number;
+  selectedValue?: string;
+  selectedRow?: IAnyObject;
+}
+
+const INITIAL_STATE: IEntityPickerState = {
+  selectedRowIndex: -1,
+  selectedValue: '',
+  selectedRow: null
 }
 
 export const EntityPicker: FC<IEntityPickerProps> = ({
@@ -21,26 +45,38 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   onChange,
   disabled,
   loading,
+  value,
+  name,
+  size,
+  useButtonPicker,
+  pickerButtonProps,
+  onSelect,
+  parentEntityId,
+  defaultValue,
+  title = "Select Item"
 }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedRowIndex, setSelectedRowIndex] = useState(-1);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [state, setState] = useState<IEntityPickerState>({
+    showModal: false,
+    ...INITIAL_STATE
+  });
 
-  const toggleModalVisiblity = () => setShowModal(!showModal);
+  const toggleModalVisibility = () => setState((current) => ({...current, showModal: !current?.showModal, ...INITIAL_STATE }));
 
   const onDblClick = (row: IAnyObject) => {
-    handleOnChange(row);
+    if (onSelect) {
+      onSelect(row);
+    } else {
+      handleOnChange(row);
+      setSelectedRow(row);
+    }
 
-    setSelectedRow(row);
-    toggleModalVisiblity();
+    toggleModalVisibility();
   };
 
   const onSelectRow = (index: number, row: IAnyObject) => {
     handleOnChange(row);
 
-    setSelectedRowIndex(index);
-
-    setSelectedRow(row);
+    setSelectedRow(row, index);
   };
 
   const handleOnChange = (row: IAnyObject) => {
@@ -49,69 +85,105 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
     }
   };
 
+  const onModalOk = () => {
+    if (onSelect && state?.selectedRow) {
+      onSelect(state?.selectedRow)
+    }
+
+    toggleModalVisibility();
+  }
+
   const handleCancel = () => {
     clearAll();
-    toggleModalVisiblity();
+    toggleModalVisibility();
   };
 
   const clearAll = () => {
-    setSelectedRowIndex(-1);
-    setSelectedValue('');
+    setState({...state, selectedRowIndex: -1, selectedValue: '' });
+
+    if (onChange) {
+      onChange(null, null);
+    }
   };
 
-  const setSelectedRow = (row: IAnyObject) => {
-    let value = '';
-    if (row && Object.keys(row).length) {
-      value = displayEntityKey
-        ? (value = row[displayEntityKey])
-        : row.displayName || row.DisplayName || row.name || row.Name;
+  const setSelectedRow = (selectedRow: IAnyObject, selectedRowIndex?: number) => {
+    let selectedValue = value;
+
+    if (selectedRow && Object.keys(selectedRow).length) {
+      selectedValue = displayEntityKey
+        ? selectedRow[displayEntityKey]
+        : selectedRow?.displayName || selectedRow?.DisplayName || selectedRow?.name || selectedRow?.Name;
     }
 
-    setSelectedValue(value);
+    setState({
+      ...state,
+      selectedValue,
+      selectedRow,
+      selectedRowIndex: selectedRowIndex === null ? state?.selectedRowIndex: selectedRowIndex
+    });
   };
+
+  const handleButtonPickerClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event?.stopPropagation();
+    setState({...state, showModal: true });
+  }
 
   return (
     <div className="entity-picker-container">
       <div>
-        <Input.Group compact className="picker-input-group">
-          <Input
-            allowClear
-            className="picker-input-group-input"
-            value={selectedValue}
-            onChange={clearAll}
-            disabled={disabled}
-          />
+        {useButtonPicker ?
+          <Button onClick={handleButtonPickerClick} size={size} {...(pickerButtonProps || {})}>{title}</Button>
+          :
+          <Input.Group compact className="picker-input-group">
+            <Input
+              allowClear
+              className="picker-input-group-input"
+              value={state?.selectedValue || value}
+              onChange={clearAll}
+              disabled={disabled}
+              name={name}
+              size={size}
+              defaultValue={defaultValue}
+            />
 
-          <Button
-            onClick={toggleModalVisiblity}
-            className="picker-input-group-ellipsis"
-            disabled={disabled}
-            loading={loading ?? false}
-          >
-            ...
-          </Button>
-        </Input.Group>
+            <Button
+              onClick={toggleModalVisibility}
+              className="picker-input-group-ellipsis"
+              disabled={disabled}
+              loading={loading ?? false}
+              size={size}
+              icon={<EllipsisOutlined />}
+            />
+          </Input.Group>
+        }
       </div>
+
       <Modal
-        title="Entity Picker"
+        title={title || 'Select Item'}
         className="entity-picker-modal"
-        visible={showModal}
-        onOk={toggleModalVisiblity}
+        visible={state?.showModal}
+        onOk={onModalOk}
         onCancel={handleCancel}
         width="60%"
         okText="Select"
         okButtonProps={{
-          disabled: !selectedValue,
+          disabled: !state?.selectedValue,
         }}
       >
-        <DataTableProvider tableId={tableId} onDblClick={onDblClick}>
+        <DataTableProvider tableId={tableId} onDblClick={onDblClick} parentEntityId={parentEntityId}>
           <GlobalTableFilter
             searchProps={{ size: 'middle', autoFocus: true, placeholder: 'Search by Title, Type or Keyword...' }}
           />
+
           <div className="entity-picker-modal-pager-container">
             <TablePager />
           </div>
-          <IndexTable onSelectRow={onSelectRow} selectedRowIndex={selectedRowIndex} />
+
+          <IndexTable
+            onSelectRow={onSelectRow}
+            onDblClick={onDblClick}
+            selectedRowIndex={state?.selectedRowIndex}
+          />
         </DataTableProvider>
       </Modal>
     </div>

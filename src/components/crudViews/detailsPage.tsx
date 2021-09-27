@@ -4,7 +4,7 @@ import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
 import { MainLayout, IndexToolbar, ValidationErrors, ConfigurableForm } from '../';
 import { useUi } from '../../providers';
-import { FormMarkup, IFormActions } from '../../providers/form/models';
+import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
 import { useShaRouting } from '../../providers/shaRouting';
 import { CommonCrudHandles } from './interfaces';
@@ -62,6 +62,11 @@ export interface IDetailsPageProps {
   formActions?: IFormActions;
 
   /**
+   * Form sections. Form-specific sections which can be rendered within the configurable form
+   */
+  formSections?: IFormSections;
+
+  /**
    * ref object
    */
   pageRef?: MutableRefObject<any>;
@@ -70,6 +75,8 @@ export interface IDetailsPageProps {
    * A callback for when the data has been loaded
    */
   onDataLoaded?: (model: any) => void;
+
+  onFormValuesChange?: (changedValues: any, values: any) => void;
 
   /**
    * Form Values. If passed, model will be overridden to FormValues, m.
@@ -157,6 +164,8 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
               markup={props.markup}
               initialValues={model}
               actions={props.formActions}
+              sections={props.formSections}
+              onValuesChange={props?.onFormValuesChange}
             />
             {typeof props?.footer === 'function' ? props?.footer(model) : props?.footer}
           </>

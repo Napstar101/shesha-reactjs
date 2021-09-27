@@ -185,4 +185,8 @@ export interface ICrudProps {
    * Whether you want the inline editing to be in the form of inline ot dialog
    */
   crudMode?: 'inline' | 'dialog';
+
+  pickerOptions?: boolean;
+
+  crudParentEntityKey?: string;
 }

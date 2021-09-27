@@ -18,9 +18,11 @@ export interface IChildTableProps extends ICrudProps {
   customTypeEditors?: ITableCustomTypeEditor[];
   tableRef?: MutableRefObject<IDataTableInstance | null>;
   onRowsChanged?: (rows: object[]) => void;
+  onDblClick?: (data: any) => void;
   toolbarItemsPlacement?: 'panelHeader' | 'panelBody';
   alert?: string;
   paginationMode?: 'scroll' | 'pagination';
+  crudCreateEntityPickerId?: string;
 }
 
 export const ChildDataTable: FC<IChildTableProps> = ({
@@ -32,12 +34,14 @@ export const ChildDataTable: FC<IChildTableProps> = ({
   tableRef,
   crudMode,
   onRowsChanged,
+  onDblClick,
   alert,
   paginationMode = 'scroll',
   customTypeEditors,
   toolbarItems,
 }) => {
   const store = useDataTableStore();
+
 
   if (tableRef) tableRef.current = store;
 
@@ -63,12 +67,16 @@ export const ChildDataTable: FC<IChildTableProps> = ({
     return <Fragment />;
   };
 
+  // Prevent the CollapsiblePanel from collapsing every time you click anywhere on the extra
+  const onExtraClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => event?.stopPropagation();
+  
+
   return (
     <div className="sha-child-table">
       <CollapsiblePanel
         header={header}
         extra={
-          <div className="sha-child-table-extra">
+          <div className="sha-child-table-extra" onClick={onExtraClick}>
             <ChildTableControls
               crud={crud}
               showPagination={paginationMode === 'pagination'}
@@ -88,6 +96,7 @@ export const ChildDataTable: FC<IChildTableProps> = ({
           saveLocally={saveLocally}
           tableRef={tableRef}
           onRowsChanged={onRowsChanged}
+          onDblClick={onDblClick}
           crudMode={crudMode}
           customTypeEditors={customTypeEditors}
         />

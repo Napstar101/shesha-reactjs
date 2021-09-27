@@ -8,9 +8,6 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export interface AuthenticateModel {
   userNameOrEmailAddress: string;
   password: string;
-  /**
-   * Optional IMEI number. Is used for mobile applications
-   */
   imei?: string | null;
 }
 
@@ -37,12 +34,12 @@ export interface ErrorInfo {
 }
 
 export interface AuthenticateResultModelAjaxResponse {
-  result?: AuthenticateResultModel;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: AuthenticateResultModel;
 }
 
 export interface AjaxResponseBase {
@@ -54,12 +51,12 @@ export interface AjaxResponseBase {
 }
 
 export interface BooleanAjaxResponse {
-  result?: boolean;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: boolean;
 }
 
 export interface ExternalLoginProviderInfoModel {
@@ -68,12 +65,12 @@ export interface ExternalLoginProviderInfoModel {
 }
 
 export interface ExternalLoginProviderInfoModelListAjaxResponse {
-  result?: ExternalLoginProviderInfoModel[] | null;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: ExternalLoginProviderInfoModel[] | null;
 }
 
 export interface ExternalAuthenticateModel {
@@ -90,21 +87,40 @@ export interface ExternalAuthenticateResultModel {
 }
 
 export interface ExternalAuthenticateResultModelAjaxResponse {
-  result?: ExternalAuthenticateResultModel;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: ExternalAuthenticateResultModel;
+}
+
+export interface TokenAuthAuthenticateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type TokenAuthAuthenticateProps = Omit<
-  MutateProps<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel>,
+  MutateProps<
+    AuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthAuthenticateQueryParams,
+    AuthenticateModel,
+    void
+  >,
   'path' | 'verb'
 >;
 
 export const TokenAuthAuthenticate = (props: TokenAuthAuthenticateProps) => (
-  <Mutate<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel>
+  <Mutate<
+    AuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthAuthenticateQueryParams,
+    AuthenticateModel,
+    void
+  >
     verb="POST"
     path={`/api/TokenAuth/Authenticate`}
     {...props}
@@ -112,65 +128,127 @@ export const TokenAuthAuthenticate = (props: TokenAuthAuthenticateProps) => (
 );
 
 export type UseTokenAuthAuthenticateProps = Omit<
-  UseMutateProps<AuthenticateResultModelAjaxResponse, void, AuthenticateModel>,
+  UseMutateProps<AuthenticateResultModelAjaxResponse, TokenAuthAuthenticateQueryParams, AuthenticateModel, void>,
   'path' | 'verb'
 >;
 
 export const useTokenAuthAuthenticate = (props: UseTokenAuthAuthenticateProps) =>
-  useMutate<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel>(
-    'POST',
-    `/api/TokenAuth/Authenticate`,
-    props
-  );
+  useMutate<
+    AuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthAuthenticateQueryParams,
+    AuthenticateModel,
+    void
+  >('POST', `/api/TokenAuth/Authenticate`, props);
+
+export interface TokenAuthSignOffQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type TokenAuthSignOffProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, void>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const TokenAuthSignOff = (props: TokenAuthSignOffProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, void> verb="POST" path={`/api/TokenAuth/SignOff`} {...props} />
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>
+    verb="POST"
+    path={`/api/TokenAuth/SignOff`}
+    {...props}
+  />
 );
 
-export type UseTokenAuthSignOffProps = Omit<UseMutateProps<BooleanAjaxResponse, void, void>, 'path' | 'verb'>;
+export type UseTokenAuthSignOffProps = Omit<
+  UseMutateProps<BooleanAjaxResponse, TokenAuthSignOffQueryParams, void, void>,
+  'path' | 'verb'
+>;
 
 export const useTokenAuthSignOff = (props: UseTokenAuthSignOffProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, void>('POST', `/api/TokenAuth/SignOff`, props);
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>(
+    'POST',
+    `/api/TokenAuth/SignOff`,
+    props
+  );
+
+export interface TokenAuthGetExternalAuthenticationProvidersQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type TokenAuthGetExternalAuthenticationProvidersProps = Omit<
-  GetProps<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void>,
+  GetProps<
+    ExternalLoginProviderInfoModelListAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthGetExternalAuthenticationProvidersQueryParams,
+    void
+  >,
   'path'
 >;
 
 export const TokenAuthGetExternalAuthenticationProviders = (
   props: TokenAuthGetExternalAuthenticationProvidersProps
 ) => (
-  <Get<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void>
+  <Get<
+    ExternalLoginProviderInfoModelListAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthGetExternalAuthenticationProvidersQueryParams,
+    void
+  >
     path={`/api/TokenAuth/GetExternalAuthenticationProviders`}
     {...props}
   />
 );
 
 export type UseTokenAuthGetExternalAuthenticationProvidersProps = Omit<
-  UseGetProps<ExternalLoginProviderInfoModelListAjaxResponse, void>,
+  UseGetProps<
+    ExternalLoginProviderInfoModelListAjaxResponse,
+    TokenAuthGetExternalAuthenticationProvidersQueryParams,
+    void
+  >,
   'path'
 >;
 
 export const useTokenAuthGetExternalAuthenticationProviders = (
   props: UseTokenAuthGetExternalAuthenticationProvidersProps
 ) =>
-  useGet<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void>(
-    `/api/TokenAuth/GetExternalAuthenticationProviders`,
-    props
-  );
+  useGet<
+    ExternalLoginProviderInfoModelListAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthGetExternalAuthenticationProvidersQueryParams,
+    void
+  >(`/api/TokenAuth/GetExternalAuthenticationProviders`, props);
+
+export interface TokenAuthExternalAuthenticateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type TokenAuthExternalAuthenticateProps = Omit<
-  MutateProps<ExternalAuthenticateResultModelAjaxResponse, AjaxResponseBase, void, ExternalAuthenticateModel>,
+  MutateProps<
+    ExternalAuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthExternalAuthenticateQueryParams,
+    ExternalAuthenticateModel,
+    void
+  >,
   'path' | 'verb'
 >;
 
 export const TokenAuthExternalAuthenticate = (props: TokenAuthExternalAuthenticateProps) => (
-  <Mutate<ExternalAuthenticateResultModelAjaxResponse, AjaxResponseBase, void, ExternalAuthenticateModel>
+  <Mutate<
+    ExternalAuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthExternalAuthenticateQueryParams,
+    ExternalAuthenticateModel,
+    void
+  >
     verb="POST"
     path={`/api/TokenAuth/ExternalAuthenticate`}
     {...props}
@@ -178,13 +256,20 @@ export const TokenAuthExternalAuthenticate = (props: TokenAuthExternalAuthentica
 );
 
 export type UseTokenAuthExternalAuthenticateProps = Omit<
-  UseMutateProps<ExternalAuthenticateResultModelAjaxResponse, void, ExternalAuthenticateModel>,
+  UseMutateProps<
+    ExternalAuthenticateResultModelAjaxResponse,
+    TokenAuthExternalAuthenticateQueryParams,
+    ExternalAuthenticateModel,
+    void
+  >,
   'path' | 'verb'
 >;
 
 export const useTokenAuthExternalAuthenticate = (props: UseTokenAuthExternalAuthenticateProps) =>
-  useMutate<ExternalAuthenticateResultModelAjaxResponse, AjaxResponseBase, void, ExternalAuthenticateModel>(
-    'POST',
-    `/api/TokenAuth/ExternalAuthenticate`,
-    props
-  );
+  useMutate<
+    ExternalAuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthExternalAuthenticateQueryParams,
+    ExternalAuthenticateModel,
+    void
+  >('POST', `/api/TokenAuth/ExternalAuthenticate`, props);

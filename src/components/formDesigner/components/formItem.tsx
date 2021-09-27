@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { IConfigurableFormComponent } from '../../../providers/form/models';
-import { Form } from 'antd';
+import { ColProps, Form } from 'antd';
 import { useForm } from '../../../providers/form';
 import { getFieldNameFromExpression, getValidationRules } from '../../../providers/form/utils';
 import classNames from "classnames";
 import './styles.less';
 
-export interface IProps {
+export interface IShaFormItemProps {
   model: IConfigurableFormComponent;
   readonly children?: React.ReactNode;
   className?: string;
@@ -19,9 +19,11 @@ export interface IProps {
    * moment - instance of the moment.js
    */
   customVisibility?: string;
+  wrapperCol?: ColProps;
+  labelCol?: ColProps;
 }
 
-const FormItem: FC<IProps> = ({ children, model, valuePropName, initialValue, className }) => {
+const FormItem: FC<IShaFormItemProps> = ({ children, model, valuePropName, initialValue, className, labelCol, wrapperCol }) => {
   const { formMode, visibleComponentIds } = useForm();
 
   const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
@@ -40,6 +42,8 @@ const FormItem: FC<IProps> = ({ children, model, valuePropName, initialValue, cl
       initialValue={model.defaultValue || initialValue}
       tooltip={model.description}
       rules={isHidden ? [] : getValidationRules(model)}
+      labelCol={labelCol}
+      wrapperCol={wrapperCol}
     >
       {children}
     </Form.Item>

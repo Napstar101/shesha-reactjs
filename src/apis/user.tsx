@@ -16,6 +16,7 @@ export interface CreateUserDto {
 }
 
 export interface UserDto {
+  id?: number;
   userName: string;
   name: string;
   surname: string;
@@ -25,7 +26,6 @@ export interface UserDto {
   lastLoginTime?: string | null;
   creationTime?: string;
   roleNames?: string[] | null;
-  id?: number;
 }
 
 export interface ValidationErrorInfo {
@@ -41,12 +41,12 @@ export interface ErrorInfo {
 }
 
 export interface UserDtoAjaxResponse {
-  result?: UserDto;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: UserDto;
 }
 
 export interface AjaxResponseBase {
@@ -58,12 +58,12 @@ export interface AjaxResponseBase {
 }
 
 export interface RoleDto {
+  id?: number;
   name: string;
   displayName: string;
   normalizedName?: string | null;
   description?: string | null;
   grantedPermissions?: string[] | null;
-  id?: number;
 }
 
 export interface RoleDtoListResultDto {
@@ -71,12 +71,12 @@ export interface RoleDtoListResultDto {
 }
 
 export interface RoleDtoListResultDtoAjaxResponse {
-  result?: RoleDtoListResultDto;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: RoleDtoListResultDto;
 }
 
 export interface ChangeUserLanguageDto {
@@ -84,53 +84,38 @@ export interface ChangeUserLanguageDto {
 }
 
 export interface ResetPasswordSendOtpResponse {
-  /**
-   * Unique runtime identifier of the operation. Is used for resending
-   */
   operationId?: string;
 }
 
 export interface ResetPasswordSendOtpResponseAjaxResponse {
-  result?: ResetPasswordSendOtpResponse;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: ResetPasswordSendOtpResponse;
 }
 
 export interface ResetPasswordVerifyOtpInput {
-  mobileNo: string;
-  /**
-   * Unique runtime identifier of the operation. Is used for resending
-   */
   operationId?: string;
-  /**
-   * Value of the One Time Pin
-   */
   pin?: string | null;
+  mobileNo: string;
 }
 
 export interface ResetPasswordVerifyOtpResponse {
+  isSuccess?: boolean;
+  errorMessage?: string | null;
   token?: string | null;
   username?: string | null;
-  /**
-   * Indicates that the OTP matches to the sent one
-   */
-  isSuccess?: boolean;
-  /**
-   * Error message
-   */
-  errorMessage?: string | null;
 }
 
 export interface ResetPasswordVerifyOtpResponseAjaxResponse {
-  result?: ResetPasswordVerifyOtpResponse;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: ResetPasswordVerifyOtpResponse;
 }
 
 export interface ResetPasswordUsingTokenInput {
@@ -140,12 +125,12 @@ export interface ResetPasswordUsingTokenInput {
 }
 
 export interface BooleanAjaxResponse {
-  result?: boolean;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: boolean;
 }
 
 export interface ChangePasswordDto {
@@ -169,119 +154,198 @@ export interface AbpUserAuthConfigDto {
 }
 
 export interface AbpUserAuthConfigDtoAjaxResponse {
-  result?: AbpUserAuthConfigDto;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: AbpUserAuthConfigDto;
 }
 
 export interface UserDtoPagedResultDto {
-  totalCount?: number;
   items?: UserDto[] | null;
+  totalCount?: number;
 }
 
 export interface UserDtoPagedResultDtoAjaxResponse {
-  result?: UserDtoPagedResultDto;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: UserDtoPagedResultDto;
+}
+
+export interface UserCreateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type UserCreateProps = Omit<
-  MutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto>,
+  MutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>,
   'path' | 'verb'
 >;
 
 export const UserCreate = (props: UserCreateProps) => (
-  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto>
+  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>
     verb="POST"
     path={`/api/services/app/User/Create`}
     {...props}
   />
 );
 
-export type UseUserCreateProps = Omit<UseMutateProps<UserDtoAjaxResponse, void, CreateUserDto>, 'path' | 'verb'>;
+export type UseUserCreateProps = Omit<
+  UseMutateProps<UserDtoAjaxResponse, UserCreateQueryParams, CreateUserDto, void>,
+  'path' | 'verb'
+>;
 
 export const useUserCreate = (props: UseUserCreateProps) =>
-  useMutate<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto>('POST', `/api/services/app/User/Create`, props);
+  useMutate<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>(
+    'POST',
+    `/api/services/app/User/Create`,
+    props
+  );
 
-export type UserUpdateProps = Omit<MutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto>, 'path' | 'verb'>;
+export interface UserUpdateQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
+export type UserUpdateProps = Omit<
+  MutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>,
+  'path' | 'verb'
+>;
 
 export const UserUpdate = (props: UserUpdateProps) => (
-  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto>
+  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>
     verb="PUT"
     path={`/api/services/app/User/Update`}
     {...props}
   />
 );
 
-export type UseUserUpdateProps = Omit<UseMutateProps<UserDtoAjaxResponse, void, UserDto>, 'path' | 'verb'>;
+export type UseUserUpdateProps = Omit<
+  UseMutateProps<UserDtoAjaxResponse, UserUpdateQueryParams, UserDto, void>,
+  'path' | 'verb'
+>;
 
 export const useUserUpdate = (props: UseUserUpdateProps) =>
-  useMutate<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto>('PUT', `/api/services/app/User/Update`, props);
+  useMutate<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>(
+    'PUT',
+    `/api/services/app/User/Update`,
+    props
+  );
 
 export interface UserDeleteQueryParams {
-  Id?: number;
+  id?: number;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
-export type UserDeleteProps = Omit<MutateProps<void, unknown, UserDeleteQueryParams, void>, 'path' | 'verb'>;
+export type UserDeleteProps = Omit<MutateProps<void, unknown, UserDeleteQueryParams, void, void>, 'path' | 'verb'>;
 
 export const UserDelete = (props: UserDeleteProps) => (
-  <Mutate<void, unknown, UserDeleteQueryParams, void> verb="DELETE" path={`/api/services/app/User/Delete`} {...props} />
+  <Mutate<void, unknown, UserDeleteQueryParams, void, void>
+    verb="DELETE"
+    path={`/api/services/app/User/Delete`}
+    {...props}
+  />
 );
 
-export type UseUserDeleteProps = Omit<UseMutateProps<void, UserDeleteQueryParams, void>, 'path' | 'verb'>;
+export type UseUserDeleteProps = Omit<UseMutateProps<void, UserDeleteQueryParams, void, void>, 'path' | 'verb'>;
 
 export const useUserDelete = (props: UseUserDeleteProps) =>
-  useMutate<void, unknown, UserDeleteQueryParams, void>('DELETE', `/api/services/app/User/Delete`, props);
+  useMutate<void, unknown, UserDeleteQueryParams, void, void>('DELETE', `/api/services/app/User/Delete`, props);
 
-export type UserGetRolesProps = Omit<GetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void>, 'path'>;
+export interface UserGetRolesQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
+export type UserGetRolesProps = Omit<
+  GetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>,
+  'path'
+>;
 
 export const UserGetRoles = (props: UserGetRolesProps) => (
-  <Get<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void> path={`/api/services/app/User/GetRoles`} {...props} />
+  <Get<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>
+    path={`/api/services/app/User/GetRoles`}
+    {...props}
+  />
 );
 
-export type UseUserGetRolesProps = Omit<UseGetProps<RoleDtoListResultDtoAjaxResponse, void>, 'path'>;
+export type UseUserGetRolesProps = Omit<
+  UseGetProps<RoleDtoListResultDtoAjaxResponse, UserGetRolesQueryParams, void>,
+  'path'
+>;
 
 export const useUserGetRoles = (props: UseUserGetRolesProps) =>
-  useGet<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void>(`/api/services/app/User/GetRoles`, props);
+  useGet<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>(
+    `/api/services/app/User/GetRoles`,
+    props
+  );
 
-export type UserChangeLanguageProps = Omit<MutateProps<void, unknown, void, ChangeUserLanguageDto>, 'path' | 'verb'>;
+export interface UserChangeLanguageQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
+export type UserChangeLanguageProps = Omit<
+  MutateProps<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>,
+  'path' | 'verb'
+>;
 
 export const UserChangeLanguage = (props: UserChangeLanguageProps) => (
-  <Mutate<void, unknown, void, ChangeUserLanguageDto>
+  <Mutate<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>
     verb="POST"
     path={`/api/services/app/User/ChangeLanguage`}
     {...props}
   />
 );
 
-export type UseUserChangeLanguageProps = Omit<UseMutateProps<void, void, ChangeUserLanguageDto>, 'path' | 'verb'>;
-
-export const useUserChangeLanguage = (props: UseUserChangeLanguageProps) =>
-  useMutate<void, unknown, void, ChangeUserLanguageDto>('POST', `/api/services/app/User/ChangeLanguage`, props);
-
-export interface UserResetPasswordSendOtpQueryParams {
-  /**
-   * mobile number of the user
-   */
-  mobileNo?: string | null;
-}
-
-export type UserResetPasswordSendOtpProps = Omit<
-  MutateProps<ResetPasswordSendOtpResponseAjaxResponse, AjaxResponseBase, UserResetPasswordSendOtpQueryParams, void>,
+export type UseUserChangeLanguageProps = Omit<
+  UseMutateProps<void, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>,
   'path' | 'verb'
 >;
 
-/**
- * Send One-time pin for password reset
- */
+export const useUserChangeLanguage = (props: UseUserChangeLanguageProps) =>
+  useMutate<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>(
+    'POST',
+    `/api/services/app/User/ChangeLanguage`,
+    props
+  );
+
+export interface UserResetPasswordSendOtpQueryParams {
+  mobileNo?: string | null;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
+export type UserResetPasswordSendOtpProps = Omit<
+  MutateProps<
+    ResetPasswordSendOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordSendOtpQueryParams,
+    void,
+    void
+  >,
+  'path' | 'verb'
+>;
+
 export const UserResetPasswordSendOtp = (props: UserResetPasswordSendOtpProps) => (
-  <Mutate<ResetPasswordSendOtpResponseAjaxResponse, AjaxResponseBase, UserResetPasswordSendOtpQueryParams, void>
+  <Mutate<ResetPasswordSendOtpResponseAjaxResponse, AjaxResponseBase, UserResetPasswordSendOtpQueryParams, void, void>
     verb="POST"
     path={`/api/services/app/User/ResetPasswordSendOtp`}
     {...props}
@@ -289,30 +353,45 @@ export const UserResetPasswordSendOtp = (props: UserResetPasswordSendOtpProps) =
 );
 
 export type UseUserResetPasswordSendOtpProps = Omit<
-  UseMutateProps<ResetPasswordSendOtpResponseAjaxResponse, UserResetPasswordSendOtpQueryParams, void>,
+  UseMutateProps<ResetPasswordSendOtpResponseAjaxResponse, UserResetPasswordSendOtpQueryParams, void, void>,
   'path' | 'verb'
 >;
 
-/**
- * Send One-time pin for password reset
- */
 export const useUserResetPasswordSendOtp = (props: UseUserResetPasswordSendOtpProps) =>
-  useMutate<ResetPasswordSendOtpResponseAjaxResponse, AjaxResponseBase, UserResetPasswordSendOtpQueryParams, void>(
-    'POST',
-    `/api/services/app/User/ResetPasswordSendOtp`,
-    props
-  );
+  useMutate<
+    ResetPasswordSendOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordSendOtpQueryParams,
+    void,
+    void
+  >('POST', `/api/services/app/User/ResetPasswordSendOtp`, props);
+
+export interface UserResetPasswordVerifyOtpQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type UserResetPasswordVerifyOtpProps = Omit<
-  MutateProps<ResetPasswordVerifyOtpResponseAjaxResponse, AjaxResponseBase, void, ResetPasswordVerifyOtpInput>,
+  MutateProps<
+    ResetPasswordVerifyOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordVerifyOtpQueryParams,
+    ResetPasswordVerifyOtpInput,
+    void
+  >,
   'path' | 'verb'
 >;
 
-/**
- * Verify one-time pin that was used for password reset. Returns a token that should be used for password update
- */
 export const UserResetPasswordVerifyOtp = (props: UserResetPasswordVerifyOtpProps) => (
-  <Mutate<ResetPasswordVerifyOtpResponseAjaxResponse, AjaxResponseBase, void, ResetPasswordVerifyOtpInput>
+  <Mutate<
+    ResetPasswordVerifyOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordVerifyOtpQueryParams,
+    ResetPasswordVerifyOtpInput,
+    void
+  >
     verb="POST"
     path={`/api/services/app/User/ResetPasswordVerifyOtp`}
     {...props}
@@ -320,30 +399,50 @@ export const UserResetPasswordVerifyOtp = (props: UserResetPasswordVerifyOtpProp
 );
 
 export type UseUserResetPasswordVerifyOtpProps = Omit<
-  UseMutateProps<ResetPasswordVerifyOtpResponseAjaxResponse, void, ResetPasswordVerifyOtpInput>,
+  UseMutateProps<
+    ResetPasswordVerifyOtpResponseAjaxResponse,
+    UserResetPasswordVerifyOtpQueryParams,
+    ResetPasswordVerifyOtpInput,
+    void
+  >,
   'path' | 'verb'
 >;
 
-/**
- * Verify one-time pin that was used for password reset. Returns a token that should be used for password update
- */
 export const useUserResetPasswordVerifyOtp = (props: UseUserResetPasswordVerifyOtpProps) =>
-  useMutate<ResetPasswordVerifyOtpResponseAjaxResponse, AjaxResponseBase, void, ResetPasswordVerifyOtpInput>(
-    'POST',
-    `/api/services/app/User/ResetPasswordVerifyOtp`,
-    props
-  );
+  useMutate<
+    ResetPasswordVerifyOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordVerifyOtpQueryParams,
+    ResetPasswordVerifyOtpInput,
+    void
+  >('POST', `/api/services/app/User/ResetPasswordVerifyOtp`, props);
+
+export interface UserResetPasswordUsingTokenQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type UserResetPasswordUsingTokenProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput>,
+  MutateProps<
+    BooleanAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordUsingTokenQueryParams,
+    ResetPasswordUsingTokenInput,
+    void
+  >,
   'path' | 'verb'
 >;
 
-/**
- * Resets a password of the user using token
- */
 export const UserResetPasswordUsingToken = (props: UserResetPasswordUsingTokenProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput>
+  <Mutate<
+    BooleanAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordUsingTokenQueryParams,
+    ResetPasswordUsingTokenInput,
+    void
+  >
     verb="POST"
     path={`/api/services/app/User/ResetPasswordUsingToken`}
     {...props}
@@ -351,27 +450,33 @@ export const UserResetPasswordUsingToken = (props: UserResetPasswordUsingTokenPr
 );
 
 export type UseUserResetPasswordUsingTokenProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, void, ResetPasswordUsingTokenInput>,
+  UseMutateProps<BooleanAjaxResponse, UserResetPasswordUsingTokenQueryParams, ResetPasswordUsingTokenInput, void>,
   'path' | 'verb'
 >;
 
-/**
- * Resets a password of the user using token
- */
 export const useUserResetPasswordUsingToken = (props: UseUserResetPasswordUsingTokenProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput>(
-    'POST',
-    `/api/services/app/User/ResetPasswordUsingToken`,
-    props
-  );
+  useMutate<
+    BooleanAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordUsingTokenQueryParams,
+    ResetPasswordUsingTokenInput,
+    void
+  >('POST', `/api/services/app/User/ResetPasswordUsingToken`, props);
+
+export interface UserChangePasswordQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
 
 export type UserChangePasswordProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const UserChangePassword = (props: UserChangePasswordProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto>
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>
     verb="POST"
     path={`/api/services/app/User/ChangePassword`}
     {...props}
@@ -379,24 +484,31 @@ export const UserChangePassword = (props: UserChangePasswordProps) => (
 );
 
 export type UseUserChangePasswordProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, void, ChangePasswordDto>,
+  UseMutateProps<BooleanAjaxResponse, UserChangePasswordQueryParams, ChangePasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const useUserChangePassword = (props: UseUserChangePasswordProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto>(
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>(
     'POST',
     `/api/services/app/User/ChangePassword`,
     props
   );
 
+export interface UserResetPasswordQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
 export type UserResetPasswordProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const UserResetPassword = (props: UserResetPasswordProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto>
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>
     verb="POST"
     path={`/api/services/app/User/ResetPassword`}
     {...props}
@@ -404,72 +516,99 @@ export const UserResetPassword = (props: UserResetPasswordProps) => (
 );
 
 export type UseUserResetPasswordProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, void, ResetPasswordDto>,
+  UseMutateProps<BooleanAjaxResponse, UserResetPasswordQueryParams, ResetPasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const useUserResetPassword = (props: UseUserResetPasswordProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto>(
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>(
     'POST',
     `/api/services/app/User/ResetPassword`,
     props
   );
 
+export interface UserGetUserAuthConfigQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
 export type UserGetUserAuthConfigProps = Omit<
-  GetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void>,
+  GetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>,
   'path'
 >;
 
 export const UserGetUserAuthConfig = (props: UserGetUserAuthConfigProps) => (
-  <Get<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void>
+  <Get<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>
     path={`/api/services/app/User/GetUserAuthConfig`}
     {...props}
   />
 );
 
-export type UseUserGetUserAuthConfigProps = Omit<UseGetProps<AbpUserAuthConfigDtoAjaxResponse, void>, 'path'>;
+export type UseUserGetUserAuthConfigProps = Omit<
+  UseGetProps<AbpUserAuthConfigDtoAjaxResponse, UserGetUserAuthConfigQueryParams, void>,
+  'path'
+>;
 
 export const useUserGetUserAuthConfig = (props: UseUserGetUserAuthConfigProps) =>
-  useGet<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void>(`/api/services/app/User/GetUserAuthConfig`, props);
+  useGet<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>(
+    `/api/services/app/User/GetUserAuthConfig`,
+    props
+  );
 
 export interface UserGetQueryParams {
-  Id?: number;
+  id?: number;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
-export type UserGetProps = Omit<GetProps<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams>, 'path'>;
+export type UserGetProps = Omit<GetProps<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>, 'path'>;
 
 export const UserGet = (props: UserGetProps) => (
-  <Get<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams> path={`/api/services/app/User/Get`} {...props} />
+  <Get<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>
+    path={`/api/services/app/User/Get`}
+    {...props}
+  />
 );
 
-export type UseUserGetProps = Omit<UseGetProps<UserDtoAjaxResponse, UserGetQueryParams>, 'path'>;
+export type UseUserGetProps = Omit<UseGetProps<UserDtoAjaxResponse, UserGetQueryParams, void>, 'path'>;
 
 export const useUserGet = (props: UseUserGetProps) =>
-  useGet<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams>(`/api/services/app/User/Get`, props);
+  useGet<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>(`/api/services/app/User/Get`, props);
 
 export interface UserGetAllQueryParams {
-  Keyword?: string | null;
-  IsActive?: boolean | null;
-  SkipCount?: number;
-  MaxResultCount?: number;
+  keyword?: string | null;
+  isActive?: boolean | null;
+  skipCount?: number;
+  maxResultCount?: number;
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
 }
 
 export type UserGetAllProps = Omit<
-  GetProps<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams>,
+  GetProps<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams, void>,
   'path'
 >;
 
 export const UserGetAll = (props: UserGetAllProps) => (
-  <Get<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams>
+  <Get<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams, void>
     path={`/api/services/app/User/GetAll`}
     {...props}
   />
 );
 
-export type UseUserGetAllProps = Omit<UseGetProps<UserDtoPagedResultDtoAjaxResponse, UserGetAllQueryParams>, 'path'>;
+export type UseUserGetAllProps = Omit<
+  UseGetProps<UserDtoPagedResultDtoAjaxResponse, UserGetAllQueryParams, void>,
+  'path'
+>;
 
 export const useUserGetAll = (props: UseUserGetAllProps) =>
-  useGet<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams>(
+  useGet<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams, void>(
     `/api/services/app/User/GetAll`,
     props
   );

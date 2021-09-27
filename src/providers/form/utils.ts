@@ -8,6 +8,8 @@ import {
   IFormAction,
   FormMarkup,
   FormMarkupWithSettings,
+  IFormSection,
+  IFormSections,
 } from './models';
 import Mustache from 'mustache';
 import { IToolboxComponentBase, IToolboxComponentGroup, IToolboxComponents } from '../../interfaces';
@@ -19,7 +21,10 @@ import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
  *    allComponents - dictionary (key:value) of components. key - Id of the component, value - conponent settings
  *    componentRelations - dictionary of component relations. key - id of the container, value - ordered list of subcomponent ids
  * */
-export const componentsTreeToFlatStructure = (toolboxComponents: IToolboxComponents, components: IConfigurableFormComponent[]): IFlatComponentsStructure => {
+export const componentsTreeToFlatStructure = (
+  toolboxComponents: IToolboxComponents,
+  components: IConfigurableFormComponent[]
+): IFlatComponentsStructure => {
   let result: IFlatComponentsStructure = {
     allComponents: {},
     componentRelations: {},
@@ -69,9 +74,12 @@ export const componentsTreeToFlatStructure = (toolboxComponents: IToolboxCompone
 };
 
 /** Convert flat components structure to a component tree */
-export const componentsFlatStructureToTree = (toolboxComponents: IToolboxComponents, flat: IFlatComponentsStructure): IConfigurableFormComponent[] => {
+export const componentsFlatStructureToTree = (
+  toolboxComponents: IToolboxComponents,
+  flat: IFlatComponentsStructure
+): IConfigurableFormComponent[] => {
   let tree: IConfigurableFormComponent[] = [];
-  
+
   const processComponent = (container: IConfigurableFormComponent[], ownerId: string) => {
     const componentIds = flat.componentRelations[ownerId];
 
@@ -140,8 +148,7 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
         console.warn(`Incorrect syntax of the 'Custom Visibility', field name: ${name}, error: ${e}`);
       };
     }
-  } else
-    return () => true;
+  } else return () => true;
 };
 
 export const evaluateString = (template, data) => {
@@ -260,7 +267,7 @@ const NESTED_ACCESSOR_REGEX = /((?<key>[\w]+)\.(?<accessor>[^\}]+))/;
 
 export const evaluateValue = (value: string, dictionary: any) => {
   return _evaluateValue(value, dictionary, true);
-}
+};
 
 export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) => {
   if (!value) return value;
@@ -270,15 +277,13 @@ export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) 
   if (!match) return value;
 
   // check nested properties
-  if (match.groups.accessor.match(NESTED_ACCESSOR_REGEX))
-  {
+  if (match.groups.accessor.match(NESTED_ACCESSOR_REGEX)) {
     // try get value recursive
     return _evaluateValue(match.groups.accessor, dictionary[match.groups.key], false);
-  } else 
-  {
+  } else {
     const container = dictionary[match.groups.key];
     if (!container) return null;
-    
+
     const evaluatedValue = container[match.groups.accessor];
 
     // console.log({
@@ -287,7 +292,7 @@ export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) 
     //   accessor: match.groups.accessor,
     //   evaluatedValue,
     // });
-  
+
     return evaluatedValue;
   }
 };
@@ -322,9 +327,22 @@ export const convertActions = (ownerId: string, actions: IFormActions): IFormAct
   return result;
 };
 
+export const convertSectionsToList = (ownerId: string, sections: IFormSections): IFormSection[] => {
+  let result: IFormSection[] = [];
+  for (let key in sections) {
+    result.push({
+      owner: ownerId,
+      name: key,
+      body: sections[key],
+    });
+  }
+
+  return result;
+};
+
 export const toolbarGroupsToComponents = (availableComponents: IToolboxComponentGroup[]): IToolboxComponents => {
   let allComponents: IToolboxComponents = {};
-  if (availableComponents){
+  if (availableComponents) {
     availableComponents.forEach(group => {
       group.components.forEach(component => {
         allComponents[component.type] = component;
@@ -332,21 +350,23 @@ export const toolbarGroupsToComponents = (availableComponents: IToolboxComponent
     });
   }
   return allComponents;
-}
+};
 
-export const findToolboxComponent = (availableComponents: IToolboxComponentGroup[], type: string): IToolboxComponentBase => {
-  if (availableComponents){
+export const findToolboxComponent = (
+  availableComponents: IToolboxComponentGroup[],
+  type: string
+): IToolboxComponentBase => {
+  if (availableComponents) {
     for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
       const group = availableComponents[gIdx];
       for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
-        if (group.components[cIdx].type === type)
-          return group.components[cIdx];
+        if (group.components[cIdx].type === type) return group.components[cIdx];
       }
     }
   }
- 
+
   return null;
-}
+};
 
 /** backward compatibility */
 export const getComponentsAndSettings = (markup: FormMarkup): FormMarkupWithSettings => {
@@ -357,25 +377,23 @@ export const getComponentsAndSettings = (markup: FormMarkup): FormMarkupWithSett
 };
 
 export const getComponentsFromMarkup = (markup: FormMarkup): IConfigurableFormComponent[] => {
-  if (!markup)
-    return [];
+  if (!markup) return [];
   return Array.isArray(markup)
-    ? markup as IConfigurableFormComponent[]
+    ? (markup as IConfigurableFormComponent[])
     : (markup as FormMarkupWithSettings).components;
-}
+};
 
 export const getFromSettingsFromMarkup = (markup: FormMarkup): IFormSettings => {
   return Array.isArray(markup) || !Boolean(markup)
     ? DEFAULT_FORM_SETTINGS
     : (markup as FormMarkupWithSettings).formSettings;
-}
-
+};
 
 export const validateForm = (rules: Rules, values: ValidateSource): Promise<void> => {
   const validator = new Schema(rules);
 
   return validator.validate(values);
-}
+};
 
 export const getFormValidationRules = (markup: FormMarkup): Rules => {
   const components = getComponentsFromMarkup(markup);
@@ -386,11 +404,11 @@ export const getFormValidationRules = (markup: FormMarkup): Rules => {
   });
 
   return rules;
-}
+};
 
 export const validateConfigurableComponentSettings = (markup: FormMarkup, values: ValidateSource): Promise<void> => {
   const rules = getFormValidationRules(markup);
   const validator = new Schema(rules);
 
   return validator.validate(values);
-}
+};

@@ -5,45 +5,15 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-/**
- * Authorization options
- */
 export interface AuthorizationSettingsDto {
-  /**
-   * Lockout enabled (default value for new users)
-   */
   isLockoutEnabled?: boolean;
-  /**
-   * Lockout time in seconds
-   */
   defaultAccountLockoutSeconds?: number;
-  /**
-   * Max failed logon attempts before lockout
-   */
   maxFailedAccessAttemptsBeforeLockout?: number;
-  /**
-   * Passwords: require digits
-   */
   requireDigit?: boolean;
-  /**
-   * Passwords: require lower case character
-   */
   requireLowercase?: boolean;
-  /**
-   * Passwords: non alphanumeric character
-   */
   requireNonAlphanumeric?: boolean;
-  /**
-   * Passwords: require upper case character
-   */
   requireUppercase?: boolean;
-  /**
-   * Passwords: min length
-   */
   requiredLength?: number;
-  /**
-   * Auto logoff timeout (in case of user inactivity). Set to 0 to disable
-   */
   autoLogoffTimeout?: number;
 }
 
@@ -60,12 +30,12 @@ export interface ErrorInfo {
 }
 
 export interface AuthorizationSettingsDtoAjaxResponse {
-  result?: AuthorizationSettingsDto;
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
+  result?: AuthorizationSettingsDto;
 }
 
 export interface AjaxResponseBase {
@@ -76,13 +46,20 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
+export interface AuthorizationSettingsUpdateSettingsQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
 export type AuthorizationSettingsUpdateSettingsProps = Omit<
-  MutateProps<void, unknown, void, AuthorizationSettingsDto>,
+  MutateProps<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>,
   'path' | 'verb'
 >;
 
 export const AuthorizationSettingsUpdateSettings = (props: AuthorizationSettingsUpdateSettingsProps) => (
-  <Mutate<void, unknown, void, AuthorizationSettingsDto>
+  <Mutate<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>
     verb="PUT"
     path={`/api/services/app/AuthorizationSettings/UpdateSettings`}
     {...props}
@@ -90,36 +67,43 @@ export const AuthorizationSettingsUpdateSettings = (props: AuthorizationSettings
 );
 
 export type UseAuthorizationSettingsUpdateSettingsProps = Omit<
-  UseMutateProps<void, void, AuthorizationSettingsDto>,
+  UseMutateProps<void, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>,
   'path' | 'verb'
 >;
 
 export const useAuthorizationSettingsUpdateSettings = (props: UseAuthorizationSettingsUpdateSettingsProps) =>
-  useMutate<void, unknown, void, AuthorizationSettingsDto>(
+  useMutate<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>(
     'PUT',
     `/api/services/app/AuthorizationSettings/UpdateSettings`,
     props
   );
 
+export interface AuthorizationSettingsGetSettingsQueryParams {
+  /**
+   * The requested API version
+   */
+  'api-version'?: string;
+}
+
 export type AuthorizationSettingsGetSettingsProps = Omit<
-  GetProps<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void>,
+  GetProps<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, AuthorizationSettingsGetSettingsQueryParams, void>,
   'path'
 >;
 
 export const AuthorizationSettingsGetSettings = (props: AuthorizationSettingsGetSettingsProps) => (
-  <Get<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void>
+  <Get<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, AuthorizationSettingsGetSettingsQueryParams, void>
     path={`/api/services/app/AuthorizationSettings/GetSettings`}
     {...props}
   />
 );
 
 export type UseAuthorizationSettingsGetSettingsProps = Omit<
-  UseGetProps<AuthorizationSettingsDtoAjaxResponse, void>,
+  UseGetProps<AuthorizationSettingsDtoAjaxResponse, AuthorizationSettingsGetSettingsQueryParams, void>,
   'path'
 >;
 
 export const useAuthorizationSettingsGetSettings = (props: UseAuthorizationSettingsGetSettingsProps) =>
-  useGet<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void>(
+  useGet<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, AuthorizationSettingsGetSettingsQueryParams, void>(
     `/api/services/app/AuthorizationSettings/GetSettings`,
     props
   );

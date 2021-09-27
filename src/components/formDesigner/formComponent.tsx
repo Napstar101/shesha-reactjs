@@ -15,4 +15,5 @@ const FormComponent: FC<IFormComponentProps> = ({ id, componentRef }) => {
 
   return <>{toolboxComponent.factory(model, componentRef, form)}</>;
 };
+
 export default FormComponent;
