@@ -42,7 +42,7 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
 
     return (
       <FormItem model={model}>
-        <DatePickerWrapper {...customModel}></DatePickerWrapper>
+        <DatePickerWrapper {...customModel} />
       </FormItem>
     );
   },

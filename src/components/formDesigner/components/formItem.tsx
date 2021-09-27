@@ -3,7 +3,7 @@ import { IConfigurableFormComponent } from '../../../providers/form/models';
 import { ColProps, Form } from 'antd';
 import { useForm } from '../../../providers/form';
 import { getFieldNameFromExpression, getValidationRules } from '../../../providers/form/utils';
-import classNames from "classnames";
+import classNames from 'classnames';
 import './styles.less';
 
 export interface IShaFormItemProps {
@@ -23,7 +23,15 @@ export interface IShaFormItemProps {
   labelCol?: ColProps;
 }
 
-const FormItem: FC<IShaFormItemProps> = ({ children, model, valuePropName, initialValue, className, labelCol, wrapperCol }) => {
+const FormItem: FC<IShaFormItemProps> = ({
+  children,
+  model,
+  valuePropName,
+  initialValue,
+  className,
+  labelCol,
+  wrapperCol,
+}) => {
   const { formMode, visibleComponentIds } = useForm();
 
   const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
@@ -31,7 +39,7 @@ const FormItem: FC<IShaFormItemProps> = ({ children, model, valuePropName, initi
 
   return (
     <Form.Item
-      className={classNames(className, { 'form-item-hidden' : model.hideLabel })}
+      className={classNames(className, { 'form-item-hidden': model.hideLabel })}
       // className={`${model.hideLabel ? 'form-item-hidden' : ''}`}
       name={getFieldNameFromExpression(model.name)}
       label={model.hideLabel ? null : model.label}

@@ -6,7 +6,11 @@ import { IndexColumnDataType } from '../../providers/dataTable/interfaces';
 import RefListDropDown, { IRefListDropDownOption } from '../refListDropDown';
 import EntityDropdown from '../entityDropdown';
 import { IColumnEditFieldProps } from './interfaces';
-import { IGuidNullableEntityWithDisplayNameDto, IReferenceListItemDto, IReferenceListItemValueDto } from '../../interfaces/shesha';
+import {
+  IGuidNullableEntityWithDisplayNameDto,
+  IReferenceListItemDto,
+  IReferenceListItemValueDto,
+} from '../../interfaces/shesha';
 import FormItem from 'antd/lib/form/FormItem';
 
 // (alias) type IndexColumnDataType = "string" | "number" | "boolean" | "date" | "datetime" | "time" | "refList" | "multiValueRefList" | "entityReference" | "other"
@@ -119,17 +123,15 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
       handleChange(name, val);
     };
 
-    const getMultiValueRefListValues = () => 
+    const getMultiValueRefListValues = () =>
       (stateValue as [])
-      ?.map(item => typeof item === 'object' ? (item as IReferenceListItemValueDto)?.itemValue : item )
-      ?.filter(Boolean)
-    
-    const getReferenceListItemValue = () => (typeof stateValue === 'string' ? stateValue : (stateValue as IReferenceListItemValueDto)?.itemValue)
+        ?.map(item => (typeof item === 'object' ? (item as IReferenceListItemValueDto)?.itemValue : item))
+        ?.filter(Boolean);
 
-    const val =
-      dataType === 'multiValueRefList'
-        ? getMultiValueRefListValues()
-        : getReferenceListItemValue();
+    const getReferenceListItemValue = () =>
+      typeof stateValue === 'string' ? stateValue : (stateValue as IReferenceListItemValueDto)?.itemValue;
+
+    const val = dataType === 'multiValueRefList' ? getMultiValueRefListValues() : getReferenceListItemValue();
 
     return (
       <RefListDropDown
@@ -147,7 +149,8 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
 
   // dataType === 'entityReference' && renderEntityDropdown()
   const renderEntityDropdown = () => {
-    const value = typeof stateValue === 'object' ? (stateValue as IGuidNullableEntityWithDisplayNameDto)?.displayText : stateValue;
+    const value =
+      typeof stateValue === 'object' ? (stateValue as IGuidNullableEntityWithDisplayNameDto)?.displayText : stateValue;
 
     const onChange = (_: number | number[], option: any) => {
       const { children, value } = option as IRefListDropDownOption;

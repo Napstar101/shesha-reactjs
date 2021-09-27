@@ -39,6 +39,7 @@ import { IToolboxComponentGroup } from '../../../interfaces/formDesigner';
 import DisplayFormItem from '../../../components/formDesigner/components/basicDisplayFormItem';
 import EntityPickerComponent from '../../../components/formDesigner/components/entityPicker';
 import Section from '../../../components/formDesigner/components/section';
+import TimeField from '../../../components/formDesigner/components/timeField';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -48,6 +49,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       Button,
       Checkbox,
       CheckboxGroup,
+      TimeField,
       DateField,
       Dropdown,
       NumberField,

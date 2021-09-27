@@ -16,11 +16,19 @@ interface IDateDisplayProps {
   tooltipPlacement?: TooltipPlacement;
 }
 
-export const DateDisplay: FC<IDateDisplayProps> = ({ dateAgo, date, children, showTooltip, format = 'lll', tooltipPlacement = 'top' }) => {
+export const DateDisplay: FC<IDateDisplayProps> = ({
+  dateAgo,
+  date,
+  children,
+  showTooltip,
+  format = 'lll',
+  tooltipPlacement = 'top',
+}) => {
   const dateString = tolocalIsoDate(children || date);
 
-  const getDate = () => dateAgo ? <span>{moment(dateString).fromNow()}</span> : <span>{moment(dateString).format(format)}</span>
-  
+  const getDate = () =>
+    dateAgo ? <span>{moment(dateString).fromNow()}</span> : <span>{moment(dateString).format(format)}</span>;
+
   if (showTooltip) {
     return (
       <Tooltip placement={tooltipPlacement} title={moment(dateString).format(format)}>
@@ -29,7 +37,7 @@ export const DateDisplay: FC<IDateDisplayProps> = ({ dateAgo, date, children, sh
     );
   }
 
-  return getDate()
+  return getDate();
 };
 
 export default DateDisplay;
