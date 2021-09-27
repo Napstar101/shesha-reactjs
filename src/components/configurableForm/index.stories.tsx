@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ConfigurableForm from './configurableForm';
-import { Alert, Col, Form, Row } from 'antd';
+import { Alert, Button, Col, Form, Row } from 'antd';
 import { IConfigurableFormProps } from './models';
 import { ShaApplicationProvider, ShaRoutingProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
@@ -24,10 +24,8 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Story
 const Template: Story<IConfigurableFormProps> = () => {
   const [form] = Form.useForm();
 
-
-
   const onFinish = (data: any) => {
-    console.log("onFinish data: ", data);
+    console.log('onFinish data: ', data);
   };
 
   return (
@@ -42,9 +40,13 @@ const Template: Story<IConfigurableFormProps> = () => {
                 onFinish={onFinish}
                 form={form}
                 sections={{
-                  middleSection: () => <Alert message="This is a custom section" description="" />
+                  middleSection: () => <Alert message="This is a custom section" description="" />,
                 }}
               />
+
+              <Button onClick={() => form?.submit()} type="primary">
+                Submit
+              </Button>
             </Col>
           </Row>
         </ShaRoutingProvider>

@@ -18,7 +18,12 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
     const customProps = model as INumberFieldProps;
     return (
       <FormItem model={model}>
-        <InputNumber disabled={model.disabled} bordered={!customProps.hideBorder}></InputNumber>
+        <InputNumber
+          disabled={model.disabled}
+          bordered={!customProps.hideBorder}
+          min={customProps?.min}
+          max={customProps?.max}
+        />
       </FormItem>
     );
   },

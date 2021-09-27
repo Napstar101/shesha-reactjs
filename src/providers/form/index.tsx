@@ -102,7 +102,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     path: path,
     formMode: mode,
     components: formComponents || [],
-    form: form,
+    form,
     actions: convertActions(null, actions),
     sections: convertSectionsToList(null, sections),
     context: context,

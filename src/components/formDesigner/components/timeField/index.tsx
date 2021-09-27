@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { ClockCircleOutlined } from '@ant-design/icons';
@@ -8,6 +8,12 @@ import settingsFormJson from './settingsForm.json';
 import moment, { Moment, isMoment } from 'moment';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useForm } from '../../../../providers';
+import { HiddenFormItem } from '../../../hiddenFormItem';
+type RangeType = 'start' | 'end';
+type RangeInfo = {
+  range: RangeType;
+};
 
 type RangeValue = [moment.Moment, moment.Moment];
 
@@ -17,31 +23,24 @@ type TimePickerChangeEvent = (value: any | null, dateString: string) => void;
 type RangePickerChangeEvent = (values: any, formatString: [string, string]) => void;
 
 export interface ITimePickerProps extends IConfigurableFormComponent {
+  className?: string;
+  defaultValue?: string | [string, string];
+  format?: string;
+  value?: string | [string, string];
+  placeholder?: string;
+  popupClassName?: string;
+  hourStep?: number;
+  minuteStep?: number;
+  secondStep?: number;
+  disabled?: boolean; // Use
+  range?: boolean; // Use
   allowClear?: boolean;
   autoFocus?: boolean;
   bordered?: boolean;
-  className?: string;
-  clearIcon?: string; // Icon picker
-  clearText?: string;
-  defaultValue?: string | [string, string];
-  disabled?: boolean; // Use
-  range?: boolean; // Use
-  // disabledHours?: boolean;
-  // disabledMinutes?: boolean;
-  // disabledSeconds?: boolean;
-  format?: string;
-  value?: string | [string, string];
-  hideDisabledOptions?: boolean;
-  hourStep?: number;
   inputReadOnly?: boolean;
-  minuteStep?: number;
-  placeholder?: string;
-  popupClassName?: string;
-  secondStep?: number;
   showNow?: boolean;
+  hideDisabledOptions?: boolean;
   use12Hours?: boolean;
-  startName?: string;
-  endName?: string;
   onChange?: TimePickerChangeEvent | RangePickerChangeEvent;
 }
 
@@ -65,9 +64,18 @@ const TimeField: IToolboxComponent<ITimePickerProps> = {
     const customModel = model as ITimePickerProps;
 
     return (
-      <FormItem model={model}>
-        <TimePickerWrapper {...customModel} />
-      </FormItem>
+      <Fragment>
+        <FormItem model={model}>
+          <TimePickerWrapper {...customModel} />
+        </FormItem>
+
+        {customModel?.range && (
+          <Fragment>
+            <HiddenFormItem name={`${customModel?.name}Start`} />
+            <HiddenFormItem name={`${customModel?.name}End`} />
+          </Fragment>
+        )}
+      </Fragment>
     );
   },
   settingsFormMarkup: settingsForm,
@@ -86,12 +94,11 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
   range,
   value,
   defaultValue,
-  startName,
-  endName,
   placeholder,
   format = DATE_TIME_FORMAT,
   ...rest
 }) => {
+  const { form } = useForm();
   const evaluatedValue = getMoment(value, format);
 
   const getDefaultRangePickerValues = () =>
@@ -109,10 +116,20 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
     (onChange as RangePickerChangeEvent)(values, formatString);
   };
 
+  const onCalendarChange = (_values: any[], formatString: [string, string], info: RangeInfo) => {
+    if (info?.range === 'end' && form) {
+      form.setFieldsValue({
+        [`${rest?.name}Start`]: formatString[0],
+        [`${rest?.name}End`]: formatString[1],
+      });
+    }
+  };
+
   if (range) {
     return (
       <TimePicker.RangePicker
         onChange={handleRangePicker}
+        onCalendarChange={onCalendarChange}
         format={format}
         defaultValue={getDefaultRangePickerValues() as RangeValue}
         {...rest}
@@ -127,6 +144,7 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
       onChange={handleTimePicker}
       format={format}
       defaultValue={moment(defaultValue)}
+      // show
       {...rest}
     />
   );

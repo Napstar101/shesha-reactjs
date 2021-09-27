@@ -64,10 +64,10 @@ export const componentUpdateAction = createAction<IComponentUpdatePayload, IComp
   p => p
 );
 
-export const componentUpdateSettingsValidationAction = createAction<IComponentUpdateSettingsValidationPayload, IComponentUpdateSettingsValidationPayload>(
-  FormActionEnums.ComponentUpdateSettingsValidation,
-  p => p
-);
+export const componentUpdateSettingsValidationAction = createAction<
+  IComponentUpdateSettingsValidationPayload,
+  IComponentUpdateSettingsValidationPayload
+>(FormActionEnums.ComponentUpdateSettingsValidation, p => p);
 
 export const loadRequestAction = createAction<IFormLoadPayload, IFormLoadPayload>(FormActionEnums.LoadRequest, p => p);
 export const loadSuccessAction = createAction<IFormProps, IFormProps>(FormActionEnums.LoadSuccess, p => p);
