@@ -74,7 +74,7 @@ const ReactTable: FC<IReactTableProps> = ({
     }),
     []
   );
-  
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state } = useTable(
     {
       columns,
@@ -166,18 +166,12 @@ const ReactTable: FC<IReactTableProps> = ({
     }
   }, [state?.columnResizing]);
 
-  useEffect(() => {
-    if (onResizedChange) {
-      onResizedChange(state?.columnResizing);
-    }
-  }, [state?.columnResizing]);
-
   const handleDoubleClickRow = (row: Row<object>) => {
     if (onRowDoubleClick) {
       onRowDoubleClick(row?.original);
     }
   };
-  
+
   return (
     <Spin
       spinning={loading}
@@ -190,38 +184,39 @@ const ReactTable: FC<IReactTableProps> = ({
     >
       <div className="sha-react-table">
         <table {...getTableProps()} className="sha-table">
-          {columns?.length > 1 && headerGroups.map(headerGroup => (
-            <div
-              {...headerGroup.getHeaderGroupProps({
-                // style: { paddingRight: '15px' },
-              })}
-              className={classNames('tr tr-head')}
-            >
-              {headerGroup?.headers?.map(column => {
-                return (
-                  <div
-                    // {...column.getHeaderProps(headerProps)}
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={classNames('th', {
-                      'sorted-asc': column.isSorted && column.isSortedDesc,
-                      'sorted-desc': column.isSorted && !column.isSortedDesc,
-                    })}
-                  >
-                    {column.render('Header')}
+          {columns?.length > 1 &&
+            headerGroups.map(headerGroup => (
+              <div
+                {...headerGroup.getHeaderGroupProps({
+                  // style: { paddingRight: '15px' },
+                })}
+                className={classNames('tr tr-head')}
+              >
+                {headerGroup?.headers?.map(column => {
+                  return (
+                    <div
+                      // {...column.getHeaderProps(headerProps)}
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className={classNames('th', {
+                        'sorted-asc': column.isSorted && column.isSortedDesc,
+                        'sorted-desc': column.isSorted && !column.isSortedDesc,
+                      })}
+                    >
+                      {column.render('Header')}
 
-                    {/* Use column.getResizerProps to hook up the events correctly */}
-                    {column.canResize && (
-                      <div
-                        {...column.getResizerProps()}
-                        className={classNames('resizer', { isResizing: column.isResizing })}
-                        onClick={onResizeClick}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+                      {/* Use column.getResizerProps to hook up the events correctly */}
+                      {column.canResize && (
+                        <div
+                          {...column.getResizerProps()}
+                          className={classNames('resizer', { isResizing: column.isResizing })}
+                          onClick={onResizeClick}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
 
           <div
             className="tbody"

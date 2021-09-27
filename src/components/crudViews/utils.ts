@@ -41,6 +41,8 @@ export const handleGenericFiltering = (model: object, filters: IGenericFormFilte
             data = { ...data, ...{ [key]: mutate } };
           }
         });
+      } else if (typeof value === 'object' && Object.keys(value || {})?.length) {
+        data = { ...data, ...{ [key]: handleGenericFiltering(value, filters) } };
       } else {
         data = { ...data, ...{ [key]: value } };
       }
