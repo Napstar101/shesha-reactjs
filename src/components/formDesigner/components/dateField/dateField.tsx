@@ -95,27 +95,30 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   },
 };
 
-export const DatePickerWrapper: FC<IDateFieldProps> = ({
-  name,
-  dateFormat = DATE_TIME_FORMATS.date,
-  timeFormat = DATE_TIME_FORMATS.time,
-  yearFormat = DATE_TIME_FORMATS.year,
-  quarterFormat = DATE_TIME_FORMATS.quarter,
-  monthFormat = DATE_TIME_FORMATS.month,
-  weekFormat = DATE_TIME_FORMATS.week,
-  disabled,
-  hideBorder,
-  range,
-  value,
-  showTime,
-  showNow,
-  showToday,
-  onChange,
-  picker = 'date',
-  defaultValue,
-  ...rest
-}) => {
+export const DatePickerWrapper: FC<IDateFieldProps> = props => {
+  const {
+    name,
+    dateFormat = DATE_TIME_FORMATS.date,
+    timeFormat = DATE_TIME_FORMATS.time,
+    yearFormat = DATE_TIME_FORMATS.year,
+    quarterFormat = DATE_TIME_FORMATS.quarter,
+    monthFormat = DATE_TIME_FORMATS.month,
+    weekFormat = DATE_TIME_FORMATS.week,
+    disabled,
+    hideBorder,
+    range,
+    value,
+    showTime,
+    showNow,
+    showToday,
+    onChange,
+    picker = 'date',
+    defaultValue,
+    ...rest
+  } = props;
   const { form } = useForm();
+
+  console.log('DatePickerWrapper props, form.getFieldsValue(): ', props, form.getFieldsValue());
 
   const getFormat = () => {
     switch (picker) {
