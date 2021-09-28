@@ -10,6 +10,7 @@ import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
 import { HiddenFormItem } from '../../../hiddenFormItem';
+
 type RangeType = 'start' | 'end';
 type RangeInfo = {
   range: RangeType;
@@ -106,7 +107,7 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
       ? defaultValue?.map(v => moment(new Date(v), format))
       : [null, null];
 
-  const handleTimePicker = (value: moment.Moment, dateString: string) => {
+  const handleTimePickerChange = (value: moment.Moment, dateString: string) => {
     const newValue = isMoment(value) ? value.format() : value;
 
     (onChange as TimePickerChangeEvent)(newValue, dateString);
@@ -141,7 +142,7 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
   return (
     <TimePicker
       value={evaluatedValue}
-      onChange={handleTimePicker}
+      onChange={handleTimePickerChange}
       format={format}
       defaultValue={moment(defaultValue)}
       // show

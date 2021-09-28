@@ -42,6 +42,10 @@ const Template: Story<IConfigurableFormProps> = () => {
                 sections={{
                   middleSection: () => <Alert message="This is a custom section" description="" />,
                 }}
+                initialValues={{
+                  scheduleDateStart: '2021-10-30T00:40:40.317Z',
+                  scheduleDateEnd: '2021-09-12T00:40:40.317Z',
+                }}
               />
 
               <Button onClick={() => form?.submit()} type="primary">

@@ -85,7 +85,7 @@ export const Dropdown: FC<IDropdownProps> = ({
       mode={mode}
     >
       {options.map((option, index) => (
-        <Select.Option key={index} value={option.value}>
+        <Select.Option key={index} value={option.value} >
           {option.label}
         </Select.Option>
       ))}
