@@ -118,8 +118,6 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
   } = props;
   const { form } = useForm();
 
-  console.log('DatePickerWrapper props, form.getFieldsValue(): ', props, form.getFieldsValue());
-
   const getFormat = () => {
     switch (picker) {
       case 'date':
@@ -177,7 +175,6 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
         {...rest}
         picker={picker}
         showTime={showTime}
-        // showNow={showNow}
       />
     );
   }
