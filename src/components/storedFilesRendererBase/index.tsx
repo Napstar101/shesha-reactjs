@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import Dragger, { DraggerProps } from 'antd/lib/upload/Dragger';
 import { InboxOutlined, FileZipOutlined, UploadOutlined } from '@ant-design/icons';
-import { message, Button, notification, Alert, Upload } from 'antd';
+import { message, Button, notification, Alert, Upload, ButtonProps } from 'antd';
 import { UploadChangeParam, RcFile } from 'antd/lib/upload/interface';
 import { IUploadFilePayload, IStoredFile, IDownloadFilePayload } from '../../providers/storedFiles/contexts';
 
@@ -26,8 +26,9 @@ export interface IStoredFilesRendererProps {
   downloadZipFile?: () => void;
   downloadFile: (payload: IDownloadFilePayload) => void;
   validFileTypes?: IUploaderFileTypes[];
-  isDragger?: boolean;
   maxFileLength?: number;
+  isDragger?: boolean;
+  uploadBtnProps?: ButtonProps;
 }
 
 export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
@@ -43,6 +44,7 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
   ownerType,
   fetchFilesError,
   downloadZipFileError,
+  uploadBtnProps,
   validFileTypes = [],
   maxFileLength = 0,
   isDragger = true,
@@ -59,12 +61,14 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
     name: 'file',
     multiple,
     fileList,
+    disabled: true,
     onChange(info: UploadChangeParam) {
       const { status } = info.file;
 
       if (status !== 'uploading') {
         console.log(info.file, info.fileList);
       }
+
       if (status === 'done') {
         message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === 'error') {
@@ -103,10 +107,8 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
     },
     onPreview: ({ uid, name }) => {
       downloadFile({ fileId: uid, fileName: name });
-    }
+    },
   };
-
-  console.log({isDragger, props});
 
   const openFilesZipNotification = () =>
     notification.success({
@@ -129,8 +131,8 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
         </Dragger>
       ) : (
         <Upload {...props}>
-          <Button>
-            <UploadOutlined /> Upload
+          <Button type="link" icon={<UploadOutlined />} {...uploadBtnProps}>
+            (press to upload)
           </Button>
 
           {!hasFiles && (

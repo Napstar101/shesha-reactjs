@@ -4,9 +4,10 @@ import { Story } from '@storybook/react';
 import ConfigurableForm from './configurableForm';
 import { Alert, Button, Col, Form, Row } from 'antd';
 import { IConfigurableFormProps } from './models';
-import { ShaApplicationProvider, ShaRoutingProvider } from '../../providers';
+import { ShaApplicationProvider, ShaRoutingProvider, StoredFilesProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { IndexPageTemplate } from './stories/indexPage';
+import StoredFilesRenderer from '../storedFilesRenderer';
 // import { useApplicationsApplyForMembership } from '../../apis/applications';
 
 export default {
@@ -40,7 +41,11 @@ const Template: Story<IConfigurableFormProps> = () => {
                 onFinish={onFinish}
                 form={form}
                 sections={{
-                  middleSection: () => <Alert message="This is a custom section" description="" />,
+                  middleSection: () => (
+                    <StoredFilesProvider ownerId="0bfb4b64-3e83-4765-802d-7f98601c2453" ownerType="BursMan.PaymentPack">
+                      <StoredFilesRenderer isDragger={false} />
+                    </StoredFilesProvider>
+                  ),
                 }}
                 initialValues={{
                   scheduleDateStart: '2021-10-30T00:40:40.317Z',

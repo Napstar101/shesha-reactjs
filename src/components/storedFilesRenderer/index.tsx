@@ -1,13 +1,21 @@
 import React, { FC } from 'react';
 import { StoredFilesRendererBase } from '../storedFilesRendererBase';
 import { useStoredFilesStore } from '../../providers/storedFiles';
+import { ButtonProps } from 'antd';
 
 interface IStoredFilesRendererProps {
   ownerId?: string;
   ownerType?: string;
+  isDragger?: boolean;
+  uploadBtnProps?: ButtonProps;
 }
 
-export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({ ownerId, ownerType }) => {
+export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({
+  ownerId,
+  ownerType,
+  isDragger,
+  uploadBtnProps,
+}) => {
   const {
     fileList,
     deleteFile,
@@ -29,6 +37,8 @@ export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({ ownerId, ow
       downloadFile={downloadFile}
       isDownloadingFileListZip={isInProgress && isInProgress.dowloadZip}
       isDownloadZipSucceeded={succeeded && succeeded.dowloadZip}
+      isDragger={isDragger}
+      uploadBtnProps={uploadBtnProps}
     />
   );
 };

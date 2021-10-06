@@ -51,6 +51,14 @@
     "label": "Description"
   },
   {
+    "id": "bad91d89-967b-4202-8eec-7e0f7a3b4292",
+    "type": "checkbox",
+    "name": "list",
+    "parentId": "root",
+    "label": "List",
+    "description": "This will allow you to upload files against a model and not against a property of a model"
+  },
+  {
     "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
     "type": "checkbox",
     "name": "hidden",
@@ -141,7 +149,8 @@
     "type": "textField",
     "name": "propertyName",
     "parentId": "root",
-    "label": "Property Name"
+    "label": "Property Name",
+    "customVisibility": "return !data.list"
   },
   {
     "id": "a59d3daa-e34f-4410-9ae1-fc1669eab5e5",

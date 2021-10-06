@@ -3,8 +3,8 @@ import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/fo
 import { FileAddOutlined } from '@ant-design/icons';
 import FormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import { FileUpload } from '../../../../components';
-import { StoredFileProvider, useSheshaApplication } from '../../../../providers';
+import { FileUpload, StoredFilesRenderer } from '../../../../components';
+import { StoredFileProvider, StoredFilesProvider, useSheshaApplication } from '../../../../providers';
 import { useForm } from '../../../../providers/form';
 import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import React from 'react';
@@ -16,6 +16,7 @@ export interface IFileUploadProps extends IConfigurableFormComponent {
   allowUpload?: boolean;
   allowReplace?: boolean;
   allowDelete?: boolean;
+  list?: boolean;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -33,23 +34,27 @@ const FileUploadComponent: IToolboxComponent<IFileUploadProps> = {
     const { formData } = useForm();
     const ownerId = evaluateValue(customProps.ownerId, { data: formData });
 
-    // dictionary accessor
-
     return (
       <FormItem model={model}>
-        <StoredFileProvider
-          baseUrl={backendUrl}
-          ownerId={ownerId}
-          ownerType={customProps.ownerType}
-          propertyName={customProps.propertyName}
-          uploadMode={ownerId ? 'async' : 'sync'}
-        >
-          <FileUpload
-            allowUpload={!customProps.disabled && customProps.allowUpload}
-            allowDelete={!customProps.disabled && customProps.allowDelete}
-            allowReplace={!customProps.disabled && customProps.allowReplace}
-          ></FileUpload>
-        </StoredFileProvider>
+        {customProps?.list ? (
+          <StoredFilesProvider ownerId={ownerId} ownerType={customProps.ownerType}>
+            <StoredFilesRenderer isDragger={false} uploadBtnProps={{ icon: null, type: 'link' }} />
+          </StoredFilesProvider>
+        ) : (
+          <StoredFileProvider
+            baseUrl={backendUrl}
+            ownerId={ownerId}
+            ownerType={customProps.ownerType}
+            propertyName={customProps.propertyName}
+            uploadMode={ownerId ? 'async' : 'sync'}
+          >
+            <FileUpload
+              allowUpload={!customProps.disabled && customProps.allowUpload}
+              allowDelete={!customProps.disabled && customProps.allowDelete}
+              allowReplace={!customProps.disabled && customProps.allowReplace}
+            />
+          </StoredFileProvider>
+        )}
       </FormItem>
     );
   },
