@@ -28,6 +28,7 @@ export interface IStoredFilesRendererProps {
   validFileTypes?: IUploaderFileTypes[];
   maxFileLength?: number;
   isDragger?: boolean;
+  disabled?: boolean;
   uploadBtnProps?: ButtonProps;
 }
 
@@ -48,6 +49,7 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
   validFileTypes = [],
   maxFileLength = 0,
   isDragger = true,
+  disabled,
 }) => {
   const hasFiles = !!fileList.length;
 
@@ -61,7 +63,7 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
     name: 'file',
     multiple,
     fileList,
-    disabled: true,
+    disabled,
     onChange(info: UploadChangeParam) {
       const { status } = info.file;
 

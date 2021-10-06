@@ -38,7 +38,11 @@ const FileUploadComponent: IToolboxComponent<IFileUploadProps> = {
       <FormItem model={model}>
         {customProps?.list ? (
           <StoredFilesProvider ownerId={ownerId} ownerType={customProps.ownerType}>
-            <StoredFilesRenderer isDragger={false} uploadBtnProps={{ icon: null, type: 'link' }} />
+            <StoredFilesRenderer
+              isDragger={false}
+              uploadBtnProps={{ icon: null, type: 'link' }}
+              disabled={customProps?.disabled}
+            />
           </StoredFilesProvider>
         ) : (
           <StoredFileProvider
