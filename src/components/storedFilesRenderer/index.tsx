@@ -8,6 +8,7 @@ interface IStoredFilesRendererProps {
   ownerType?: string;
   isDragger?: boolean;
   uploadBtnProps?: ButtonProps;
+  disabled?: boolean;
 }
 
 export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({
@@ -15,6 +16,7 @@ export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({
   ownerType,
   isDragger,
   uploadBtnProps,
+  disabled,
 }) => {
   const {
     fileList,
@@ -39,6 +41,7 @@ export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({
       isDownloadZipSucceeded={succeeded && succeeded.dowloadZip}
       isDragger={isDragger}
       uploadBtnProps={uploadBtnProps}
+      disabled={disabled}
     />
   );
 };
