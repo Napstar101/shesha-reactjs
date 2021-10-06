@@ -153,7 +153,13 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
   };
 
   const handleRangePicker = (values: any[], formatString: [string, string]) => {
-    (onChange as RangePickerChangeEvent)(values, formatString);
+    const dates = (values as []).map((val: any) => {
+      if (isMoment(val)) return val.format();
+
+      return val;
+    });
+
+    (onChange as RangePickerChangeEvent)(dates, formatString);
   };
 
   const onCalendarChange = (values: any[], _formatString: [string, string], info: RangeInfo) => {

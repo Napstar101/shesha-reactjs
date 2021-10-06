@@ -108,7 +108,7 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
       : [null, null];
 
   const handleTimePickerChange = (value: moment.Moment, dateString: string) => {
-    const newValue = isMoment(value) ? value.format() : value;
+    const newValue = isMoment(value) ? value.format(format) : value;
 
     (onChange as TimePickerChangeEvent)(newValue, dateString);
   };
@@ -144,7 +144,7 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
       value={evaluatedValue}
       onChange={handleTimePickerChange}
       format={format}
-      defaultValue={moment(defaultValue)}
+      defaultValue={defaultValue && moment(defaultValue)}
       // show
       {...rest}
     />
