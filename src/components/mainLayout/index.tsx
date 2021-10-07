@@ -10,6 +10,7 @@ import LayoutHeading from '../layoutHeading';
 import { withAuth } from '../../hocs';
 import { useSidebarMenuDefaults } from '../../providers/sidebarMenu';
 import ConfigurableSidebarMenu from '../configurableSidebarMenu';
+import { useLocalStorage } from '../..';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -71,9 +72,10 @@ const DefaultLayout: FC<PropsWithChildren<IMainLayoutProps>> = props => {
     toolbar,
     headerControls,
   } = props;
-  const [collapsed, setCollapsed] = useState(true);
   const sidebarDefaults = useSidebarMenuDefaults();
-  const sidebarDefaultItems = sidebarDefaults?.items || [];  
+  const sidebarDefaultItems = sidebarDefaults?.items || [];
+
+  const [collapsed, setCollapsed] = useLocalStorage('SIDEBAR_COLLAPSE', true);
 
   useEffect(() => {
     document.title = title || '';
