@@ -45,6 +45,13 @@
     "dataSourceType": "values"
   },
   {
+    "id": "fbdb6bb1-5994-4205-86b4-236ca61ae53e",
+    "type": "numberField",
+    "name": "defaultValue",
+    "parentId": "root",
+    "label": "Default tValue"
+  },
+  {
     "id": "fbdb6bb1-5994-4205-86b4-236ca61ae54e",
     "type": "textField",
     "name": "placeholder",
