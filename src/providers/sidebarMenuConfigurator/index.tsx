@@ -29,9 +29,7 @@ export interface ISidebarMenuConfiguratorProviderProps {
 }
 
 const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfiguratorProviderProps>> = props => {
-  const {
-    children,
-  } = props;
+  const { children } = props;
 
   const [state, dispatch] = useReducer(sidebarMenuReducer, {
     ...SIDEBAR_MENU_CONTEXT_INITIAL_STATE,
@@ -69,7 +67,7 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
   const updateItem = (payload: IUpdateItemSettingsPayload) => {
     dispatch(updateItemAction(payload));
   };
-  
+
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   return (

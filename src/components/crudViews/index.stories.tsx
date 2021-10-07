@@ -61,7 +61,7 @@ const RowSelectionsTemplate: Story<IIndexPageProps> = () => {
     });
   }
 
-  console.log('rowSelectionState: ', rowSelectionState);
+  // console.log('rowSelectionState: ', rowSelectionState);
 
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>

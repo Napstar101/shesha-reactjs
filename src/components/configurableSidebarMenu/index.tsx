@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ConfigurableComponent, ISettingsEditorProps } from '../configurableComponent';
 import { ErrorBoundary } from '../errorBoundary/errorBoundary';
 import { SidebarMenu } from '../sidebarMenu';
-import { ISidebarMenuItem, SidebarMenuProvider,  } from '../../providers/sidebarMenu';
+import { ISidebarMenuItem, SidebarMenuProvider } from '../../providers/sidebarMenu';
 import ComponentSettingsModal from './settingsModal';
 import { MenuTheme } from 'antd/lib/menu/MenuContext';
 
@@ -16,25 +16,23 @@ export interface IConfigurableSidebarMenuProps {
   id: string;
 }
 
-export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = (props) => {
-
+export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = props => {
   const editor = (editorProps: ISettingsEditorProps<ISideBarMenuProps>) => {
     return (
       <ComponentSettingsModal
         settings={editorProps.settings}
         onSave={editorProps.onSave}
         onCancel={editorProps.onCancel}
-      >
-      </ComponentSettingsModal>
+      />
     );
-  }
+  };
 
   return (
     <ErrorBoundary>
       <ConfigurableComponent<ISideBarMenuProps>
         defaultSettings={props.defaultSettings}
         settingsEditor={{
-          render: editor
+          render: editor,
         }}
         id={props.id}
       >
@@ -42,8 +40,7 @@ export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = (props
           <div className={`sidebar ${componentState.wrapperClassName}`}>
             <BlockOverlay></BlockOverlay>
             <SidebarMenuProvider items={componentState.settings?.items || []}>
-              <SidebarMenu theme={props.theme}>
-              </SidebarMenu>
+              <SidebarMenu theme={props.theme}></SidebarMenu>
             </SidebarMenuProvider>
           </div>
         )}

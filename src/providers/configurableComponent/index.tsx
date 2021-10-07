@@ -17,13 +17,18 @@ import {
   saveErrorAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
-import { useConfigurableComponentGet, /*useConfigurableComponentUpdate,*/ useConfigurableComponentUpdateSettings, ConfigurableComponentUpdateSettingsInput } from '../../apis/configurableComponent';
+import {
+  useConfigurableComponentGet,
+  /*useConfigurableComponentUpdate,*/ useConfigurableComponentUpdateSettings,
+  ConfigurableComponentUpdateSettingsInput,
+} from '../../apis/configurableComponent';
 import { useReducer } from 'react';
+import { usePrevious } from 'react-use';
 
 export interface IGenericConfigurableComponentProviderProps<TSettings extends any> {
-  initialState: IConfigurableComponentStateContext<TSettings>,
-  stateContext: Context<IConfigurableComponentStateContext<TSettings>>,
-  actionContext: Context<IConfigurableComponentActionsContext<TSettings>>,
+  initialState: IConfigurableComponentStateContext<TSettings>;
+  stateContext: Context<IConfigurableComponentStateContext<TSettings>>;
+  actionContext: Context<IConfigurableComponentActionsContext<TSettings>>;
   id?: string;
 }
 
@@ -34,39 +39,48 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
   actionContext,
   id,
 }: PropsWithChildren<IGenericConfigurableComponentProviderProps<TSettings>>) => {
-
   const reducer = reducerFactory(initialState);
-  
+
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    id: id,
-  });  
+    id,
+  });
 
-  const { loading: isFetching, error: fetchingError, data: fetchingResponse, refetch } = useConfigurableComponentGet({ lazy: true, id });
+  const { loading: isFetching, error: fetchingError, data: fetchingResponse, refetch } = useConfigurableComponentGet({
+    lazy: true,
+    id,
+  });
+
+  const previousId = usePrevious(id);
 
   const doFetch = () => {
-    dispatch(loadRequestAction({ id }));
-    refetch({});
+    if (id && id !== previousId) {
+      dispatch(loadRequestAction({ id }));
+      refetch({});
+    }
+
+    // dispatch(loadRequestAction({ id }));
+    // refetch({});
   };
 
   useEffect(() => {
     //if (state.settings) return;
-    if (!Boolean(id))
-      return;
+    if (!Boolean(id)) return;
 
     doFetch();
   }, [id]);
 
   useEffect(() => {
     if (!isFetching) {
-      if (fetchingResponse){
-        dispatch(loadSuccessAction({
-          ...fetchingResponse.result,
-          settings: fetchingResponse.result?.settings
-        }));
+      if (fetchingResponse) {
+        dispatch(
+          loadSuccessAction({
+            ...fetchingResponse.result,
+            settings: fetchingResponse.result?.settings,
+          })
+        );
       }
-      if (fetchingError)
-        dispatch(loadErrorAction({ error: fetchingError?.['message'] || 'Failed to load component' }));
+      if (fetchingError) dispatch(loadErrorAction({ error: fetchingError?.['message'] || 'Failed to load component' }));
     }
   }, [isFetching, fetchingError, fetchingResponse]);
 
@@ -77,7 +91,9 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
   };
 
   // todo: review usage of useFormUpdateMarkup after
-  const { mutate: saveFormHttp /*, loading: saveFormInProgress, error: saveFormError*/ } = useConfigurableComponentUpdateSettings({
+  const {
+    mutate: saveFormHttp /*, loading: saveFormInProgress, error: saveFormError*/,
+  } = useConfigurableComponentUpdateSettings({
     id: id,
   });
 
@@ -87,19 +103,19 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
       return Promise.resolve();
     }
 
-    dispatch(saveRequestAction({  }));
+    dispatch(saveRequestAction({}));
 
     const dto: ConfigurableComponentUpdateSettingsInput = {
       id: state.id,
       settings: settings ? JSON.stringify(settings) : null,
     };
-    
+
     return saveFormHttp(dto, {})
       .then(_response => {
         dispatch(saveSuccessAction({ settings: dto.settings }));
       })
       .catch(_error => {
-        dispatch(saveErrorAction({ error: "" }));
+        dispatch(saveErrorAction({ error: '' }));
       });
   };
 
@@ -112,9 +128,7 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
 
   return (
     <stateContext.Provider value={state}>
-      <actionContext.Provider value={configurableFormActions}>
-        {children}
-      </actionContext.Provider>
+      <actionContext.Provider value={configurableFormActions}>{children}</actionContext.Provider>
     </stateContext.Provider>
   );
 };
@@ -137,9 +151,11 @@ export const createConfigurableComponent = <TSettings extends any>(defaultSettin
     }
 
     return { ...stateContext, ...actionsContext };
-  }
+  };
 
-  const ConfigurableComponentProvider = <T extends PropsWithChildren<IConfigurableComponentProviderProps>>(props: T) => {
+  const ConfigurableComponentProvider = <T extends PropsWithChildren<IConfigurableComponentProviderProps>>(
+    props: T
+  ) => {
     return (
       <GenericConfigurableComponentProvider<TSettings>
         initialState={initialState}
@@ -150,7 +166,7 @@ export const createConfigurableComponent = <TSettings extends any>(defaultSettin
         {props.children}
       </GenericConfigurableComponentProvider>
     );
-  }
+  };
 
   return { ConfigurableComponentProvider, useConfigurableComponent };
 };
