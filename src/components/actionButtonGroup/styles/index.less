@@ -1,13 +1,19 @@
 .sha-action-btn-group {
   button {
     &:last-child {
-      padding-left: unset;
+      padding-left: @padding-sm;
     }
 
     &::before {
       content: '|';
       padding-left: @padding-sm;
       color: lightgrey;
+    }
+
+    &:hover {
+      border-radius: 5px;
+      color: white;
+      background-color: #00ad5f;
     }
 
     &:first-child {
