@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Alert } from 'antd';
+import { Alert, AlertProps, notification } from 'antd';
 import { IErrorInfo } from '../../interfaces/errorInfo';
 import { IAjaxResponseBase } from '../../interfaces/ajaxResponse';
 import _ from 'lodash';
@@ -8,11 +8,12 @@ export interface IValidationErrorsProps {
   error: IAjaxResponseBase | IErrorInfo | string | boolean;
 }
 
-// Hack. Should make ts-transformer-keys work;
-const keysOfErrorInfo = ['code', 'message', 'details', 'validationErrors'];
-const keysOfIAjaxResponse = ['result', 'targetUrl', 'success', 'error'];
+const DEFAULT_ERROR_MSG = 'Sorry, an error has occurred. Please try again later';
 
-const UNKNOWN_ERROR = 'Sorry an error ocurred while processing your request';
+const renderAlert = (props: AlertProps) => {
+  notification.error({ message: props.message });
+  return <Alert className="sha-validation-error-alert" type="error" showIcon {...props} />;
+};
 
 /**
  * A component for displaying validation errors
@@ -20,54 +21,46 @@ const UNKNOWN_ERROR = 'Sorry an error ocurred while processing your request';
 export const ValidationErrors: FC<IValidationErrorsProps> = ({ error }) => {
   if (!error) return null;
 
-  // something hardcoded for backward compatibility ))
-  if (typeof error === 'boolean') {
-    return <Alert message={UNKNOWN_ERROR} type="error" showIcon closable />;
-  }
+  console.log('ValidationErrors error: ', error);
+
+  let errorObj = error as IErrorInfo;
 
   if (typeof error === 'string') {
-    return <Alert message={error} type="error" showIcon closable />;
+    return renderAlert({ message: DEFAULT_ERROR_MSG });
   }
 
-  const renderErrorInfo = ({ message, details, validationErrors }: IErrorInfo) => {
-    const msg = message || details || UNKNOWN_ERROR;
+  // IAjaxResponseBase
+  if (Object.keys(error).includes('data')) {
+    errorObj = error['data']['error'] as IErrorInfo;
+  }
 
-    const hasValidationErrors = !!validationErrors?.length;
+  const { code, message, details, validationErrors } = errorObj;
 
-    const description = hasValidationErrors ? (
+  if (!code && !message && !details && !validationErrors) {
+    return renderAlert({ message: DEFAULT_ERROR_MSG });
+  }
+
+  if (validationErrors?.length) {
+    const violations = (
       <ul>
         {validationErrors?.map((e, i) => (
           <li key={i}>{e.message}</li>
         ))}
       </ul>
-    ) : null;
-
-    return (
-      <Alert
-        message={hasValidationErrors ? 'Please correct the errors and try again:' : msg}
-        description={description}
-        type="error"
-        showIcon
-        closable
-      />
     );
-  };
 
-  const errorKeys = Object.keys(error);
-
-  const isErrorInfo = _.intersection(errorKeys, keysOfErrorInfo);
-
-  const isAjaxResponse = _.intersection(errorKeys, keysOfIAjaxResponse);
-
-  if (isErrorInfo) {
-    return renderErrorInfo(error as IErrorInfo);
+    return renderAlert({ message: 'Please correct the errors and try again:', description: violations });
   }
 
-  if (isAjaxResponse) {
-    return renderErrorInfo((error as IAjaxResponseBase).error);
+  if (message) {
+    // return renderAlert({ message });
   }
 
-  return <Alert message={UNKNOWN_ERROR} type="error" showIcon closable />;
+  if (details) {
+    // return renderAlert({ message: details });
+  }
+
+  return renderAlert({ message: DEFAULT_ERROR_MSG });
 };
 
 export default ValidationErrors;

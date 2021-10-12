@@ -14,6 +14,7 @@ const API_LIST = [
   // 'DataTable',
   // 'Form',
   // 'Note',
+  'Person',
   // 'ReferenceList',
   // 'ScheduledJobExecution',
   // 'Session',

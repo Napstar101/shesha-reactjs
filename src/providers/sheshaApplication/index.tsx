@@ -30,7 +30,7 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
   accessTokenName,
   router,
   unauthorizedRedirectUrl,
-  whitelistUrls
+  whitelistUrls,
 }) => {
   const [state, dispatch] = useReducer(appConfiguratorReducer, {
     ...SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
