@@ -16,7 +16,7 @@ export const ValidationErrors: FC<IValidationErrorsProps> = ({ error }) => {
   if (!error) return null;
 
   const renderAlert = (props: AlertProps) => {
-    return <Alert className="sha-validation-error-alert" type="error" showIcon {...props} />;
+    return <Alert className="sha-validation-error-alert" type="error" showIcon closable {...props} />;
   };
 
   let errorObj = error as IErrorInfo;
