@@ -54,7 +54,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   onRowsChanged,
   onExportSuccess,
   onExportError,
-  crudParentEntityKey = 'parentEntity'
+  crudParentEntityKey = 'parentEntity',
 }) => {
   const store = useDataTableStore();
   const { headers } = useAuthState();
@@ -85,12 +85,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     cancelCreateOrEditRowData,
     updateLocalTableData,
     deleteRowItem,
-    succeeded: {
-      exportToExcel: exportToExcelSuccess
-    },
-    error: {
-      exportToExcel: exportToExcelError
-    },
+    succeeded: { exportToExcel: exportToExcelSuccess },
+    error: { exportToExcel: exportToExcelError },
   } = useDataTableStore();
 
   if (exportToExcelSuccess && onExportSuccess) {
@@ -184,74 +180,78 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   // Crud is either boolean or ICrudState, so here we're just return allowed crud actions
   const getAllowedCrudActions = () => {
     // console.log('getAllowedCrudActions ');
-    
+
     if (typeof crud === 'boolean') {
       return crudActionColumns;
     } else {
       const allowedActions = [...Object.keys(crud), 'create', 'cancel'];
 
-      return crudActionColumns.filter(({ type }) =>  allowedActions.includes(type));
+      return crudActionColumns.filter(({ type }) => allowedActions.includes(type));
     }
-  }
-  
+  };
+
   // We are making sure that we only update the columns
   useEffect(() => {
     const localPreparedColumns = columns
       .filter(({ show }) => show)
       .map<Column<any>>(columnItem => {
-      return {
-        ...columnItem,
-        Header: columnItem.header,
-        minWidth: columnItem.minWidth,
-        maxWidth: columnItem.maxWidth,
-        width: undefined,
-        resizable: true,
-        Cell: props => {
-          const allRenderers = [...(customTypeRenders || []), ...renderers];
+        return {
+          ...columnItem,
+          Header: columnItem.header,
+          minWidth: columnItem.minWidth,
+          maxWidth: columnItem.maxWidth,
+          width: undefined,
+          resizable: true,
+          Cell: props => {
+            const allRenderers = [...(customTypeRenders || []), ...renderers];
 
-          const _data = newOrEditableRowDataRef?.current?.data || {};
+            const _data = newOrEditableRowDataRef?.current?.data || {};
 
-          if (props?.row?.original?.Id === newOrEditableRowData?.id && crudMode === 'inline' && columnItem?.isEditable) {            
-            const editProps: IColumnEditFieldProps = {
-              id: columnItem?.id,
-              dataType: columnItem?.dataType,
-              name: columnItem.id,
-              caption: columnItem.caption,
-              onChange: handleGenericChange,
-              value: _data[columnItem?.id],
-              referenceListName: columnItem?.referenceListName,
-              referenceListNamespace: columnItem?.referenceListNamespace,
-              entityReferenceTypeShortAlias: columnItem?.entityReferenceTypeShortAlias,
-            };
+            if (
+              props?.row?.original?.Id === newOrEditableRowData?.id &&
+              crudMode === 'inline' &&
+              columnItem?.isEditable
+            ) {
+              const editProps: IColumnEditFieldProps = {
+                id: columnItem?.id,
+                dataType: columnItem?.dataType,
+                name: columnItem.id,
+                caption: columnItem.caption,
+                onChange: handleGenericChange,
+                value: _data[columnItem?.id],
+                referenceListName: columnItem?.referenceListName,
+                referenceListNamespace: columnItem?.referenceListNamespace,
+                entityReferenceTypeShortAlias: columnItem?.entityReferenceTypeShortAlias,
+              };
 
-            if (customTypeEditors?.length) {
-              for (const customEditor of customTypeEditors) {
-                const { property, render } = customEditor;
+              if (customTypeEditors?.length) {
+                for (const customEditor of customTypeEditors) {
+                  const { property, render } = customEditor;
 
-                if (columnItem?.id === property) {
-                  return render(editProps) || null;
+                  if (columnItem?.id === property) {
+                    return render(editProps) || null;
+                  }
+                }
+              }
+
+              return <ColumnEditField {...editProps} />;
+            }
+
+            // Allow the user to override the default render behavior of the table without having to make changes to it
+            if (allRenderers) {
+              for (const customRender of allRenderers) {
+                const { key, render } = customRender;
+
+                if (columnItem.dataType === key || columnItem.customDataType === key) {
+                  return render(props) || null;
                 }
               }
             }
 
-            return <ColumnEditField {...editProps} />;
-          }
-
-          // Allow the user to override the default render behavior of the table without having to make changes to it
-          if (allRenderers) {
-            for (const customRender of allRenderers) {
-              const { key, render } = customRender;
-
-              if (columnItem.dataType === key || columnItem.customDataType === key) {
-                return render(props) || null;
-              }
-            }
-          }
-          
-          return props.value || null;
-        },
-      };
-    });
+            return props.value || null;
+          },
+        };
+      });
 
     const allActionColumns = [...(actionColumns || []), ...(crud ? getAllowedCrudActions() : [])];
 
@@ -271,7 +271,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
               show = false;
             }
           } else {
-
             if (!isDeleteOrUpdate) {
               show = false;
             }
@@ -325,7 +324,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           }
 
           if (data?.onClick) {
-            const result = data.onClick(currentId, table);
+            const result = data.onClick(currentId, table, props?.row?.original);
 
             if (typeof result === 'string') router?.push(result);
           }
@@ -344,12 +343,14 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           disableSortBy: true,
           disableResizing: true,
           Cell: props => {
-
             // Do not show the save or cancel button for rows which are not currently the ones being edited
-            if ((data?.type === 'create' || data?.type === 'cancel') && props?.row?.original?.Id !== newOrEditableRowData?.id) {
+            if (
+              (data?.type === 'create' || data?.type === 'cancel') &&
+              props?.row?.original?.Id !== newOrEditableRowData?.id
+            ) {
               return null;
             }
-            
+
             return (
               <a className="sha-link" onClick={e => clickHandler(e, props)}>
                 {getDefaultActionColumns(data)}
@@ -358,7 +359,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           },
         });
       });
-    
+
     setPreparedColumns(localPreparedColumns);
   }, [columns, newOrEditableRowData?.id, crud]);
 
@@ -444,14 +445,13 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         const prop = payload[key];
         // TODO: check if column type is entityReference. Anyway, for now it is, but you never know
         if (typeof prop === 'object' && 'value' in prop) {
-
           payload[key] = {
-            id: payload[key]['value']
-          }
+            id: payload[key]['value'],
+          };
 
           delete payload[key]['value'];
         }
-      })
+      });
 
       mutateHttp(payload)
         .then(() => {
@@ -491,16 +491,15 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         : tableData
       : tableData;
 
-
   const memoizedColumns = useMemo(() => {
     return columns?.filter(({ isVisible, isHiddenByDefault }) => isVisible && !isHiddenByDefault);
   }, [columns]);
-  
+
   const tableProps: IReactTableProps = {
     // ref: reactTableRef,
     data,
     // Disable sorting if we're in create mode so that the new row is always the first
-    defaultSorting: newOrEditableRowData?.mode === 'create' ? null: defaultSorting,
+    defaultSorting: newOrEditableRowData?.mode === 'create' ? null : defaultSorting,
     disableSortBy: Boolean(newOrEditableRowData?.id), // Disable sorting if we're creating or editing so that
     useMultiSelect,
     // disableSortBy: false, // Do not disable sorting
@@ -605,7 +604,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   }, [crudMode, newOrEditableRowData?.id]);
 
   const renderDetails = () => {
-    
     return (
       <Modal
         title="Details"
@@ -642,7 +640,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         <ValidationErrors error={createError?.data} />
         <ValidationErrors error={updateError?.data} />
         <ValidationErrors error={deleteError?.data} />
-        {exportToExcelError && <ValidationErrors error={"Error occurred while exporting to excel"} />}
+        {exportToExcelError && <ValidationErrors error={'Error occurred while exporting to excel'} />}
       </div>
 
       {/* {useMultiselect ? <MultiselectWithState {...tableProps} /> : <ReactTable {...tableProps} />} */}

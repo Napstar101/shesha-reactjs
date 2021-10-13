@@ -1,3 +1,4 @@
+import { IAnyObject } from './../../../dist/interfaces/anyObject.d';
 import { IndexColumnDataType } from './../../providers/dataTable/interfaces';
 import { MutableRefObject, ReactNode } from 'react';
 import { ICrudProps, IDataTableInstance } from '../../providers/dataTable/interfaces';
@@ -8,7 +9,7 @@ export type TableActionColumnType = 'create' | 'read' | 'update' | 'delete' | 'c
 export interface ITableActionColumns {
   icon?: ReactNode;
   type?: TableActionColumnType;
-  onClick?: (id: string, context: IDataTableInstance) => string | void | Promise<any>;
+  onClick?: (id: string, context: IDataTableInstance, row: IAnyObject) => string | void | Promise<any>;
 }
 
 export interface ITableCustomTypesRender {

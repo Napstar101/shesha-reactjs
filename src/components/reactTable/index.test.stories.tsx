@@ -25,14 +25,13 @@ const Template: Story<IIndexPageProps> = () => {
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>
         <UiProvider>
-        <GenericIndexPage
-          title="Members"
-          tableConfigId="Members_Index"
-          // tableConfigId="Members_Index"
-          detailsUrl={(id) => `/members/details?id=${id}`}
-          editUrl={(id) => `/members/edit?id=${id}`}
-
-        />
+          <GenericIndexPage
+            title="Members"
+            tableConfigId="Members_Index"
+            // tableConfigId="Members_Index"
+            detailsUrl={id => `/members/details?id=${id}`}
+            editUrl={id => `/members/edit?id=${id}`}
+          />
         </UiProvider>
       </AuthContainer>
     </ShaApplicationProvider>
