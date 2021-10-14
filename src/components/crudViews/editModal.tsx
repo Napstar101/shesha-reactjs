@@ -20,6 +20,7 @@ interface IModalProps {
   beforeSubmit?: (form: any) => boolean;
   actions?: IFormActions;
   sections?: IFormSections;
+  destroyOnClose?: boolean;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -35,7 +36,8 @@ const ModalForm: FC<IModalProps> = ({
   onFieldsChange,
   beforeSubmit,
   actions,
-  sections
+  sections,
+  destroyOnClose = true,
 }) => {
   const { loading: loadingInProgress, refetch: doFetch, error: fetchError, data: fetchedData } = fetcher({
     lazy: true,
@@ -56,7 +58,7 @@ const ModalForm: FC<IModalProps> = ({
 
   const handleSubmit = values => {
     // We must always use updated values, in case the user had prepared values by then also update the values in the form
-    const preparedValues = typeof prepareValues === 'function' ? {...prepareValues(values), ...values } : values;
+    const preparedValues = typeof prepareValues === 'function' ? { ...prepareValues(values), ...values } : values;
 
     if (beforeSubmit && !beforeSubmit(preparedValues)) {
       return;
@@ -84,6 +86,7 @@ const ModalForm: FC<IModalProps> = ({
       onCancel={handleCancel}
       onOk={() => form.submit()}
       confirmLoading={saveInProgress}
+      destroyOnClose={destroyOnClose}
     >
       <Spin spinning={loadingInProgress || saveInProgress} tip="Please wait...">
         <ValidationErrors error={saveError?.data || fetchError?.data}></ValidationErrors>

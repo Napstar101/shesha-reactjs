@@ -60,6 +60,8 @@ interface IModalProps {
   actions?: IFormActions;
 
   sections?: IFormSections;
+
+  destroyOnClose?: boolean;
 }
 
 const ModalForm: FC<IModalProps> = ({
@@ -76,6 +78,7 @@ const ModalForm: FC<IModalProps> = ({
   beforeSubmit,
   actions,
   sections,
+  destroyOnClose = true,
 }) => {
   const { mutate: save, error, loading } = updater({});
 
@@ -121,6 +124,7 @@ const ModalForm: FC<IModalProps> = ({
       title={title}
       confirmLoading={loading}
       onCancel={handleCancel}
+      destroyOnClose={destroyOnClose}
       footer={
         <div>
           <Button onClick={handleCancel}>Cancel</Button>
