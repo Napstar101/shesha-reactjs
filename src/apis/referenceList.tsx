@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface GuidNullableEntityWithDisplayNameDto {
   id?: string | null;
   displayText?: string | null;
@@ -102,7 +100,7 @@ export const ReferenceListGetItems = (props: ReferenceListGetItemsProps) => (
 );
 
 export type UseReferenceListGetItemsProps = Omit<
-  UseGetProps<ReferenceListItemDtoListAjaxResponse, ReferenceListGetItemsQueryParams, void>,
+  UseGetProps<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams, void>,
   'path'
 >;
 
@@ -133,7 +131,7 @@ export const ReferenceListGet = (props: ReferenceListGetProps) => (
 );
 
 export type UseReferenceListGetProps = Omit<
-  UseGetProps<ReferenceListDtoAjaxResponse, ReferenceListGetQueryParams, void>,
+  UseGetProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams, void>,
   'path'
 >;
 
@@ -166,7 +164,7 @@ export const ReferenceListGetAll = (props: ReferenceListGetAllProps) => (
 );
 
 export type UseReferenceListGetAllProps = Omit<
-  UseGetProps<ReferenceListDtoPagedResultDtoAjaxResponse, ReferenceListGetAllQueryParams, void>,
+  UseGetProps<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams, void>,
   'path'
 >;
 
@@ -197,7 +195,13 @@ export const ReferenceListCreate = (props: ReferenceListCreateProps) => (
 );
 
 export type UseReferenceListCreateProps = Omit<
-  UseMutateProps<ReferenceListDtoAjaxResponse, ReferenceListCreateQueryParams, ReferenceListDto, void>,
+  UseMutateProps<
+    ReferenceListDtoAjaxResponse,
+    AjaxResponseBase,
+    ReferenceListCreateQueryParams,
+    ReferenceListDto,
+    void
+  >,
   'path' | 'verb'
 >;
 
@@ -229,7 +233,13 @@ export const ReferenceListUpdate = (props: ReferenceListUpdateProps) => (
 );
 
 export type UseReferenceListUpdateProps = Omit<
-  UseMutateProps<ReferenceListDtoAjaxResponse, ReferenceListUpdateQueryParams, ReferenceListDto, void>,
+  UseMutateProps<
+    ReferenceListDtoAjaxResponse,
+    AjaxResponseBase,
+    ReferenceListUpdateQueryParams,
+    ReferenceListDto,
+    void
+  >,
   'path' | 'verb'
 >;
 
@@ -262,7 +272,7 @@ export const ReferenceListDelete = (props: ReferenceListDeleteProps) => (
 );
 
 export type UseReferenceListDeleteProps = Omit<
-  UseMutateProps<void, ReferenceListDeleteQueryParams, void, void>,
+  UseMutateProps<void, unknown, ReferenceListDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -270,5 +280,5 @@ export const useReferenceListDelete = (props: UseReferenceListDeleteProps) =>
   useMutate<void, unknown, ReferenceListDeleteQueryParams, void, void>(
     'DELETE',
     `/api/services/app/ReferenceList/Delete`,
-    props
+    { ...props }
   );

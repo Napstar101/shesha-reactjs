@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface NDADetailsDto {
   personId?: string;
   hasAcceptedDeclaration?: boolean;
@@ -49,11 +47,18 @@ export interface StoredFileDto {
   type?: string | null;
 }
 
+export interface GuidNullableEntityWithDisplayNameDto {
+  id?: string | null;
+  displayText?: string | null;
+}
+
 export interface StudentApplicationDocumentsResponse {
   entityForm?: StoredFileDto;
   letterOfUndertaking?: StoredFileDto;
   bursaryContract?: StoredFileDto;
   confirmationOfBankAccount?: StoredFileDto;
+  declarationOfAttendanceFile?: StoredFileDto;
+  student?: GuidNullableEntityWithDisplayNameDto;
 }
 
 export interface StudentApplicationDocumentsResponseAjaxResponse {
@@ -90,11 +95,6 @@ export interface AddressDto {
   province?: number | null;
   latitude?: number | null;
   longitude?: number | null;
-}
-
-export interface GuidNullableEntityWithDisplayNameDto {
-  id?: string | null;
-  displayText?: string | null;
 }
 
 export interface UserDto {
@@ -150,6 +150,7 @@ export interface StudentResponse {
   age?: string | null;
   highestGrade?: ReferenceListItemValueDto;
   isDisabled?: boolean;
+  hasStudentEnrolled?: boolean;
   district?: GuidNullableEntityWithDisplayNameDto;
   municipality?: GuidNullableEntityWithDisplayNameDto;
   council?: string | null;
@@ -159,6 +160,11 @@ export interface StudentResponse {
   hasRecievedOrientationInvite?: boolean;
   user?: UserDto;
   fullName?: string | null;
+  declarationOfAttendanceFile?: StoredFileDto;
+  entityFormFile?: StoredFileDto;
+  confirmationOfBankAccountFile?: StoredFileDto;
+  bursaryContractFile?: StoredFileDto;
+  fundingStatus?: ReferenceListItemValueDto;
 }
 
 export interface ParentDto {
@@ -188,7 +194,7 @@ export interface ParentDto {
   fullName?: string | null;
 }
 
-export type RefListDocumentVerificarionStatus = number;
+export type RefListDocumentVerificarionStatus = 1 | 2 | 3 | 4;
 
 export interface DocumentVerificationDto {
   id?: string | null;
@@ -214,11 +220,7 @@ export interface ApplicationFiles {
   proofOfRegistrationFile?: DocumentVerificationDto;
   statementOfResultFile?: DocumentVerificationDto;
   orientationNoticeFile?: DocumentVerificationDto;
-  declarationOfAttendanceFile?: DocumentVerificationDto;
-  entityFormFile?: DocumentVerificationDto;
-  confirmationOfBankAccountFile?: DocumentVerificationDto;
   leaseAgreementFile?: DocumentVerificationDto;
-  bursaryContractFile?: DocumentVerificationDto;
   letterOfUndertakingFile?: DocumentVerificationDto;
   regretLetterFile?: DocumentVerificationDto;
   provisionalAcceptanceLetterFile?: DocumentVerificationDto;
@@ -282,7 +284,7 @@ export interface ApplicationDto {
   motivation?: string | null;
   letterOfUndertakingFile?: StoredFileDto;
   regretLetterFile?: StoredFileDto;
-  bursaryContractFile?: StoredFileDto;
+  entityFormFile?: StoredFileDto;
 }
 
 export interface ApplicationDtoAjaxResponse {
@@ -293,6 +295,8 @@ export interface ApplicationDtoAjaxResponse {
   __abp?: boolean;
   result?: ApplicationDto;
 }
+
+export type RefListApplicationStatus = 1 | 2 | 3 | 4 | 7 | 8 | 9 | 10 | 11 | 20 | 21;
 
 export interface ApplicationsStatsResponse {
   numApplicationsAwaitingProccessing?: number;
@@ -334,7 +338,7 @@ export interface ProcessApplicationInput {
   outStandingDocumentsCheckList?: SaveSelectionInput;
 }
 
-export type RefListReasonForNotRecommending = number;
+export type RefListReasonForNotRecommending = 0 | 1 | 3 | 4 | 5 | 6 | 8 | 9 | 10;
 
 export interface CommiteeRecomendInput {
   id?: string;
@@ -373,7 +377,7 @@ export interface DocumentVerificationDtoAjaxResponse {
   result?: DocumentVerificationDto;
 }
 
-export type ApplicationResultsAction = number;
+export type ApplicationResultsAction = 1 | 2 | 3;
 
 export interface ApplicationActionInput {
   action?: ApplicationResultsAction;
@@ -404,6 +408,7 @@ export interface ApplicationEducationDetailsUpdate {
   isTetiaryAcceptanceVerified?: boolean;
   numberOfStudyYears?: string | null;
   failedYear?: string | null;
+  feesAmount?: number;
 }
 
 export interface ApplicationParentDetailsUpdate {
@@ -442,14 +447,15 @@ export const ApplicationsGetNDADetails = ({ id, ...props }: ApplicationsGetNDADe
 );
 
 export type UseApplicationsGetNDADetailsProps = Omit<
-  UseGetProps<NDADetailsDtoAjaxResponse, void, ApplicationsGetNDADetailsPathParams>,
+  UseGetProps<NDADetailsDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetNDADetailsPathParams>,
   'path'
 > &
   ApplicationsGetNDADetailsPathParams;
 
 export const useApplicationsGetNDADetails = ({ id, ...props }: UseApplicationsGetNDADetailsProps) =>
   useGet<NDADetailsDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetNDADetailsPathParams>(
-    ({ id }: ApplicationsGetNDADetailsPathParams) => `/api/v1/BursMan/Applications/GetNDADetails/${id}`,
+    (paramsInPath: ApplicationsGetNDADetailsPathParams) =>
+      `/api/v1/BursMan/Applications/GetNDADetails/${paramsInPath.id}`,
     { pathParams: { id }, ...props }
   );
 
@@ -481,7 +487,12 @@ export const ApplicationsGetStudentDocuments = ({ id, ...props }: ApplicationsGe
 );
 
 export type UseApplicationsGetStudentDocumentsProps = Omit<
-  UseGetProps<StudentApplicationDocumentsResponseAjaxResponse, void, ApplicationsGetStudentDocumentsPathParams>,
+  UseGetProps<
+    StudentApplicationDocumentsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetStudentDocumentsPathParams
+  >,
   'path'
 > &
   ApplicationsGetStudentDocumentsPathParams;
@@ -492,10 +503,11 @@ export const useApplicationsGetStudentDocuments = ({ id, ...props }: UseApplicat
     AjaxResponseBase,
     void,
     ApplicationsGetStudentDocumentsPathParams
-  >(({ id }: ApplicationsGetStudentDocumentsPathParams) => `/api/v1/BursMan/Applications/Documents/Students/${id}`, {
-    pathParams: { id },
-    ...props,
-  });
+  >(
+    (paramsInPath: ApplicationsGetStudentDocumentsPathParams) =>
+      `/api/v1/BursMan/Applications/Documents/Students/${paramsInPath.id}`,
+    { pathParams: { id }, ...props }
+  );
 
 export interface ApplicationsGetPathParams {
   id: string;
@@ -515,14 +527,14 @@ export const ApplicationsGet = ({ id, ...props }: ApplicationsGetProps) => (
 );
 
 export type UseApplicationsGetProps = Omit<
-  UseGetProps<ApplicationDtoAjaxResponse, void, ApplicationsGetPathParams>,
+  UseGetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetPathParams>,
   'path'
 > &
   ApplicationsGetPathParams;
 
 export const useApplicationsGet = ({ id, ...props }: UseApplicationsGetProps) =>
   useGet<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetPathParams>(
-    ({ id }: ApplicationsGetPathParams) => `/api/v1/BursMan/Applications/${id}`,
+    (paramsInPath: ApplicationsGetPathParams) => `/api/v1/BursMan/Applications/${paramsInPath.id}`,
     { pathParams: { id }, ...props }
   );
 
@@ -538,32 +550,77 @@ export const ApplicationsGetMyApplication = (props: ApplicationsGetMyApplication
   />
 );
 
-export type UseApplicationsGetMyApplicationProps = Omit<UseGetProps<ApplicationDtoAjaxResponse, void, void>, 'path'>;
+export type UseApplicationsGetMyApplicationProps = Omit<
+  UseGetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>,
+  'path'
+>;
 
 export const useApplicationsGetMyApplication = (props: UseApplicationsGetMyApplicationProps) =>
   useGet<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>(`/api/v1/BursMan/Applications/MyApplication`, props);
 
-export type ApplicationsGetApplicationsStatsProps = Omit<
-  GetProps<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, void>,
-  'path'
->;
+export interface ApplicationsGetStudentApplicationPathParams {
+  id: string;
+}
 
-export const ApplicationsGetApplicationsStats = (props: ApplicationsGetApplicationsStatsProps) => (
-  <Get<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, void>
-    path={`/api/v1/BursMan/Applications/GetApplicationsStats`}
+export type ApplicationsGetStudentApplicationProps = Omit<
+  GetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetStudentApplicationPathParams>,
+  'path'
+> &
+  ApplicationsGetStudentApplicationPathParams;
+
+export const ApplicationsGetStudentApplication = ({ id, ...props }: ApplicationsGetStudentApplicationProps) => (
+  <Get<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetStudentApplicationPathParams>
+    path={`/api/v1/BursMan/Applications/StudentApplication/${id}`}
+    {...props}
+  />
+);
+
+export type UseApplicationsGetStudentApplicationProps = Omit<
+  UseGetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetStudentApplicationPathParams>,
+  'path'
+> &
+  ApplicationsGetStudentApplicationPathParams;
+
+export const useApplicationsGetStudentApplication = ({ id, ...props }: UseApplicationsGetStudentApplicationProps) =>
+  useGet<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetStudentApplicationPathParams>(
+    (paramsInPath: ApplicationsGetStudentApplicationPathParams) =>
+      `/api/v1/BursMan/Applications/StudentApplication/${paramsInPath.id}`,
+    { pathParams: { id }, ...props }
+  );
+
+export interface ApplicationsGetApplicationsStatsPathParams {
+  status: RefListApplicationStatus;
+}
+
+export type ApplicationsGetApplicationsStatsProps = Omit<
+  GetProps<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationsGetApplicationsStatsPathParams>,
+  'path'
+> &
+  ApplicationsGetApplicationsStatsPathParams;
+
+export const ApplicationsGetApplicationsStats = ({ status, ...props }: ApplicationsGetApplicationsStatsProps) => (
+  <Get<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationsGetApplicationsStatsPathParams>
+    path={`/api/v1/BursMan/Applications/GetApplicationsStats/${status}`}
     {...props}
   />
 );
 
 export type UseApplicationsGetApplicationsStatsProps = Omit<
-  UseGetProps<ApplicationsStatsResponseAjaxResponse, void, void>,
+  UseGetProps<
+    ApplicationsStatsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetApplicationsStatsPathParams
+  >,
   'path'
->;
+> &
+  ApplicationsGetApplicationsStatsPathParams;
 
-export const useApplicationsGetApplicationsStats = (props: UseApplicationsGetApplicationsStatsProps) =>
-  useGet<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, void>(
-    `/api/v1/BursMan/Applications/GetApplicationsStats`,
-    props
+export const useApplicationsGetApplicationsStats = ({ status, ...props }: UseApplicationsGetApplicationsStatsProps) =>
+  useGet<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationsGetApplicationsStatsPathParams>(
+    (paramsInPath: ApplicationsGetApplicationsStatsPathParams) =>
+      `/api/v1/BursMan/Applications/GetApplicationsStats/${paramsInPath.status}`,
+    { pathParams: { status }, ...props }
   );
 
 export type ApplicationsProcessApplicationProps = Omit<
@@ -580,7 +637,7 @@ export const ApplicationsProcessApplication = (props: ApplicationsProcessApplica
 );
 
 export type UseApplicationsProcessApplicationProps = Omit<
-  UseMutateProps<ApplicationDtoAjaxResponse, void, ProcessApplicationInput, void>,
+  UseMutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ProcessApplicationInput, void>,
   'path' | 'verb'
 >;
 
@@ -605,7 +662,7 @@ export const ApplicationsCommiteeReccomend = (props: ApplicationsCommiteeReccome
 );
 
 export type UseApplicationsCommiteeReccomendProps = Omit<
-  UseMutateProps<ApplicationDtoAjaxResponse, void, CommiteeRecomendInput, void>,
+  UseMutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>,
   'path' | 'verb'
 >;
 
@@ -630,7 +687,7 @@ export const ApplicationsBursaryCommiteeReccomend = (props: ApplicationsBursaryC
 );
 
 export type UseApplicationsBursaryCommiteeReccomendProps = Omit<
-  UseMutateProps<ApplicationDtoAjaxResponse, void, CommiteeRecomendInput, void>,
+  UseMutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>,
   'path' | 'verb'
 >;
 
@@ -655,7 +712,7 @@ export const ApplicationsCreateNDASelection = (props: ApplicationsCreateNDASelec
 );
 
 export type UseApplicationsCreateNDASelectionProps = Omit<
-  UseMutateProps<CreateNDASelectionDtoAjaxResponse, void, CreateNDASelectionDto, void>,
+  UseMutateProps<CreateNDASelectionDtoAjaxResponse, AjaxResponseBase, void, CreateNDASelectionDto, void>,
   'path' | 'verb'
 >;
 
@@ -680,7 +737,7 @@ export const ApplicationsCreate = (props: ApplicationsCreateProps) => (
 );
 
 export type UseApplicationsCreateProps = Omit<
-  UseMutateProps<ApplicationDtoAjaxResponse, void, ApplicationDto, void>,
+  UseMutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationDto, void>,
   'path' | 'verb'
 >;
 
@@ -707,7 +764,7 @@ export const ApplicationsUpdateDocumentVerificationStatus = (
 );
 
 export type UseApplicationsUpdateDocumentVerificationStatusProps = Omit<
-  UseMutateProps<DocumentVerificationDtoAjaxResponse, void, VerificationStatusInput, void>,
+  UseMutateProps<DocumentVerificationDtoAjaxResponse, AjaxResponseBase, void, VerificationStatusInput, void>,
   'path' | 'verb'
 >;
 
@@ -737,7 +794,7 @@ export const ApplicationsActionApplicationsResults = (props: ApplicationsActionA
 );
 
 export type UseApplicationsActionApplicationsResultsProps = Omit<
-  UseMutateProps<ApplicationsStatsResponseAjaxResponse, void, ApplicationActionInput, void>,
+  UseMutateProps<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationActionInput, void>,
   'path' | 'verb'
 >;
 
@@ -781,7 +838,13 @@ export const ApplicationsUpdateDGResults = (props: ApplicationsUpdateDGResultsPr
 );
 
 export type UseApplicationsUpdateDGResultsProps = Omit<
-  UseMutateProps<ApplicationDtoAjaxResponse, ApplicationsUpdateDGResultsQueryParams, ApplicationDGResultsUpdate, void>,
+  UseMutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsUpdateDGResultsQueryParams,
+    ApplicationDGResultsUpdate,
+    void
+  >,
   'path' | 'verb'
 >;
 
@@ -827,6 +890,7 @@ export const ApplicationsUpdateEducationDetails = ({ id, ...props }: Application
 export type UseApplicationsUpdateEducationDetailsProps = Omit<
   UseMutateProps<
     ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
     void,
     ApplicationEducationDetailsUpdate,
     ApplicationsUpdateEducationDetailsPathParams
@@ -844,7 +908,8 @@ export const useApplicationsUpdateEducationDetails = ({ id, ...props }: UseAppli
     ApplicationsUpdateEducationDetailsPathParams
   >(
     'PUT',
-    ({ id }: ApplicationsUpdateEducationDetailsPathParams) => `/api/v1/BursMan/Applications/${id}/Education-Details`,
+    (paramsInPath: ApplicationsUpdateEducationDetailsPathParams) =>
+      `/api/v1/BursMan/Applications/${paramsInPath.id}/Education-Details`,
     { pathParams: { id }, ...props }
   );
 
@@ -881,6 +946,7 @@ export const ApplicationsUpdateFinancialDetails = ({ id, ...props }: Application
 export type UseApplicationsUpdateFinancialDetailsProps = Omit<
   UseMutateProps<
     ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
     void,
     ApplicationParentDetailsUpdate,
     ApplicationsUpdateFinancialDetailsPathParams
@@ -898,7 +964,8 @@ export const useApplicationsUpdateFinancialDetails = ({ id, ...props }: UseAppli
     ApplicationsUpdateFinancialDetailsPathParams
   >(
     'PUT',
-    ({ id }: ApplicationsUpdateFinancialDetailsPathParams) => `/api/v1/BursMan/Applications/${id}/Financial-Details`,
+    (paramsInPath: ApplicationsUpdateFinancialDetailsPathParams) =>
+      `/api/v1/BursMan/Applications/${paramsInPath.id}/Financial-Details`,
     { pathParams: { id }, ...props }
   );
 
@@ -935,6 +1002,7 @@ export const ApplicationsUpdateDeclarations = ({ id, ...props }: ApplicationsUpd
 export type UseApplicationsUpdateDeclarationsProps = Omit<
   UseMutateProps<
     ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
     void,
     ApplicationDeclarationUpdate,
     ApplicationsUpdateDeclarationsPathParams
@@ -950,10 +1018,12 @@ export const useApplicationsUpdateDeclarations = ({ id, ...props }: UseApplicati
     void,
     ApplicationDeclarationUpdate,
     ApplicationsUpdateDeclarationsPathParams
-  >('PUT', ({ id }: ApplicationsUpdateDeclarationsPathParams) => `/api/v1/BursMan/Applications/${id}/Declarations`, {
-    pathParams: { id },
-    ...props,
-  });
+  >(
+    'PUT',
+    (paramsInPath: ApplicationsUpdateDeclarationsPathParams) =>
+      `/api/v1/BursMan/Applications/${paramsInPath.id}/Declarations`,
+    { pathParams: { id }, ...props }
+  );
 
 export interface ApplicationsSubmitPathParams {
   id: string;
@@ -974,7 +1044,7 @@ export const ApplicationsSubmit = ({ id, ...props }: ApplicationsSubmitProps) =>
 );
 
 export type UseApplicationsSubmitProps = Omit<
-  UseMutateProps<ApplicationDtoAjaxResponse, void, void, ApplicationsSubmitPathParams>,
+  UseMutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void, ApplicationsSubmitPathParams>,
   'path' | 'verb'
 > &
   ApplicationsSubmitPathParams;
@@ -982,7 +1052,7 @@ export type UseApplicationsSubmitProps = Omit<
 export const useApplicationsSubmit = ({ id, ...props }: UseApplicationsSubmitProps) =>
   useMutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void, ApplicationsSubmitPathParams>(
     'PUT',
-    ({ id }: ApplicationsSubmitPathParams) => `/api/v1/BursMan/Applications/${id}/Submit`,
+    (paramsInPath: ApplicationsSubmitPathParams) => `/api/v1/BursMan/Applications/${paramsInPath.id}/Submit`,
     { pathParams: { id }, ...props }
   );
 
@@ -1023,6 +1093,7 @@ export const ApplicationsActionOffer = ({ id, ...props }: ApplicationsActionOffe
 export type UseApplicationsActionOfferProps = Omit<
   UseMutateProps<
     ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
     ApplicationsActionOfferQueryParams,
     void,
     ApplicationsActionOfferPathParams
@@ -1038,7 +1109,8 @@ export const useApplicationsActionOffer = ({ id, ...props }: UseApplicationsActi
     ApplicationsActionOfferQueryParams,
     void,
     ApplicationsActionOfferPathParams
-  >('PUT', ({ id }: ApplicationsActionOfferPathParams) => `/api/v1/BursMan/Applications/${id}/ActionOffer`, {
-    pathParams: { id },
-    ...props,
-  });
+  >(
+    'PUT',
+    (paramsInPath: ApplicationsActionOfferPathParams) => `/api/v1/BursMan/Applications/${paramsInPath.id}/ActionOffer`,
+    { pathParams: { id }, ...props }
+  );

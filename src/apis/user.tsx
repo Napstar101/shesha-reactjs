@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface CreateUserDto {
   userName: string;
   name: string;
@@ -197,7 +195,7 @@ export const UserCreate = (props: UserCreateProps) => (
 );
 
 export type UseUserCreateProps = Omit<
-  UseMutateProps<UserDtoAjaxResponse, UserCreateQueryParams, CreateUserDto, void>,
+  UseMutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>,
   'path' | 'verb'
 >;
 
@@ -229,7 +227,7 @@ export const UserUpdate = (props: UserUpdateProps) => (
 );
 
 export type UseUserUpdateProps = Omit<
-  UseMutateProps<UserDtoAjaxResponse, UserUpdateQueryParams, UserDto, void>,
+  UseMutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>,
   'path' | 'verb'
 >;
 
@@ -258,10 +256,13 @@ export const UserDelete = (props: UserDeleteProps) => (
   />
 );
 
-export type UseUserDeleteProps = Omit<UseMutateProps<void, UserDeleteQueryParams, void, void>, 'path' | 'verb'>;
+export type UseUserDeleteProps = Omit<
+  UseMutateProps<void, unknown, UserDeleteQueryParams, void, void>,
+  'path' | 'verb'
+>;
 
 export const useUserDelete = (props: UseUserDeleteProps) =>
-  useMutate<void, unknown, UserDeleteQueryParams, void, void>('DELETE', `/api/services/app/User/Delete`, props);
+  useMutate<void, unknown, UserDeleteQueryParams, void, void>('DELETE', `/api/services/app/User/Delete`, { ...props });
 
 export interface UserGetRolesQueryParams {
   /**
@@ -283,7 +284,7 @@ export const UserGetRoles = (props: UserGetRolesProps) => (
 );
 
 export type UseUserGetRolesProps = Omit<
-  UseGetProps<RoleDtoListResultDtoAjaxResponse, UserGetRolesQueryParams, void>,
+  UseGetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>,
   'path'
 >;
 
@@ -314,7 +315,7 @@ export const UserChangeLanguage = (props: UserChangeLanguageProps) => (
 );
 
 export type UseUserChangeLanguageProps = Omit<
-  UseMutateProps<void, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>,
+  UseMutateProps<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>,
   'path' | 'verb'
 >;
 
@@ -353,7 +354,13 @@ export const UserResetPasswordSendOtp = (props: UserResetPasswordSendOtpProps) =
 );
 
 export type UseUserResetPasswordSendOtpProps = Omit<
-  UseMutateProps<ResetPasswordSendOtpResponseAjaxResponse, UserResetPasswordSendOtpQueryParams, void, void>,
+  UseMutateProps<
+    ResetPasswordSendOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordSendOtpQueryParams,
+    void,
+    void
+  >,
   'path' | 'verb'
 >;
 
@@ -401,6 +408,7 @@ export const UserResetPasswordVerifyOtp = (props: UserResetPasswordVerifyOtpProp
 export type UseUserResetPasswordVerifyOtpProps = Omit<
   UseMutateProps<
     ResetPasswordVerifyOtpResponseAjaxResponse,
+    AjaxResponseBase,
     UserResetPasswordVerifyOtpQueryParams,
     ResetPasswordVerifyOtpInput,
     void
@@ -450,7 +458,13 @@ export const UserResetPasswordUsingToken = (props: UserResetPasswordUsingTokenPr
 );
 
 export type UseUserResetPasswordUsingTokenProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, UserResetPasswordUsingTokenQueryParams, ResetPasswordUsingTokenInput, void>,
+  UseMutateProps<
+    BooleanAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordUsingTokenQueryParams,
+    ResetPasswordUsingTokenInput,
+    void
+  >,
   'path' | 'verb'
 >;
 
@@ -484,7 +498,7 @@ export const UserChangePassword = (props: UserChangePasswordProps) => (
 );
 
 export type UseUserChangePasswordProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, UserChangePasswordQueryParams, ChangePasswordDto, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>,
   'path' | 'verb'
 >;
 
@@ -516,7 +530,7 @@ export const UserResetPassword = (props: UserResetPasswordProps) => (
 );
 
 export type UseUserResetPasswordProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, UserResetPasswordQueryParams, ResetPasswordDto, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>,
   'path' | 'verb'
 >;
 
@@ -547,7 +561,7 @@ export const UserGetUserAuthConfig = (props: UserGetUserAuthConfigProps) => (
 );
 
 export type UseUserGetUserAuthConfigProps = Omit<
-  UseGetProps<AbpUserAuthConfigDtoAjaxResponse, UserGetUserAuthConfigQueryParams, void>,
+  UseGetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>,
   'path'
 >;
 
@@ -574,7 +588,10 @@ export const UserGet = (props: UserGetProps) => (
   />
 );
 
-export type UseUserGetProps = Omit<UseGetProps<UserDtoAjaxResponse, UserGetQueryParams, void>, 'path'>;
+export type UseUserGetProps = Omit<
+  UseGetProps<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>,
+  'path'
+>;
 
 export const useUserGet = (props: UseUserGetProps) =>
   useGet<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>(`/api/services/app/User/Get`, props);
@@ -603,7 +620,7 @@ export const UserGetAll = (props: UserGetAllProps) => (
 );
 
 export type UseUserGetAllProps = Omit<
-  UseGetProps<UserDtoPagedResultDtoAjaxResponse, UserGetAllQueryParams, void>,
+  UseGetProps<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams, void>,
   'path'
 >;
 

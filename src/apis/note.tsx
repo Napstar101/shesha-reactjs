@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface GuidEntityWithDisplayNameDto {
   id?: string;
   displayText?: string | null;
@@ -115,7 +113,10 @@ export const NoteGetList = (props: NoteGetListProps) => (
   />
 );
 
-export type UseNoteGetListProps = Omit<UseGetProps<NoteDtoListAjaxResponse, NoteGetListQueryParams, void>, 'path'>;
+export type UseNoteGetListProps = Omit<
+  UseGetProps<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>,
+  'path'
+>;
 
 export const useNoteGetList = (props: UseNoteGetListProps) =>
   useGet<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>(
@@ -144,7 +145,7 @@ export const NoteCreate = (props: NoteCreateProps) => (
 );
 
 export type UseNoteCreateProps = Omit<
-  UseMutateProps<NoteDtoAjaxResponse, NoteCreateQueryParams, CreateNoteDto, void>,
+  UseMutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>,
   'path' | 'verb'
 >;
 
@@ -172,7 +173,10 @@ export const NoteGet = (props: NoteGetProps) => (
   />
 );
 
-export type UseNoteGetProps = Omit<UseGetProps<NoteDtoAjaxResponse, NoteGetQueryParams, void>, 'path'>;
+export type UseNoteGetProps = Omit<
+  UseGetProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>,
+  'path'
+>;
 
 export const useNoteGet = (props: UseNoteGetProps) =>
   useGet<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>(`/api/services/app/Note/Get`, props);
@@ -200,7 +204,7 @@ export const NoteGetAll = (props: NoteGetAllProps) => (
 );
 
 export type UseNoteGetAllProps = Omit<
-  UseGetProps<NoteDtoPagedResultDtoAjaxResponse, NoteGetAllQueryParams, void>,
+  UseGetProps<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>,
   'path'
 >;
 
@@ -231,7 +235,7 @@ export const NoteUpdate = (props: NoteUpdateProps) => (
 );
 
 export type UseNoteUpdateProps = Omit<
-  UseMutateProps<NoteDtoAjaxResponse, NoteUpdateQueryParams, UpdateNoteDto, void>,
+  UseMutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>,
   'path' | 'verb'
 >;
 
@@ -260,7 +264,10 @@ export const NoteDelete = (props: NoteDeleteProps) => (
   />
 );
 
-export type UseNoteDeleteProps = Omit<UseMutateProps<void, NoteDeleteQueryParams, void, void>, 'path' | 'verb'>;
+export type UseNoteDeleteProps = Omit<
+  UseMutateProps<void, unknown, NoteDeleteQueryParams, void, void>,
+  'path' | 'verb'
+>;
 
 export const useNoteDelete = (props: UseNoteDeleteProps) =>
-  useMutate<void, unknown, NoteDeleteQueryParams, void, void>('DELETE', `/api/services/app/Note/Delete`, props);
+  useMutate<void, unknown, NoteDeleteQueryParams, void, void>('DELETE', `/api/services/app/Note/Delete`, { ...props });

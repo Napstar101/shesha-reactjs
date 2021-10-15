@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface ApplicationInfoDto {
   version?: string | null;
   releaseDate?: string;
@@ -110,7 +108,12 @@ export const SessionGetCurrentLoginInformations = (props: SessionGetCurrentLogin
 );
 
 export type UseSessionGetCurrentLoginInformationsProps = Omit<
-  UseGetProps<GetCurrentLoginInformationsOutputAjaxResponse, SessionGetCurrentLoginInformationsQueryParams, void>,
+  UseGetProps<
+    GetCurrentLoginInformationsOutputAjaxResponse,
+    AjaxResponseBase,
+    SessionGetCurrentLoginInformationsQueryParams,
+    void
+  >,
   'path'
 >;
 
@@ -142,7 +145,7 @@ export const SessionGetGrantedShaRoles = (props: SessionGetGrantedShaRolesProps)
 );
 
 export type UseSessionGetGrantedShaRolesProps = Omit<
-  UseGetProps<StringListAjaxResponse, SessionGetGrantedShaRolesQueryParams, void>,
+  UseGetProps<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>,
   'path'
 >;
 
@@ -173,7 +176,7 @@ export const SessionClearPermissionsCache = (props: SessionClearPermissionsCache
 );
 
 export type UseSessionClearPermissionsCacheProps = Omit<
-  UseMutateProps<void, SessionClearPermissionsCacheQueryParams, void, void>,
+  UseMutateProps<void, unknown, SessionClearPermissionsCacheQueryParams, void, void>,
   'path' | 'verb'
 >;
 

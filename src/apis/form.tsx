@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface FormDto {
   id?: string;
   path?: string | null;
@@ -86,12 +84,15 @@ export const FormGet = ({ id, ...props }: FormGetProps) => (
   />
 );
 
-export type UseFormGetProps = Omit<UseGetProps<FormDtoAjaxResponse, FormGetQueryParams, FormGetPathParams>, 'path'> &
+export type UseFormGetProps = Omit<
+  UseGetProps<FormDtoAjaxResponse, AjaxResponseBase, FormGetQueryParams, FormGetPathParams>,
+  'path'
+> &
   FormGetPathParams;
 
 export const useFormGet = ({ id, ...props }: UseFormGetProps) =>
   useGet<FormDtoAjaxResponse, AjaxResponseBase, FormGetQueryParams, FormGetPathParams>(
-    ({ id }: FormGetPathParams) => `/api/services/Forms/${id}`,
+    (paramsInPath: FormGetPathParams) => `/api/services/Forms/${paramsInPath.id}`,
     { pathParams: { id }, ...props }
   );
 
@@ -112,7 +113,10 @@ export const FormGetByPath = (props: FormGetByPathProps) => (
   <Get<FormDtoAjaxResponse, AjaxResponseBase, FormGetByPathQueryParams, void> path={`/api/services/Forms`} {...props} />
 );
 
-export type UseFormGetByPathProps = Omit<UseGetProps<FormDtoAjaxResponse, FormGetByPathQueryParams, void>, 'path'>;
+export type UseFormGetByPathProps = Omit<
+  UseGetProps<FormDtoAjaxResponse, AjaxResponseBase, FormGetByPathQueryParams, void>,
+  'path'
+>;
 
 export const useFormGetByPath = (props: UseFormGetByPathProps) =>
   useGet<FormDtoAjaxResponse, AjaxResponseBase, FormGetByPathQueryParams, void>(`/api/services/Forms`, props);
@@ -138,7 +142,7 @@ export const FormUpdate = (props: FormUpdateProps) => (
 );
 
 export type UseFormUpdateProps = Omit<
-  UseMutateProps<FormDtoAjaxResponse, FormUpdateQueryParams, FormDto, void>,
+  UseMutateProps<FormDtoAjaxResponse, AjaxResponseBase, FormUpdateQueryParams, FormDto, void>,
   'path' | 'verb'
 >;
 
@@ -170,7 +174,7 @@ export const FormCreate = (props: FormCreateProps) => (
 );
 
 export type UseFormCreateProps = Omit<
-  UseMutateProps<FormDtoAjaxResponse, FormCreateQueryParams, FormDto, void>,
+  UseMutateProps<FormDtoAjaxResponse, AjaxResponseBase, FormCreateQueryParams, FormDto, void>,
   'path' | 'verb'
 >;
 
@@ -207,7 +211,7 @@ export const FormUpdateMarkup = ({ id, ...props }: FormUpdateMarkupProps) => (
 );
 
 export type UseFormUpdateMarkupProps = Omit<
-  UseMutateProps<void, FormUpdateMarkupQueryParams, FormUpdateMarkupInput, FormUpdateMarkupPathParams>,
+  UseMutateProps<void, unknown, FormUpdateMarkupQueryParams, FormUpdateMarkupInput, FormUpdateMarkupPathParams>,
   'path' | 'verb'
 > &
   FormUpdateMarkupPathParams;
@@ -215,7 +219,7 @@ export type UseFormUpdateMarkupProps = Omit<
 export const useFormUpdateMarkup = ({ id, ...props }: UseFormUpdateMarkupProps) =>
   useMutate<void, unknown, FormUpdateMarkupQueryParams, FormUpdateMarkupInput, FormUpdateMarkupPathParams>(
     'PUT',
-    ({ id }: FormUpdateMarkupPathParams) => `/api/services/Forms/${id}/Markup`,
+    (paramsInPath: FormUpdateMarkupPathParams) => `/api/services/Forms/${paramsInPath.id}/Markup`,
     { pathParams: { id }, ...props }
   );
 
@@ -241,7 +245,7 @@ export const FormAutocomplete = (props: FormAutocompleteProps) => (
 );
 
 export type UseFormAutocompleteProps = Omit<
-  UseGetProps<AutocompleteItemDtoListAjaxResponse, FormAutocompleteQueryParams, void>,
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, FormAutocompleteQueryParams, void>,
   'path'
 >;
 

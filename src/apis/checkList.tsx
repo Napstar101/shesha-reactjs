@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface CheckListItemSelectionDto {
   checkListItemId?: string;
   selection?: number | null;
@@ -143,6 +141,7 @@ export const CheckListGetSelection = ({ id, ...props }: CheckListGetSelectionPro
 export type UseCheckListGetSelectionProps = Omit<
   UseGetProps<
     CheckListItemSelectionDtoListAjaxResponse,
+    AjaxResponseBase,
     CheckListGetSelectionQueryParams,
     CheckListGetSelectionPathParams
   >,
@@ -156,7 +155,10 @@ export const useCheckListGetSelection = ({ id, ...props }: UseCheckListGetSelect
     AjaxResponseBase,
     CheckListGetSelectionQueryParams,
     CheckListGetSelectionPathParams
-  >(({ id }: CheckListGetSelectionPathParams) => `/checkList/${id}/selection`, { pathParams: { id }, ...props });
+  >((paramsInPath: CheckListGetSelectionPathParams) => `/checkList/${paramsInPath.id}/selection`, {
+    pathParams: { id },
+    ...props,
+  });
 
 export interface CheckListSaveSelectionQueryParams {
   /**
@@ -184,7 +186,13 @@ export const CheckListSaveSelection = ({ id, ...props }: CheckListSaveSelectionP
 );
 
 export type UseCheckListSaveSelectionProps = Omit<
-  UseMutateProps<void, CheckListSaveSelectionQueryParams, SaveSelectionInput, CheckListSaveSelectionPathParams>,
+  UseMutateProps<
+    void,
+    unknown,
+    CheckListSaveSelectionQueryParams,
+    SaveSelectionInput,
+    CheckListSaveSelectionPathParams
+  >,
   'path' | 'verb'
 > &
   CheckListSaveSelectionPathParams;
@@ -192,7 +200,7 @@ export type UseCheckListSaveSelectionProps = Omit<
 export const useCheckListSaveSelection = ({ id, ...props }: UseCheckListSaveSelectionProps) =>
   useMutate<void, unknown, CheckListSaveSelectionQueryParams, SaveSelectionInput, CheckListSaveSelectionPathParams>(
     'POST',
-    ({ id }: CheckListSaveSelectionPathParams) => `/checkList/${id}/selection`,
+    (paramsInPath: CheckListSaveSelectionPathParams) => `/checkList/${paramsInPath.id}/selection`,
     { pathParams: { id }, ...props }
   );
 
@@ -231,7 +239,12 @@ export const CheckListGetCheckListTree = ({ id, ...props }: CheckListGetCheckLis
 );
 
 export type UseCheckListGetCheckListTreeProps = Omit<
-  UseGetProps<CheckListModelAjaxResponse, CheckListGetCheckListTreeQueryParams, CheckListGetCheckListTreePathParams>,
+  UseGetProps<
+    CheckListModelAjaxResponse,
+    AjaxResponseBase,
+    CheckListGetCheckListTreeQueryParams,
+    CheckListGetCheckListTreePathParams
+  >,
   'path'
 > &
   CheckListGetCheckListTreePathParams;
@@ -242,7 +255,10 @@ export const useCheckListGetCheckListTree = ({ id, ...props }: UseCheckListGetCh
     AjaxResponseBase,
     CheckListGetCheckListTreeQueryParams,
     CheckListGetCheckListTreePathParams
-  >(({ id }: CheckListGetCheckListTreePathParams) => `/checkList/${id}/tree`, { pathParams: { id }, ...props });
+  >((paramsInPath: CheckListGetCheckListTreePathParams) => `/checkList/${paramsInPath.id}/tree`, {
+    pathParams: { id },
+    ...props,
+  });
 
 export interface CheckListGetQueryParams {
   id?: string;
@@ -264,7 +280,10 @@ export const CheckListGet = (props: CheckListGetProps) => (
   />
 );
 
-export type UseCheckListGetProps = Omit<UseGetProps<CheckListDtoAjaxResponse, CheckListGetQueryParams, void>, 'path'>;
+export type UseCheckListGetProps = Omit<
+  UseGetProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams, void>,
+  'path'
+>;
 
 export const useCheckListGet = (props: UseCheckListGetProps) =>
   useGet<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListGetQueryParams, void>(
@@ -295,7 +314,7 @@ export const CheckListGetAll = (props: CheckListGetAllProps) => (
 );
 
 export type UseCheckListGetAllProps = Omit<
-  UseGetProps<CheckListDtoPagedResultDtoAjaxResponse, CheckListGetAllQueryParams, void>,
+  UseGetProps<CheckListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListGetAllQueryParams, void>,
   'path'
 >;
 
@@ -326,7 +345,7 @@ export const CheckListCreate = (props: CheckListCreateProps) => (
 );
 
 export type UseCheckListCreateProps = Omit<
-  UseMutateProps<CheckListDtoAjaxResponse, CheckListCreateQueryParams, CheckListDto, void>,
+  UseMutateProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListCreateQueryParams, CheckListDto, void>,
   'path' | 'verb'
 >;
 
@@ -358,7 +377,7 @@ export const CheckListUpdate = (props: CheckListUpdateProps) => (
 );
 
 export type UseCheckListUpdateProps = Omit<
-  UseMutateProps<CheckListDtoAjaxResponse, CheckListUpdateQueryParams, CheckListDto, void>,
+  UseMutateProps<CheckListDtoAjaxResponse, AjaxResponseBase, CheckListUpdateQueryParams, CheckListDto, void>,
   'path' | 'verb'
 >;
 
@@ -391,13 +410,11 @@ export const CheckListDelete = (props: CheckListDeleteProps) => (
 );
 
 export type UseCheckListDeleteProps = Omit<
-  UseMutateProps<void, CheckListDeleteQueryParams, void, void>,
+  UseMutateProps<void, unknown, CheckListDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListDelete = (props: UseCheckListDeleteProps) =>
-  useMutate<void, unknown, CheckListDeleteQueryParams, void, void>(
-    'DELETE',
-    `/api/services/app/CheckList/Delete`,
-    props
-  );
+  useMutate<void, unknown, CheckListDeleteQueryParams, void, void>('DELETE', `/api/services/app/CheckList/Delete`, {
+    ...props,
+  });

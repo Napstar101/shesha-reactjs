@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface ReferenceListItemValueDto {
   item?: string | null;
   itemValue?: number | null;
@@ -118,7 +116,7 @@ export const PersonCreate = (props: PersonCreateProps) => (
 );
 
 export type UsePersonCreateProps = Omit<
-  UseMutateProps<PersonAccountDtoAjaxResponse, PersonCreateQueryParams, CreatePersonAccountDto, void>,
+  UseMutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonCreateQueryParams, CreatePersonAccountDto, void>,
   'path' | 'verb'
 >;
 
@@ -150,7 +148,7 @@ export const PersonAutocompleteByName = (props: PersonAutocompleteByNameProps) =
 );
 
 export type UsePersonAutocompleteByNameProps = Omit<
-  UseGetProps<AutocompleteItemDtoListAjaxResponse, PersonAutocompleteByNameQueryParams, void>,
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, PersonAutocompleteByNameQueryParams, void>,
   'path'
 >;
 
@@ -182,7 +180,7 @@ export const PersonAutocompleteByRole = (props: PersonAutocompleteByRoleProps) =
 );
 
 export type UsePersonAutocompleteByRoleProps = Omit<
-  UseGetProps<AutocompleteItemDtoListAjaxResponse, PersonAutocompleteByRoleQueryParams, void>,
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, PersonAutocompleteByRoleQueryParams, void>,
   'path'
 >;
 
@@ -213,7 +211,7 @@ export const PersonUpdate = (props: PersonUpdateProps) => (
 );
 
 export type UsePersonUpdateProps = Omit<
-  UseMutateProps<PersonAccountDtoAjaxResponse, PersonUpdateQueryParams, PersonAccountDto, void>,
+  UseMutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonUpdateQueryParams, PersonAccountDto, void>,
   'path' | 'verb'
 >;
 
@@ -244,7 +242,10 @@ export const PersonGet = (props: PersonGetProps) => (
   />
 );
 
-export type UsePersonGetProps = Omit<UseGetProps<PersonAccountDtoAjaxResponse, PersonGetQueryParams, void>, 'path'>;
+export type UsePersonGetProps = Omit<
+  UseGetProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>,
+  'path'
+>;
 
 export const usePersonGet = (props: UsePersonGetProps) =>
   useGet<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>(
@@ -275,7 +276,7 @@ export const PersonGetAll = (props: PersonGetAllProps) => (
 );
 
 export type UsePersonGetAllProps = Omit<
-  UseGetProps<PersonAccountDtoPagedResultDtoAjaxResponse, PersonGetAllQueryParams, void>,
+  UseGetProps<PersonAccountDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonGetAllQueryParams, void>,
   'path'
 >;
 
@@ -303,7 +304,12 @@ export const PersonDelete = (props: PersonDeleteProps) => (
   />
 );
 
-export type UsePersonDeleteProps = Omit<UseMutateProps<void, PersonDeleteQueryParams, void, void>, 'path' | 'verb'>;
+export type UsePersonDeleteProps = Omit<
+  UseMutateProps<void, unknown, PersonDeleteQueryParams, void, void>,
+  'path' | 'verb'
+>;
 
 export const usePersonDelete = (props: UsePersonDeleteProps) =>
-  useMutate<void, unknown, PersonDeleteQueryParams, void, void>('DELETE', `/api/services/app/Person/Delete`, props);
+  useMutate<void, unknown, PersonDeleteQueryParams, void, void>('DELETE', `/api/services/app/Person/Delete`, {
+    ...props,
+  });

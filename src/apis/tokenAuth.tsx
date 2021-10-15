@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface AuthenticateModel {
   userNameOrEmailAddress: string;
   password: string;
@@ -128,7 +126,13 @@ export const TokenAuthAuthenticate = (props: TokenAuthAuthenticateProps) => (
 );
 
 export type UseTokenAuthAuthenticateProps = Omit<
-  UseMutateProps<AuthenticateResultModelAjaxResponse, TokenAuthAuthenticateQueryParams, AuthenticateModel, void>,
+  UseMutateProps<
+    AuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthAuthenticateQueryParams,
+    AuthenticateModel,
+    void
+  >,
   'path' | 'verb'
 >;
 
@@ -162,7 +166,7 @@ export const TokenAuthSignOff = (props: TokenAuthSignOffProps) => (
 );
 
 export type UseTokenAuthSignOffProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, TokenAuthSignOffQueryParams, void, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -207,6 +211,7 @@ export const TokenAuthGetExternalAuthenticationProviders = (
 export type UseTokenAuthGetExternalAuthenticationProvidersProps = Omit<
   UseGetProps<
     ExternalLoginProviderInfoModelListAjaxResponse,
+    AjaxResponseBase,
     TokenAuthGetExternalAuthenticationProvidersQueryParams,
     void
   >,
@@ -258,6 +263,7 @@ export const TokenAuthExternalAuthenticate = (props: TokenAuthExternalAuthentica
 export type UseTokenAuthExternalAuthenticateProps = Omit<
   UseMutateProps<
     ExternalAuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
     TokenAuthExternalAuthenticateQueryParams,
     ExternalAuthenticateModel,
     void

@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface AutocompleteItemDto {
   value?: string | null;
   displayText?: string | null;
@@ -63,7 +61,7 @@ export const AutocompleteList = (props: AutocompleteListProps) => (
 );
 
 export type UseAutocompleteListProps = Omit<
-  UseGetProps<AutocompleteItemDtoListAjaxResponse, AutocompleteListQueryParams, void>,
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>,
   'path'
 >;
 

@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface AuthorizationSettingsDto {
   isLockoutEnabled?: boolean;
   defaultAccountLockoutSeconds?: number;
@@ -67,7 +65,7 @@ export const AuthorizationSettingsUpdateSettings = (props: AuthorizationSettings
 );
 
 export type UseAuthorizationSettingsUpdateSettingsProps = Omit<
-  UseMutateProps<void, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>,
+  UseMutateProps<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>,
   'path' | 'verb'
 >;
 
@@ -98,7 +96,12 @@ export const AuthorizationSettingsGetSettings = (props: AuthorizationSettingsGet
 );
 
 export type UseAuthorizationSettingsGetSettingsProps = Omit<
-  UseGetProps<AuthorizationSettingsDtoAjaxResponse, AuthorizationSettingsGetSettingsQueryParams, void>,
+  UseGetProps<
+    AuthorizationSettingsDtoAjaxResponse,
+    AjaxResponseBase,
+    AuthorizationSettingsGetSettingsQueryParams,
+    void
+  >,
   'path'
 >;
 

@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface ConfigurableComponentDto {
   id?: string;
   path?: string | null;
@@ -85,6 +83,7 @@ export const ConfigurableComponentGet = ({ id, ...props }: ConfigurableComponent
 export type UseConfigurableComponentGetProps = Omit<
   UseGetProps<
     ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
     ConfigurableComponentGetQueryParams,
     ConfigurableComponentGetPathParams
   >,
@@ -98,7 +97,7 @@ export const useConfigurableComponentGet = ({ id, ...props }: UseConfigurableCom
     AjaxResponseBase,
     ConfigurableComponentGetQueryParams,
     ConfigurableComponentGetPathParams
-  >(({ id }: ConfigurableComponentGetPathParams) => `/api/services/ConfigurableComponents/${id}`, {
+  >((paramsInPath: ConfigurableComponentGetPathParams) => `/api/services/ConfigurableComponents/${paramsInPath.id}`, {
     pathParams: { id },
     ...props,
   });
@@ -138,6 +137,7 @@ export const ConfigurableComponentUpdate = (props: ConfigurableComponentUpdatePr
 export type UseConfigurableComponentUpdateProps = Omit<
   UseMutateProps<
     ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
     ConfigurableComponentUpdateQueryParams,
     ConfigurableComponentDto,
     void
@@ -189,6 +189,7 @@ export const ConfigurableComponentCreate = (props: ConfigurableComponentCreatePr
 export type UseConfigurableComponentCreateProps = Omit<
   UseMutateProps<
     ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
     ConfigurableComponentCreateQueryParams,
     ConfigurableComponentDto,
     void
@@ -245,6 +246,7 @@ export const ConfigurableComponentUpdateSettings = ({ id, ...props }: Configurab
 export type UseConfigurableComponentUpdateSettingsProps = Omit<
   UseMutateProps<
     void,
+    unknown,
     ConfigurableComponentUpdateSettingsQueryParams,
     ConfigurableComponentUpdateSettingsInput,
     ConfigurableComponentUpdateSettingsPathParams
@@ -262,6 +264,7 @@ export const useConfigurableComponentUpdateSettings = ({ id, ...props }: UseConf
     ConfigurableComponentUpdateSettingsPathParams
   >(
     'PUT',
-    ({ id }: ConfigurableComponentUpdateSettingsPathParams) => `/api/services/ConfigurableComponents/${id}/Settings`,
+    (paramsInPath: ConfigurableComponentUpdateSettingsPathParams) =>
+      `/api/services/ConfigurableComponents/${paramsInPath.id}/Settings`,
     { pathParams: { id }, ...props }
   );

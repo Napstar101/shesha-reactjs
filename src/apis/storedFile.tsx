@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface ValidationErrorInfo {
   message?: string | null;
   members?: string[] | null;
@@ -112,7 +110,7 @@ export const StoredFileDownload = (props: StoredFileDownloadProps) => (
 );
 
 export type UseStoredFileDownloadProps = Omit<
-  UseGetProps<FileStreamResultAjaxResponse, StoredFileDownloadQueryParams, void>,
+  UseGetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams, void>,
   'path'
 >;
 
@@ -143,7 +141,7 @@ export const StoredFileUpload = (props: StoredFileUploadProps) => (
 );
 
 export type UseStoredFileUploadProps = Omit<
-  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileUploadQueryParams, void, void>,
+  UseMutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -175,7 +173,7 @@ export const StoredFileUploadNewVersion = (props: StoredFileUploadNewVersionProp
 );
 
 export type UseStoredFileUploadNewVersionProps = Omit<
-  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileUploadNewVersionQueryParams, void, void>,
+  UseMutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -211,7 +209,7 @@ export const StoredFileDelete = (props: StoredFileDeleteProps) => (
 );
 
 export type UseStoredFileDeleteProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, StoredFileDeleteQueryParams, void, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -219,7 +217,7 @@ export const useStoredFileDelete = (props: UseStoredFileDeleteProps) =>
   useMutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void, void>(
     'DELETE',
     `/api/StoredFile/Delete`,
-    props
+    { ...props }
   );
 
 export interface StoredFileDownloadZipQueryParams {
@@ -247,7 +245,7 @@ export const StoredFileDownloadZip = (props: StoredFileDownloadZipProps) => (
 );
 
 export type UseStoredFileDownloadZipProps = Omit<
-  UseGetProps<FileStreamResultAjaxResponse, StoredFileDownloadZipQueryParams, void>,
+  UseGetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams, void>,
   'path'
 >;
 
@@ -282,7 +280,7 @@ export const StoredFileFilesList = (props: StoredFileFilesListProps) => (
 );
 
 export type UseStoredFileFilesListProps = Omit<
-  UseGetProps<StoredFileDtoListAjaxResponse, StoredFileFilesListQueryParams, void>,
+  UseGetProps<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams, void>,
   'path'
 >;
 
@@ -313,7 +311,7 @@ export const StoredFileCreateOrUpdate = (props: StoredFileCreateOrUpdateProps) =
 );
 
 export type UseStoredFileCreateOrUpdateProps = Omit<
-  UseMutateProps<StoredFileDtoAjaxResponse, StoredFileCreateOrUpdateQueryParams, void, void>,
+  UseMutateProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -345,7 +343,7 @@ export const StoredFileGet = (props: StoredFileGetProps) => (
 );
 
 export type UseStoredFileGetProps = Omit<
-  UseGetProps<StoredFileDtoAjaxResponse, StoredFileGetQueryParams, void>,
+  UseGetProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams, void>,
   'path'
 >;
 
@@ -374,7 +372,7 @@ export const StoredFileDeleteFile = (props: StoredFileDeleteFileProps) => (
 );
 
 export type UseStoredFileDeleteFileProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, StoredFileDeleteFileQueryParams, void, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -382,7 +380,7 @@ export const useStoredFileDeleteFile = (props: UseStoredFileDeleteFileProps) =>
   useMutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void, void>(
     'DELETE',
     `/api/StoredFile`,
-    props
+    { ...props }
   );
 
 export interface StoredFileGetEntityPropertyQueryParams {
@@ -408,7 +406,7 @@ export const StoredFileGetEntityProperty = (props: StoredFileGetEntityPropertyPr
 );
 
 export type UseStoredFileGetEntityPropertyProps = Omit<
-  UseGetProps<StoredFileDtoAjaxResponse, StoredFileGetEntityPropertyQueryParams, void>,
+  UseGetProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams, void>,
   'path'
 >;
 
@@ -455,6 +453,7 @@ export const StoredFileGetFileVersions = ({ fileId, ...props }: StoredFileGetFil
 export type UseStoredFileGetFileVersionsProps = Omit<
   UseGetProps<
     StoredFileVersionInfoDtoListAjaxResponse,
+    AjaxResponseBase,
     StoredFileGetFileVersionsQueryParams,
     StoredFileGetFileVersionsPathParams
   >,
@@ -468,7 +467,7 @@ export const useStoredFileGetFileVersions = ({ fileId, ...props }: UseStoredFile
     AjaxResponseBase,
     StoredFileGetFileVersionsQueryParams,
     StoredFileGetFileVersionsPathParams
-  >(({ fileId }: StoredFileGetFileVersionsPathParams) => `/api/StoredFile/StoredFile/${fileId}/Versions`, {
-    pathParams: { fileId },
-    ...props,
-  });
+  >(
+    (paramsInPath: StoredFileGetFileVersionsPathParams) => `/api/StoredFile/StoredFile/${paramsInPath.fileId}/Versions`,
+    { pathParams: { fileId }, ...props }
+  );

@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
+export const SPEC_VERSION = 'v1';
 export interface EventLogItem {
   message?: string | null;
   timeStamp?: string;
@@ -119,7 +117,7 @@ export const ScheduledJobExecutionGetEventLogItems = (props: ScheduledJobExecuti
 );
 
 export type UseScheduledJobExecutionGetEventLogItemsProps = Omit<
-  UseGetProps<EventLogItemListAjaxResponse, ScheduledJobExecutionGetEventLogItemsQueryParams, void>,
+  UseGetProps<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams, void>,
   'path'
 >;
 
@@ -150,7 +148,7 @@ export const ScheduledJobExecutionDownloadLogFile = (props: ScheduledJobExecutio
 );
 
 export type UseScheduledJobExecutionDownloadLogFileProps = Omit<
-  UseGetProps<FileStreamResultAjaxResponse, ScheduledJobExecutionDownloadLogFileQueryParams, void>,
+  UseGetProps<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams, void>,
   'path'
 >;
 
@@ -181,7 +179,7 @@ export const ScheduledJobExecutionGet = (props: ScheduledJobExecutionGetProps) =
 );
 
 export type UseScheduledJobExecutionGetProps = Omit<
-  UseGetProps<ScheduledJobExecutionDtoAjaxResponse, ScheduledJobExecutionGetQueryParams, void>,
+  UseGetProps<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams, void>,
   'path'
 >;
 
@@ -224,7 +222,12 @@ export const ScheduledJobExecutionGetAll = (props: ScheduledJobExecutionGetAllPr
 );
 
 export type UseScheduledJobExecutionGetAllProps = Omit<
-  UseGetProps<ScheduledJobExecutionDtoPagedResultDtoAjaxResponse, ScheduledJobExecutionGetAllQueryParams, void>,
+  UseGetProps<
+    ScheduledJobExecutionDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionGetAllQueryParams,
+    void
+  >,
   'path'
 >;
 
@@ -271,6 +274,7 @@ export const ScheduledJobExecutionCreate = (props: ScheduledJobExecutionCreatePr
 export type UseScheduledJobExecutionCreateProps = Omit<
   UseMutateProps<
     ScheduledJobExecutionDtoAjaxResponse,
+    AjaxResponseBase,
     ScheduledJobExecutionCreateQueryParams,
     ScheduledJobExecutionDto,
     void
@@ -322,6 +326,7 @@ export const ScheduledJobExecutionUpdate = (props: ScheduledJobExecutionUpdatePr
 export type UseScheduledJobExecutionUpdateProps = Omit<
   UseMutateProps<
     ScheduledJobExecutionDtoAjaxResponse,
+    AjaxResponseBase,
     ScheduledJobExecutionUpdateQueryParams,
     ScheduledJobExecutionDto,
     void
@@ -360,7 +365,7 @@ export const ScheduledJobExecutionDelete = (props: ScheduledJobExecutionDeletePr
 );
 
 export type UseScheduledJobExecutionDeleteProps = Omit<
-  UseMutateProps<void, ScheduledJobExecutionDeleteQueryParams, void, void>,
+  UseMutateProps<void, unknown, ScheduledJobExecutionDeleteQueryParams, void, void>,
   'path' | 'verb'
 >;
 
@@ -368,5 +373,5 @@ export const useScheduledJobExecutionDelete = (props: UseScheduledJobExecutionDe
   useMutate<void, unknown, ScheduledJobExecutionDeleteQueryParams, void, void>(
     'DELETE',
     `/api/services/Scheduler/ScheduledJobExecution/Delete`,
-    props
+    { ...props }
   );

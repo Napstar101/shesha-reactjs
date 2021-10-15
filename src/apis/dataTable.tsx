@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
-
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
-export type ListSortDirection = number;
+export const SPEC_VERSION = 'v1';
+export type ListSortDirection = 0 | 1;
 
 export interface DataTableColumnDto {
   propertyName?: string | null;
@@ -177,7 +175,7 @@ export const DataTableGetConfiguration = (props: DataTableGetConfigurationProps)
 );
 
 export type UseDataTableGetConfigurationProps = Omit<
-  UseGetProps<DataTableConfigDtoAjaxResponse, DataTableGetConfigurationQueryParams, void>,
+  UseGetProps<DataTableConfigDtoAjaxResponse, AjaxResponseBase, DataTableGetConfigurationQueryParams, void>,
   'path'
 >;
 
@@ -214,7 +212,13 @@ export const DataTableGetColumns = (props: DataTableGetColumnsProps) => (
 );
 
 export type UseDataTableGetColumnsProps = Omit<
-  UseMutateProps<DataTableColumnDtoListAjaxResponse, DataTableGetColumnsQueryParams, GetColumnsInput, void>,
+  UseMutateProps<
+    DataTableColumnDtoListAjaxResponse,
+    AjaxResponseBase,
+    DataTableGetColumnsQueryParams,
+    GetColumnsInput,
+    void
+  >,
   'path' | 'verb'
 >;
 
@@ -248,7 +252,7 @@ export const DataTableGetData = (props: DataTableGetDataProps) => (
 );
 
 export type UseDataTableGetDataProps = Omit<
-  UseMutateProps<DataTableDataAjaxResponse, DataTableGetDataQueryParams, DataTableGetDataInput, void>,
+  UseMutateProps<DataTableDataAjaxResponse, AjaxResponseBase, DataTableGetDataQueryParams, DataTableGetDataInput, void>,
   'path' | 'verb'
 >;
 
@@ -292,7 +296,13 @@ export const DataTableExportToExcel = (props: DataTableExportToExcelProps) => (
 );
 
 export type UseDataTableExportToExcelProps = Omit<
-  UseMutateProps<FileStreamResultAjaxResponse, DataTableExportToExcelQueryParams, DataTableGetDataInput, void>,
+  UseMutateProps<
+    FileStreamResultAjaxResponse,
+    AjaxResponseBase,
+    DataTableExportToExcelQueryParams,
+    DataTableGetDataInput,
+    void
+  >,
   'path' | 'verb'
 >;
 
