@@ -136,7 +136,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     const headers: { [key: string]: string } = {};
 
     let token = t || state.token;
-    if (!token){
+    if (!token) {
       const tokenObj = getAccessToken(tokenName);
       token = tokenObj?.accessToken;
     }
@@ -191,7 +191,11 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       if (router?.pathname === URL_HOME_PAGE) return redirect(unauthorizedRedirectUrl);
 
       return redirect(`${URL_LOGIN_PAGE}?returnUrl=${router?.pathname}`);
-    } else fetchCurrentLoginInformation({ requestOptions: { headers: hasAccessToken } });
+    } else {
+      setTimeout(() => {
+        fetchCurrentLoginInformation({ requestOptions: { headers: hasAccessToken } });
+      }, 1500);
+    }
   }, []);
   /*
   const isNotAuthorized = useMemo(() => {
@@ -299,7 +303,6 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       ) // Done fetching user info but the state is not yet updated
     );
   }, [isFetchingCurrentLoginInformation, state]);
-
 
   //#endregion
 

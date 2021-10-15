@@ -4,7 +4,7 @@ import { IErrorInfo } from '../../interfaces/errorInfo';
 import { IAjaxResponseBase } from '../../interfaces/ajaxResponse';
 
 export interface IValidationErrorsProps {
-  error: IAjaxResponseBase | IErrorInfo | string | boolean;
+  error: string | IErrorInfo | IAjaxResponseBase;
 }
 
 const DEFAULT_ERROR_MSG = 'Sorry, an error has occurred. Please try again later';
@@ -23,6 +23,10 @@ export const ValidationErrors: FC<IValidationErrorsProps> = ({ error }) => {
 
   if (typeof error === 'string') {
     return renderAlert({ message: DEFAULT_ERROR_MSG });
+  }
+
+  if (Object.keys(error).includes('error')) {
+    errorObj = error['error'] as IErrorInfo;
   }
 
   // IAjaxResponseBase
