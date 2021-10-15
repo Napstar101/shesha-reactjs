@@ -95,12 +95,6 @@ export interface UrlFetcherQueryParams {
   selectedValue?: string | null;
 }
 
-const trimQueryString = (url: string): string => {
-  if (!url) return url;
-  const idx = url.indexOf('?');
-  return idx > -1 ? url.substr(0, idx) : url;
-};
-
 const getQueryString = (url: string) => {
   const idx = url?.indexOf('?') || -1;
   if (idx == -1) return {};
@@ -109,10 +103,16 @@ const getQueryString = (url: string) => {
   return qs.parse(queryString, { ignoreQueryPrefix: true });
 };
 
+const trimQueryString = (url: string): string => {
+  if (!url) return url;
+  const idx = url.indexOf('?');
+  return idx > -1 ? url.substr(0, idx) : url;
+};
+
 /**
  * A component for working with dynamic autocomplete
  */
- export const Autocomplete: FC<IAutocompleteProps> = ({
+export const Autocomplete: FC<IAutocompleteProps> = ({
   value,
   placeHolder,
   typeShortAlias,
@@ -193,48 +193,35 @@ const getQueryString = (url: string) => {
   };
 
   const debouncedFetchItems = useDebouncedCallback<(value: string) => void>(
-    (value) => {
+    value => {
       doFetchItems(value);
     },
     // delay in ms
     200
   );
 
-  const options: AutocompleteItemDto[] = useMemo(() => {
-    const fetchedData = getFetchedItems();
+  const getValuesArray = (val: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]) => {
+    if (!val) return [];
 
-    const values: AutocompleteItemDto[] = Array.isArray(value)
-      ? value
+    return Array.isArray(val)
+      ? val?.map(({ id, displayText }) => ({ value: id, displayText }))
       : [
           {
-            value: value?.id,
-            displayText: value?.displayText,
+            value: val?.id,
+            displayText: val?.displayText,
           },
         ];
+  };
 
-    if (fetchedData?.length) {
-      // Make sure you merge with the passed values in case the selected values are not part of the returned items from search
-      return _.uniqBy([...fetchedData, ...values], 'value');
-    } else {
-      // If you have
-      //    a value
-      // but do not have
-      //    term
-      //    options
-      // then your options are your values depending on the size of your values
-      if (value) {
-        if (Array.isArray(value)) {
-          return value?.map(({ id: value, displayText }) => ({ value, displayText }));
-        } else if (typeof value === 'object') {
-          return values;
-        }
-      }
+  const options: AutocompleteItemDto[] = useMemo(() => {
+    const fetchedData = getFetchedItems() || [];
 
-      return [];
-    }
+    const values = getValuesArray(value);
+
+    const prevValues = []; //getValuesArray(previousValue) = ;
+
+    return _.uniqBy([...fetchedData, ...values, ...prevValues], 'value') || [];
   }, [value, autocompleteText, entityFetcher || urlFetcher]);
-
-  // console.log('options: ', options);
 
   const handleSearch = (value: any) => {
     setAutocompleteText(value);
