@@ -40,6 +40,7 @@ import DisplayFormItem from '../../../components/formDesigner/components/basicDi
 import EntityPickerComponent from '../../../components/formDesigner/components/entityPicker';
 import Section from '../../../components/formDesigner/components/section';
 import TimeField from '../../../components/formDesigner/components/timeField';
+import Statistic from '../../../components/formDesigner/components/statistic';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -57,6 +58,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       Switch,
       TextArea,
       TextField,
+      Statistic,
     ],
   },
   {

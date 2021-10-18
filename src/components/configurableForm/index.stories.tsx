@@ -52,6 +52,13 @@ const Template: Story<IConfigurableFormProps> = () => {
                   scheduleDateEnd: '2021-09-12T00:40:40.317Z',
                   scheduleDate: ['2021-10-30T00:40:40.317Z', '2021-09-12T00:40:40.317Z'],
                   gender: { itemValue: 1 },
+                  numOfStudents: 23232,
+                  numOfTeachers: 131,
+                  numOfClasses: 75,
+                  numOfOfficers: 16,
+                  numOfRepeatingStudents: 37,
+                  numOfNewStudents: 200,
+                  numOfMatricStudents: 102,
                 }}
               />
 

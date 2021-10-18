@@ -13,7 +13,7 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   hideBorder?: boolean;
   dataSourceUrl?: string;
   dataSourceType: AutocompleteDataSourceType;
-  mode?: "tags" | "multiple";
+  mode?: 'tags' | 'multiple';
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -29,6 +29,8 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
     const dataSourceUrl = customProps.dataSourceUrl
       ? replaceTags(customProps.dataSourceUrl, { data: formData })
       : customProps.dataSourceUrl;
+
+    // console.log();
 
     // todo: implement other types of datasources!
     return (
@@ -55,5 +57,19 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
     return customProps;
   },
 };
+
+// TextField.settingsFormMarkup = new FormConfig()
+//   .AddName({
+//     name: 'sectionSeparator',
+//     validateFunc
+//   })
+// AddDropdownParam({
+
+// })
+// .ToJSON()
+
+
+
+  // RegisterCustomFormElements
 
 export default TextField;
