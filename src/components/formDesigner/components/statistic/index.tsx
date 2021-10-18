@@ -3,7 +3,7 @@ import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/fo
 import { BarChartOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
-import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import ShaStatistic, { IShaStatisticProps } from '../../../statistic';
 import ShaIcon from '../../../shaIcon';
 import { useForm } from '../../../../providers';
