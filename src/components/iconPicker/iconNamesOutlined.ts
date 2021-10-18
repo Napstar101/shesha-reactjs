@@ -126,6 +126,7 @@ export const OUTLINED_ICON_GROUPS = {
     'ColumnHeightOutlined',
   ] as const,
   data: [
+    'AreaChartOutlined',
     'PieChartOutlined',
     'BarChartOutlined',
     'DotChartOutlined',
