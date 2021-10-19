@@ -28,7 +28,7 @@ export enum DataTableActionEnums {
 
   ChangePageSize = 'CHANGE_PAGE_SIZE',
   SetCurrentPage = 'SET_CURRENT_PAGE',
-  
+
   ToggleColumnVisibility = 'TOGGLE_COLUMN_VISIBILITY',
   ToggleColumnFilter = 'TOGGLE_COLUMN_FILTER',
   ChangeFilterOption = 'CHANGE_FILTER_OPTION',
@@ -58,30 +58,24 @@ export const fetchTableDataSuccessAction = createAction<ITableDataResponse, ITab
   p => p
 );
 
-export const fetchTableDataErrorAction = createAction(
-  DataTableActionEnums.FetchTableDataError,
-  () => {}
-);
+export const fetchTableDataErrorAction = createAction(DataTableActionEnums.FetchTableDataError, () => {});
 
-export const fetchTableConfigAction = createAction<string, string>(
-  DataTableActionEnums.FetchTableConfig,
-  p => p
-);
+export const fetchTableConfigAction = createAction<string, string>(DataTableActionEnums.FetchTableConfig, p => p);
 
-export const fetchTableConfigSuccessAction = createAction<IFetchTableConfigSuccessPayload, IFetchTableConfigSuccessPayload>(
-  DataTableActionEnums.FetchTableConfigSuccess,
-  p => p
-);
+export const fetchTableConfigSuccessAction = createAction<
+  IFetchTableConfigSuccessPayload,
+  IFetchTableConfigSuccessPayload
+>(DataTableActionEnums.FetchTableConfigSuccess, p => p);
 
 export interface IFetchColumnsSuccessSuccessPayload {
   columns: DataTableColumnDto[];
   configurableColumns: IConfigurableColumnsBase[];
   userConfig: IDataTableUserConfig;
 }
-export const fetchColumnsSuccessSuccessAction = createAction<IFetchColumnsSuccessSuccessPayload, IFetchColumnsSuccessSuccessPayload>(
-  DataTableActionEnums.FetchColumnsSuccess,
-  p => p
-);
+export const fetchColumnsSuccessSuccessAction = createAction<
+  IFetchColumnsSuccessSuccessPayload,
+  IFetchColumnsSuccessSuccessPayload
+>(DataTableActionEnums.FetchColumnsSuccess, p => p);
 
 export const fetchTableConfigErrorAction = createAction<boolean, boolean>(
   DataTableActionEnums.FetchTableConfigError,
@@ -98,25 +92,16 @@ export interface IFetchTableConfigSuccessPayload {
   userConfig: IDataTableUserConfig;
 }
 
-export const changePageSizeAction = createAction<number, number>(
-  DataTableActionEnums.ChangePageSize,
-  p => p
-);
+export const changePageSizeAction = createAction<number, number>(DataTableActionEnums.ChangePageSize, p => p);
 
-export const changeQuickSearchAction = createAction<string, string>(
-  DataTableActionEnums.ChangeQuickSearch,
-  p => p
-);
+export const changeQuickSearchAction = createAction<string, string>(DataTableActionEnums.ChangeQuickSearch, p => p);
 
 export const toggleSaveFilterModalAction = createAction<boolean, boolean>(
   DataTableActionEnums.ToggleSaveFilterModal,
   p => p
 );
 
-export const setCurrentPageAction = createAction<number, number>(
-  DataTableActionEnums.SetCurrentPage,
-  p => p
-);
+export const setCurrentPageAction = createAction<number, number>(DataTableActionEnums.SetCurrentPage, p => p);
 
 export const toggleColumnVisibilityAction = createAction<string, string>(
   DataTableActionEnums.ToggleColumnVisibility,
@@ -129,8 +114,8 @@ export const toggleColumnFilterAction = createAction<string[], string[]>(
 );
 
 export interface IChangeFilterOptionPayload {
-  filterColumnId: string,
-  filterOptionValue: IndexColumnFilterOption,
+  filterColumnId: string;
+  filterOptionValue: IndexColumnFilterOption;
 }
 export const changeFilterOptionAction = createAction<IChangeFilterOptionPayload, IChangeFilterOptionPayload>(
   DataTableActionEnums.ChangeFilterOption,
@@ -138,23 +123,17 @@ export const changeFilterOptionAction = createAction<IChangeFilterOptionPayload,
 );
 
 export interface IChangeFilterAction {
-  filterColumnId: string,
-  filterValue: any,
+  filterColumnId: string;
+  filterValue: any;
 }
 export const changeFilterAction = createAction<IChangeFilterAction, IChangeFilterAction>(
   DataTableActionEnums.ChangeFilter,
   p => p
 );
 
-export const applyFilterAction = createAction<ITableFilter[], ITableFilter[]>(
-  DataTableActionEnums.ApplyFilter,
-  p => p
-);
+export const applyFilterAction = createAction<ITableFilter[], ITableFilter[]>(DataTableActionEnums.ApplyFilter, p => p);
 
-export const changeSelectedRowAction = createAction<number, number>(
-  DataTableActionEnums.ChangeSelectedRow,
-  p => p
-);
+export const changeSelectedRowAction = createAction<number, number>(DataTableActionEnums.ChangeSelectedRow, p => p);
 
 export const changeSelectedStoredFilterIdsAction = createAction<string[], string[]>(
   DataTableActionEnums.ChangeSelectedStoredFilterIds,
@@ -166,38 +145,24 @@ export const setPredefinedFiltersAction = createAction<IStoredFilter[], IStoredF
   p => p
 );
 
-export const changeSelectedIdsAction = createAction<string[], string[]>(
-  DataTableActionEnums.ChangeSelectedIds,
-  p => p
-);
+export const changeSelectedIdsAction = createAction<string[], string[]>(DataTableActionEnums.ChangeSelectedIds, p => p);
 
-export const exportToExcelRequestAction = createAction(
-  DataTableActionEnums.ExportToExcelRequest,
-);
-export const exportToExcelSuccessAction = createAction(
-  DataTableActionEnums.ExportToExcelSuccess,
-);
-export const exportToExcelErrorAction = createAction(
-  DataTableActionEnums.ExportToExcelError,
-);
+export const exportToExcelRequestAction = createAction(DataTableActionEnums.ExportToExcelRequest);
+export const exportToExcelSuccessAction = createAction(DataTableActionEnums.ExportToExcelSuccess);
+export const exportToExcelErrorAction = createAction(DataTableActionEnums.ExportToExcelError);
 
-export const updateLocalTableDataAction = createAction(
-  DataTableActionEnums.UpdateLocalTableData,
-);
+export const updateLocalTableDataAction = createAction(DataTableActionEnums.UpdateLocalTableData);
 
-export const deleteRowItemAction = createAction<string, string>(
-  DataTableActionEnums.DeleteRowItem,
-  p => p
-);
+export const deleteRowItemAction = createAction<string, string>(DataTableActionEnums.DeleteRowItem, p => p);
 
 export interface IRegisterConfigurableColumnsPayload {
   /** owner of the columns list, not used now and may be removed later */
-  ownerId: string, 
-  columns: IConfigurableColumnsBase[],
+  ownerId: string;
+  columns: IConfigurableColumnsBase[];
 }
-export const registerConfigurableColumnsAction = createAction<IRegisterConfigurableColumnsPayload, IRegisterConfigurableColumnsPayload>(
-  DataTableActionEnums.RegisterConfigurableColumns,
-  p => p
-);
+export const registerConfigurableColumnsAction = createAction<
+  IRegisterConfigurableColumnsPayload,
+  IRegisterConfigurableColumnsPayload
+>(DataTableActionEnums.RegisterConfigurableColumns, p => p);
 
 /* NEW_ACTION_GOES_HERE */

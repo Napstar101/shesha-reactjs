@@ -54,6 +54,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   onRowsChanged,
   onExportSuccess,
   onExportError,
+  onFetchDataSuccess,
   crudParentEntityKey = 'parentEntity',
 }) => {
   const store = useDataTableStore();
@@ -85,17 +86,28 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     cancelCreateOrEditRowData,
     updateLocalTableData,
     deleteRowItem,
-    succeeded: { exportToExcel: exportToExcelSuccess },
+    // succeeded,
+    succeeded: { exportToExcel: exportToExcelSuccess, fetchTableData: fetchTableDataSuccess },
     error: { exportToExcel: exportToExcelError },
-  } = useDataTableStore();
+  } = store;
 
-  if (exportToExcelSuccess && onExportSuccess) {
-    onExportSuccess();
-  }
+  useEffect(() => {
+    if (fetchTableDataSuccess && onFetchDataSuccess) {
+      onFetchDataSuccess();
+    }
+  }, [fetchTableDataSuccess]);
 
-  if (exportToExcelError && onExportError) {
-    onExportError();
-  }
+  useEffect(() => {
+    if (exportToExcelSuccess && onExportSuccess) {
+      onExportSuccess();
+    }
+  }, [exportToExcelSuccess]);
+
+  useEffect(() => {
+    if (exportToExcelError && onExportError) {
+      onExportError();
+    }
+  }, [exportToExcelError]);
 
   const [preparedColumns, setPreparedColumns] = useState<Column<any>[]>([]);
 

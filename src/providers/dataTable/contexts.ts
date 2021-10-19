@@ -17,8 +17,9 @@ import {
 export type IFlagProgressFlags =
   | 'isFiltering'
   | 'isSelectingColumns'
+  | 'fetchTableData'
   | 'exportToExcel' /* NEW_IN_PROGRESS_FLAG_GOES_HERE */;
-export type IFlagSucceededFlags = 'exportToExcel' /* NEW_SUCCEEDED_FLAG_GOES_HERE */;
+export type IFlagSucceededFlags = 'exportToExcel' | 'fetchTableData' /* NEW_SUCCEEDED_FLAG_GOES_HERE */;
 export type IFlagErrorFlags = 'exportToExcel' /* NEW_ERROR_FLAG_GOES_HERE */;
 export type IFlagActionedFlags = '__DEFAULT__' /* NEW_ACTIONED_FLAG_GOES_HERE */;
 

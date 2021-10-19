@@ -62,7 +62,11 @@ import { useAuth } from '../auth';
 import { nanoid } from 'nanoid';
 import { useDebouncedCallback } from 'use-debounce';
 import { useGet } from 'restful-react';
-import { IConfigurableColumnsBase, IConfigurableColumnsProps, IDataColumnsProps } from '../datatableColumnsConfigurator/models';
+import {
+  IConfigurableColumnsBase,
+  IConfigurableColumnsProps,
+  IDataColumnsProps,
+} from '../datatableColumnsConfigurator/models';
 import { useSheshaApplication } from '../sheshaApplication';
 
 interface IDataTableProviderProps extends ICrudProps {
@@ -73,7 +77,7 @@ interface IDataTableProviderProps extends ICrudProps {
   entityType?: string;
 
   /** Id of the user config, is used for saving of the user settings (sorting, paging etc) to the local storage. `tableId` is used if missing  */
-  userConfigId?: string;  
+  userConfigId?: string;
 
   /** Table title */
   title?: string;
@@ -90,6 +94,11 @@ interface IDataTableProviderProps extends ICrudProps {
    * @deprecated pass this on an `IndexTable` level
    */
   onSelectRow?: (index: number, row: any) => void;
+
+  /**
+   * Called when fetch data or refresh is complete is complete
+   */
+  onFetchDataSuccess?: () => void;
 
   /**
    * @deprecated pass this on an `IndexTable` level
@@ -115,6 +124,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   getExportToExcelPath,
   defaultFilter,
   entityType,
+  onFetchDataSuccess,
 }) => {
   const [state, dispatch] = useThunkReducer(dataTableReducer, {
     ...DATA_TABLE_CONTEXT_INITIAL_STATE,
@@ -173,8 +183,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   const [userDTSettingsInner, setUserDTSettings] = useLocalStorage<IDataTableUserConfig>(userConfigId || tableId, null);
   const userDTSettings = defaultFilter
-    ? { ...DEFAULT_DT_USER_CONFIG, tableFilter: defaultFilter, }
-    : userDTSettingsInner
+    ? { ...DEFAULT_DT_USER_CONFIG, tableFilter: defaultFilter }
+    : userDTSettingsInner;
 
   // refresh table data on change of the `dataStamp` property
   useEffect(() => {
@@ -183,11 +193,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     }
   }, [dataStamp]);
 
-  const configIsReady = tableId &&
-    !isFetchingTableConfig &&
-    state.tableConfigLoaded &&
-    tableConfig &&
-    (state?.columns?.length || 0) > 0;
+  const configIsReady =
+    tableId && !isFetchingTableConfig && state.tableConfigLoaded && tableConfig && (state?.columns?.length || 0) > 0;
 
   // fetch table data when config is ready or something changed (selected filter, changed current page etc.)
   useEffect(() => {
@@ -197,12 +204,11 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
         tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
         refreshTable();
       }
-    } else
-      if (entityType) {
-        // fecth using entity type
-        tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
-        refreshTable();
-      }
+    } else if (entityType) {
+      // fecth using entity type
+      tableIsReady.current = true; // is used to prevent unneeded data fetch by the ReactTable. Any data fetch requests before this line should be skipped
+      refreshTable();
+    }
   }, [
     state.tableFilter,
     state.currentPage,
@@ -223,7 +229,12 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   const debouncedFetch = useDebouncedCallback(
     (payload: any) => {
       fetchDataTableData(payload)
-        .then(data => dispatch(fetchTableDataSuccessAction(data.result)))
+        .then(data => {
+          if (onFetchDataSuccess && typeof onFetchDataSuccess === 'function') {
+            onFetchDataSuccess();
+          }
+          dispatch(fetchTableDataSuccessAction(data.result));
+        })
         .catch(e => {
           console.log(e);
           dispatch(fetchTableDataErrorAction());
@@ -233,9 +244,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     300
   );
 
-  const columnsAreReady = !tableId &&
-    entityType &&
-    state?.columns?.length > 0;
+  const columnsAreReady = !tableId && entityType && state?.columns?.length > 0;
 
   const fetchTableData = (payload?: IGetDataPayload) => {
     const internalPayload = {
@@ -256,10 +265,15 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   // fetch table data when configuration is available
   useEffect(() => {
     if (!isFetchingTableConfig && tableConfig) {
-      dispatch(fetchTableConfigSuccessAction({ tableConfig: tableConfig.result ?? {
-        id: tableId,
-        ...DEFAULT_TABLE_CONFIG_RESULT,
-      }, userConfig: userDTSettings }));
+      dispatch(
+        fetchTableConfigSuccessAction({
+          tableConfig: tableConfig.result ?? {
+            id: tableId,
+            ...DEFAULT_TABLE_CONFIG_RESULT,
+          },
+          userConfig: userDTSettings,
+        })
+      );
 
       //#region HACK - the value is not populated. I need to investigate why and remove this manual setting
       defaultFilter?.forEach(element => {
@@ -271,8 +285,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   // fetch table config on first render
   useEffect(() => {
-    if (tableId)
-      fetTableConfig();
+    if (tableId) fetTableConfig();
   }, [tableId]);
 
   useEffect(() => {
@@ -314,7 +327,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     const payload = getFetchTableDataPayload();
 
     dispatch(exportToExcelRequestAction());
-    
+
     axios({
       url: `${backendUrl}` + (getExportToExcelPath ?? `/api/DataTable/ExportToExcel`),
       method: 'POST',
@@ -324,7 +337,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     })
       .then(response => {
         dispatch(exportToExcelSuccessAction());
-        FileSaver.saveAs(new Blob([response.data]), 'Export.xlsx');   
+        FileSaver.saveAs(new Blob([response.data]), 'Export.xlsx');
       })
       .catch(() => {
         dispatch(exportToExcelErrorAction());
@@ -477,18 +490,20 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   };
 
   const getDataProperties = (columns: IConfigurableColumnsBase[]) => {
-    const dataFields = columns.filter(c => c.itemType == 'item' &&
-      (c as IConfigurableColumnsProps).columnType == 'data' &&
-      Boolean((c as IDataColumnsProps).propertyName)) as IDataColumnsProps[];
+    const dataFields = columns.filter(
+      c =>
+        c.itemType == 'item' &&
+        (c as IConfigurableColumnsProps).columnType == 'data' &&
+        Boolean((c as IDataColumnsProps).propertyName)
+    ) as IDataColumnsProps[];
 
     const properties = dataFields.map(f => f.propertyName);
     return properties;
-  }
+  };
 
   useEffect(() => {
     const { configurableColumns, entityType } = state;
-    if (!entityType)
-      return;
+    if (!entityType) return;
 
     const properties = getDataProperties(configurableColumns);
     if (properties.length == 0) {
@@ -500,7 +515,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     // fetch columns config from server
     const getColumnsPayload: GetColumnsInput = {
       entityType: entityType,
-      properties: properties
+      properties: properties,
     };
 
     axios({
@@ -513,10 +528,16 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
         const responseData = response.data as DataTableColumnDtoListAjaxResponse;
 
         if (responseData.success) {
-          dispatch(fetchColumnsSuccessSuccessAction({ columns: responseData.result, configurableColumns, userConfig: userDTSettings }));
+          dispatch(
+            fetchColumnsSuccessSuccessAction({
+              columns: responseData.result,
+              configurableColumns,
+              userConfig: userDTSettings,
+            })
+          );
         }
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
         //dispatch(exportToExcelErrorAction());
       });
@@ -524,11 +545,11 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   const registerConfigurableColumns = (ownerId: string, columns: IConfigurableColumnsBase[]) => {
     dispatch(registerConfigurableColumnsAction({ ownerId, columns }));
-  }
+  };
 
   const getCurrentFilter = (): ITableFilter[] => {
     return state.tableFilterDirty || state.tableFilter || [];
-  }
+  };
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 

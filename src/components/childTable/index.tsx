@@ -19,6 +19,19 @@ export interface IChildTableProps extends ICrudProps {
   tableRef?: MutableRefObject<IDataTableInstance | null>;
   onRowsChanged?: (rows: object[]) => void;
   onDblClick?: (data: any) => void;
+  /**
+   * A callback for when the file export has succeeded
+   */
+  onExportSuccess?: () => void;
+
+  /**
+   * Called when fetch data or refresh is complete is complete
+   */
+  onFetchDataSuccess?: () => void;
+  /**
+   * A callback for when the file export has failed
+   */
+  onExportError?: () => void;
   toolbarItemsPlacement?: 'panelHeader' | 'panelBody';
   alert?: string;
   paginationMode?: 'scroll' | 'pagination';
@@ -39,9 +52,11 @@ export const ChildDataTable: FC<IChildTableProps> = ({
   paginationMode = 'scroll',
   customTypeEditors,
   toolbarItems,
+  onExportSuccess,
+  onFetchDataSuccess,
+  onExportError,
 }) => {
   const store = useDataTableStore();
-
 
   if (tableRef) tableRef.current = store;
 
@@ -69,7 +84,6 @@ export const ChildDataTable: FC<IChildTableProps> = ({
 
   // Prevent the CollapsiblePanel from collapsing every time you click anywhere on the extra
   const onExtraClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => event?.stopPropagation();
-  
 
   return (
     <div className="sha-child-table">
@@ -99,6 +113,9 @@ export const ChildDataTable: FC<IChildTableProps> = ({
           onDblClick={onDblClick}
           crudMode={crudMode}
           customTypeEditors={customTypeEditors}
+          onExportSuccess={onExportSuccess}
+          onFetchDataSuccess={onFetchDataSuccess}
+          onExportError={onExportError}
         />
       </CollapsiblePanel>
 

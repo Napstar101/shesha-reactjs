@@ -63,6 +63,11 @@ export interface IShaDataTableProps extends ICrudProps {
    * A callback for when the file export has succeeded
    */
   onExportSuccess?: () => void;
+
+  /**
+   * Called when fetch data or refresh is complete is complete
+   */
+  onFetchDataSuccess?: () => void;
   /**
    * A callback for when the file export has failed
    */
