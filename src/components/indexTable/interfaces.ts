@@ -10,6 +10,12 @@ export interface ITableActionColumns {
   icon?: ReactNode;
   type?: TableActionColumnType;
   onClick?: (id: string, context: IDataTableInstance, row: IAnyObject) => string | void | Promise<any>;
+
+  /**
+   * On CRUD mode, only CRUD-related action columns are preferred. To specify that the column should always show
+   * irrespective of the CRUD mode, pass the extra property and it will always show
+   */
+  extra?: boolean;
 }
 
 export interface ITableCustomTypesRender {

@@ -260,6 +260,10 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       ?.filter(d => {
         let show = !!(Boolean(d?.onClick) || d?.type);
 
+        if (show && d.extra) {
+          return show;
+        }
+
         if (crud) {
           const isCreateOrEditMode = newOrEditableRowData?.mode === 'create' || newOrEditableRowData?.mode === 'edit';
           const isSaveOrCancelType = d.type === 'create' || d?.type === 'cancel';
