@@ -87,15 +87,15 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     updateLocalTableData,
     deleteRowItem,
     // succeeded,
-    succeeded: { exportToExcel: exportToExcelSuccess, fetchTableData: fetchTableDataSuccess },
+    succeeded: { exportToExcel: exportToExcelSuccess },
     error: { exportToExcel: exportToExcelError },
   } = store;
 
   useEffect(() => {
-    if (fetchTableDataSuccess && onFetchDataSuccess) {
+    if (!isFetchingTableData && tableData?.length && onFetchDataSuccess) {
       onFetchDataSuccess();
     }
-  }, [fetchTableDataSuccess]);
+  }, [isFetchingTableData]);
 
   useEffect(() => {
     if (exportToExcelSuccess && onExportSuccess) {
