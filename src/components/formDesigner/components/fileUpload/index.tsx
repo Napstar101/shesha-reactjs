@@ -3,7 +3,7 @@ import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/fo
 import { FileAddOutlined } from '@ant-design/icons';
 import FormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import { FileUpload, StoredFilesRenderer } from '../../../../components';
+import { FileUpload, StoredFilesRenderer } from '../../..';
 import { StoredFileProvider, StoredFilesProvider, useSheshaApplication } from '../../../../providers';
 import { useForm } from '../../../../providers/form';
 import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
@@ -42,6 +42,7 @@ const FileUploadComponent: IToolboxComponent<IFileUploadProps> = {
               isDragger={false}
               uploadBtnProps={{ icon: null, type: 'link' }}
               disabled={customProps?.disabled}
+              noFilesCaption={null}
             />
           </StoredFilesProvider>
         ) : (

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { StoredFilesRendererBase } from '../storedFilesRendererBase';
 import { useStoredFilesStore } from '../../providers/storedFiles';
 import { ButtonProps } from 'antd';
@@ -9,6 +9,7 @@ interface IStoredFilesRendererProps {
   isDragger?: boolean;
   uploadBtnProps?: ButtonProps;
   disabled?: boolean;
+  noFilesCaption?: ReactNode;
 }
 
 export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({
@@ -17,6 +18,7 @@ export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({
   isDragger,
   uploadBtnProps,
   disabled,
+  noFilesCaption,
 }) => {
   const {
     fileList,
@@ -42,6 +44,7 @@ export const StoredFilesRenderer: FC<IStoredFilesRendererProps> = ({
       isDragger={isDragger}
       uploadBtnProps={uploadBtnProps}
       disabled={disabled}
+      noFilesCaption={noFilesCaption}
     />
   );
 };

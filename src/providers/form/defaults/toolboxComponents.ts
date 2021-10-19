@@ -11,7 +11,7 @@ import Dropdown from '../../../components/formDesigner/components/dropdown/dropd
 import Checkbox from '../../../components/formDesigner/components/checkbox/checkbox';
 import CheckboxGroup from '../../../components/formDesigner/components/checkboxGroup/checkboxGroup';
 import Radio from '../../../components/formDesigner/components/radio/radio';
-import FileUpload from '../../../components/formDesigner/components/fileUpload/fileUpload';
+import FileUpload from '../../../components/formDesigner/components/fileUpload';
 import AttachmentsEditor from '../../../components/formDesigner/components/attachmentsEditor/attachmentsEditor';
 import Button from '../../../components/formDesigner/components/button/button';
 import KeyValueEditor from '../../../components/formDesigner/components/labelValueEditor/labelValueEditorComponent';

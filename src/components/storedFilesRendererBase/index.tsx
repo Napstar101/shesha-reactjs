@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import Dragger, { DraggerProps } from 'antd/lib/upload/Dragger';
 import { InboxOutlined, FileZipOutlined, UploadOutlined } from '@ant-design/icons';
 import { message, Button, notification, Alert, Upload, ButtonProps } from 'antd';
@@ -29,6 +29,12 @@ export interface IStoredFilesRendererProps {
   maxFileLength?: number;
   isDragger?: boolean;
   disabled?: boolean;
+
+  /**
+   * Whether when there are no files uploaded there should be a text to indicate that
+   */
+  noFilesCaption?: ReactNode;
+
   uploadBtnProps?: ButtonProps;
 }
 
@@ -50,6 +56,9 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
   maxFileLength = 0,
   isDragger = true,
   disabled,
+  noFilesCaption = (
+    <Alert className="stored-files-renderer-no-files" message="You currently do not have files" type="info" />
+  ),
 }) => {
   const hasFiles = !!fileList.length;
 
@@ -127,7 +136,7 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
             <InboxOutlined />
           </p>
 
-          {!hasFiles && <p className="stored-files-renderer-no-files">You currently do not have files</p>}
+          {!hasFiles && noFilesCaption}
 
           <p className="ant-upload-text">Click or drag file to this area to upload</p>
         </Dragger>
@@ -137,9 +146,7 @@ export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
             (press to upload)
           </Button>
 
-          {!hasFiles && (
-            <Alert className="stored-files-renderer-no-files" message="You currently do not have files" type="info" />
-          )}
+          {!hasFiles && noFilesCaption}
         </Upload>
       )}
 
