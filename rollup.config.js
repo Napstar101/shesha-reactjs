@@ -1,7 +1,6 @@
 // import typescript from '@rollup/plugin-typescript';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
-import external from 'rollup-plugin-peer-deps-external';
 import postCss from 'rollup-plugin-postcss';
 import multi from '@rollup/plugin-multi-entry';
 import url from 'rollup-plugin-url';
@@ -13,6 +12,7 @@ import localResolve from 'rollup-plugin-local-resolve';
 import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 import json from 'rollup-plugin-json';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 export default {
   input: ['src/index.tsx', 'src/providers/index.ts'],
@@ -65,8 +65,9 @@ export default {
     //   ]
     // }),
     multi(),
+    peerDepsExternal(),
     terser(),
-    external(),
+    peerDepsExternal(),
     postCss({
       plugins: [],
       extensions: ['.css', '.scss', '.less'],

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { ShaApplicationProvider, UiProvider } from '../../providers';
+import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { ConfigurableForm, GenericDetailsPage } from '../..';
 import { IDetailsPageProps } from './detailsPage';
@@ -25,20 +25,18 @@ const Template: Story<IDetailsPageProps> = () => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>
-        <UiProvider>
-          <ConfigurableForm
-            mode="edit"
-            // {...formItemLayout}
-            path={'test/form-designer-components'}
-            onValuesChange={data => {
-              console.log('data: ', data);
-            }}
-            initialValues={{
-              ownerId: 'some-owner-id',
-              checklistId: '1698feac-56c7-436a-9bf5-117d22bfca0f',
-            }}
-          />
-        </UiProvider>
+        <ConfigurableForm
+          mode="edit"
+          // {...formItemLayout}
+          path={'test/form-designer-components'}
+          onValuesChange={data => {
+            console.log('data: ', data);
+          }}
+          initialValues={{
+            ownerId: 'some-owner-id',
+            checklistId: '1698feac-56c7-436a-9bf5-117d22bfca0f',
+          }}
+        />
       </AuthContainer>
     </ShaApplicationProvider>
   );

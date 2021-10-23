@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import Autocomplete, { IAutocompleteProps } from './';
 import { Button, Form } from 'antd';
 import AuthContainer from '../authedContainer';
-import { ShaApplicationProvider, useUi } from '../../providers';
+import { ShaApplicationProvider } from '../../providers';
 
 export default {
   title: 'Components/Autocomplete',
@@ -13,15 +13,13 @@ export default {
 
 const autocompleteProps: IAutocompleteProps = {
   dataSourceType: 'url',
-  dataSourceUrl: '/api​/v1​/BursMan​/ScheduleVisits​/MembersAutocomplete'
+  dataSourceUrl: '/api​/v1​/BursMan​/ScheduleVisits​/MembersAutocomplete',
   // dataSourceType: 'entitiesList',
   // allowInherited: true,
   // typeShortAlias: 'Gma.Member',
 };
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
-
-
 
 // Create a master template for mapping args to render the Button component
 const Template: Story<IAutocompleteProps> = args => {
@@ -62,24 +60,32 @@ const Template: Story<IAutocompleteProps> = args => {
               <Autocomplete {...args} />
             </Form.Item>
 
-            <Button onClick={() => form?.setFieldsValue({
-              singleAutocomplete: {
-                "displayText": "Khethiwe Mkhabela",
-                "id": "bdc0caab-05e2-4677-9e3c-0af9b1fdbc57"
-              },
-              multipleAutocomplete: [
-                {
-                  "displayText": "Khethiwe Mkhabela",
-                  "id": "bdc0caab-05e2-4677-9e3c-0af9b1fdbc57"
-                },
-                {
-                  "displayText": "BRIDGETTE NGOBENI",
-                  "id": "d1a61556-b22b-403b-ab35-ac7789c89f14"
-                }
-              ]
-            })}>Set Fields</Button>
+            <Button
+              onClick={() =>
+                form?.setFieldsValue({
+                  singleAutocomplete: {
+                    displayText: 'Khethiwe Mkhabela',
+                    id: 'bdc0caab-05e2-4677-9e3c-0af9b1fdbc57',
+                  },
+                  multipleAutocomplete: [
+                    {
+                      displayText: 'Khethiwe Mkhabela',
+                      id: 'bdc0caab-05e2-4677-9e3c-0af9b1fdbc57',
+                    },
+                    {
+                      displayText: 'BRIDGETTE NGOBENI',
+                      id: 'd1a61556-b22b-403b-ab35-ac7789c89f14',
+                    },
+                  ],
+                })
+              }
+            >
+              Set Fields
+            </Button>
 
-            <Button onClick={() => form?.resetFields()} style={{margin: '0 12px'}}>Clear fields</Button>
+            <Button onClick={() => form?.resetFields()} style={{ margin: '0 12px' }}>
+              Clear fields
+            </Button>
 
             <Button onClick={() => form?.submit()} type="primary">
               Submit
@@ -93,7 +99,7 @@ const Template: Story<IAutocompleteProps> = args => {
       </AuthContainer>
     </ShaApplicationProvider>
   );
-}
+};
 
 export const BasicIconPicker = Template.bind({});
 BasicIconPicker.args = { ...autocompleteProps };

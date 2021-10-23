@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { ShaApplicationProvider, UiProvider } from '../../providers';
+import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, GenericIndexPage, SimpleIndexPage } from '../..';
 import { IIndexPageProps } from './indexPage';
@@ -27,26 +27,26 @@ const Template: Story<IIndexPageProps> = () => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>
-        <UiProvider>
+        <>
           <GenericIndexPage
             title="All Areas"
-            tableConfigId="GmaAreas_Index"
+            tableConfigId="Users_Index"
             createModalProps={{
               updater: useAreaCreate,
               formPath: '/areas/create',
               // keepModalOpenAfterSave: true,
-              title:"Add new area"
+              title: 'Add new area',
             }}
           />
-        </UiProvider>
+        </>
       </AuthContainer>
     </ShaApplicationProvider>
   );
 };
 
 interface IRowSelectionState {
-  selectedRowIndex?: number,
-  row?: any,
+  selectedRowIndex?: number;
+  row?: any;
   enableCreatePaymentPack?: boolean;
 }
 
@@ -56,32 +56,32 @@ const RowSelectionsTemplate: Story<IIndexPageProps> = () => {
 
   const onSelectRow = (index: number, row: any) => {
     setRowSelectionState({
-      selectedRowIndex: index, 
-      row
+      selectedRowIndex: index,
+      row,
     });
-  }
+  };
 
   // console.log('rowSelectionState: ', rowSelectionState);
 
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>
-        <UiProvider>
-          <SimpleIndexPage
-            title="All Payments"
-            tableConfigId="Invoice_Index"
-            toolbarItems={[{
+        <SimpleIndexPage
+          title="All Payments"
+          tableConfigId="Invoice_Index"
+          toolbarItems={[
+            {
               title: 'Create Payment Pack',
               icon: <PlusOutlined />,
               disabled: !rowSelectionState?.enableCreatePaymentPack,
-            }]}
-            onSelectRow={onSelectRow}
-            selectedRowIndex={rowSelectionState.selectedRowIndex}
-          />
-        </UiProvider>
+            },
+          ]}
+          onSelectRow={onSelectRow}
+          selectedRowIndex={rowSelectionState.selectedRowIndex}
+        />
       </AuthContainer>
     </ShaApplicationProvider>
-  ); 
+  );
 };
 
 export const Basic = Template.bind({});
@@ -102,7 +102,7 @@ WithRowSelectionsTemplate.args = { ...configurableFormProps };
 //               // keepModalOpenAfterSave: true,
 //               title:"Add new area"
 //             }}
-          
+
 //             tableRowSelectionProps={{
 //               selectedRowIndex: rowSelectionState?.selectedRowIndex,
 //               // onSelectRow: rowSelectionState?.row,

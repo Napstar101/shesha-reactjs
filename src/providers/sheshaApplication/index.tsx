@@ -15,6 +15,7 @@ import ShaRoutingProvider from '../shaRouting';
 import { Router } from 'next/router';
 import { AppConfiguratorProvider } from '../appConfigurator';
 import { DynamicModalProvider } from '../dynamicModal';
+import { UiProvider } from '../ui';
 
 export interface IShaApplicationProviderProps {
   backendUrl: string;
@@ -49,7 +50,7 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
     <SheshaApplicationStateContext.Provider value={state}>
       <SheshaApplicationActionsContext.Provider
         value={{
-          changeBackendUrl: changeBackendUrl,
+          changeBackendUrl,
         }}
       >
         <RestfulProvider
@@ -58,20 +59,22 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
             headers: state.httpHeaders,
           }}
         >
-          <ShaRoutingProvider router={router}>
-            <AuthProvider
-              tokenName={accessTokenName || DEFAULT_ACCESS_TOKEN_NAME}
-              onSetRequestHeaders={onSetRequestHeaders}
-              unauthorizedRedirectUrl={unauthorizedRedirectUrl}
-              whitelistUrls={whitelistUrls}
-            >
-              <AuthorizationSettingsProvider>
-                <AppConfiguratorProvider>
-                  <DynamicModalProvider>{children}</DynamicModalProvider>
-                </AppConfiguratorProvider>
-              </AuthorizationSettingsProvider>
-            </AuthProvider>
-          </ShaRoutingProvider>
+          <UiProvider>
+            <ShaRoutingProvider router={router}>
+              <AuthProvider
+                tokenName={accessTokenName || DEFAULT_ACCESS_TOKEN_NAME}
+                onSetRequestHeaders={onSetRequestHeaders}
+                unauthorizedRedirectUrl={unauthorizedRedirectUrl}
+                whitelistUrls={whitelistUrls}
+              >
+                <AuthorizationSettingsProvider>
+                  <AppConfiguratorProvider>
+                    <DynamicModalProvider>{children}</DynamicModalProvider>
+                  </AppConfiguratorProvider>
+                </AuthorizationSettingsProvider>
+              </AuthProvider>
+            </ShaRoutingProvider>
+          </UiProvider>
         </RestfulProvider>
       </SheshaApplicationActionsContext.Provider>
     </SheshaApplicationStateContext.Provider>
