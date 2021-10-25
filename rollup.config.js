@@ -16,6 +16,18 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 export default {
   input: ['src/index.tsx', 'src/providers/index.ts'],
+  output: [
+    {
+      file: pkg.main,
+      format: 'cjs',
+      exports: 'named',
+    },
+    {
+      file: pkg.module,
+      format: 'es',
+      exports: 'named',
+    },
+  ],
   external: [
     '@ant-design/icons',
     'component-classes',
@@ -45,18 +57,6 @@ export default {
     'invert-color',
     'use-debounce',
   ],
-  output: [
-    {
-      file: pkg.main,
-      format: 'cjs',
-      exports: 'named',
-    },
-    {
-      file: pkg.module,
-      format: 'es',
-      exports: 'named',
-    },
-  ],
   plugins: [
     // alias({
     //   resolve: ['.jsx', '.js', '.tsx', '.ts'],
@@ -65,9 +65,10 @@ export default {
     //   ]
     // }),
     multi(),
-    peerDepsExternal(),
+    peerDepsExternal({
+      includeDependencies: true,
+    }),
     terser(),
-    peerDepsExternal(),
     postCss({
       plugins: [],
       extensions: ['.css', '.scss', '.less'],
