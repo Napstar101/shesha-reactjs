@@ -34,7 +34,7 @@ interface ISidebarProps {
   placeholder?: string;
 }
 
-interface ISidebarContainerProps extends PropsWithChildren<any> {
+export interface ISidebarContainerProps extends PropsWithChildren<any> {
   /**
    * Left sidebar props
    */
