@@ -2,7 +2,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { ProfileOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
@@ -27,9 +27,9 @@ const TextField: IToolboxComponent<ICheckboxGoupProps> = {
     const { items = [] } = model as ICheckboxGoupProps;
     const checkItems = items.map(item => ({ label: item.name, value: item.value }));
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <Checkbox.Group options={checkItems}></Checkbox.Group>
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

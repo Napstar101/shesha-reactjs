@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, GenericIndexPage, SimpleIndexPage } from '../..';
-import { IIndexPageProps } from './indexPage';
+import { IGenericIndexPageProps } from './indexPage';
 import { useAreaCreate } from '../../apis/area';
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
@@ -23,7 +23,7 @@ const configurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IIndexPageProps> = () => {
+const Template: Story<IGenericIndexPageProps> = () => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>
@@ -51,7 +51,7 @@ interface IRowSelectionState {
 }
 
 // Create a master template for mapping args to render the Button component
-const RowSelectionsTemplate: Story<IIndexPageProps> = () => {
+const RowSelectionsTemplate: Story<IGenericIndexPageProps> = () => {
   const [rowSelectionState, setRowSelectionState] = useState<IRowSelectionState>({});
 
   const onSelectRow = (index: number, row: any) => {

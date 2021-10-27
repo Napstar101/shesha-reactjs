@@ -1,7 +1,7 @@
 import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { FileOutlined } from '@ant-design/icons';
@@ -26,9 +26,9 @@ const BasicDisplayFormItemComponent: IToolboxComponent<IBasicDisplayFormItemProp
     }
     
     return (
-      <FormItem model={model} className="display-form-item">
+      <ConfigurableFormItem model={model} className="display-form-item">
         <span>{formData ? getDisplayValue() : ''}</span>
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

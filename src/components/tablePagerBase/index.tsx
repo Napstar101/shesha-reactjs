@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Pagination } from 'antd';
 
-interface ITablePagerBaseProps {
+export interface ITablePagerBaseProps {
   /** Whether this component */
   disabled?: boolean;
 

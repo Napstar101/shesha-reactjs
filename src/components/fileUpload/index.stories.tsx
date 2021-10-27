@@ -1,15 +1,14 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import StoredFileUpload from './';
 import { ShaApplicationProvider, StoredFileProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { ICustomFileProps } from '../customFile';
-import { FileUpload } from '..';
+import { FileUpload } from './';
 
 export default {
   title: 'Components/Temp/StoredFileUpload',
-  component: StoredFileUpload,
+  component: FileUpload,
 } as Meta;
 
 const customFileProps: ICustomFileProps = {};

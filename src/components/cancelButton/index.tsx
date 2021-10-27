@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
-interface ICancelButtonProps {
+export interface ICancelButtonProps {
   onCancel: (args: any) => void;
 }
 

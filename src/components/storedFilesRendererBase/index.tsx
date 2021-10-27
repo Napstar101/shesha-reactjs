@@ -10,7 +10,7 @@ interface IUploaderFileTypes {
   type: string;
 }
 
-export interface IStoredFilesRendererProps {
+export interface IStoredFilesRendererBaseProps {
   fileList?: IStoredFile[];
   allowUpload?: boolean;
   showDragger?: boolean;
@@ -38,7 +38,7 @@ export interface IStoredFilesRendererProps {
   uploadBtnProps?: ButtonProps;
 }
 
-export const StoredFilesRendererBase: FC<IStoredFilesRendererProps> = ({
+export const StoredFilesRendererBase: FC<IStoredFilesRendererBaseProps> = ({
   multiple = true,
   fileList = [],
   isDownloadingFileListZip,

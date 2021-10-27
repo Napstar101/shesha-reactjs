@@ -9,12 +9,12 @@ import ErrorBoundary from '../../errorBoundary/errorBoundary';
 import DragHandle from './dragHandle';
 import ValidationIcon from './validationIcon';
 
-export interface IProps {
+export interface IConfigurableFormComponentProps {
   id: string;
   index: number;
 }
 
-const ConfigurableFormComponent: FC<IProps> = ({ id /*, index*/ }) => {
+const ConfigurableFormComponent: FC<IConfigurableFormComponentProps> = ({ id /*, index*/ }) => {
   const { formMode, visibleComponentIds } = useForm();
   const componentRef = useRef(null);
 
@@ -38,7 +38,8 @@ const ConfigurableFormComponent: FC<IProps> = ({ id /*, index*/ }) => {
 
   if (!isDesignMode) return renderComponent();
 
-  const invalidConfiguration = componentModel.settingsValidationErrors && componentModel.settingsValidationErrors.length > 0;
+  const invalidConfiguration =
+    componentModel.settingsValidationErrors && componentModel.settingsValidationErrors.length > 0;
 
   let classes = ['sha-component'];
   if (selectedComponentId === id) classes.push('selected');
@@ -51,7 +52,9 @@ const ConfigurableFormComponent: FC<IProps> = ({ id /*, index*/ }) => {
           <EyeInvisibleOutlined />
         </div>
       )}
-      { invalidConfiguration && <ValidationIcon validationErrors={componentModel.settingsValidationErrors}></ValidationIcon> }
+      {invalidConfiguration && (
+        <ValidationIcon validationErrors={componentModel.settingsValidationErrors}></ValidationIcon>
+      )}
       <div className="sha-component-controls">
         <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
       </div>

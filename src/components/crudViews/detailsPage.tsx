@@ -10,7 +10,7 @@ import { useShaRouting } from '../../providers/shaRouting';
 import { CommonCrudHandles } from './interfaces';
 import { DEFAULT_FILTERS, filterGenericModelData, IGenericFormFilter } from './utils';
 
-export interface IDetailsPageProps {
+export interface IGenericDetailsPageProps {
   /**
    * The id of an entity whose details are to be rendered
    */
@@ -89,7 +89,7 @@ export interface IDetailsPageProps {
   formFilters?: IGenericFormFilter;
 }
 
-const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, forwardedRef) => {
+const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProps>((props, forwardedRef) => {
   const [form] = Form.useForm();
 
   useImperativeHandle(forwardedRef, () => ({
@@ -175,6 +175,6 @@ const DetailsPage = forwardRef<CommonCrudHandles, IDetailsPageProps>((props, for
   );
 });
 
-export type DetailsPageHandleRefType = React.ElementRef<typeof DetailsPage>;
+export type DetailsPageHandleRefType = React.ElementRef<typeof GenericDetailsPage>;
 
-export default DetailsPage;
+export default GenericDetailsPage;

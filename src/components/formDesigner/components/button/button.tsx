@@ -4,7 +4,7 @@ import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/fo
 import { BorderOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { ButtonType } from 'antd/lib/button';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { useForm } from '../../../../providers/form';
 import { useClosestModal } from '../../../../providers/dynamicModal';
@@ -87,7 +87,7 @@ const TextField: IToolboxComponent<IButtonProps> = {
     };
 
     return (
-      <FormItem model={fieldModel}>
+      <ConfigurableFormItem model={fieldModel}>
         <Button 
           onClick={onClick} 
           type={customProps.buttonType} 
@@ -96,7 +96,7 @@ const TextField: IToolboxComponent<IButtonProps> = {
         >
           {customProps.label}
         </Button>
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

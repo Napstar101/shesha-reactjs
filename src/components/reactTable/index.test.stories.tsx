@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { ShaApplicationProvider, UiProvider } from '../../providers';
+import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, GenericIndexPage } from '../..';
-import { IIndexPageProps } from '../crudViews/indexPage';
+import { IGenericIndexPageProps } from '../crudViews/indexPage';
 
 export default {
   title: 'Components/TestReactTable',
@@ -20,7 +20,7 @@ const configurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IIndexPageProps> = () => {
+const Template: Story<IGenericIndexPageProps> = () => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>

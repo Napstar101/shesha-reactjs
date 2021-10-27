@@ -9,14 +9,20 @@ export interface IAutocompleteResultItem {
   displayText: string;
 }
 
-interface IEntityDropdownProps extends SelectProps<any> {
+export interface IEntityDropdownProps extends SelectProps<any> {
   typeShortAlias: string;
   allowInherited?: boolean;
   selectedValue?: string;
   lazy?: boolean;
 }
 
-export const EntityDropdown: FC<IEntityDropdownProps> = ({ selectedValue, typeShortAlias, className, lazy = false, ...rest }) => {
+export const EntityDropdown: FC<IEntityDropdownProps> = ({
+  selectedValue,
+  typeShortAlias,
+  className,
+  lazy = false,
+  ...rest
+}) => {
   const { loading, data, refetch } = useAutocompleteList({
     lazy,
     queryParams: { term: '', typeShortAlias, selectedValue },

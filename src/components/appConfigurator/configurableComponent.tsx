@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useAppConfigurator/*, useConfigurableComponent*/ } from '../../providers';
+import { useAppConfigurator /*, useConfigurableComponent*/ } from '../../providers';
 import { ComponentSettingsModal } from './componentSettingsModal';
 
 export interface IComponentStateProps<TSettings = any> {
@@ -39,18 +39,17 @@ const BlockOverlay: FC<IBlockOverlayProps> = ({ onClick, children, visible }) =>
   );
 };
 
-export const ConfigurableComponent = <TSettings extends any>({ 
+export const ConfigurableComponent = <TSettings extends any>({
   children,
   canConfigure = true,
   onStartEdit,
 }: IConfigurableComponentProps<TSettings>) => {
-
   const [modalVisible, setModalVisible] = useState(false);
   const { mode } = useAppConfigurator();
 
   if (!children) return null;
 
-  if (!canConfigure){
+  if (!canConfigure) {
     return (
       <>
         {children({ isEditMode: false, isSelected: false, wrapperClassName: '', settings: null }, () => (
@@ -59,12 +58,12 @@ export const ConfigurableComponent = <TSettings extends any>({
       </>
     );
   }
-  
+
   const componentState: IComponentStateProps = {
     isEditMode: mode === 'edit',
     isSelected: false,
     wrapperClassName: 'sha-configurable-component',
-    settings: null
+    settings: null,
   };
 
   const onOverlayClick = () => {

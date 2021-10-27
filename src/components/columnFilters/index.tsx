@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useDataTableStore } from '../../providers';
 import ColumnFiltersBase from '../columnFiltersBase';
 
-interface IColumnFiltersProps {}
+export interface IColumnFiltersProps {}
 
 export const ColumnFilters: FC<IColumnFiltersProps> = () => {
   const {
@@ -14,7 +14,7 @@ export const ColumnFilters: FC<IColumnFiltersProps> = () => {
     toggleColumnFilter,
     applyFilters,
   } = useDataTableStore();
-  const currentFilter = (tableFilterDirty || tableFilter || []);
+  const currentFilter = tableFilterDirty || tableFilter || [];
   return (
     <ColumnFiltersBase
       {...{

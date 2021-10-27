@@ -22,9 +22,9 @@ const allOptions = {
 
 export const getFilterOptions = (dataType: string): IndexColumnFilterOption[] => {
   return allOptions[dataType] || [];
-}
+};
 
-interface IColumnItemFilterProps {
+export interface IColumnItemFilterProps {
   id: string;
   filterName: string;
   accessor: string;
@@ -85,7 +85,7 @@ export const ColumnItemFilter: FC<IColumnItemFilterProps> = ({
   };
 
   // This key is supposed to be of type MenuClickEventHandler but I'm not getting it
-  const handleFilterOptionChange = ({ key }: {key: React.Key}) => {
+  const handleFilterOptionChange = ({ key }: { key: React.Key }) => {
     // setFilterOption(option);
     onChangeFilterOption(id, key as IndexColumnFilterOption);
   };
@@ -301,7 +301,7 @@ export const ColumnItemFilter: FC<IColumnItemFilterProps> = ({
 
   //#region Moved useEffect to the top level
   const fetchDefaultList = () => {
-    if (entityReferenceTypeShortAlias){
+    if (entityReferenceTypeShortAlias) {
       itemsFetcher.refetch({
         queryParams: { term: '', typeShortAlias: entityReferenceTypeShortAlias, selectedValue: filter as string },
       });
@@ -354,7 +354,11 @@ export const ColumnItemFilter: FC<IColumnItemFilterProps> = ({
   const hideFilterOptions = () => ['boolean', 'refList', 'multiValueRefList', 'entityReference'].includes(dataType);
 
   return (
-    <div className="sha-column-item-filter" onMouseOver={toggleShowIconVisibility} onMouseLeave={toggleShowIconVisibility}>
+    <div
+      className="sha-column-item-filter"
+      onMouseOver={toggleShowIconVisibility}
+      onMouseLeave={toggleShowIconVisibility}
+    >
       <div className="filter-heading">
         <div className="filter-heading-left">
           <span className="label">{filterName || 'Something'}</span>

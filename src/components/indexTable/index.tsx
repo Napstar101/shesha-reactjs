@@ -31,7 +31,7 @@ const FormItem = Form.Item;
 
 const CRUD_MODAL_WIDTH = 700;
 
-interface IIndexTableProps extends IShaDataTableProps, ICrudProps, TableProps {
+export interface IIndexTableProps extends IShaDataTableProps, ICrudProps, TableProps {
   tableRef?: MutableRefObject<Partial<DataTableFullInstance> | null>;
 }
 

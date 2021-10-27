@@ -2,7 +2,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { NumberOutlined } from '@ant-design/icons';
 import { InputNumber } from 'antd';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import { INumberFieldProps } from './models';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
@@ -17,14 +17,14 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   factory: (model: IConfigurableFormComponent) => {
     const customProps = model as INumberFieldProps;
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <InputNumber
           disabled={model.disabled}
           bordered={!customProps.hideBorder}
           min={customProps?.min}
           max={customProps?.max}
         />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

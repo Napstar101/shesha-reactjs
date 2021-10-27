@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useDataTable } from '../../providers';
 import { getSafelyTrimmedString } from '../../utils';
 
-interface IIndexTableColumnVisibilityToggleProps {}
+export interface IIndexTableColumnVisibilityToggleProps {}
 
 export const IndexTableColumnVisibilityToggle: FC<IIndexTableColumnVisibilityToggleProps> = () => {
   const { columns, toggleColumnVisibility } = useDataTable();

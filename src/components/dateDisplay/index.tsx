@@ -4,7 +4,7 @@ import moment from 'moment';
 import { tolocalIsoDate } from '../../utils/date';
 import { TooltipPlacement } from 'antd/lib/tooltip';
 
-interface IDateDisplayProps {
+export interface IDateDisplayProps {
   /**
    * @deprecated - use children instead
    */

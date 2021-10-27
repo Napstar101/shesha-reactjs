@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { HeartOutlined } from '@ant-design/icons';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import IconPicker, { ShaIconTypes } from '../../../iconPicker';
@@ -18,9 +18,9 @@ const IconPickerComponent: IToolboxComponent<IIconPickerComponentProps> = {
   icon: <HeartOutlined />,
   factory: (model: IConfigurableFormComponent) => {
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <IconPickerWrapper />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

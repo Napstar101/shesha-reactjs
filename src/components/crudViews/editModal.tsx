@@ -6,7 +6,7 @@ import { useUi } from '../../providers';
 import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
 import { IFormActions, IFormSections } from '../../providers/form/models';
 
-interface IModalProps {
+export interface IGenericEditModalProps {
   id: string;
   title?: (model: any) => string;
   visible: boolean;
@@ -23,7 +23,7 @@ interface IModalProps {
   destroyOnClose?: boolean;
 }
 
-const ModalForm: FC<IModalProps> = ({
+const GenericEditModal: FC<IGenericEditModalProps> = ({
   id,
   visible,
   onCancel,
@@ -107,4 +107,4 @@ const ModalForm: FC<IModalProps> = ({
     </Modal>
   );
 };
-export default ModalForm;
+export default GenericEditModal;

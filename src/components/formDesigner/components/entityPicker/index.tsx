@@ -2,7 +2,7 @@ import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { EllipsisOutlined } from '@ant-design/icons';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { EntityPicker } from '../../..';
@@ -31,9 +31,9 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
     }
 
     return (
-      <FormItem model={model} initialValue={model?.defaultValue}>
+      <ConfigurableFormItem model={model} initialValue={model?.defaultValue}>
         <EntityPicker disabled={model.disabled} tableId={model?.tableId} />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

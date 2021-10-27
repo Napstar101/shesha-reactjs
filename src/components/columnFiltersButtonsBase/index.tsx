@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Button } from 'antd';
 
-interface IColumnFiltersButtonsProps {
+export interface IColumnFiltersButtonsBaseProps {
   applyFilters: () => void;
   clearFilters: () => void;
   toggleSaveFilterModal: (visible: boolean) => void;
   isFetchingTableData: boolean;
 }
 
-export const ColumnFiltersButtonsBase: FC<IColumnFiltersButtonsProps> = ({
+export const ColumnFiltersButtonsBase: FC<IColumnFiltersButtonsBaseProps> = ({
   applyFilters,
   clearFilters,
   toggleSaveFilterModal,

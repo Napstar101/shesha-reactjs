@@ -3,7 +3,7 @@ import { Switch } from 'antd';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import React from 'react';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
@@ -17,9 +17,9 @@ const SwitchComponent: IToolboxComponent<ISwitchProps> = {
   icon: <SwitcherOutlined />,
   factory: (model: IConfigurableFormComponent) => {
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <Switch defaultChecked disabled={model.disabled} />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   initModel: model => {

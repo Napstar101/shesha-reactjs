@@ -2,7 +2,7 @@ import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FolderAddOutlined } from '@ant-design/icons';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import StoredFilesProvider from '../../../../providers/storedFiles';
 import { CustomFile } from '../../../';
@@ -34,7 +34,7 @@ const AttachmentsEditor: IToolboxComponent<IAttachmentsEditorProps> = {
     const ownerId = evaluateValue(customProps.ownerId, { data: formData });
 
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <StoredFilesProvider
           ownerId={ownerId}
           ownerType={customProps.ownerType}
@@ -48,7 +48,7 @@ const AttachmentsEditor: IToolboxComponent<IAttachmentsEditorProps> = {
           // allowRename={!customProps.disabled && customProps.allowRename}
           />
         </StoredFilesProvider>
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

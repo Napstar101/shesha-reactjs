@@ -2,7 +2,7 @@ import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FileSearchOutlined } from '@ant-design/icons';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { Autocomplete, AutocompleteDataSourceType } from '../../../autocomplete';
 import { useForm } from '../../../../providers/form';
@@ -34,7 +34,7 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
 
     // todo: implement other types of datasources!
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <Autocomplete
           typeShortAlias={customProps.entityTypeShortAlias}
           allowInherited={true} /*hardcoded for now*/
@@ -44,7 +44,7 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
           dataSourceType={customProps.dataSourceType}
           mode={customProps?.mode}
         />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,
@@ -57,19 +57,5 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
     return customProps;
   },
 };
-
-// TextField.settingsFormMarkup = new FormConfig()
-//   .AddName({
-//     name: 'sectionSeparator',
-//     validateFunc
-//   })
-// AddDropdownParam({
-
-// })
-// .ToJSON()
-
-
-
-  // RegisterCustomFormElements
 
 export default TextField;

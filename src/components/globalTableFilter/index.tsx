@@ -3,7 +3,7 @@ import { SearchProps } from 'antd/lib/input';
 import GlobalTableFilterBase from '../globalTableFilterBase';
 import { useDataTable } from '../../providers';
 
-interface IGlobalTableFilterProps {
+export interface IGlobalTableFilterProps {
   searchProps?: SearchProps;
 }
 

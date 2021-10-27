@@ -2,7 +2,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FontColorsOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import { TextAreaProps } from 'antd/lib/input';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
@@ -36,9 +36,9 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
     };
 
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <Input.TextArea rows={2} {...textAreaProps} />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   initModel: model => {

@@ -3,7 +3,7 @@ import { MainLayout, ShaSpin } from '../';
 import IndexTableFull, { IIndexTableFullProps } from '../indexTableFull';
 import DataTableProvider from '../../providers/dataTable';
 
-export interface IIndexPageProps extends Omit<IIndexTableFullProps, 'id'> {
+export interface ISimpleIndexPageProps extends Omit<IIndexTableFullProps, 'id'> {
   /**
    * Page title
    */
@@ -17,7 +17,7 @@ export interface IIndexPageProps extends Omit<IIndexTableFullProps, 'id'> {
   loading?: boolean;
 }
 
-const TableWithControls: FC<IIndexPageProps> = ({ loading = false, ...props}) => {
+const TableWithControls: FC<ISimpleIndexPageProps> = ({ loading = false, ...props}) => {
   return (
     <MainLayout title={props.title} showHeading={false} noPadding >
       <ShaSpin spinning={loading}>
@@ -32,7 +32,7 @@ const TableWithControls: FC<IIndexPageProps> = ({ loading = false, ...props}) =>
   );
 };
 
-const SimpleIndexPage: FC<IIndexPageProps> = props => (
+const SimpleIndexPage: FC<ISimpleIndexPageProps> = props => (
   <DataTableProvider tableId={props.tableConfigId}>
     <TableWithControls {...props} />
   </DataTableProvider>

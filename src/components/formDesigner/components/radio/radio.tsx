@@ -2,7 +2,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { Radio } from 'antd';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
@@ -29,7 +29,7 @@ const TextField: IToolboxComponent<IRadioProps> = {
   factory: (model: IConfigurableFormComponent) => {
     const { items = [] } = model as IRadioProps;
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <Radio.Group>
           {items.map((checkItem, index) => (
             <Radio key={index} value={checkItem.value}>
@@ -37,7 +37,7 @@ const TextField: IToolboxComponent<IRadioProps> = {
             </Radio>
           ))}
         </Radio.Group>
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

@@ -7,7 +7,7 @@ import { useAuthorizationSettings } from '../../providers/authorizationSettings'
 
 const SIXTY = 60;
 
-interface IIdleTimerRendererProps {}
+export interface IIdleTimerRendererProps {}
 
 export const IdleTimerRenderer: FC<PropsWithChildren<IIdleTimerRendererProps>> = ({ children }) => {
   // const idleTimerRef = useRef(null);

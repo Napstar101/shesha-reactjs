@@ -7,7 +7,7 @@ import { IDataMutator } from './models';
 import { useState } from 'react';
 import { IFormActions, IFormSections } from '../../providers/form/models';
 
-interface IModalProps {
+export interface IGenericCreateModalProps {
   /**
    * Modal title
    */
@@ -64,7 +64,7 @@ interface IModalProps {
   destroyOnClose?: boolean;
 }
 
-const ModalForm: FC<IModalProps> = ({
+const GenericCreateModal: FC<IGenericCreateModalProps> = ({
   visible,
   onCancel,
   onSuccess,
@@ -156,4 +156,4 @@ const ModalForm: FC<IModalProps> = ({
     </Modal>
   );
 };
-export default ModalForm;
+export default GenericCreateModal;

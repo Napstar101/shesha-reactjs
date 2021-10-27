@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-interface IShaSpin {
+export interface IShaSpin {
   spinning?: boolean;
   spinIconSize?: number;
   tip?: string;

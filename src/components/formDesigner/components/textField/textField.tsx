@@ -3,7 +3,7 @@ import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/fo
 import { CodeOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import { InputProps } from 'antd/lib/input';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
@@ -46,9 +46,9 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
     const InputComponentType = renderInput(customProps.textType);
 
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <InputComponentType {...inputProps} />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

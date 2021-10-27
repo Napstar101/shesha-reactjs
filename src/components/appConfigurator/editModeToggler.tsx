@@ -5,9 +5,9 @@ import SwitchToEditModeConfirmation from './switchToEditModeConfirmation';
 import SwitchToLiveModeConfirmation from './switchToLiveModeConfirmation';
 import React from 'react';
 
-export interface IProps {}
+export interface IAppEditModeTogglerProps {}
 
-export const EditModeToggler: FC<IProps> = () => {
+export const AppEditModeToggler: FC<IAppEditModeTogglerProps> = () => {
   const { mode, toggleCloseEditModeConfirmation, toggleEditModeConfirmation } = useAppConfigurator();
 
   if (mode === 'edit') {
@@ -27,4 +27,4 @@ export const EditModeToggler: FC<IProps> = () => {
   }
 };
 
-export default EditModeToggler;
+export default AppEditModeToggler;

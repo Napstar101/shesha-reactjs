@@ -8,7 +8,7 @@ import { getSafelyTrimmedString } from '../../utils';
 import { ActionFunction1 } from 'redux-actions';
 import { Action } from 'redux';
 
-interface ISaveFilterModalProps extends IDispatchable {
+export interface ISaveFilterModalProps extends IDispatchable {
   showSaveFilterModal?: boolean;
   setSaveFiltersModalVisibility?: ActionFunction1<boolean, Action<any>>;
   saveFilters?: ActionFunction1<string, Action<any>>;
@@ -25,9 +25,10 @@ export const SaveFilterModal: FC<ISaveFilterModalProps> = ({
   const handleOk = () => {
     if (dispatch && saveFilters) {
       dispatch(saveFilters(filterName));
-      message
-        .loading('Saving your filters...', 2.5)
-        .then(() => message.success('Filters saved successfully!', 2.5), () => console.log('An error occured!'));
+      message.loading('Saving your filters...', 2.5).then(
+        () => message.success('Filters saved successfully!', 2.5),
+        () => console.log('An error occured!')
+      );
     }
   };
 

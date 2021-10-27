@@ -34,10 +34,10 @@ interface ICreateModalProps {
   /**
    * Allows you to capture the form and have the modal remain open
    */
-   keepModalOpenAfterSave?: boolean;
+  keepModalOpenAfterSave?: boolean;
 }
 
-export interface IIndexPageProps {
+export interface IGenericIndexPageProps {
   /**
    * Page title
    */
@@ -69,7 +69,7 @@ export interface IIndexPageProps {
   onExportSuccess?: () => void;
 }
 
-const TableWithControls: FC<IIndexPageProps> = props => {
+const TableWithControls: FC<IGenericIndexPageProps> = props => {
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
 
   const { refreshTable } = useDataTableStore();
@@ -89,8 +89,8 @@ const TableWithControls: FC<IIndexPageProps> = props => {
     } else {
       notification.success({
         message: 'Success',
-        description: 'Data has successfully been saved.'
-      })
+        description: 'Data has successfully been saved.',
+      });
     }
 
     form.resetFields();
@@ -127,7 +127,7 @@ const TableWithControls: FC<IIndexPageProps> = props => {
   );
 };
 
-const GenericIndexPage: FC<IIndexPageProps> = props => (
+const GenericIndexPage: FC<IGenericIndexPageProps> = props => (
   <DataTableProvider tableId={props.tableConfigId}>
     <TableWithControls {...props} />
   </DataTableProvider>

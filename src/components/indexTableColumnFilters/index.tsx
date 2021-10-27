@@ -5,11 +5,11 @@ import ColumnsFilterSelect from '../columnsFilterSelect';
 import ColumnFiltersButtons from '../columnFiltersButtons';
 import { useDataTableStore } from '../../providers';
 
-interface ISimpleIndexTableColumnFiltersProps {}
+export interface IIndexTableColumnFiltersProps {}
 
-export const IndexTableColumnFilters: FC<ISimpleIndexTableColumnFiltersProps> = () => {
+export const IndexTableColumnFilters: FC<IIndexTableColumnFiltersProps> = () => {
   const { getCurrentFilter } = useDataTableStore();
-  
+
   return (
     <div className="sha-index-table-column-filters">
       <ColumnsFilterSelect />

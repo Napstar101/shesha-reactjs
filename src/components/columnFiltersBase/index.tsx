@@ -1,8 +1,13 @@
 import React, { FC } from 'react';
 import { ColumnItemFilter } from '../columnItemFilter';
-import { IndexColumnFilterOption, ITableColumn, ColumnFilter, ITableFilter } from '../../providers/dataTable/interfaces';
+import {
+  IndexColumnFilterOption,
+  ITableColumn,
+  ColumnFilter,
+  ITableFilter,
+} from '../../providers/dataTable/interfaces';
 
-interface IColumnFiltersBaseProps {
+export interface IColumnFiltersBaseProps {
   columns: ITableColumn[];
   currentFilter?: ITableFilter[];
   changeFilterOption: (filterColumnId: string, filterOptionValue: IndexColumnFilterOption) => void;
@@ -20,7 +25,7 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
   currentFilter,
 }) => {
   const filterableColumns = columns.filter(c => Boolean(currentFilter.find(f => f.columnId === c.id)));
-  
+
   return (
     <div className="sha-column-filters">
       {filterableColumns.map(
@@ -35,7 +40,6 @@ export const ColumnFiltersBase: FC<IColumnFiltersBaseProps> = ({
           entityReferenceTypeShortAlias,
         }) => {
           if (isFilterable) {
-
             const onRemoveFilter = (idOfFilter: string) => {
               const newIds = currentFilter.filter(f => f.columnId !== idOfFilter).map(f => f.columnId);
               toggleColumnFilter(newIds);

@@ -10,7 +10,7 @@ import { IToolbarItem } from '../../interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
 import { CommonCrudHandles } from './interfaces';
 
-export interface IEditPageProps {
+export interface IGenericEditPageProps {
   id?: string;
   markup?: FormMarkup;
   fetcher: (props: UseGenericGetProps) => IDataFetcher;
@@ -47,7 +47,7 @@ export interface IEditPageProps {
   onDataLoaded?: (model: any) => void;
 }
 
-const EditPage = forwardRef<CommonCrudHandles, IEditPageProps>((props, forwardedRef) => {
+const GenericEditPage = forwardRef<CommonCrudHandles, IGenericEditPageProps>((props, forwardedRef) => {
   useImperativeHandle(forwardedRef, () => ({
     refresh() {
       fetchData();
@@ -147,4 +147,4 @@ const EditPage = forwardRef<CommonCrudHandles, IEditPageProps>((props, forwarded
   );
 });
 
-export default EditPage;
+export default GenericEditPage;

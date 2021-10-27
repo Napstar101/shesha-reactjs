@@ -1,10 +1,8 @@
-import React, { FC, Fragment, ReactNode } from 'react';
+import React, { FC, Fragment, PropsWithChildren, ReactNode } from 'react';
 
 export type ReactNodeOrFunc = ReactNode | (() => ReactNode);
 
-interface INodeOrFuncRendererProps {}
-
-export const NodeOrFuncRenderer: FC<INodeOrFuncRendererProps> = ({ children }) => {
+export const NodeOrFuncRenderer: FC<PropsWithChildren<any>> = ({ children }) => {
   return <Fragment>{typeof children === 'function' ? children() : children}</Fragment>;
 };
 

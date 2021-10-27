@@ -3,7 +3,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import { IDropdownProps, ILabelValue } from './models';
 import settingsFormJson from './settingsForm.json';
 import { useReferenceListGetItems } from '../../../../apis/referenceList';
@@ -19,9 +19,9 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   factory: (model: IConfigurableFormComponent) => {
     const customProps = model as IDropdownProps;
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <Dropdown {...customProps} />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

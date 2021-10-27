@@ -1,7 +1,7 @@
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FileAddOutlined } from '@ant-design/icons';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { FileUpload, StoredFilesRenderer } from '../../..';
 import { StoredFileProvider, StoredFilesProvider, useSheshaApplication } from '../../../../providers';
@@ -35,7 +35,7 @@ const FileUploadComponent: IToolboxComponent<IFileUploadProps> = {
     const ownerId = evaluateValue(customProps.ownerId, { data: formData });
 
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         {customProps?.list ? (
           <StoredFilesProvider ownerId={ownerId} ownerType={customProps.ownerType}>
             <StoredFilesRenderer
@@ -60,7 +60,7 @@ const FileUploadComponent: IToolboxComponent<IFileUploadProps> = {
             />
           </StoredFileProvider>
         )}
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   initModel: model => {

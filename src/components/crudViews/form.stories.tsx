@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { ConfigurableForm, GenericDetailsPage } from '../..';
-import { IDetailsPageProps } from './detailsPage';
+import { IGenericDetailsPageProps } from './detailsPage';
 
 export default {
   title: 'Components/CrudViews/ConfigurableForm',
@@ -19,7 +19,7 @@ const configurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IDetailsPageProps> = () => {
+const Template: Story<IGenericDetailsPageProps> = () => {
   // const { formItemLayout } = useUi();
 
   return (

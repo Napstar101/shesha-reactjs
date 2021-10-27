@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import ConfigurableForm from '../configurableForm';
+import ConfigurableForm from '..';
 import { ISidebarMenuItem } from '../../../interfaces';
 import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../../providers';
 import AuthContainer from '../../authedContainer';

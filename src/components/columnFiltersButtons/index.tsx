@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useDataTableStore } from '../../providers';
 import ColumnFiltersButtonsBase from '../columnFiltersButtonsBase';
 
-interface IColumnFiltersButtonsProps {}
+export interface IColumnFiltersButtonsProps {}
 
 export const ColumnFiltersButtons: FC<IColumnFiltersButtonsProps> = () => {
   const { applyFilters, clearFilters, toggleSaveFilterModal, isFetchingTableData } = useDataTableStore();

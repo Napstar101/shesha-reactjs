@@ -7,7 +7,7 @@ import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/fo
 import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { IHierarchicalCheckListProps } from '../../../hierarchicalCheckList';
 import { CheckListSelectionType, ISaveSelectionsInput } from '../../../hierarchicalCheckList/interface';
-import FormItem, { IShaFormItemProps } from '../formItem';
+import ConfigurableFormItem, { IConfigurableFormItemProps } from '../formItem';
 import HierarchicalCheckListWrapper from './hierarchicalChecklistWrapper';
 import settingsFormJson from './settingsForm.json';
 
@@ -66,10 +66,10 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
-    const wrapperColProps: Omit<IShaFormItemProps, 'model'> = customProps?.dropdown ? {} : { wrapperCol: { span: 24 } };
+    const wrapperColProps: Omit<IConfigurableFormItemProps, 'model'> = customProps?.dropdown ? {} : { wrapperCol: { span: 24 } };
 
     return (
-      <FormItem {...wrapperColProps } model={customProps?.dropdown ? model : { ...model, hideLabel: true }}>{renderChecklist()}</FormItem>
+      <ConfigurableFormItem {...wrapperColProps } model={customProps?.dropdown ? model : { ...model, hideLabel: true }}>{renderChecklist()}</ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

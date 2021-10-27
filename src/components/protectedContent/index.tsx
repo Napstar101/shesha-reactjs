@@ -1,12 +1,12 @@
 import React, { FC, ReactNode } from 'react';
 import { useAuth } from '../../providers';
 
-interface IProps {
+export interface IProtectedContentProps {
   permissionName: string;
   children?: ReactNode;
 }
 
-export const ProtectedContent: FC<IProps> = ({ permissionName, children }) => {
+export const ProtectedContent: FC<IProtectedContentProps> = ({ permissionName, children }) => {
   const { anyOfPermissionsGranted } = useAuth();
 
   const hasRights = !permissionName || anyOfPermissionsGranted([permissionName]);

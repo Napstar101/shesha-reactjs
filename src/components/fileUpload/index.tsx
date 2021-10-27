@@ -8,7 +8,7 @@ import filesize from 'filesize';
 import { FileVersionsPopup } from './fileVersionsPopup';
 import './styles/styles.less';
 
-interface IStoredFileUploadProps {
+export interface IFileUploadProps {
   allowUpload?: boolean;
   allowReplace?: boolean;
   allowDelete?: boolean;
@@ -19,7 +19,7 @@ interface IStoredFileUploadProps {
   onChange?: any;
 }
 
-export const StoredFileUpload: FC<IStoredFileUploadProps> = ({
+export const FileUpload: FC<IFileUploadProps> = ({
   allowUpload = true,
   allowReplace = true,
   allowDelete = true,
@@ -126,4 +126,4 @@ export const StoredFileUpload: FC<IStoredFileUploadProps> = ({
   );
 };
 
-export default StoredFileUpload;
+export default FileUpload;

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { CSSProperties, FC, ReactNode } from 'react';
 
-interface ILayoutHeadingProps {
+export interface ILayoutHeadingProps {
   extra?: ReactNode | (() => ReactNode);
   title?: string;
   style?: CSSProperties;

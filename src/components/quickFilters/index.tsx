@@ -2,9 +2,8 @@ import React, { FC } from 'react';
 import { Tag } from 'antd';
 import { v4 as uuid } from 'uuid';
 import { IQuickFilter } from '../../interfaces';
-//
 
-interface IQuickFiltersProps {
+export interface IQuickFiltersProps {
   quickFilters?: IQuickFilter[];
   toggleQuickFilter?: (value: string) => void;
 }

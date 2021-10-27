@@ -11,14 +11,8 @@ import {
   Widgets,
 } from 'react-awesome-query-builder';
 import classNames from 'classnames';
-
 // For AntDesign widgets only:
 import AntdConfig from 'react-awesome-query-builder/lib/config/antd';
-//import 'react-awesome-query-builder/css/antd.less'; // or import "antd/dist/antd.css";
-// import 'react-awesome-query-builder/lib/css/styles.css';
-// import 'react-awesome-query-builder/lib/css/compact_styles.css'; //optional, for more compact styles
-// import './styles/css/styles.css';
-// import './styles/css/compact_styles.css'; //optional, for more compact styles
 import { ITableColumn } from '../../interfaces';
 import { IProperty } from '../../providers/queryBuilder/models';
 import EntityAutocompleteWidget from './widgets/entityAutocomplete';
@@ -32,7 +26,7 @@ export interface IQueryBuilderColumn extends ITableColumn {
   preferWidgets?: Widgets[];
 }
 
-interface IQueryBuilderProps {
+export interface IQueryBuilderProps {
   value?: object;
   onChange?: (result: JsonLogicResult) => void;
   columns?: IQueryBuilderColumn[];
@@ -119,8 +113,6 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
         };
       }
     });
-
-    console.log({ fields: conf.fields });
 
     const loadedTree = value
       ? QbUtils.loadFromJsonLogic(value, conf)

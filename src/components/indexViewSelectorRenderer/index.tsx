@@ -3,35 +3,31 @@ import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Tooltip } from 'antd';
 import { IStoredFilter } from '../../providers/dataTable/interfaces';
 
-interface IProps {
+export interface IIndexViewSelectorRendererProps {
   header?: string;
   filters?: IStoredFilter[];
   selectedFilterId?: string;
   onSelectFilter: (id?: string) => void;
 }
 
-export const IndexViewSelectorRenderer: FC<IProps> = ({ header, filters, selectedFilterId, onSelectFilter }) => {
-  const selectedFilter = selectedFilterId
-    ? filters.find(f => f.id === selectedFilterId)
-    : null;
+export const IndexViewSelectorRenderer: FC<IIndexViewSelectorRendererProps> = ({
+  header,
+  filters,
+  selectedFilterId,
+  onSelectFilter,
+}) => {
+  const selectedFilter = selectedFilterId ? filters.find(f => f.id === selectedFilterId) : null;
   const defaultView: IStoredFilter = {
     id: null,
-    name: header
+    name: header,
   };
   const viewsToSelect: IStoredFilter[] = [defaultView, ...filters].filter(view => {
-    return view.id
-      ? view.id !== selectedFilterId
-      : Boolean(selectedFilterId);
+    return view.id ? view.id !== selectedFilterId : Boolean(selectedFilterId);
   });
 
   const Item = ({ id: currentId, name: currentName, tooltip }: IStoredFilter) => {
-
     return (
-      <span
-        key={currentId}
-        onClick={() => onSelectFilter(currentId)}
-        className="custom-filter-container"
-      >
+      <span key={currentId} onClick={() => onSelectFilter(currentId)} className="custom-filter-container">
         {currentName}
         {tooltip && <TooltipIcon tooltip={tooltip}></TooltipIcon>}
       </span>
@@ -53,10 +49,14 @@ export const IndexViewSelectorRenderer: FC<IProps> = ({ header, filters, selecte
         )}
       >
         <h2 className="title">
-          {selectedFilter
-            ? (<>{selectedFilter.name} { selectedFilter.tooltip && <TooltipIcon tooltip={selectedFilter.tooltip}></TooltipIcon> }</>)
-            : header
-          }
+          {selectedFilter ? (
+            <>
+              {selectedFilter.name}{' '}
+              {selectedFilter.tooltip && <TooltipIcon tooltip={selectedFilter.tooltip}></TooltipIcon>}
+            </>
+          ) : (
+            header
+          )}
           <DownOutlined style={{ marginLeft: '5px' }} />
         </h2>
       </Dropdown>
@@ -73,6 +73,6 @@ const TooltipIcon: FC<ITooltipIconProps> = ({ tooltip }) => {
       <QuestionCircleOutlined />
     </Tooltip>
   );
-}
+};
 
 export default IndexViewSelectorRenderer;

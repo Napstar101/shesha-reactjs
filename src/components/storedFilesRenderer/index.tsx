@@ -3,7 +3,7 @@ import { StoredFilesRendererBase } from '../storedFilesRendererBase';
 import { useStoredFilesStore } from '../../providers/storedFiles';
 import { ButtonProps } from 'antd';
 
-interface IStoredFilesRendererProps {
+export interface IStoredFilesRendererProps {
   ownerId?: string;
   ownerType?: string;
   isDragger?: boolean;

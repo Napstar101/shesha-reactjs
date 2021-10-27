@@ -5,7 +5,7 @@ import { ITableColumn } from '../../providers/dataTable/interfaces';
 
 const { Option } = Select;
 
-interface IColumnsFilterSelectBaseProps {
+export interface IColumnsFilterSelectBaseProps {
   columns: ITableColumn[];
   appliedFiltersColumnIds: string[];
   toggleColumnFilter: (ids: string[]) => void;

@@ -3,7 +3,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CheckSquareOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
@@ -18,9 +18,9 @@ const CheckboxComponent: IToolboxComponent<ICheckboxProps> = {
   factory: (model: ICheckboxProps) => {
 
     return (
-      <FormItem model={model} valuePropName="checked" initialValue={model?.defaultValue}>
+      <ConfigurableFormItem model={model} valuePropName="checked" initialValue={model?.defaultValue}>
         <Checkbox disabled={model.disabled} />
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

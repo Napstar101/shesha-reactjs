@@ -1,7 +1,7 @@
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FilterOutlined } from '@ant-design/icons';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import QueryBuilderField from './queryBuilderField';
 import { useQueryBuilder } from '../../../../providers';
@@ -24,9 +24,9 @@ const QueryBuilderComponent: IToolboxComponent<IQueryBuilderProps> = {
     const fields = queryBuilder?.fields || [];
 
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <QueryBuilderField fields={fields}></QueryBuilderField>
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,

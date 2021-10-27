@@ -1,99 +1,109 @@
-export { default as Autocomplete } from './autocomplete';
-export { default as AppEditModeToggler } from './appConfigurator/editModeToggler';
-export { default as BasicDisplayFormItem } from './basicDisplayFormItem';
+export { default as Autocomplete, IAutocompleteProps } from './autocomplete';
+export { default as BasicDisplayFormItem, IBasicDisplayFormItemProps } from './basicDisplayFormItem';
 export { default as ConfigurableLogo } from './configurableLogo';
-export { default as GenericCreateModal } from './crudViews/createModal';
-export { default as GenericEditModal } from './crudViews/editModal';
-export { default as GenericDetailsPage } from './crudViews/detailsPage';
-export { default as GenericDualEditDetailsPage } from './crudViews/dualEditDetailsPage';
-export { default as SimpleIndexPage } from './crudViews/simpleIndexPage';
-export { default as GenericEditPage } from './crudViews/editPage';
-export { default as GenericIndexPage } from './crudViews/indexPage';
-export { default as GenericCreatePage } from './crudViews/createPage';
-export { default as FileUpload } from './fileUpload';
+export { default as GenericCreateModal, IGenericCreateModalProps } from './crudViews/createModal';
+export { default as GenericEditModal, IGenericEditModalProps } from './crudViews/editModal';
+export { default as GenericDetailsPage, IGenericDetailsPageProps } from './crudViews/detailsPage';
+export {
+  default as GenericDualEditDetailsPage,
+  IGenericDualEditDetailsPageProps,
+} from './crudViews/dualEditDetailsPage';
+export { default as SimpleIndexPage, ISimpleIndexPageProps } from './crudViews/simpleIndexPage';
+export { default as GenericEditPage, IGenericEditPageProps } from './crudViews/editPage';
+export { default as GenericIndexPage, IGenericIndexPageProps } from './crudViews/indexPage';
+export { default as GenericCreatePage, IGenericCreatePageProps } from './crudViews/createPage';
+export { default as FileUpload, IFileUploadProps } from './fileUpload';
 export { default as ConfigurableFormRenderer } from './configurableForm/configurableFormRenderer';
-export { default as InlineEditableChildTable } from './inlineEditableChildTable';
-export { default as MultiCheckBoxRefList } from './multiCheckBoxRefList';
-export { default as MultiReadCheckBoxRefList } from './multiReadCheckBoxrefList';
-export { binaryToList } from './multiReadCheckBoxrefList';
-export { default as SimpleLayoutHeading } from './simpleLayoutHeading';
-export { default as PageBtnContainer } from './pageBtnContainer';
+export { default as InlineEditableChildTable, IInlineEditableChildTableProps } from './inlineEditableChildTable';
+export { default as MultiCheckBoxRefList, IMultiCheckBoxRefListProps } from './multiCheckBoxRefList';
+export {
+  default as MultiReadCheckBoxRefList,
+  IMultiReadCheckBoxRefListProps,
+  binaryToList,
+} from './multiReadCheckBoxrefList';
+export { default as SimpleLayoutHeading, ISimpleLayoutHeadingProps } from './simpleLayoutHeading';
+export { default as PageBtnContainer, IPageBtnContainerProps } from './pageBtnContainer';
 export { default as ReactTable } from './reactTable';
-export { default as ConfigurableFormComponent } from './formDesigner/configurableFormComponent';
-export { default as ConfigurableForm } from './configurableForm/configurableForm';
-export { default as FormDesigner } from './formDesigner/formDesigner';
-export { default as ConfigurableFormItem } from './formDesigner/components/formItem';
-
-export { default as HierarchicalCheckList } from './hierarchicalCheckList';
+export { IReactTableProps } from './reactTable/interfaces';
+export {
+  default as ConfigurableFormComponent,
+  IConfigurableFormComponentProps,
+} from './formDesigner/configurableFormComponent';
+export { default as ConfigurableFormItem, IConfigurableFormItemProps } from './formDesigner/components/formItem';
 export { CheckListSelectionType, ICheckListItemSelection } from './hierarchicalCheckList/interface';
-
 export { default as BasicToolbar } from './basicToolbar';
 export { default as BooleanDropDown } from './booleanDropDown';
-export { default as HtmlHead } from './htmlHead';
-export { default as LayoutHeading } from './layoutHeading';
-export { default as NodeOrFuncRenderer } from './nodeOrFuncRenderer';
-export { default as ShaLink } from './shaLink';
 export { default as SidebarContainer } from './sidebarContainer';
-export { default as SidebarMenu } from './sidebarMenu';
-export { default as MainLayout } from './mainLayout';
-//export { default as QueryBuilder } from './queryBuilder';
-export { default as ValidationErrors } from './validationErrors';
-export { default as IndexToolbar } from './indexToolbar';
-export { default as DateDisplay } from './dateDisplay';
 export { default as AutoCompletePlaces } from './googlePlacesAutocomplete';
 export { default as CustomFile } from './customFile';
-export { default as StoredFilesRendererBase } from './storedFilesRendererBase';
-export { default as AppliedCustomFilters } from './appliedCustomFilters';
-export { default as CancelButton } from './cancelButton';
-export { default as CollapsiblePanel } from './panel';
-export { default as CollapsibleSidebarContainer } from './collapsibleSidebarContainer';
-export { default as ColumnFilters } from './columnFilters';
-export { default as ColumnFiltersBase } from './columnFiltersBase';
-export { default as ColumnFiltersButtons } from './columnFiltersButtons';
-export { default as ColumnFiltersButtonsBase } from './columnFiltersButtonsBase';
-export { default as ColumnItemFilter } from './columnItemFilter';
-export { default as columnsFilterSelect } from './columnsFilterSelect';
-export { default as columnsFilterSelectBase } from './columnsFilterSelectBase';
-export { default as EditableDisplayFormItem } from './editableDisplayFormItem';
-export { default as DisplayFormItem } from './displayFormItem';
-export { default as EntityDropdown } from './entityDropdown';
-export { default as EntityPicker } from './entityPicker';
-export { default as FormComponent } from './formComponent';
-export { default as GlobalTableFilter } from './globalTableFilter';
-export { default as GlobalTableFilterBase } from './globalTableFilterBase';
-export { default as GooglePlacesAutocomplete } from './googlePlacesAutocomplete';
-export { default as IdleTimerRenderer } from './idleTimerRenderer';
-export { default as ChildTable } from './childTable';
-export { default as IndexTable } from './indexTable';
-export { default as IndexTableColumnFilters } from './indexTableColumnFilters';
-export { default as IndexTableColumnVisibilityToggle } from './indexTableColumnVisibilityToggle';
-export { default as IndexTableControls } from './indexTableControls';
-export { default as IndexTableFull } from './indexTableFull';
-export { default as IndexViewSelector } from './indexViewSelector';
-export { default as IndexViewSelectorRenderer } from './indexViewSelectorRenderer';
-export { default as NotAuthorized } from './notAuthorized';
-export { default as NotesRenderer } from './notesRenderer';
-export { default as NotesRendererBase } from './notesRendererBase';
-export { default as OverlayLoader } from './overlayLoader';
-export { default as ProtectedContent } from './protectedContent';
-export { default as QuickFilters } from './quickFilters';
-export { default as ReadMoreOrLess } from './readMoreOrLess';
-export { default as RefListDropDown } from './refListDropDown';
-export { default as RefListRadioButtons } from './refListRadioButtons';
-export { default as SaveFilterModal } from './saveFilterModal';
-export { default as Scroll } from './scroll';
-export { default as SectionSeparator } from './sectionSeparator';
-export { default as ShaDivider } from './shaDivider';
-export { default as ShaSpin } from './shaSpin';
-export { default as StoredFilesRenderer } from './storedFilesRenderer';
-export { default as TableControls } from './tableControls';
-export { default as TablePager } from './tablePager';
-export { default as TablePagerBase } from './tablePagerBase';
-export { default as StatusLabel } from './statusLabel';
-export { default as ShaIcon } from './shaIcon';
-export { default as IconPicker } from './iconPicker';
-export { default as EditModeToggler } from './appConfigurator/editModeToggler'; // todo: convert to subtype
-export { default as ConfigurableComponent } from './appConfigurator/configurableComponent'; // todo: convert to subtype
 export { default as SimplePageToolbar } from './simplePageToolbar';
 export { default as ErrorBoundary } from './errorBoundary/errorBoundary';
 export { default as DetailsViewHeaderControls } from './detailsViewHeaderControls';
+export { default as AppliedCustomFilters, IAppliedCustomFiltersProps } from './appliedCustomFilters';
+export { default as CancelButton, ICancelButtonProps } from './cancelButton';
+export { default as CollapsiblePanel, ICollapsiblePanelProps } from './panel';
+export { default as CollapsibleSidebarContainer, ICollapsibleSidebarProps } from './collapsibleSidebarContainer';
+export { default as ColumnFilters, IColumnFiltersProps } from './columnFilters';
+export { default as ColumnFiltersBase, IColumnFiltersBaseProps } from './columnFiltersBase';
+export { default as ColumnFiltersButtons, IColumnFiltersButtonsProps } from './columnFiltersButtons';
+export { default as ColumnFiltersButtonsBase, IColumnFiltersButtonsBaseProps } from './columnFiltersButtonsBase';
+export { default as ColumnItemFilter, IColumnItemFilterProps } from './columnItemFilter';
+export { default as columnsFilterSelect, IColumnsFilterSelectProps } from './columnsFilterSelect';
+export { default as columnsFilterSelectBase, IColumnsFilterSelectBaseProps } from './columnsFilterSelectBase';
+export { default as DateDisplay, IDateDisplayProps } from './dateDisplay';
+export { default as EditableDisplayFormItem, IEditableDisplayLabelProps } from './editableDisplayFormItem';
+export { default as DisplayFormItem, IDisplayFormItemProps } from './displayFormItem';
+export { default as EntityDropdown, IEntityDropdownProps } from './entityDropdown';
+export { default as EntityPicker, IEntityPickerProps } from './entityPicker';
+export { default as FormComponent, IFormComponentProps } from './formComponent';
+export { default as GlobalTableFilter, IGlobalTableFilterProps } from './globalTableFilter';
+export { default as GlobalTableFilterBase, IGlobalTableFilterBaseProps } from './globalTableFilterBase';
+export { default as GooglePlacesAutocomplete, IGooglePlacesAutocompleteProps } from './googlePlacesAutocomplete';
+export { default as HtmlHead, IHtmlHeadProps } from './htmlHead';
+export { default as IdleTimerRenderer, IIdleTimerRendererProps } from './idleTimerRenderer';
+export { default as ChildTable, IChildTableProps } from './childTable';
+export { default as IndexTable, IIndexTableProps, IExtendedModalProps } from './indexTable';
+export { default as IndexTableColumnFilters, IIndexTableColumnFiltersProps } from './indexTableColumnFilters';
+export {
+  default as IndexTableColumnVisibilityToggle,
+  IIndexTableColumnVisibilityToggleProps,
+} from './indexTableColumnVisibilityToggle';
+export { default as IndexTableControls, IIndexTableControlsProps } from './indexTableControls';
+export { default as IndexTableFull, IIndexTableFullProps } from './indexTableFull';
+export { default as IndexToolbar, IIndexToolbarProps } from './indexToolbar';
+export { default as IndexViewSelector, IIndexViewSelectorProps } from './indexViewSelector';
+export { default as IndexViewSelectorRenderer, IIndexViewSelectorRendererProps } from './indexViewSelectorRenderer';
+export { default as LayoutHeading, ILayoutHeadingProps } from './layoutHeading';
+export { default as MainLayout, IMainLayoutProps } from './mainLayout';
+export { default as NodeOrFuncRenderer } from './nodeOrFuncRenderer';
+export { default as NotAuthorized, INotAuthorizedProps } from './notAuthorized';
+export { default as NotesRenderer, INotesRendererProps } from './notesRenderer';
+export { default as NotesRendererBase, INotesRendererBaseProps } from './notesRendererBase';
+export { default as OverlayLoader, IOverlayLoaderProps } from './overlayLoader';
+export { default as ProtectedContent, IProtectedContentProps } from './protectedContent';
+export { default as QuickFilters, IQuickFiltersProps } from './quickFilters';
+export { default as RefListDropDown, IRefListDropDownProps } from './refListDropDown';
+export { default as RefListRadioButtons, IRefListRadioButtonsProps } from './refListRadioButtons';
+export { default as SaveFilterModal, ISaveFilterModalProps } from './saveFilterModal';
+export { default as Scroll, IScrollProps } from './scroll';
+export { default as SectionSeparator, ISectionSeparatorProps } from './sectionSeparator';
+export { default as ShaDivider } from './shaDivider';
+export { default as ShaLink, IShaLinkProps } from './shaLink';
+export { default as ShaSpin, IShaSpin } from './shaSpin';
+export { default as SidebarMenu, ISidebarMenuProps } from './sidebarMenu';
+export { default as StoredFilesRenderer, IStoredFilesRendererProps } from './storedFilesRenderer';
+export { default as StoredFilesRendererBase, IStoredFilesRendererBaseProps } from './storedFilesRendererBase';
+export { default as TableControls } from './tableControls';
+export { default as TablePager, ITablePagerProps } from './tablePager';
+export { default as TablePagerBase, ITablePagerBaseProps } from './tablePagerBase';
+export { default as StatusLabel, IStatusLabelProps } from './statusLabel';
+export { default as ValidationErrors, IValidationErrorsProps } from './validationErrors';
+export { default as HierarchicalCheckList, IHierarchicalCheckListProps } from './hierarchicalCheckList';
+export { default as ShaIcon, IShaIconProps } from './shaIcon';
+export { default as IconPicker, IIconPickerProps } from './iconPicker';
+export { default as AppEditModeToggler, IAppEditModeTogglerProps as IEditModeTogglerProps } from './appConfigurator/editModeToggler'; // todo: convert to subtype
+export { default as ConfigurableComponent } from './appConfigurator/configurableComponent'; // todo: convert to subtype
+export { default as FormDesigner, IFormDesignerProps } from './formDesigner/formDesigner';
+export { default as QueryBuilder, IQueryBuilderProps } from './queryBuilder';
+export { default as ConfigurableForm } from './configurableForm';
+export { IConfigurableFormRendererProps, IConfigurableFormProps } from './configurableForm/models';

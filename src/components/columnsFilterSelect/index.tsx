@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useDataTable } from '../../providers';
 import ColumnsFilterSelectBase from '../columnsFilterSelectBase';
 
-interface IColumnsFilterSelectProps {}
+export interface IColumnsFilterSelectProps {}
 
 export const ColumnsFilterSelect: FC<IColumnsFilterSelectProps> = () => {
   const { columns, toggleColumnFilter, getCurrentFilter } = useDataTable();

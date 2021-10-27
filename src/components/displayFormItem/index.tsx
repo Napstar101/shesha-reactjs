@@ -4,15 +4,16 @@ import { EditOutlined } from '@ant-design/icons';
 import { Input, Button } from 'antd';
 import FormItem, { FormItemProps } from 'antd/lib/form/FormItem';
 
-type IPropType = 'default' | 'edit' | 'autocomplete';
-interface IProps extends FormItemProps {
-  readonly mode?: IPropType;
+type PropType = 'default' | 'edit' | 'autocomplete';
+
+export interface IDisplayFormItemProps extends FormItemProps {
+  readonly mode?: PropType;
   readonly value?: string;
   readonly onValueChange?: (value?: string) => void;
   readonly onControlSave?: () => void;
 }
 
-export const DisplayFormItem: FC<IProps> = ({
+export const DisplayFormItem: FC<IDisplayFormItemProps> = ({
   children,
   className,
   mode = 'default',

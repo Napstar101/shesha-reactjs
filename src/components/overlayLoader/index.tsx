@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import loaderHelper, { SpinnerStyles } from './utils';
 
-interface IOverlayLoaderProps {
+export interface IOverlayLoaderProps {
   loadingText?: string;
   color?: string;
   loading?: boolean;

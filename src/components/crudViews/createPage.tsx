@@ -12,7 +12,7 @@ import PageBtnContainer from '../pageBtnContainer';
 import { useShaRouting } from '../../providers/shaRouting';
 import { IFormActions, IFormSections } from '../../providers/form/models';
 
-interface ICreatePageProps {
+export interface IGenericCreatePageProps {
   title?: string;
   formPath?: string;
   updater: (props: any) => IDataMutator;
@@ -26,12 +26,12 @@ interface ICreatePageProps {
   formActions?: IFormActions;
 
   /**
-    * Form sections. Form-specific sections which can be rendered within the configurable form
-    */
+   * Form sections. Form-specific sections which can be rendered within the configurable form
+   */
   formSections?: IFormSections;
 }
 
-const CreateForm: NextPage<ICreatePageProps> = ({
+const GenericCreatePage: NextPage<IGenericCreatePageProps> = ({
   onSuccess,
   updater,
   title,
@@ -78,7 +78,7 @@ const CreateForm: NextPage<ICreatePageProps> = ({
     <MainLayout title={title} toolbar={actionButtonPosition === 'top' ? <IndexToolbar items={toolbarItems} /> : null}>
       <Spin spinning={saveInProgress} tip="Please wait...">
         <ValidationErrors error={saveError?.data} />
-        
+
         <ConfigurableForm
           mode="edit"
           {...formItemLayout}
@@ -117,4 +117,4 @@ const CreateForm: NextPage<ICreatePageProps> = ({
   );
 };
 
-export default CreateForm;
+export default GenericCreatePage;

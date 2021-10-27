@@ -6,11 +6,11 @@ import { TwoToneIconTypes } from '../iconPicker/iconNamesTwoTone';
 
 export type IconType = FilledIconTypes | OutlinedIconTypes | TwoToneIconTypes;
 
-export interface IIconPickerProps extends IconBaseProps {
+export interface IShaIconProps extends IconBaseProps {
   iconName: IconType;
 }
 
-const ShaIcon: FC<IIconPickerProps> = ({ iconName = 'WarningFilled', ...props }) => {
+const ShaIcon: FC<IShaIconProps> = ({ iconName = 'WarningFilled', ...props }) => {
   const icons = require('@ant-design/icons');
 
   if (!icons[iconName]) {

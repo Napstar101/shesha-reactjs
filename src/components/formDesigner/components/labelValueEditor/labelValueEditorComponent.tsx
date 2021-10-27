@@ -2,7 +2,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { OneToOneOutlined } from '@ant-design/icons';
 import { LabelValueEditor } from './labelValueEditor';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import { ILabelValueEditorPropsBase } from './models';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
@@ -26,9 +26,9 @@ const LabelValueEditorComponent: IToolboxComponent<ILabelValueEditorProps> = {
     if (isHidden) return null;
     
     return (
-      <FormItem model={model}>
+      <ConfigurableFormItem model={model}>
         <LabelValueEditor {...customProps}></LabelValueEditor>
-      </FormItem>
+      </ConfigurableFormItem>
     );
   },
   initModel: model => {

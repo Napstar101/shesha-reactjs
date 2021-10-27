@@ -6,7 +6,7 @@ import { getFieldNameFromExpression, getValidationRules } from '../../../provide
 import classNames from 'classnames';
 import './styles.less';
 
-export interface IShaFormItemProps {
+export interface IConfigurableFormItemProps {
   model: IConfigurableFormComponent;
   readonly children?: React.ReactNode;
   className?: string;
@@ -23,7 +23,7 @@ export interface IShaFormItemProps {
   labelCol?: ColProps;
 }
 
-const FormItem: FC<IShaFormItemProps> = ({
+const ConfigurableFormItem: FC<IConfigurableFormItemProps> = ({
   children,
   model,
   valuePropName,
@@ -58,4 +58,4 @@ const FormItem: FC<IShaFormItemProps> = ({
   );
 };
 
-export default FormItem;
+export default ConfigurableFormItem;

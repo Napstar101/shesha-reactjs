@@ -6,7 +6,7 @@ import { useLocalStorage } from '../../hooks';
 import { useSidebarMenu } from '../../providers/sidebarMenu';
 import { useShaRouting } from '../../providers/shaRouting';
 
-interface ISidebarMenuProps {
+export interface ISidebarMenuProps {
   isCollapsed?: boolean;
   theme?: MenuTheme;
 }

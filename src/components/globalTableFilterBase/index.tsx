@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import Search from 'antd/lib/input/Search';
 import { SearchProps } from 'antd/lib/input';
 
-interface IGlobalTableFilterProps {
+export interface IGlobalTableFilterBaseProps {
   searchProps?: SearchProps;
   changeQuickSearch: (val: string) => void;
   performQuickSearch?: (val: string) => void;
   quickSearch: string;
 }
 
-export const GlobalTableFilterBase: FC<IGlobalTableFilterProps> = ({
+export const GlobalTableFilterBase: FC<IGlobalTableFilterBaseProps> = ({
   searchProps,
   changeQuickSearch,
   performQuickSearch,

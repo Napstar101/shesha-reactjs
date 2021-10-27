@@ -1,14 +1,15 @@
 import React, { FC, useState, useEffect, CSSProperties, useRef } from 'react';
-import ReadMoreOrLess from '../readMoreOrLess';
 import DateDisplay from '../dateDisplay';
-import { Skeleton, Comment, Card, List, Empty, Input, notification, Button } from 'antd';
+import { Skeleton, Comment, Card, List, Empty, Input, notification, Button, Typography } from 'antd';
 import { CheckOutlined, DeleteOutlined } from '@ant-design/icons';
 import { INote, ICreateNotePayload } from '../../providers/notes/contexts';
 import _ from 'lodash';
 import ShaDivider from '../shaDivider';
 import classNames from 'classnames';
 
-export interface INotesProps {
+const { Paragraph } = Typography;
+
+export interface INotesRendererBaseProps {
   showSaveBtn?: boolean;
   showCommentBox?: boolean;
   commentListStyles?: CSSProperties;
@@ -22,7 +23,7 @@ export interface INotesProps {
   deleteNotes: (selectedCommentId: string) => void;
 }
 
-export const NotesRendererBase: FC<INotesProps> = ({
+export const NotesRendererBase: FC<INotesRendererBaseProps> = ({
   showCommentBox = true,
   commentListStyles,
   isFetchingNotes,
@@ -33,7 +34,7 @@ export const NotesRendererBase: FC<INotesProps> = ({
   style,
   notes,
   showSaveBtn = true,
-  commentListClassName
+  commentListClassName,
 }) => {
   const [newComments, setNewComments] = useState('');
   const textRef = useRef(null);
@@ -101,7 +102,7 @@ export const NotesRendererBase: FC<INotesProps> = ({
               postedBy: (author && author.displayText) || 'Unknown',
               content: (
                 <div>
-                  <ReadMoreOrLess>{noteText}</ReadMoreOrLess>
+                  <Paragraph ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}>{noteText}</Paragraph>
                 </div>
               ),
               postedDate: <DateDisplay date={creationTime} />,

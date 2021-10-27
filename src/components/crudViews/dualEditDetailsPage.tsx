@@ -13,7 +13,7 @@ import { DEFAULT_FILTERS, filterGenericModelData, IGenericFormFilter } from './u
 
 export type DualEditDetailsFormType = 'Edit' | 'Details';
 
-export interface IDualEditDetailsPageProps {
+export interface IGenericDualEditDetailsPageProps {
   /**
    * The id of an entity whose details are to be rendered
    */
@@ -70,8 +70,8 @@ export interface IDualEditDetailsPageProps {
   formActions?: IFormActions;
 
   /**
-    * Form sections. Form-specific sections which can be rendered within the configurable form
-    */
+   * Form sections. Form-specific sections which can be rendered within the configurable form
+   */
   formSections?: IFormSections;
 
   /**
@@ -115,132 +115,136 @@ export interface IDualEditDetailsPageProps {
   prepareValues?: (values: any) => any;
 }
 
-const DualEditDetailsPage = forwardRef<CommonCrudHandles, IDualEditDetailsPageProps>((props, forwardedRef) => {
-  const [form] = Form.useForm();
+const GenericDualEditDetailsPage = forwardRef<CommonCrudHandles, IGenericDualEditDetailsPageProps>(
+  (props, forwardedRef) => {
+    const [form] = Form.useForm();
 
-  const { formItemLayout } = useUi();
+    const { formItemLayout } = useUi();
 
-  const { router } = useShaRouting();
+    const { router } = useShaRouting();
 
-  useImperativeHandle(forwardedRef, () => ({
-    refresh() {
+    useImperativeHandle(forwardedRef, () => ({
+      refresh() {
+        fetchData();
+      },
+    }));
+
+    const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props.fetcher({
+      lazy: true,
+      requestOptions: { headers: requestHeaders() },
+      queryParams: { id: props.id },
+    });
+
+    const { mutate: save, loading: saving, error: savingError } = props.updater({});
+
+    // fetch data on page load or when the id changes
+    useEffect(() => {
       fetchData();
-    },
-  }));
+    }, [props.id]);
 
-  const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props.fetcher({
-    lazy: true,
-    requestOptions: { headers: requestHeaders() },
-    queryParams: { id: props.id },
-  });
+    useEffect(() => {
+      if (props?.formValues) {
+        form.setFieldsValue(props.formValues);
+      }
+    }, [props?.formValues]);
 
-  const { mutate: save, loading: saving, error: savingError } = props.updater({});
+    useEffect(() => {
+      if (props?.onDataLoaded) {
+        props?.onDataLoaded(model);
+      }
+      if (props.pageRef) {
+        props.pageRef.current = model;
+      }
+    }, [loading]);
 
-  // fetch data on page load or when the id changes
-  useEffect(() => {
-    fetchData();
-  }, [props.id]);
+    const filters = props.formFilters || DEFAULT_FILTERS;
 
-  useEffect(() => {
-    if (props?.formValues) {
-      form.setFieldsValue(props.formValues);
-    }
-  }, [props?.formValues]);
+    const model = filterGenericModelData(serverData?.result, filters) as any;
 
-  useEffect(() => {
-    if (props?.onDataLoaded) {
-      props?.onDataLoaded(model);
-    }
-    if (props.pageRef) {
-      props.pageRef.current = model;
-    }
-  }, [loading]);
+    const renderTitle = () => {
+      const { title } = props;
 
-  const filters = props.formFilters || DEFAULT_FILTERS;
+      if (title) {
+        return typeof title === 'string' ? title : title(model);
+      }
 
-  const model = filterGenericModelData(serverData?.result, filters) as any;
+      return props?.formType?.toString();
+    };
 
-  const renderTitle = () => {
-    const { title } = props;
+    const handleSave = () => {
+      if (props?.onSave) props.onSave(form);
+      else form.submit();
+    };
 
-    if (title) {
-      return typeof title === 'string' ? title : title(model);
-    }
+    const handleClose = () => {
+      if (props?.onClose) props.onClose(form);
+      else router.back();
+    };
 
-    return props?.formType?.toString();
-  };
+    const editToolbarItems: IToolbarItem[] = [
+      {
+        title: 'Save',
+        icon: <SaveOutlined />,
+        onClick: handleSave,
+      },
+      {
+        title: 'Close',
+        icon: <CloseOutlined />,
+        onClick: handleClose,
+      },
+    ];
 
-  const handleSave = () => {
-    if (props?.onSave) props.onSave(form);
-    else form.submit();
-  };
+    const handleSubmit = values => {
+      const postData = { ...values, id: model.id };
+      const preparedValues = typeof props?.prepareValues === 'function' ? props?.prepareValues(postData) : postData;
 
-  const handleClose = () => {
-    if (props?.onClose) props.onClose(form);
-    else router.back();
-  };
+      save(preparedValues).then(handleClose);
+    };
 
-  const editToolbarItems: IToolbarItem[] = [
-    {
-      title: 'Save',
-      icon: <SaveOutlined />,
-      onClick: handleSave,
-    },
-    {
-      title: 'Close',
-      icon: <CloseOutlined />,
-      onClick: handleClose,
-    },
-  ];
+    const toolbar = () => {
+      if (props.formType === 'Details') {
+        return props?.toolbarItems?.filter(({ hide }) => !hide)?.length ? (
+          <IndexToolbar items={props.toolbarItems} />
+        ) : null;
+      }
 
-  const handleSubmit = values => {
-    const postData = { ...values, id: model.id };
-    const preparedValues = typeof props?.prepareValues === 'function' ? props?.prepareValues(postData) : postData;
+      return <IndexToolbar items={editToolbarItems} />;
+    };
 
-    save(preparedValues).then(handleClose);
-  };
+    return (
+      <Spin spinning={loading || saving} tip="Loading...">
+        <MainLayout
+          title={renderTitle()}
+          description=""
+          showHeading={!!renderTitle() || !!props.headerControls}
+          toolbar={toolbar()}
+          headerControls={
+            typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls
+          }
+        >
+          <ValidationErrors error={savingError?.data || fetchError?.data} />
+          {model && (
+            <>
+              <ConfigurableForm
+                mode={props.formType === 'Details' ? 'readonly' : 'edit'}
+                {...formItemLayout}
+                form={form}
+                onFinish={handleSubmit}
+                path={props?.formPath || router.pathname}
+                markup={props.markup}
+                initialValues={model}
+                actions={props.formActions}
+                sections={props.formSections}
+              />
+              {typeof props?.footer === 'function' ? props?.footer(model) : props?.footer}
+            </>
+          )}
+        </MainLayout>
+      </Spin>
+    );
+  }
+);
 
-  const toolbar = () => {
-    if (props.formType === 'Details') {
-      return props?.toolbarItems?.filter(({ hide }) => !hide)?.length ? (
-        <IndexToolbar items={props.toolbarItems} />
-      ) : null;
-    }
+export type DualEditDetailsPageHandleRefType = React.ElementRef<typeof GenericDualEditDetailsPage>;
 
-    return <IndexToolbar items={editToolbarItems} />;
-  };
-
-  return (
-    <Spin spinning={loading || saving} tip="Loading...">
-      <MainLayout
-        title={renderTitle()}
-        description=""
-        showHeading={!!renderTitle() || !!props.headerControls}
-        toolbar={toolbar()}
-        headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
-      >
-        <ValidationErrors error={savingError?.data || fetchError?.data} />
-        {model && (
-          <>
-            <ConfigurableForm
-              mode={props.formType === 'Details' ? 'readonly' : 'edit'}
-              {...formItemLayout}
-              form={form}
-              onFinish={handleSubmit}
-              path={props?.formPath || router.pathname}
-              markup={props.markup}
-              initialValues={model}
-              actions={props.formActions}
-              sections={props.formSections}
-            />
-            {typeof props?.footer === 'function' ? props?.footer(model) : props?.footer}
-          </>
-        )}
-      </MainLayout>
-    </Spin>
-  );
-});
-
-export type DualEditDetailsPageHandleRefType = React.ElementRef<typeof DualEditDetailsPage>;
-
-export default DualEditDetailsPage;
+export default GenericDualEditDetailsPage;

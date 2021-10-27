@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import { useShaRouting } from '../../providers/shaRouting';
 
-interface IShaLinkProps {
+export interface IShaLinkProps {
   linkTo?: string;
   icon?: ReactNode;
 

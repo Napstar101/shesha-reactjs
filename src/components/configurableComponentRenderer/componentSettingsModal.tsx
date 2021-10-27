@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'antd';
 import { Form } from 'antd';
-import { ConfigurableForm } from '../configurableForm/configurableForm';
+import { ConfigurableForm } from '../configurableForm';
 import { IConfigurableFormComponent } from '../../providers/form/models';
 
 export interface IProps<TModel = any> {

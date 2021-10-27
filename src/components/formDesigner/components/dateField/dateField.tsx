@@ -3,7 +3,7 @@ import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CalendarOutlined } from '@ant-design/icons';
 import { DatePicker } from 'antd';
-import FormItem from '../formItem';
+import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import moment, { Moment, isMoment } from 'moment';
 import React from 'react';
@@ -70,9 +70,9 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
 
     return (
       <Fragment>
-        <FormItem model={model}>
+        <ConfigurableFormItem model={model}>
           <DatePickerWrapper {...customModel} />
-        </FormItem>
+        </ConfigurableFormItem>
 
         {customModel?.range && (
           <Fragment>
