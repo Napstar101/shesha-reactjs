@@ -160,7 +160,7 @@
     "es"
   ],
   "dependencies": {
-    "humanize-string": "^3.0.0",
+    "decamelize": "^6.0.0",
     "invert-color": "^2.0.0",
     "js-encoding-utils": "^0.6.2",
     "less-combiner": "^0.1.2",

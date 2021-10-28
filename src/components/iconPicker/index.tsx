@@ -6,9 +6,9 @@ import { Button, Input, Radio, RadioChangeEvent, Modal } from 'antd';
 import { SelectOutlined } from '@ant-design/icons';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { OutlinedIconTypes, OUTLINED_ICON_GROUPS } from './iconNamesOutlined';
-import humanizeString from 'humanize-string';
 import SectionSeparator from '../sectionSeparator';
 import { TwoToneIconTypes, TWO_FACED_ICON_GROUPS } from './iconNamesTwoTone';
+import { humanizeString } from '../../utils';
 
 export type ShaIconTypes = FilledIconTypes | OutlinedIconTypes | TwoToneIconTypes;
 type IconModes = 'outlined' | 'filled' | 'twoFaced';
@@ -155,7 +155,11 @@ const IconPicker: FC<IIconPickerProps> = ({ selectBtnSize = 'middle', value, onI
 
               <div className="sha-icon-picker-icon-list-group-body">
                 {memoizedActiveGroup[groupKey].map((item: ShaIconTypes, index) => (
-                  <span className="sha-icon-picker-icon-list-icon" onClick={() => handleIconSelection(item)} key={index}>
+                  <span
+                    className="sha-icon-picker-icon-list-icon"
+                    onClick={() => handleIconSelection(item)}
+                    key={index}
+                  >
                     <ShaIcon iconName={item as any} style={{ fontSize: 30, transform: 'scale(.83)' }} />
                     <span className="sha-icon-picker-icon-list-icon-name">{item}</span>
                   </span>

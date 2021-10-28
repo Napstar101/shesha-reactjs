@@ -3,11 +3,11 @@ import { DeleteOutlined, DownOutlined } from '@ant-design/icons';
 import { Input, DatePicker, TimePicker, InputNumber, Checkbox, Menu, Dropdown, Select } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import moment, { Moment, isMoment } from 'moment';
-import humanizeString from 'humanize-string';
 import { useGet } from 'restful-react';
 import { ColumnFilter, IndexColumnDataType, IndexColumnFilterOption } from '../../providers/dataTable/interfaces';
 import { useReferenceListGetItems } from '../../apis/referenceList';
 import { AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
+import { humanizeString } from '../../utils';
 
 const { RangePicker: DateRangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;
