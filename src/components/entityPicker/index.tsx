@@ -21,7 +21,7 @@ export interface IEntityPickerProps {
   size?: SizeType;
   title?: string;
   useButtonPicker?: boolean;
-  pickerButtonProps?: ButtonProps
+  pickerButtonProps?: ButtonProps;
   parentEntityId?: string;
   defaultValue?: string;
 }
@@ -36,8 +36,8 @@ export interface IEntityPickerState {
 const INITIAL_STATE: IEntityPickerState = {
   selectedRowIndex: -1,
   selectedValue: '',
-  selectedRow: null
-}
+  selectedRow: null,
+};
 
 export const EntityPicker: FC<IEntityPickerProps> = ({
   tableId,
@@ -53,14 +53,15 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   onSelect,
   parentEntityId,
   defaultValue,
-  title = "Select Item"
+  title = 'Select Item',
 }) => {
   const [state, setState] = useState<IEntityPickerState>({
     showModal: false,
-    ...INITIAL_STATE
+    ...INITIAL_STATE,
   });
 
-  const toggleModalVisibility = () => setState((current) => ({...current, showModal: !current?.showModal, ...INITIAL_STATE }));
+  const toggleModalVisibility = () =>
+    setState(current => ({ ...current, showModal: !current?.showModal, ...INITIAL_STATE }));
 
   const onDblClick = (row: IAnyObject) => {
     if (onSelect) {
@@ -87,11 +88,11 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
 
   const onModalOk = () => {
     if (onSelect && state?.selectedRow) {
-      onSelect(state?.selectedRow)
+      onSelect(state?.selectedRow);
     }
 
     toggleModalVisibility();
-  }
+  };
 
   const handleCancel = () => {
     clearAll();
@@ -99,7 +100,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   };
 
   const clearAll = () => {
-    setState({...state, selectedRowIndex: -1, selectedValue: '' });
+    setState({ ...state, selectedRowIndex: -1, selectedValue: '' });
 
     if (onChange) {
       onChange(null, null);
@@ -119,21 +120,23 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
       ...state,
       selectedValue,
       selectedRow,
-      selectedRowIndex: selectedRowIndex === null ? state?.selectedRowIndex: selectedRowIndex
+      selectedRowIndex: selectedRowIndex === null ? state?.selectedRowIndex : selectedRowIndex,
     });
   };
 
   const handleButtonPickerClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event?.stopPropagation();
-    setState({...state, showModal: true });
-  }
+    setState({ ...state, showModal: true });
+  };
 
   return (
     <div className="entity-picker-container">
       <div>
-        {useButtonPicker ?
-          <Button onClick={handleButtonPickerClick} size={size} {...(pickerButtonProps || {})}>{title}</Button>
-          :
+        {useButtonPicker ? (
+          <Button onClick={handleButtonPickerClick} size={size} {...(pickerButtonProps || {})}>
+            {title}
+          </Button>
+        ) : (
           <Input.Group compact className="picker-input-group">
             <Input
               allowClear
@@ -155,7 +158,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
               icon={<EllipsisOutlined />}
             />
           </Input.Group>
-        }
+        )}
       </div>
 
       <Modal
@@ -166,9 +169,11 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
         onCancel={handleCancel}
         width="60%"
         okText="Select"
-        okButtonProps={{
-          disabled: !state?.selectedValue,
-        }}
+        footer={
+          <div>
+            <Button onClick={handleCancel}>Close</Button>
+          </div>
+        }
       >
         <DataTableProvider tableId={tableId} onDblClick={onDblClick} parentEntityId={parentEntityId}>
           <GlobalTableFilter
@@ -179,11 +184,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
             <TablePager />
           </div>
 
-          <IndexTable
-            onSelectRow={onSelectRow}
-            onDblClick={onDblClick}
-            selectedRowIndex={state?.selectedRowIndex}
-          />
+          <IndexTable onSelectRow={onSelectRow} onDblClick={onDblClick} selectedRowIndex={state?.selectedRowIndex} />
         </DataTableProvider>
       </Modal>
     </div>
