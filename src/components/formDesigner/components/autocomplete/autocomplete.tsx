@@ -1,5 +1,5 @@
 import React from 'react';
-import { IToolboxComponent } from '../../../../interfaces';
+import { IGuidNullableEntityWithDisplayNameDto, IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FileSearchOutlined } from '@ant-design/icons';
 import ConfigurableFormItem from '../formItem';
@@ -9,7 +9,7 @@ import { useForm } from '../../../../providers/form';
 import { replaceTags, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
 export interface IAutocompleteProps extends IConfigurableFormComponent {
-  entityTypeShortAlias?: string;
+  entityTypeShortAlias?: IGuidNullableEntityWithDisplayNameDto;
   hideBorder?: boolean;
   dataSourceUrl?: string;
   dataSourceType: AutocompleteDataSourceType;
@@ -30,13 +30,11 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
       ? replaceTags(customProps.dataSourceUrl, { data: formData })
       : customProps.dataSourceUrl;
 
-    // console.log();
-
     // todo: implement other types of datasources!
     return (
       <ConfigurableFormItem model={model}>
         <Autocomplete
-          typeShortAlias={customProps.entityTypeShortAlias}
+          typeShortAlias={customProps?.entityTypeShortAlias?.id}
           allowInherited={true} /*hardcoded for now*/
           disabled={model.disabled}
           bordered={!customProps.hideBorder}
