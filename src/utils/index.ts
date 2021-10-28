@@ -79,23 +79,3 @@ export const getSafelyTrimmedString = (value: string = '') => {
 export const joinStringValues = (values: string[], delimiter = ' ') => {
   return values?.filter(Boolean)?.join(delimiter);
 };
-
-import decamelize from 'decamelize';
-
-export function humanizeString(value: string) {
-  let localValue = value;
-
-  if (typeof localValue !== 'string') {
-    throw new TypeError('Expected a string');
-  }
-
-  localValue = decamelize(localValue);
-  localValue = localValue
-    .toLowerCase()
-    .replace(/[_-]+/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-  localValue = localValue.charAt(0).toUpperCase() + localValue.slice(1);
-
-  return localValue;
-}

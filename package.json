@@ -1,6 +1,6 @@
 {
   "name": "shesha-reactjs",
-  "version": "0.0.3-canary.5",
+  "version": "0.0.3-canary.6",
   "description": "Shesha web component library",
   "author": "Boxfusion",
   "license": "GPL-3.0",
@@ -160,7 +160,6 @@
     "es"
   ],
   "dependencies": {
-    "decamelize": "^6.0.0",
     "invert-color": "^2.0.0",
     "js-encoding-utils": "^0.6.2",
     "less-combiner": "^0.1.2",

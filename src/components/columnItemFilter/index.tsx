@@ -7,7 +7,7 @@ import { useGet } from 'restful-react';
 import { ColumnFilter, IndexColumnDataType, IndexColumnFilterOption } from '../../providers/dataTable/interfaces';
 import { useReferenceListGetItems } from '../../apis/referenceList';
 import { AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
-import { humanizeString } from '../../utils';
+import { humanizeString } from '../../utils/string';
 
 const { RangePicker: DateRangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;

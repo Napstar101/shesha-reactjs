@@ -8,7 +8,7 @@ import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { OutlinedIconTypes, OUTLINED_ICON_GROUPS } from './iconNamesOutlined';
 import SectionSeparator from '../sectionSeparator';
 import { TwoToneIconTypes, TWO_FACED_ICON_GROUPS } from './iconNamesTwoTone';
-import { humanizeString } from '../../utils';
+import { humanizeString } from '../../utils/string';
 
 export type ShaIconTypes = FilledIconTypes | OutlinedIconTypes | TwoToneIconTypes;
 type IconModes = 'outlined' | 'filled' | 'twoFaced';
