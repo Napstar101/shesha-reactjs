@@ -119,16 +119,6 @@
         "id": "55400fd2-99eb-4bf8-ae0b-a969b326a4e3",
         "label": "Reference List",
         "value": "referenceList"
-      },
-      {
-        "id": "74b87e82-1d58-4ef0-8ae7-001081ccfbe5",
-        "label": "Entities List",
-        "value": "entityList"
-      },
-      {
-        "id": "0216f94b-3c85-4d56-bcd9-7abcf57ac903",
-        "label": "Url",
-        "value": "url"
       }
     ],
     "dataSourceType": "values"
@@ -148,6 +138,17 @@
     "parentId": "root",
     "label": "ReferenceList Name",
     "customVisibility": "return data.dataSourceType === 'referenceList'"
+  },
+  {
+    "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc5",
+    "type": "textArea",
+    "name": "ignoredValues",
+    "parentId": "root",
+    "label": "Ignored Values",
+    "autoSize": false,
+    "showCount": false,
+    "allowClear": true,
+    "description": "Pass an integer array of values you want to ignore like so: [1, 2, 3]. Each represents ReferenceList.ItemValue"
   },
   {
     "id": "eeea4825-2659-4d17-9c44-066b4636d4d7",
