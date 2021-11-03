@@ -9,6 +9,7 @@ import settingsFormJson from './settingsForm.json';
 import { useReferenceListGetItems } from '../../../../apis/referenceList';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { RefListDropDown } from '../../..';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -70,6 +71,21 @@ export const Dropdown: FC<IDropdownProps> = ({
     return [];
   };
 
+  if (dataSourceType === 'referenceList') {
+    return (
+      <RefListDropDown
+        onChange={onChange}
+        listName={referenceListName}
+        listNamespace={referenceListNamespace}
+        disabled={disabled}
+        value={value}
+        bordered={!hideBorder}
+        defaultValue={defaultValue}
+        mode={mode}
+      />
+    );
+  }
+
   const options = getOptions() || [];
   const loading = refListLoading;
 
@@ -77,7 +93,7 @@ export const Dropdown: FC<IDropdownProps> = ({
     <Select
       allowClear
       onChange={onChange}
-      value={options.length > 0 ? (value || defaultValue) : null}
+      value={options.length > 0 ? value || defaultValue : null}
       defaultValue={defaultValue}
       bordered={!hideBorder}
       disabled={disabled}
@@ -85,7 +101,7 @@ export const Dropdown: FC<IDropdownProps> = ({
       mode={mode}
     >
       {options.map((option, index) => (
-        <Select.Option key={index} value={option.value} >
+        <Select.Option key={index} value={option.value}>
           {option.label}
         </Select.Option>
       ))}

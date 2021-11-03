@@ -6,96 +6,96 @@ import { ReferenceListItemDto, useReferenceListGetItems } from '../../apis/refer
 import { getCachedItems, saveListItems } from './utils';
 
 export interface IRefListDropDownOption {
-	children?: string;
-	key: string;
-	value?: Key;
+  children?: string;
+  key: string;
+  value?: Key;
 }
 
 export interface IRefListDropDownProps extends SelectProps<any> {
-	/**
-	 * Reference list name
-	 */
-	listName: string;
-	/**
-	 * Reference list namespace
-	 */
-	listNamespace: string;
-	/**
-	 * How large should the button be?
-	 */
-	filters?: number[];
-	includeFilters?: boolean;
-	width?: number;
-	base?: string;
+  /**
+   * Reference list name
+   */
+  listName: string;
+  /**
+   * Reference list namespace
+   */
+  listNamespace: string;
+  /**
+   * How large should the button be?
+   */
+  filters?: number[];
+  includeFilters?: boolean;
+  width?: number;
+  base?: string;
 }
 
 const RefListDropDown: FC<IRefListDropDownProps> = ({
-	listName,
-
-	listNamespace,
-	showArrow = true,
-	value,
-	includeFilters = false,
-	filters = [],
-	width,
-	base,
-	...rest
+  listName,
+  listNamespace,
+  showArrow = true,
+  value,
+  includeFilters = false,
+  filters = [],
+  width,
+  base,
+  ...rest
 }) => {
-	const { refetch: fetchItems, loading, data: listItemsResult } = useReferenceListGetItems({
-		lazy: true,
-		base,
-	});
-	const [cachedListItems, setCachedListItems] = useState<ReferenceListItemDto[]>([]);
+  const { refetch: fetchItems, loading, data: listItemsResult } = useReferenceListGetItems({
+    lazy: true,
+    base,
+  });
 
-	useEffect(() => {
-		if (listName && listNamespace) {
-			const cachedItems = getCachedItems(listName, listNamespace);
+  const [cachedListItems, setCachedListItems] = useState<ReferenceListItemDto[]>([]);
 
-			if (cachedItems?.length) {
-				setCachedListItems(cachedItems);
-			} else {
-				fetchItems({ queryParams: { name: listName, namespace: listNamespace } });
-			}
-		}
-	}, [listName, listNamespace]);
+  useEffect(() => {
+    if (listName && listNamespace) {
+      const cachedItems = getCachedItems(listName, listNamespace);
 
-	useEffect(() => {
-		if (listItemsResult?.result) {
-			saveListItems(listName, listNamespace, listItemsResult?.result);
-		}
-	}, [listItemsResult]);
+      if (cachedItems?.length) {
+        setCachedListItems(cachedItems);
+      } else {
+        fetchItems({ queryParams: { name: listName, namespace: listNamespace } });
+      }
+    }
+  }, [listName, listNamespace]);
 
-	const filter = ({ itemValue }: ReferenceListItemDto) => {
-		const localFilter = filters?.includes(itemValue as number);
+  useEffect(() => {
+    if (listItemsResult?.result) {
+      saveListItems(listName, listNamespace, listItemsResult?.result);
+    }
+  }, [listItemsResult]);
 
-		return localFilter ? filter : !filter;
-	};
+  const filter = ({ itemValue }: ReferenceListItemDto) => {
+    const localFilter = filters?.includes(itemValue as number);
 
-	const listItems = cachedListItems?.length ? cachedListItems : listItemsResult?.result;
+    return localFilter ? filter : !filter;
+  };
 
-	const options = filters?.length ? listItems?.filter(filter) : listItems;
+  const listItems = cachedListItems?.length ? cachedListItems : listItemsResult?.result;
 
-	const selectProps = { ...rest, value: options ? value : null };
+  const options = filters?.length ? listItems?.filter(filter) : listItems;
 
-	return (
-		<Select
-			showSearch
-			defaultActiveFirstOption={false}
-			showArrow={showArrow}
-			notFoundContent={null}
-			allowClear={true}
-			loading={loading}
-			filterOption={(input, option) => option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-			{...selectProps}
-			style={{ width }}
-		>
-			{options?.map(({ item, itemValue }: ReferenceListItemDto) => (
-				<Select.Option value={itemValue as number} key={nanoid()}>
-					{item}
-				</Select.Option>
-			))}
-		</Select>
-	);
+  const selectProps = { ...rest, value: options ? value : null };
+
+  return (
+    <Select
+      showSearch
+      defaultActiveFirstOption={false}
+      showArrow={showArrow}
+      notFoundContent={null}
+      allowClear={true}
+      loading={loading}
+      filterOption={(input, option) => option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+      {...selectProps}
+      style={{ width }}
+    >
+      {options?.map(({ item, itemValue }: ReferenceListItemDto) => (
+        <Select.Option value={itemValue as number} key={nanoid()}>
+          {item}
+        </Select.Option>
+      ))}
+    </Select>
+  );
 };
 
 export default RefListDropDown;
