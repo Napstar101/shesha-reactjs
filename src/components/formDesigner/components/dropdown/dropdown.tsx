@@ -40,6 +40,7 @@ export const Dropdown: FC<IDropdownProps> = ({
   referenceListName,
   mode,
   defaultValue,
+  ignoredValues = [],
 }) => {
   // todo: implement referencelist provider with cache support and promise result
   const { refetch: refListFetch, loading: refListLoading, data: refListItems } = useReferenceListGetItems({
@@ -57,10 +58,16 @@ export const Dropdown: FC<IDropdownProps> = ({
         return value && typeof value === 'number' ? values.map(i => ({ ...i, value: parseInt(i.value) })) : values;
       }
       case 'referenceList': {
-        const items = refListItems?.result;
+        let items = refListItems?.result;
+
+        if (ignoredValues?.length) {
+          items = items?.filter(({ itemValue }) => !ignoredValues?.includes(itemValue));
+        }
+
         return items ? items.map<ILabelValue>(i => ({ id: i.id, label: i.item, value: i.itemValue })) : [];
       }
       // todo: fetch other types
+      // The options for entityList and url were removed as there's already a Autocomplete component that handles these
       case 'entityList': {
         return [];
       }
