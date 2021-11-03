@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { DownSquareOutlined } from '@ant-design/icons';
@@ -6,7 +6,6 @@ import { Select } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import { IDropdownProps, ILabelValue } from './models';
 import settingsFormJson from './settingsForm.json';
-import { useReferenceListGetItems } from '../../../../apis/referenceList';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { RefListDropDown } from '../../..';
@@ -42,41 +41,11 @@ export const Dropdown: FC<IDropdownProps> = ({
   defaultValue,
   ignoredValues = [],
 }) => {
-  // todo: implement referencelist provider with cache support and promise result
-  const { refetch: refListFetch, loading: refListLoading, data: refListItems } = useReferenceListGetItems({
-    lazy: true,
-  });
-
-  useEffect(() => {
-    if (dataSourceType === 'referenceList' && referenceListNamespace && referenceListName)
-      refListFetch({ queryParams: { namespace: referenceListNamespace, name: referenceListName } });
-  }, [dataSourceType, referenceListNamespace, referenceListName]);
-
   const getOptions = (): ILabelValue[] => {
-    switch (dataSourceType) {
-      case 'values': {
-        return value && typeof value === 'number' ? values.map(i => ({ ...i, value: parseInt(i.value) })) : values;
-      }
-      case 'referenceList': {
-        let items = refListItems?.result;
-
-        if (ignoredValues?.length) {
-          items = items?.filter(({ itemValue }) => !ignoredValues?.includes(itemValue));
-        }
-
-        return items ? items.map<ILabelValue>(i => ({ id: i.id, label: i.item, value: i.itemValue })) : [];
-      }
-      // todo: fetch other types
-      // The options for entityList and url were removed as there's already a Autocomplete component that handles these
-      case 'entityList': {
-        return [];
-      }
-      case 'url': {
-        return [];
-      }
-    }
-    return [];
+    return value && typeof value === 'number' ? values.map(i => ({ ...i, value: parseInt(i.value) })) : values;
   };
+
+  const selectedMode = mode === 'single' ? undefined : mode;
 
   if (dataSourceType === 'referenceList') {
     return (
@@ -88,13 +57,14 @@ export const Dropdown: FC<IDropdownProps> = ({
         value={value}
         bordered={!hideBorder}
         defaultValue={defaultValue}
-        mode={mode}
+        mode={selectedMode}
+        filters={ignoredValues}
+        includeFilters={false}
       />
     );
   }
 
   const options = getOptions() || [];
-  const loading = refListLoading;
 
   return (
     <Select
@@ -104,8 +74,7 @@ export const Dropdown: FC<IDropdownProps> = ({
       defaultValue={defaultValue}
       bordered={!hideBorder}
       disabled={disabled}
-      loading={loading}
-      mode={mode}
+      mode={selectedMode}
     >
       {options.map((option, index) => (
         <Select.Option key={index} value={option.value}>

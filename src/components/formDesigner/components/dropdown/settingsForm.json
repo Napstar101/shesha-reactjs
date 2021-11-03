@@ -110,10 +110,12 @@
     "parentId": "root",
     "label": "Mode",
     "values": [
+      { "label": "single", "value": "single", "id": "b920ef96-ae27-4a01-bfad-b5b7d07238da" },
       { "label": "tags", "value": "tags", "id": "f01e54aa-a1a4-4bd6-ba73-c395e48af8ce" },
       { "label": "multiple", "value": "multiple", "id": "b920ef96-ae27-4a01-bfad-b5b7d07218da" }
     ],
-    "dataSourceType": "values"
+    "dataSourceType": "values",
+    "defaultValue": ["single"]
   },
   {
     "id": "bf5660d5-cae0-4df9-99f2-cbaf941ae7c7",

@@ -139,7 +139,7 @@ export const Autocomplete: FC<IAutocompleteProps> = ({
 
   const [autocompleteText, setAutocompleteText] = useState(null);
 
-  const getValue = () => {
+  const memoizedValue = useMemo(() => {
     if (Array.isArray(value)) {
       return (value as IGuidNullableEntityWithDisplayNameDto[])?.map(({ id }) => {
         return id;
@@ -148,8 +148,8 @@ export const Autocomplete: FC<IAutocompleteProps> = ({
       return value?.id;
     }
 
-    return null;
-  };
+    return undefined;
+  }, [value]);
 
   const doFetchItems = (term: string) => {
     // if value is specified but displayText is not specified - fetch text from the server
@@ -254,13 +254,13 @@ export const Autocomplete: FC<IAutocompleteProps> = ({
       showArrow={false}
       filterOption={false}
       onSearch={handleSearch}
-      defaultValue={getValue() as any} // Type 'string | string[]' is not assignable to type 'string'. Type 'string[]' is not assignable to type 'string'.
+      defaultValue={memoizedValue as any} // Type 'string | string[]' is not assignable to type 'string'. Type 'string[]' is not assignable to type 'string'.
+      value={memoizedValue as any}
       notFoundContent={null}
       onChange={handleChange}
       allowClear={true}
       loading={itemsFetcher?.loading}
       placeholder={placeHolder}
-      value={getValue() as any}
       // value={value}
       disabled={disabled}
       bordered={bordered}

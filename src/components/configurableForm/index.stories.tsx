@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ConfigurableForm from '.';
-import { Alert, Button, Col, Form, Row } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import { IConfigurableFormProps } from './models';
 import { ShaApplicationProvider, ShaRoutingProvider, StoredFilesProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
@@ -27,6 +27,7 @@ const Template: Story<IConfigurableFormProps> = () => {
 
   const onFinish = (data: any) => {
     console.log('onFinish data: ', data);
+    console.log('onFinish data: ', JSON.stringify(data, null, 2));
   };
 
   return (
@@ -51,7 +52,7 @@ const Template: Story<IConfigurableFormProps> = () => {
                   scheduleDateStart: '2021-10-30T00:40:40.317Z',
                   scheduleDateEnd: '2021-09-12T00:40:40.317Z',
                   scheduleDate: ['2021-10-30T00:40:40.317Z', '2021-09-12T00:40:40.317Z'],
-                  gender: { itemValue: 1 },
+                  gender: [{ itemValue: 1 }],
                   numOfStudents: 23232,
                   numOfTeachers: 131,
                   numOfClasses: 75,

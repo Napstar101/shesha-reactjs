@@ -17,6 +17,6 @@ export interface IDropdownProps extends IConfigurableFormComponent {
   onChange?: any;
   hideBorder?: boolean;
   allowClear?: boolean;
-  mode?: 'multiple' | 'tags';
+  mode?: 'single' | 'multiple' | 'tags';
   ignoredValues?: number[];
 }
