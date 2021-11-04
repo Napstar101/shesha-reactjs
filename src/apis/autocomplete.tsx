@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface AutocompleteItemDto {
   value?: string | null;
@@ -69,4 +71,19 @@ export const useAutocompleteList = (props: UseAutocompleteListProps) =>
   useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>(
     `/api/Autocomplete/List`,
     props
+  );
+
+export const autocompleteList = (
+  props: RestfulShesha.GetProps<
+    AutocompleteItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    AutocompleteListQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>(
+    `/api/Autocomplete/List`,
+    props,
+    signal
   );

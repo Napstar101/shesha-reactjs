@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface AuthorizationSettingsDto {
   isLockoutEnabled?: boolean;
@@ -76,6 +78,23 @@ export const useAuthorizationSettingsUpdateSettings = (props: UseAuthorizationSe
     props
   );
 
+export const authorizationSettingsUpdateSettings = (
+  props: RestfulShesha.MutateProps<
+    void,
+    unknown,
+    AuthorizationSettingsUpdateSettingsQueryParams,
+    AuthorizationSettingsDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>(
+    'PUT',
+    `/api/services/app/AuthorizationSettings/UpdateSettings`,
+    props,
+    signal
+  );
+
 export interface AuthorizationSettingsGetSettingsQueryParams {
   /**
    * The requested API version
@@ -110,3 +129,19 @@ export const useAuthorizationSettingsGetSettings = (props: UseAuthorizationSetti
     `/api/services/app/AuthorizationSettings/GetSettings`,
     props
   );
+
+export const authorizationSettingsGetSettings = (
+  props: RestfulShesha.GetProps<
+    AuthorizationSettingsDtoAjaxResponse,
+    AjaxResponseBase,
+    AuthorizationSettingsGetSettingsQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<
+    AuthorizationSettingsDtoAjaxResponse,
+    AjaxResponseBase,
+    AuthorizationSettingsGetSettingsQueryParams,
+    void
+  >(`/api/services/app/AuthorizationSettings/GetSettings`, props, signal);

@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface ValidationErrorInfo {
   message?: string | null;
@@ -120,6 +122,16 @@ export const useStoredFileDownload = (props: UseStoredFileDownloadProps) =>
     props
   );
 
+export const storedFileDownload = (
+  props: RestfulShesha.GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadQueryParams, void>(
+    `/api/StoredFile/Download`,
+    props,
+    signal
+  );
+
 export interface StoredFileUploadQueryParams {
   /**
    * The requested API version
@@ -152,6 +164,23 @@ export const useStoredFileUpload = (props: UseStoredFileUploadProps) =>
     props
   );
 
+export const storedFileUpload = (
+  props: RestfulShesha.MutateProps<
+    StoredFileDtoAjaxResponse,
+    AjaxResponseBase,
+    StoredFileUploadQueryParams,
+    void,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadQueryParams, void, void>(
+    'POST',
+    `/api/StoredFile/Upload`,
+    props,
+    signal
+  );
+
 export interface StoredFileUploadNewVersionQueryParams {
   /**
    * The requested API version
@@ -182,6 +211,23 @@ export const useStoredFileUploadNewVersion = (props: UseStoredFileUploadNewVersi
     'POST',
     `/api/StoredFile/UploadNewVersion`,
     props
+  );
+
+export const storedFileUploadNewVersion = (
+  props: RestfulShesha.MutateProps<
+    StoredFileDtoAjaxResponse,
+    AjaxResponseBase,
+    StoredFileUploadNewVersionQueryParams,
+    void,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileUploadNewVersionQueryParams, void, void>(
+    'POST',
+    `/api/StoredFile/UploadNewVersion`,
+    props,
+    signal
   );
 
 export interface StoredFileDeleteQueryParams {
@@ -220,6 +266,17 @@ export const useStoredFileDelete = (props: UseStoredFileDeleteProps) =>
     { ...props }
   );
 
+export const storedFileDelete = (
+  props: RestfulShesha.MutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/StoredFile/Delete`,
+    props,
+    signal
+  );
+
 export interface StoredFileDownloadZipQueryParams {
   allCategories?: boolean;
   ownerId: string;
@@ -253,6 +310,16 @@ export const useStoredFileDownloadZip = (props: UseStoredFileDownloadZipProps) =
   useGet<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams, void>(
     `/api/StoredFile/DownloadZip`,
     props
+  );
+
+export const storedFileDownloadZip = (
+  props: RestfulShesha.GetProps<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<FileStreamResultAjaxResponse, AjaxResponseBase, StoredFileDownloadZipQueryParams, void>(
+    `/api/StoredFile/DownloadZip`,
+    props,
+    signal
   );
 
 export interface StoredFileFilesListQueryParams {
@@ -290,6 +357,16 @@ export const useStoredFileFilesList = (props: UseStoredFileFilesListProps) =>
     props
   );
 
+export const storedFileFilesList = (
+  props: RestfulShesha.GetProps<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<StoredFileDtoListAjaxResponse, AjaxResponseBase, StoredFileFilesListQueryParams, void>(
+    `/api/StoredFile/FilesList`,
+    props,
+    signal
+  );
+
 export interface StoredFileCreateOrUpdateQueryParams {
   /**
    * The requested API version
@@ -322,6 +399,23 @@ export const useStoredFileCreateOrUpdate = (props: UseStoredFileCreateOrUpdatePr
     props
   );
 
+export const storedFileCreateOrUpdate = (
+  props: RestfulShesha.MutateProps<
+    StoredFileDtoAjaxResponse,
+    AjaxResponseBase,
+    StoredFileCreateOrUpdateQueryParams,
+    void,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileCreateOrUpdateQueryParams, void, void>(
+    'PUT',
+    `/api/StoredFile`,
+    props,
+    signal
+  );
+
 export interface StoredFileGetQueryParams {
   id?: string;
   /**
@@ -349,6 +443,16 @@ export type UseStoredFileGetProps = Omit<
 
 export const useStoredFileGet = (props: UseStoredFileGetProps) =>
   useGet<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams, void>(`/api/StoredFile`, props);
+
+export const storedFileGet = (
+  props: RestfulShesha.GetProps<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetQueryParams, void>(
+    `/api/StoredFile`,
+    props,
+    signal
+  );
 
 export interface StoredFileDeleteFileQueryParams {
   id?: string;
@@ -383,6 +487,17 @@ export const useStoredFileDeleteFile = (props: UseStoredFileDeleteFileProps) =>
     { ...props }
   );
 
+export const storedFileDeleteFile = (
+  props: RestfulShesha.MutateProps<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<BooleanAjaxResponse, AjaxResponseBase, StoredFileDeleteFileQueryParams, void, void>(
+    'DELETE',
+    `/api/StoredFile`,
+    props,
+    signal
+  );
+
 export interface StoredFileGetEntityPropertyQueryParams {
   propertyName?: string | null;
   ownerId: string;
@@ -414,6 +529,21 @@ export const useStoredFileGetEntityProperty = (props: UseStoredFileGetEntityProp
   useGet<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams, void>(
     `/api/StoredFile/EntityProperty`,
     props
+  );
+
+export const storedFileGetEntityProperty = (
+  props: RestfulShesha.GetProps<
+    StoredFileDtoAjaxResponse,
+    AjaxResponseBase,
+    StoredFileGetEntityPropertyQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<StoredFileDtoAjaxResponse, AjaxResponseBase, StoredFileGetEntityPropertyQueryParams, void>(
+    `/api/StoredFile/EntityProperty`,
+    props,
+    signal
   );
 
 export interface StoredFileGetFileVersionsQueryParams {
@@ -471,3 +601,22 @@ export const useStoredFileGetFileVersions = ({ fileId, ...props }: UseStoredFile
     (paramsInPath: StoredFileGetFileVersionsPathParams) => `/api/StoredFile/StoredFile/${paramsInPath.fileId}/Versions`,
     { pathParams: { fileId }, ...props }
   );
+
+export const storedFileGetFileVersions = (
+  {
+    fileId,
+    ...props
+  }: RestfulShesha.GetProps<
+    StoredFileVersionInfoDtoListAjaxResponse,
+    AjaxResponseBase,
+    StoredFileGetFileVersionsQueryParams,
+    StoredFileGetFileVersionsPathParams
+  > & { fileId: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<
+    StoredFileVersionInfoDtoListAjaxResponse,
+    AjaxResponseBase,
+    StoredFileGetFileVersionsQueryParams,
+    StoredFileGetFileVersionsPathParams
+  >(`/api/StoredFile/StoredFile/${fileId}/Versions`, props, signal);

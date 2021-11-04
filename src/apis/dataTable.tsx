@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export type ListSortDirection = 0 | 1;
 
@@ -185,6 +187,21 @@ export const useDataTableGetConfiguration = (props: UseDataTableGetConfiguration
     props
   );
 
+export const dataTableGetConfiguration = (
+  props: RestfulShesha.GetProps<
+    DataTableConfigDtoAjaxResponse,
+    AjaxResponseBase,
+    DataTableGetConfigurationQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<DataTableConfigDtoAjaxResponse, AjaxResponseBase, DataTableGetConfigurationQueryParams, void>(
+    `/api/DataTable/GetConfiguration`,
+    props,
+    signal
+  );
+
 export interface DataTableGetColumnsQueryParams {
   /**
    * The requested API version
@@ -231,6 +248,24 @@ export const useDataTableGetColumns = (props: UseDataTableGetColumnsProps) =>
     void
   >('POST', `/api/DataTable/GetColumns`, props);
 
+export const dataTableGetColumns = (
+  props: RestfulShesha.MutateProps<
+    DataTableColumnDtoListAjaxResponse,
+    AjaxResponseBase,
+    DataTableGetColumnsQueryParams,
+    GetColumnsInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    DataTableColumnDtoListAjaxResponse,
+    AjaxResponseBase,
+    DataTableGetColumnsQueryParams,
+    GetColumnsInput,
+    void
+  >('POST', `/api/DataTable/GetColumns`, props, signal);
+
 export interface DataTableGetDataQueryParams {
   /**
    * The requested API version
@@ -262,6 +297,24 @@ export const useDataTableGetData = (props: UseDataTableGetDataProps) =>
     `/api/DataTable/GetData`,
     props
   );
+
+export const dataTableGetData = (
+  props: RestfulShesha.MutateProps<
+    DataTableDataAjaxResponse,
+    AjaxResponseBase,
+    DataTableGetDataQueryParams,
+    DataTableGetDataInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    DataTableDataAjaxResponse,
+    AjaxResponseBase,
+    DataTableGetDataQueryParams,
+    DataTableGetDataInput,
+    void
+  >('POST', `/api/DataTable/GetData`, props, signal);
 
 export interface DataTableExportToExcelQueryParams {
   /**
@@ -314,3 +367,21 @@ export const useDataTableExportToExcel = (props: UseDataTableExportToExcelProps)
     DataTableGetDataInput,
     void
   >('POST', `/api/DataTable/ExportToExcel`, props);
+
+export const dataTableExportToExcel = (
+  props: RestfulShesha.MutateProps<
+    FileStreamResultAjaxResponse,
+    AjaxResponseBase,
+    DataTableExportToExcelQueryParams,
+    DataTableGetDataInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    FileStreamResultAjaxResponse,
+    AjaxResponseBase,
+    DataTableExportToExcelQueryParams,
+    DataTableGetDataInput,
+    void
+  >('POST', `/api/DataTable/ExportToExcel`, props, signal);

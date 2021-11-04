@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface GuidEntityWithDisplayNameDto {
   id?: string;
@@ -124,6 +126,16 @@ export const useNoteGetList = (props: UseNoteGetListProps) =>
     props
   );
 
+export const noteGetList = (
+  props: RestfulShesha.GetProps<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>(
+    `/api/services/app/Note/GetList`,
+    props,
+    signal
+  );
+
 export interface NoteCreateQueryParams {
   /**
    * The requested API version
@@ -156,6 +168,17 @@ export const useNoteCreate = (props: UseNoteCreateProps) =>
     props
   );
 
+export const noteCreate = (
+  props: RestfulShesha.MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>(
+    'POST',
+    `/api/services/app/Note/Create`,
+    props,
+    signal
+  );
+
 export interface NoteGetQueryParams {
   id?: string;
   /**
@@ -180,6 +203,16 @@ export type UseNoteGetProps = Omit<
 
 export const useNoteGet = (props: UseNoteGetProps) =>
   useGet<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>(`/api/services/app/Note/Get`, props);
+
+export const noteGet = (
+  props: RestfulShesha.GetProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>(
+    `/api/services/app/Note/Get`,
+    props,
+    signal
+  );
 
 export interface NoteGetAllQueryParams {
   keyword?: string | null;
@@ -214,6 +247,16 @@ export const useNoteGetAll = (props: UseNoteGetAllProps) =>
     props
   );
 
+export const noteGetAll = (
+  props: RestfulShesha.GetProps<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>(
+    `/api/services/app/Note/GetAll`,
+    props,
+    signal
+  );
+
 export interface NoteUpdateQueryParams {
   /**
    * The requested API version
@@ -246,6 +289,17 @@ export const useNoteUpdate = (props: UseNoteUpdateProps) =>
     props
   );
 
+export const noteUpdate = (
+  props: RestfulShesha.MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>(
+    'PUT',
+    `/api/services/app/Note/Update`,
+    props,
+    signal
+  );
+
 export interface NoteDeleteQueryParams {
   id?: string;
   /**
@@ -271,3 +325,14 @@ export type UseNoteDeleteProps = Omit<
 
 export const useNoteDelete = (props: UseNoteDeleteProps) =>
   useMutate<void, unknown, NoteDeleteQueryParams, void, void>('DELETE', `/api/services/app/Note/Delete`, { ...props });
+
+export const noteDelete = (
+  props: RestfulShesha.MutateProps<void, unknown, NoteDeleteQueryParams, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, NoteDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/app/Note/Delete`,
+    props,
+    signal
+  );

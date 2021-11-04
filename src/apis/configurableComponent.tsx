@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface ConfigurableComponentDto {
   id?: string;
@@ -102,6 +104,25 @@ export const useConfigurableComponentGet = ({ id, ...props }: UseConfigurableCom
     ...props,
   });
 
+export const configurableComponentGet = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.GetProps<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentGetQueryParams,
+    ConfigurableComponentGetPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentGetQueryParams,
+    ConfigurableComponentGetPathParams
+  >(`/api/services/ConfigurableComponents/${id}`, props, signal);
+
 export interface ConfigurableComponentUpdateQueryParams {
   /**
    * The requested API version
@@ -154,6 +175,24 @@ export const useConfigurableComponentUpdate = (props: UseConfigurableComponentUp
     void
   >('PUT', `/api/services/ConfigurableComponents`, props);
 
+export const configurableComponentUpdate = (
+  props: RestfulShesha.MutateProps<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentUpdateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentUpdateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >('PUT', `/api/services/ConfigurableComponents`, props, signal);
+
 export interface ConfigurableComponentCreateQueryParams {
   /**
    * The requested API version
@@ -205,6 +244,24 @@ export const useConfigurableComponentCreate = (props: UseConfigurableComponentCr
     ConfigurableComponentDto,
     void
   >('POST', `/api/services/ConfigurableComponents`, props);
+
+export const configurableComponentCreate = (
+  props: RestfulShesha.MutateProps<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentCreateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ConfigurableComponentDtoAjaxResponse,
+    AjaxResponseBase,
+    ConfigurableComponentCreateQueryParams,
+    ConfigurableComponentDto,
+    void
+  >('POST', `/api/services/ConfigurableComponents`, props, signal);
 
 export interface ConfigurableComponentUpdateSettingsQueryParams {
   /**
@@ -268,3 +325,24 @@ export const useConfigurableComponentUpdateSettings = ({ id, ...props }: UseConf
       `/api/services/ConfigurableComponents/${paramsInPath.id}/Settings`,
     { pathParams: { id }, ...props }
   );
+
+export const configurableComponentUpdateSettings = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.MutateProps<
+    void,
+    unknown,
+    ConfigurableComponentUpdateSettingsQueryParams,
+    ConfigurableComponentUpdateSettingsInput,
+    ConfigurableComponentUpdateSettingsPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    void,
+    unknown,
+    ConfigurableComponentUpdateSettingsQueryParams,
+    ConfigurableComponentUpdateSettingsInput,
+    ConfigurableComponentUpdateSettingsPathParams
+  >('PUT', `/api/services/ConfigurableComponents/${id}/Settings`, props, signal);

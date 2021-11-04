@@ -123,6 +123,13 @@ export const componentsFlatStructureToTree = (
   return tree;
 };
 
+/**
+ * Load form from the back-end
+ */
+export const loadForm = () => {
+
+}
+
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
   if (customVisibility) {
     try {

@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export type RefListAreaType = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -168,6 +170,21 @@ export const useAreaAutocomplete = (props: UseAreaAutocompleteProps) =>
     props
   );
 
+export const areaAutocomplete = (
+  props: RestfulShesha.GetProps<
+    AutocompleteItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    AreaAutocompleteQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams, void>(
+    `/api/services/app/Area/Autocomplete`,
+    props,
+    signal
+  );
+
 export interface AreaCascadeSelectQueryParams {
   areaType?: RefListAreaType;
   parentAreaId?: string | null;
@@ -198,6 +215,21 @@ export const useAreaCascadeSelect = (props: UseAreaCascadeSelectProps) =>
   useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams, void>(
     `/api/services/app/Area/CascadeSelect`,
     props
+  );
+
+export const areaCascadeSelect = (
+  props: RestfulShesha.GetProps<
+    AutocompleteItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    AreaCascadeSelectQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams, void>(
+    `/api/services/app/Area/CascadeSelect`,
+    props,
+    signal
   );
 
 export interface AreaUpdateQueryParams {
@@ -232,6 +264,17 @@ export const useAreaUpdate = (props: UseAreaUpdateProps) =>
     props
   );
 
+export const areaUpdate = (
+  props: RestfulShesha.MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>(
+    'PUT',
+    `/api/services/app/Area/Update`,
+    props,
+    signal
+  );
+
 export interface AreaGetQueryParams {
   id?: string;
   /**
@@ -256,6 +299,16 @@ export type UseAreaGetProps = Omit<
 
 export const useAreaGet = (props: UseAreaGetProps) =>
   useGet<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>(`/api/services/app/Area/Get`, props);
+
+export const areaGet = (
+  props: RestfulShesha.GetProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>(
+    `/api/services/app/Area/Get`,
+    props,
+    signal
+  );
 
 export interface AreaGetChildTreeItemsQueryParams {
   /**
@@ -303,6 +356,24 @@ export const useAreaGetChildTreeItems = (props: UseAreaGetChildTreeItemsProps) =
     void
   >('POST', `/api/services/app/Area/GetChildTreeItems`, props);
 
+export const areaGetChildTreeItems = (
+  props: RestfulShesha.MutateProps<
+    AreaTreeItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    AreaGetChildTreeItemsQueryParams,
+    GetChildAreasInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    AreaTreeItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    AreaGetChildTreeItemsQueryParams,
+    GetChildAreasInput,
+    void
+  >('POST', `/api/services/app/Area/GetChildTreeItems`, props, signal);
+
 export interface AreaGetTreeItemQueryParams {
   /**
    * The requested API version
@@ -335,6 +406,23 @@ export const useAreaGetTreeItem = (props: UseAreaGetTreeItemProps) =>
     props
   );
 
+export const areaGetTreeItem = (
+  props: RestfulShesha.MutateProps<
+    AreaTreeItemDtoAjaxResponse,
+    AjaxResponseBase,
+    AreaGetTreeItemQueryParams,
+    GuidEntityDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>(
+    'POST',
+    `/api/services/app/Area/GetTreeItem`,
+    props,
+    signal
+  );
+
 export interface AreaDeleteQueryParams {
   /**
    * The requested API version
@@ -362,6 +450,17 @@ export type UseAreaDeleteProps = Omit<
 
 export const useAreaDelete = (props: UseAreaDeleteProps) =>
   useMutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>('POST', `/api/services/app/Area/Delete`, props);
+
+export const areaDelete = (
+  props: RestfulShesha.MutateProps<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>(
+    'POST',
+    `/api/services/app/Area/Delete`,
+    props,
+    signal
+  );
 
 export interface AreaMoveAreaQueryParams {
   /**
@@ -393,6 +492,17 @@ export const useAreaMoveArea = (props: UseAreaMoveAreaProps) =>
     'POST',
     `/api/services/app/Area/MoveArea`,
     props
+  );
+
+export const areaMoveArea = (
+  props: RestfulShesha.MutateProps<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>(
+    'POST',
+    `/api/services/app/Area/MoveArea`,
+    props,
+    signal
   );
 
 export interface AreaCreateQueryParams {
@@ -427,6 +537,17 @@ export const useAreaCreate = (props: UseAreaCreateProps) =>
     props
   );
 
+export const areaCreate = (
+  props: RestfulShesha.MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>(
+    'POST',
+    `/api/services/app/Area/Create`,
+    props,
+    signal
+  );
+
 export interface AreaGetAllQueryParams {
   sorting?: string | null;
   skipCount?: number;
@@ -458,4 +579,14 @@ export const useAreaGetAll = (props: UseAreaGetAllProps) =>
   useGet<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>(
     `/api/services/app/Area/GetAll`,
     props
+  );
+
+export const areaGetAll = (
+  props: RestfulShesha.GetProps<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>(
+    `/api/services/app/Area/GetAll`,
+    props,
+    signal
   );

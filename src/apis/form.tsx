@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface FormDto {
   id?: string;
@@ -96,6 +98,21 @@ export const useFormGet = ({ id, ...props }: UseFormGetProps) =>
     { pathParams: { id }, ...props }
   );
 
+export const formGet = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.GetProps<FormDtoAjaxResponse, AjaxResponseBase, FormGetQueryParams, FormGetPathParams> & {
+    id: string;
+  },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<FormDtoAjaxResponse, AjaxResponseBase, FormGetQueryParams, FormGetPathParams>(
+    `/api/services/Forms/${id}`,
+    props,
+    signal
+  );
+
 export interface FormGetByPathQueryParams {
   path?: string | null;
   /**
@@ -120,6 +137,16 @@ export type UseFormGetByPathProps = Omit<
 
 export const useFormGetByPath = (props: UseFormGetByPathProps) =>
   useGet<FormDtoAjaxResponse, AjaxResponseBase, FormGetByPathQueryParams, void>(`/api/services/Forms`, props);
+
+export const formGetByPath = (
+  props: RestfulShesha.GetProps<FormDtoAjaxResponse, AjaxResponseBase, FormGetByPathQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<FormDtoAjaxResponse, AjaxResponseBase, FormGetByPathQueryParams, void>(
+    `/api/services/Forms`,
+    props,
+    signal
+  );
 
 export interface FormUpdateQueryParams {
   /**
@@ -153,6 +180,17 @@ export const useFormUpdate = (props: UseFormUpdateProps) =>
     props
   );
 
+export const formUpdate = (
+  props: RestfulShesha.MutateProps<FormDtoAjaxResponse, AjaxResponseBase, FormUpdateQueryParams, FormDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<FormDtoAjaxResponse, AjaxResponseBase, FormUpdateQueryParams, FormDto, void>(
+    'PUT',
+    `/api/services/Forms`,
+    props,
+    signal
+  );
+
 export interface FormCreateQueryParams {
   /**
    * The requested API version
@@ -183,6 +221,17 @@ export const useFormCreate = (props: UseFormCreateProps) =>
     'POST',
     `/api/services/Forms`,
     props
+  );
+
+export const formCreate = (
+  props: RestfulShesha.MutateProps<FormDtoAjaxResponse, AjaxResponseBase, FormCreateQueryParams, FormDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<FormDtoAjaxResponse, AjaxResponseBase, FormCreateQueryParams, FormDto, void>(
+    'POST',
+    `/api/services/Forms`,
+    props,
+    signal
   );
 
 export interface FormUpdateMarkupQueryParams {
@@ -223,6 +272,26 @@ export const useFormUpdateMarkup = ({ id, ...props }: UseFormUpdateMarkupProps) 
     { pathParams: { id }, ...props }
   );
 
+export const formUpdateMarkup = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.MutateProps<
+    void,
+    unknown,
+    FormUpdateMarkupQueryParams,
+    FormUpdateMarkupInput,
+    FormUpdateMarkupPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, FormUpdateMarkupQueryParams, FormUpdateMarkupInput, FormUpdateMarkupPathParams>(
+    'PUT',
+    `/api/services/Forms/${id}/Markup`,
+    props,
+    signal
+  );
+
 export interface FormAutocompleteQueryParams {
   term?: string | null;
   selectedValue?: string | null;
@@ -253,4 +322,19 @@ export const useFormAutocomplete = (props: UseFormAutocompleteProps) =>
   useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, FormAutocompleteQueryParams, void>(
     `/api/services/Forms/autocomplete`,
     props
+  );
+
+export const formAutocomplete = (
+  props: RestfulShesha.GetProps<
+    AutocompleteItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    FormAutocompleteQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, FormAutocompleteQueryParams, void>(
+    `/api/services/Forms/autocomplete`,
+    props,
+    signal
   );

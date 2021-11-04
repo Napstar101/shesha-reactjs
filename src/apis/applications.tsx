@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface NDADetailsDto {
   personId?: string;
@@ -150,7 +152,7 @@ export interface StudentResponse {
   age?: string | null;
   highestGrade?: ReferenceListItemValueDto;
   isDisabled?: boolean;
-  hasStudentEnrolled?: boolean;
+  isEnrollmentConfirmed?: boolean;
   district?: GuidNullableEntityWithDisplayNameDto;
   municipality?: GuidNullableEntityWithDisplayNameDto;
   council?: string | null;
@@ -459,6 +461,21 @@ export const useApplicationsGetNDADetails = ({ id, ...props }: UseApplicationsGe
     { pathParams: { id }, ...props }
   );
 
+export const applicationsGetNdaDetails = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.GetProps<NDADetailsDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetNDADetailsPathParams> & {
+    id: string;
+  },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<NDADetailsDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetNDADetailsPathParams>(
+    `/api/v1/BursMan/Applications/GetNDADetails/${id}`,
+    props,
+    signal
+  );
+
 export interface ApplicationsGetStudentDocumentsPathParams {
   id: string;
 }
@@ -509,6 +526,25 @@ export const useApplicationsGetStudentDocuments = ({ id, ...props }: UseApplicat
     { pathParams: { id }, ...props }
   );
 
+export const applicationsGetStudentDocuments = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.GetProps<
+    StudentApplicationDocumentsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetStudentDocumentsPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<
+    StudentApplicationDocumentsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetStudentDocumentsPathParams
+  >(`/api/v1/BursMan/Applications/Documents/Students/${id}`, props, signal);
+
 export interface ApplicationsGetPathParams {
   id: string;
 }
@@ -538,6 +574,21 @@ export const useApplicationsGet = ({ id, ...props }: UseApplicationsGetProps) =>
     { pathParams: { id }, ...props }
   );
 
+export const applicationsGet = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.GetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetPathParams> & {
+    id: string;
+  },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetPathParams>(
+    `/api/v1/BursMan/Applications/${id}`,
+    props,
+    signal
+  );
+
 export type ApplicationsGetMyApplicationProps = Omit<
   GetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>,
   'path'
@@ -557,6 +608,16 @@ export type UseApplicationsGetMyApplicationProps = Omit<
 
 export const useApplicationsGetMyApplication = (props: UseApplicationsGetMyApplicationProps) =>
   useGet<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>(`/api/v1/BursMan/Applications/MyApplication`, props);
+
+export const applicationsGetMyApplication = (
+  props: RestfulShesha.GetProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/v1/BursMan/Applications/MyApplication`,
+    props,
+    signal
+  );
 
 export interface ApplicationsGetStudentApplicationPathParams {
   id: string;
@@ -586,6 +647,24 @@ export const useApplicationsGetStudentApplication = ({ id, ...props }: UseApplic
     (paramsInPath: ApplicationsGetStudentApplicationPathParams) =>
       `/api/v1/BursMan/Applications/StudentApplication/${paramsInPath.id}`,
     { pathParams: { id }, ...props }
+  );
+
+export const applicationsGetStudentApplication = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.GetProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetStudentApplicationPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationsGetStudentApplicationPathParams>(
+    `/api/v1/BursMan/Applications/StudentApplication/${id}`,
+    props,
+    signal
   );
 
 export interface ApplicationsGetApplicationsStatsPathParams {
@@ -623,6 +702,25 @@ export const useApplicationsGetApplicationsStats = ({ status, ...props }: UseApp
     { pathParams: { status }, ...props }
   );
 
+export const applicationsGetApplicationsStats = (
+  {
+    status,
+    ...props
+  }: RestfulShesha.GetProps<
+    ApplicationsStatsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetApplicationsStatsPathParams
+  > & { status: RefListApplicationStatus },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<
+    ApplicationsStatsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationsGetApplicationsStatsPathParams
+  >(`/api/v1/BursMan/Applications/GetApplicationsStats/${status}`, props, signal);
+
 export type ApplicationsProcessApplicationProps = Omit<
   MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ProcessApplicationInput, void>,
   'path' | 'verb'
@@ -646,6 +744,17 @@ export const useApplicationsProcessApplication = (props: UseApplicationsProcessA
     'POST',
     `/api/v1/BursMan/Applications/ProcessApplication`,
     props
+  );
+
+export const applicationsProcessApplication = (
+  props: RestfulShesha.MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ProcessApplicationInput, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ProcessApplicationInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/ProcessApplication`,
+    props,
+    signal
   );
 
 export type ApplicationsCommiteeReccomendProps = Omit<
@@ -673,6 +782,17 @@ export const useApplicationsCommiteeReccomend = (props: UseApplicationsCommiteeR
     props
   );
 
+export const applicationsCommiteeReccomend = (
+  props: RestfulShesha.MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/CommiteeRecommend`,
+    props,
+    signal
+  );
+
 export type ApplicationsBursaryCommiteeReccomendProps = Omit<
   MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>,
   'path' | 'verb'
@@ -696,6 +816,17 @@ export const useApplicationsBursaryCommiteeReccomend = (props: UseApplicationsBu
     'POST',
     `/api/v1/BursMan/Applications/BursaryCommiteeRecommend`,
     props
+  );
+
+export const applicationsBursaryCommiteeReccomend = (
+  props: RestfulShesha.MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, CommiteeRecomendInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/BursaryCommiteeRecommend`,
+    props,
+    signal
   );
 
 export type ApplicationsCreateNDASelectionProps = Omit<
@@ -723,6 +854,23 @@ export const useApplicationsCreateNDASelection = (props: UseApplicationsCreateND
     props
   );
 
+export const applicationsCreateNdaSelection = (
+  props: RestfulShesha.MutateProps<
+    CreateNDASelectionDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    CreateNDASelectionDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<CreateNDASelectionDtoAjaxResponse, AjaxResponseBase, void, CreateNDASelectionDto, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/CreateNDASelection`,
+    props,
+    signal
+  );
+
 export type ApplicationsCreateProps = Omit<
   MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationDto, void>,
   'path' | 'verb'
@@ -746,6 +894,17 @@ export const useApplicationsCreate = (props: UseApplicationsCreateProps) =>
     'POST',
     `/api/v1/BursMan/Applications`,
     props
+  );
+
+export const applicationsCreate = (
+  props: RestfulShesha.MutateProps<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationDto, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, ApplicationDto, void>(
+    'POST',
+    `/api/v1/BursMan/Applications`,
+    props,
+    signal
   );
 
 export type ApplicationsUpdateDocumentVerificationStatusProps = Omit<
@@ -777,6 +936,23 @@ export const useApplicationsUpdateDocumentVerificationStatus = (
     props
   );
 
+export const applicationsUpdateDocumentVerificationStatus = (
+  props: RestfulShesha.MutateProps<
+    DocumentVerificationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    VerificationStatusInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<DocumentVerificationDtoAjaxResponse, AjaxResponseBase, void, VerificationStatusInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/UpdateDocumentVerificationStatus`,
+    props,
+    signal
+  );
+
 export type ApplicationsActionApplicationsResultsProps = Omit<
   MutateProps<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationActionInput, void>,
   'path' | 'verb'
@@ -806,6 +982,26 @@ export const useApplicationsActionApplicationsResults = (props: UseApplicationsA
     'POST',
     `/api/v1/BursMan/Applications/ActionApplicationsResults`,
     props
+  );
+
+/**
+ * {}
+ */
+export const applicationsActionApplicationsResults = (
+  props: RestfulShesha.MutateProps<
+    ApplicationsStatsResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationActionInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<ApplicationsStatsResponseAjaxResponse, AjaxResponseBase, void, ApplicationActionInput, void>(
+    'POST',
+    `/api/v1/BursMan/Applications/ActionApplicationsResults`,
+    props,
+    signal
   );
 
 export interface ApplicationsUpdateDGResultsQueryParams {
@@ -856,6 +1052,24 @@ export const useApplicationsUpdateDGResults = (props: UseApplicationsUpdateDGRes
     ApplicationDGResultsUpdate,
     void
   >('PUT', `/api/v1/BursMan/Applications/UpdateDGResults`, props);
+
+export const applicationsUpdateDgResults = (
+  props: RestfulShesha.MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsUpdateDGResultsQueryParams,
+    ApplicationDGResultsUpdate,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsUpdateDGResultsQueryParams,
+    ApplicationDGResultsUpdate,
+    void
+  >('PUT', `/api/v1/BursMan/Applications/UpdateDGResults`, props, signal);
 
 export interface ApplicationsUpdateEducationDetailsPathParams {
   id: string;
@@ -913,6 +1127,27 @@ export const useApplicationsUpdateEducationDetails = ({ id, ...props }: UseAppli
     { pathParams: { id }, ...props }
   );
 
+export const applicationsUpdateEducationDetails = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationEducationDetailsUpdate,
+    ApplicationsUpdateEducationDetailsPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationEducationDetailsUpdate,
+    ApplicationsUpdateEducationDetailsPathParams
+  >('PUT', `/api/v1/BursMan/Applications/${id}/Education-Details`, props, signal);
+
 export interface ApplicationsUpdateFinancialDetailsPathParams {
   id: string;
 }
@@ -968,6 +1203,27 @@ export const useApplicationsUpdateFinancialDetails = ({ id, ...props }: UseAppli
       `/api/v1/BursMan/Applications/${paramsInPath.id}/Financial-Details`,
     { pathParams: { id }, ...props }
   );
+
+export const applicationsUpdateFinancialDetails = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationParentDetailsUpdate,
+    ApplicationsUpdateFinancialDetailsPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationParentDetailsUpdate,
+    ApplicationsUpdateFinancialDetailsPathParams
+  >('PUT', `/api/v1/BursMan/Applications/${id}/Financial-Details`, props, signal);
 
 export interface ApplicationsUpdateDeclarationsPathParams {
   id: string;
@@ -1025,6 +1281,27 @@ export const useApplicationsUpdateDeclarations = ({ id, ...props }: UseApplicati
     { pathParams: { id }, ...props }
   );
 
+export const applicationsUpdateDeclarations = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationDeclarationUpdate,
+    ApplicationsUpdateDeclarationsPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ApplicationDeclarationUpdate,
+    ApplicationsUpdateDeclarationsPathParams
+  >('PUT', `/api/v1/BursMan/Applications/${id}/Declarations`, props, signal);
+
 export interface ApplicationsSubmitPathParams {
   id: string;
 }
@@ -1054,6 +1331,26 @@ export const useApplicationsSubmit = ({ id, ...props }: UseApplicationsSubmitPro
     'PUT',
     (paramsInPath: ApplicationsSubmitPathParams) => `/api/v1/BursMan/Applications/${paramsInPath.id}/Submit`,
     { pathParams: { id }, ...props }
+  );
+
+export const applicationsSubmit = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    void,
+    void,
+    ApplicationsSubmitPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<ApplicationDtoAjaxResponse, AjaxResponseBase, void, void, ApplicationsSubmitPathParams>(
+    'PUT',
+    `/api/v1/BursMan/Applications/${id}/Submit`,
+    props,
+    signal
   );
 
 export interface ApplicationsActionOfferQueryParams {
@@ -1114,3 +1411,24 @@ export const useApplicationsActionOffer = ({ id, ...props }: UseApplicationsActi
     (paramsInPath: ApplicationsActionOfferPathParams) => `/api/v1/BursMan/Applications/${paramsInPath.id}/ActionOffer`,
     { pathParams: { id }, ...props }
   );
+
+export const applicationsActionOffer = (
+  {
+    id,
+    ...props
+  }: RestfulShesha.MutateProps<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsActionOfferQueryParams,
+    void,
+    ApplicationsActionOfferPathParams
+  > & { id: string },
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ApplicationDtoAjaxResponse,
+    AjaxResponseBase,
+    ApplicationsActionOfferQueryParams,
+    void,
+    ApplicationsActionOfferPathParams
+  >('PUT', `/api/v1/BursMan/Applications/${id}/ActionOffer`, props, signal);

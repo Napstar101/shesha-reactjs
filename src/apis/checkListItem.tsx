@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface GuidEntityDto {
   id?: string;
@@ -151,6 +153,24 @@ export const useCheckListItemGetTreeItem = (props: UseCheckListItemGetTreeItemPr
     void
   >('POST', `/api/services/app/CheckListItem/GetTreeItem`, props);
 
+export const checkListItemGetTreeItem = (
+  props: RestfulShesha.MutateProps<
+    CheckListTreeItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemGetTreeItemQueryParams,
+    GuidEntityDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    CheckListTreeItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemGetTreeItemQueryParams,
+    GuidEntityDto,
+    void
+  >('POST', `/api/services/app/CheckListItem/GetTreeItem`, props, signal);
+
 export interface CheckListItemGetChildTreeItemsQueryParams {
   /**
    * The requested API version
@@ -203,6 +223,24 @@ export const useCheckListItemGetChildTreeItems = (props: UseCheckListItemGetChil
     void
   >('POST', `/api/services/app/CheckListItem/GetChildTreeItems`, props);
 
+export const checkListItemGetChildTreeItems = (
+  props: RestfulShesha.MutateProps<
+    CheckListTreeItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemGetChildTreeItemsQueryParams,
+    GetChildCheckListItemsInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    CheckListTreeItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemGetChildTreeItemsQueryParams,
+    GetChildCheckListItemsInput,
+    void
+  >('POST', `/api/services/app/CheckListItem/GetChildTreeItems`, props, signal);
+
 export interface CheckListItemUpdateChildItemsQueryParams {
   /**
    * The requested API version
@@ -233,6 +271,23 @@ export const useCheckListItemUpdateChildItems = (props: UseCheckListItemUpdateCh
     'POST',
     `/api/services/app/CheckListItem/UpdateChildItems`,
     props
+  );
+
+export const checkListItemUpdateChildItems = (
+  props: RestfulShesha.MutateProps<
+    void,
+    unknown,
+    CheckListItemUpdateChildItemsQueryParams,
+    UpdateChildItemsInput,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>(
+    'POST',
+    `/api/services/app/CheckListItem/UpdateChildItems`,
+    props,
+    signal
   );
 
 export interface CheckListItemDeleteQueryParams {
@@ -268,6 +323,17 @@ export const useCheckListItemDelete = (props: UseCheckListItemDeleteProps) =>
     { ...props }
   );
 
+export const checkListItemDelete = (
+  props: RestfulShesha.MutateProps<void, unknown, CheckListItemDeleteQueryParams, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, CheckListItemDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/app/CheckListItem/Delete`,
+    props,
+    signal
+  );
+
 export interface CheckListItemGetQueryParams {
   id?: string;
   /**
@@ -297,6 +363,16 @@ export const useCheckListItemGet = (props: UseCheckListItemGetProps) =>
   useGet<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>(
     `/api/services/app/CheckListItem/Get`,
     props
+  );
+
+export const checkListItemGet = (
+  props: RestfulShesha.GetProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>(
+    `/api/services/app/CheckListItem/Get`,
+    props,
+    signal
   );
 
 export interface CheckListItemGetAllQueryParams {
@@ -330,6 +406,21 @@ export const useCheckListItemGetAll = (props: UseCheckListItemGetAllProps) =>
   useGet<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams, void>(
     `/api/services/app/CheckListItem/GetAll`,
     props
+  );
+
+export const checkListItemGetAll = (
+  props: RestfulShesha.GetProps<
+    CheckListItemDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemGetAllQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams, void>(
+    `/api/services/app/CheckListItem/GetAll`,
+    props,
+    signal
   );
 
 export interface CheckListItemCreateQueryParams {
@@ -370,6 +461,24 @@ export const useCheckListItemCreate = (props: UseCheckListItemCreateProps) =>
     props
   );
 
+export const checkListItemCreate = (
+  props: RestfulShesha.MutateProps<
+    CheckListItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemCreateQueryParams,
+    CheckListItemDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    CheckListItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemCreateQueryParams,
+    CheckListItemDto,
+    void
+  >('POST', `/api/services/app/CheckListItem/Create`, props, signal);
+
 export interface CheckListItemUpdateQueryParams {
   /**
    * The requested API version
@@ -407,3 +516,21 @@ export const useCheckListItemUpdate = (props: UseCheckListItemUpdateProps) =>
     `/api/services/app/CheckListItem/Update`,
     props
   );
+
+export const checkListItemUpdate = (
+  props: RestfulShesha.MutateProps<
+    CheckListItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemUpdateQueryParams,
+    CheckListItemDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    CheckListItemDtoAjaxResponse,
+    AjaxResponseBase,
+    CheckListItemUpdateQueryParams,
+    CheckListItemDto,
+    void
+  >('PUT', `/api/services/app/CheckListItem/Update`, props, signal);

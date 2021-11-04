@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface ReferenceListItemValueDto {
   item?: string | null;
@@ -127,6 +129,24 @@ export const usePersonCreate = (props: UsePersonCreateProps) =>
     props
   );
 
+export const personCreate = (
+  props: RestfulShesha.MutateProps<
+    PersonAccountDtoAjaxResponse,
+    AjaxResponseBase,
+    PersonCreateQueryParams,
+    CreatePersonAccountDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    PersonAccountDtoAjaxResponse,
+    AjaxResponseBase,
+    PersonCreateQueryParams,
+    CreatePersonAccountDto,
+    void
+  >('POST', `/api/services/app/Person/Create`, props, signal);
+
 export interface PersonAutocompleteByNameQueryParams {
   term?: string | null;
   /**
@@ -156,6 +176,21 @@ export const usePersonAutocompleteByName = (props: UsePersonAutocompleteByNamePr
   useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, PersonAutocompleteByNameQueryParams, void>(
     `/api/services/app/Person/AutocompleteByName`,
     props
+  );
+
+export const personAutocompleteByName = (
+  props: RestfulShesha.GetProps<
+    AutocompleteItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    PersonAutocompleteByNameQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, PersonAutocompleteByNameQueryParams, void>(
+    `/api/services/app/Person/AutocompleteByName`,
+    props,
+    signal
   );
 
 export interface PersonAutocompleteByRoleQueryParams {
@@ -190,6 +225,21 @@ export const usePersonAutocompleteByRole = (props: UsePersonAutocompleteByRolePr
     props
   );
 
+export const personAutocompleteByRole = (
+  props: RestfulShesha.GetProps<
+    AutocompleteItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    PersonAutocompleteByRoleQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, PersonAutocompleteByRoleQueryParams, void>(
+    `/api/services/app/Person/AutocompleteByRole`,
+    props,
+    signal
+  );
+
 export interface PersonUpdateQueryParams {
   /**
    * The requested API version
@@ -222,6 +272,23 @@ export const usePersonUpdate = (props: UsePersonUpdateProps) =>
     props
   );
 
+export const personUpdate = (
+  props: RestfulShesha.MutateProps<
+    PersonAccountDtoAjaxResponse,
+    AjaxResponseBase,
+    PersonUpdateQueryParams,
+    PersonAccountDto,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonUpdateQueryParams, PersonAccountDto, void>(
+    'PUT',
+    `/api/services/app/Person/Update`,
+    props,
+    signal
+  );
+
 export interface PersonGetQueryParams {
   id?: string;
   /**
@@ -251,6 +318,16 @@ export const usePersonGet = (props: UsePersonGetProps) =>
   useGet<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>(
     `/api/services/app/Person/Get`,
     props
+  );
+
+export const personGet = (
+  props: RestfulShesha.GetProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>(
+    `/api/services/app/Person/Get`,
+    props,
+    signal
   );
 
 export interface PersonGetAllQueryParams {
@@ -286,6 +363,21 @@ export const usePersonGetAll = (props: UsePersonGetAllProps) =>
     props
   );
 
+export const personGetAll = (
+  props: RestfulShesha.GetProps<
+    PersonAccountDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    PersonGetAllQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<PersonAccountDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonGetAllQueryParams, void>(
+    `/api/services/app/Person/GetAll`,
+    props,
+    signal
+  );
+
 export interface PersonDeleteQueryParams {
   id?: string;
   /**
@@ -313,3 +405,14 @@ export const usePersonDelete = (props: UsePersonDeleteProps) =>
   useMutate<void, unknown, PersonDeleteQueryParams, void, void>('DELETE', `/api/services/app/Person/Delete`, {
     ...props,
   });
+
+export const personDelete = (
+  props: RestfulShesha.MutateProps<void, unknown, PersonDeleteQueryParams, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, PersonDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/app/Person/Delete`,
+    props,
+    signal
+  );

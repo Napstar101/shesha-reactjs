@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface ApplicationInfoDto {
   version?: string | null;
@@ -125,6 +127,22 @@ export const useSessionGetCurrentLoginInformations = (props: UseSessionGetCurren
     void
   >(`/api/services/app/Session/GetCurrentLoginInformations`, props);
 
+export const sessionGetCurrentLoginInformations = (
+  props: RestfulShesha.GetProps<
+    GetCurrentLoginInformationsOutputAjaxResponse,
+    AjaxResponseBase,
+    SessionGetCurrentLoginInformationsQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<
+    GetCurrentLoginInformationsOutputAjaxResponse,
+    AjaxResponseBase,
+    SessionGetCurrentLoginInformationsQueryParams,
+    void
+  >(`/api/services/app/Session/GetCurrentLoginInformations`, props, signal);
+
 export interface SessionGetGrantedShaRolesQueryParams {
   /**
    * The requested API version
@@ -153,6 +171,16 @@ export const useSessionGetGrantedShaRoles = (props: UseSessionGetGrantedShaRoles
   useGet<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>(
     `/api/services/app/Session/GetGrantedShaRoles`,
     props
+  );
+
+export const sessionGetGrantedShaRoles = (
+  props: RestfulShesha.GetProps<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>(
+    `/api/services/app/Session/GetGrantedShaRoles`,
+    props,
+    signal
   );
 
 export interface SessionClearPermissionsCacheQueryParams {
@@ -185,4 +213,15 @@ export const useSessionClearPermissionsCache = (props: UseSessionClearPermission
     'POST',
     `/api/services/app/Session/ClearPermissionsCache`,
     props
+  );
+
+export const sessionClearPermissionsCache = (
+  props: RestfulShesha.MutateProps<void, unknown, SessionClearPermissionsCacheQueryParams, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<void, unknown, SessionClearPermissionsCacheQueryParams, void, void>(
+    'POST',
+    `/api/services/app/Session/ClearPermissionsCache`,
+    props,
+    signal
   );

@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface AuthenticateModel {
   userNameOrEmailAddress: string;
@@ -145,6 +147,24 @@ export const useTokenAuthAuthenticate = (props: UseTokenAuthAuthenticateProps) =
     void
   >('POST', `/api/TokenAuth/Authenticate`, props);
 
+export const tokenAuthAuthenticate = (
+  props: RestfulShesha.MutateProps<
+    AuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthAuthenticateQueryParams,
+    AuthenticateModel,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    AuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthAuthenticateQueryParams,
+    AuthenticateModel,
+    void
+  >('POST', `/api/TokenAuth/Authenticate`, props, signal);
+
 export interface TokenAuthSignOffQueryParams {
   /**
    * The requested API version
@@ -175,6 +195,17 @@ export const useTokenAuthSignOff = (props: UseTokenAuthSignOffProps) =>
     'POST',
     `/api/TokenAuth/SignOff`,
     props
+  );
+
+export const tokenAuthSignOff = (
+  props: RestfulShesha.MutateProps<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>(
+    'POST',
+    `/api/TokenAuth/SignOff`,
+    props,
+    signal
   );
 
 export interface TokenAuthGetExternalAuthenticationProvidersQueryParams {
@@ -228,6 +259,22 @@ export const useTokenAuthGetExternalAuthenticationProviders = (
     void
   >(`/api/TokenAuth/GetExternalAuthenticationProviders`, props);
 
+export const tokenAuthGetExternalAuthenticationProviders = (
+  props: RestfulShesha.GetProps<
+    ExternalLoginProviderInfoModelListAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthGetExternalAuthenticationProvidersQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.get<
+    ExternalLoginProviderInfoModelListAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthGetExternalAuthenticationProvidersQueryParams,
+    void
+  >(`/api/TokenAuth/GetExternalAuthenticationProviders`, props, signal);
+
 export interface TokenAuthExternalAuthenticateQueryParams {
   /**
    * The requested API version
@@ -279,3 +326,21 @@ export const useTokenAuthExternalAuthenticate = (props: UseTokenAuthExternalAuth
     ExternalAuthenticateModel,
     void
   >('POST', `/api/TokenAuth/ExternalAuthenticate`, props);
+
+export const tokenAuthExternalAuthenticate = (
+  props: RestfulShesha.MutateProps<
+    ExternalAuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthExternalAuthenticateQueryParams,
+    ExternalAuthenticateModel,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  RestfulShesha.mutate<
+    ExternalAuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    TokenAuthExternalAuthenticateQueryParams,
+    ExternalAuthenticateModel,
+    void
+  >('POST', `/api/TokenAuth/ExternalAuthenticate`, props, signal);
