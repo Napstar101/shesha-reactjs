@@ -4,6 +4,7 @@ import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfig
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
 import { ISidebarMenuItem } from '../../../interfaces/sidebar';
 import SidebarMenuGroup from './sidebarMenuGroup';
+import { nanoid } from 'nanoid';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];
@@ -13,11 +14,13 @@ export interface IToolbarItemsSortableProps {
 export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
   const { updateChildItems } = useSidebarMenuConfigurator();
 
-  const renderItem = (itemProps: ISidebarMenuItem, index: number) => {
+  // const key = nanoid();
+
+  const renderItem = (itemProps: ISidebarMenuItem, index: number, key: string) => {
     if (itemProps.itemType === 'group') {
-      return <SidebarMenuGroup id={index} index={[...props.index, index]} {...itemProps}></SidebarMenuGroup>;
+      return <SidebarMenuGroup id={index} index={[...props.index, index]} {...itemProps} key={key} />;
     } else {
-      return <SidebarMenuItem id={index} index={[...props.index, index]} {...itemProps}></SidebarMenuItem>;
+      return <SidebarMenuItem id={index} index={[...props.index, index]} {...itemProps} key={key} />;
     }
   };
 
@@ -51,7 +54,7 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
       scroll={true}
       bubbleScroll={true}
     >
-      {props.items.map((item, index) => renderItem(item, index))}
+      {props.items.map((item, index) => renderItem(item, index, nanoid()))}
     </ReactSortable>
   );
 };
