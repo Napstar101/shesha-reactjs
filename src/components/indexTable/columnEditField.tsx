@@ -142,7 +142,7 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
         placeholder={placeholder}
         style={{ width: '100%' }}
         onChange={onChange}
-        value={val}
+        value={{ itemValue: Number(val) }}
       />
     );
   };
