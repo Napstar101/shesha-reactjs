@@ -42,6 +42,10 @@ import {
   changeMarkupAction,
   registerComponentActionsAction,
   updateFormSettingsAction,
+
+  addDataSourceAction,
+  removeDataSourceAction,
+  setActiveDataSourceAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { FormMode } from './models';
@@ -60,6 +64,7 @@ import { ActionCreators } from 'redux-undo';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
 import { IAsyncValidationError, IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
+import { IDataSource } from '../formDesigner/models';
 
 export interface IFormProviderProps {
   id?: string;
@@ -271,7 +276,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   });
 
   const saveForm = (): Promise<void> => {
-    if (!state.present.id) return new Promise(() => {});
+    if (!state.present.id) return new Promise(() => { });
 
     dispatch(saveRequestAction());
 
@@ -365,8 +370,8 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     dispatch(ActionCreators.redo());
   };
 
-  const setSelectedComponent = (id: string, componentRef?: MutableRefObject<any>) => {
-    dispatch(setSelectedComponentAction({ id, componentRef }));
+  const setSelectedComponent = (id: string, dataSourceId: string, componentRef?: MutableRefObject<any>) => {
+    dispatch(setSelectedComponentAction({ id, dataSourceId, componentRef }));
   };
 
   const registerActions = (id: string, actions: IFormActions) => {
@@ -408,6 +413,25 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     dispatch(updateFormSettingsAction(settings));
   };
 
+  //#region move to designer
+  const addDataSource = (dataSource: IDataSource) => {
+    dispatch(addDataSourceAction(dataSource));
+  }
+  const removeDataSource = (id: string) => {
+    dispatch(removeDataSourceAction(id));
+  }
+
+  const setActiveDataSource = (id: string) => {
+    dispatch(setActiveDataSourceAction(id));
+  }
+
+  const getActiveDataSource = () => {
+    return state.present.activeDataSourceId
+      ? state.present.dataSources.find(ds => ds.id === state.present.activeDataSourceId)
+      : null;
+  }
+  //#endregion
+
   const configurableFormActions: IFormActionsContext = {
     ...getFlagSetters(dispatch),
     addComponent,
@@ -433,6 +457,11 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     getSection,
     updateFormSettings,
     getToolboxComponent,
+
+    addDataSource,
+    removeDataSource,
+    setActiveDataSource,
+    getActiveDataSource,
     /* NEW_ACTION_GOES_HERE */
   };
   if (formRef) formRef.current = { ...configurableFormActions, ...state.present };

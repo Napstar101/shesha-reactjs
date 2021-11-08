@@ -22,6 +22,7 @@ import { v4 as uuid } from 'uuid';
 import { camelize, convertActions, findToolboxComponent } from './utils';
 import undoable, { includeAction } from 'redux-undo';
 import { IFormValidationErrors } from '../../interfaces';
+import { IDataSource } from '../formDesigner/models';
 
 const reducer = handleActions<IFormStateContext, any>(
   {
@@ -251,6 +252,7 @@ const reducer = handleActions<IFormStateContext, any>(
       let updatedRelations: { [index: string]: string[] } = {
         [payload.containerId]: payload.componentIds,
       };
+      
       payload.componentIds.forEach(id => {
         const component = state.allComponents[id];
         if (component.parentId != payload.containerId) {
@@ -284,6 +286,7 @@ const reducer = handleActions<IFormStateContext, any>(
         ...state,
         selectedComponentId: payload.id,
         selectedComponentRef: payload.componentRef,
+        activeDataSourceId: payload.dataSourceId,
       };
     },
 
@@ -341,6 +344,32 @@ const reducer = handleActions<IFormStateContext, any>(
       return {
         ...state,
         allComponents: { ...state.allComponents, [payload.componentId]: newComponent },
+      };
+    },
+
+    [FormActionEnums.AddDataSource]: (
+      state: IFormStateContext,
+      action: ReduxActions.Action<IDataSource>
+    ) => {
+      const { payload } = action;
+
+      return {
+        ...state,
+        dataSources: [...state.dataSources, payload]
+      };
+    },
+
+    [FormActionEnums.RemoveDataSource]: (
+      state: IFormStateContext,
+      action: ReduxActions.Action<string>
+    ) => {
+      const { payload } = action;
+
+      const newDataSources = state.dataSources.filter(ds => ds.id !== payload);
+
+      return {
+        ...state,
+        dataSources: [...newDataSources]
       };
     },
   },

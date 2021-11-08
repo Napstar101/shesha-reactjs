@@ -23,6 +23,7 @@ const API_LIST = [
   'StoredFile',
   'TokenAuth',
   'User',
+  'Metadata',
 ];
 
 const defaultConfiguration = {

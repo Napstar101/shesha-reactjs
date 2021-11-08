@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ConfigurableFormComponent from './configurableFormComponent';
 import { useFormActions, useFormState } from '../../providers/form';
-import { TOOLBOX_DROPPABLE_KEY } from '../../providers/form/models';
+import { TOOLBOX_COMPONENT_DROPPABLE_KEY, TOOLBOX_DATA_ITEM_DROPPABLE_KEY } from '../../providers/form/models';
 import { ItemInterface, ReactSortable } from 'react-sortablejs';
 
 export type Direction = 'horizontal' | 'vertical';
@@ -25,19 +25,25 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
     const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     if (listChanged) {
-      const newComponentIndex = newState.findIndex(item => item['type'] == TOOLBOX_DROPPABLE_KEY);
-      if (newComponentIndex > -1) {
-        // add new component
-        const toolboxComponent = newState[newComponentIndex];
-        addComponent({
-          containerId: containerId,
-          componentType: toolboxComponent.id.toString(),
-          index: newComponentIndex,
-        });
+      const newDataItemIndex = newState.findIndex(item => item['type'] == TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
+      if (newDataItemIndex > -1) {
+        // dropped data item
+        console.log('dropped data item!');
       } else {
-        // reorder existing components
-        const newIds = newState.map<string>(item => item.id.toString());
-        updateChildComponents({ containerId: containerId, componentIds: newIds });
+        const newComponentIndex = newState.findIndex(item => item['type'] == TOOLBOX_COMPONENT_DROPPABLE_KEY);
+        if (newComponentIndex > -1) {
+          // add new component
+          const toolboxComponent = newState[newComponentIndex];
+          addComponent({
+            containerId: containerId,
+            componentType: toolboxComponent.id.toString(),
+            index: newComponentIndex,
+          });
+        } else {
+          // reorder existing components
+          const newIds = newState.map<string>(item => item.id.toString());
+          updateChildComponents({ containerId: containerId, componentIds: newIds });
+        }
       }
     }
     return;
@@ -87,14 +93,14 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
             direction={direction}
             className={`sha-components-container-inner`}
             style={style}
-            /* note: may be used form horizontal containers like toolbar or action buttons
-        direction={(evt: SortableEvent, _target: HTMLElement, _dragEl: HTMLElement) => {
-          const insideColumn = evt.target.className.includes('sha-designer-column');
-          return insideColumn
-            ? 'horizontal'
-            : 'vertical';
-        }}
-        */
+          /* note: may be used form horizontal containers like toolbar or action buttons
+      direction={(evt: SortableEvent, _target: HTMLElement, _dragEl: HTMLElement) => {
+        const insideColumn = evt.target.className.includes('sha-designer-column');
+        return insideColumn
+          ? 'horizontal'
+          : 'vertical';
+      }}
+      */
           >
             {renderComponents()}
           </ReactSortable>

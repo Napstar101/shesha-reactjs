@@ -19,3 +19,4 @@ export * from './tableViewSelectorConfigurator';
 export * from './toolbarConfigurator';
 export * from './ui';
 export * from './configurableComponent';
+export * from './metadata';

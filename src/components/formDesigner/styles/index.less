@@ -1,6 +1,15 @@
 @import '../../../../node_modules/antd/lib/style/themes/default.less';
 
 .sha-form-designer {
+
+  &.sha-dragging {
+    .sha-form {
+      .sha-component-drag-handle {
+         visibility: hidden;
+       }
+    }
+  }
+
   .sidebar-container-main-area-body {
     .content-heading {
       .sha-designer-header {
@@ -28,6 +37,13 @@
     }
   }
   .sha-designer-toolbox {
+    .sha-toolbox-panel {
+      &.active {
+        // border: #61affe 1px dashed;
+        // border-radius: 4px;
+        background-color: #ebf3fb;
+      }
+    }
     .sha-toolbox-component {
       display: flex;
       user-select: none;
@@ -38,6 +54,7 @@
       border-radius: 3px;
       background: #fff;
       margin: 4px 0;
+      border: 1px solid #ddd;
 
       .anticon {
         margin-right: 5px;
@@ -160,13 +177,6 @@
       }
       .sha-component-drag-handle {
         background-color: #fff;
-        visibility: hidden;
-      }
-    }
-  }
-  .sha-form {
-    &.sha-dragging {
-      .sha-component-drag-handle {
         visibility: hidden;
       }
     }

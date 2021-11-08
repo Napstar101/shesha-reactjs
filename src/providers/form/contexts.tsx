@@ -22,6 +22,7 @@ import {
 import { FormInstance } from 'antd';
 import { StateWithHistory } from 'redux-undo';
 import { FormLayout } from 'antd/lib/form/Form';
+import { IDataSource } from '../formDesigner/models';
 
 export type IFlagProgressFlags =
   | 'addComponent'
@@ -82,6 +83,9 @@ export interface IFormStateContext
   selectedComponentRef?: MutableRefObject<any>;
   isDragging: boolean;
   toolboxComponentGroups: IToolboxComponentGroup[];
+
+  dataSources: IDataSource[]; // todo: move to the designer level
+  activeDataSourceId: string; // todo: move to the designer level
 }
 
 export interface IComponentAddPayload {
@@ -124,6 +128,8 @@ export interface ISetFormDataPayload {
 export interface ISetSelectedComponentPayload {
   id: string;
   componentRef?: MutableRefObject<any>;
+  /** Id of the current source of metadata */
+  dataSourceId: string;
 }
 
 export interface IFormLoadByIdPayload {
@@ -161,13 +167,18 @@ export interface IFormActionsContext
   setDebugMode: (isDebug: boolean) => void;
   startDragging: () => void;
   endDragging: () => void;
-  setSelectedComponent: (id: string, componentRef?: MutableRefObject<any>) => void;
+  setSelectedComponent: (id: string, dataSourceId: string, componentRef?: MutableRefObject<any>) => void;
   registerActions: (id: string, actions: IFormActions) => void;
   getAction: (id: string, name: string) => FormAction;
   getSection: (id: string, name: string) => FormSection;
   updateFormSettings: (settings: IFormSettings) => void;
 
   getToolboxComponent: (type: string) => IToolboxComponentBase;
+
+  addDataSource: (dataSource: IDataSource) => void;
+  removeDataSource: (id: string) => void;
+  setActiveDataSource: (id: string) => void;
+  getActiveDataSource: () => IDataSource | null;
 
   undo: () => void;
   redo: () => void;
@@ -199,6 +210,9 @@ export const FORM_CONTEXT_INITIAL_STATE: IFormStateContext = {
   context: null,
   formSettings: DEFAULT_FORM_SETTINGS,
   toolboxComponentGroups: defaultToolboxComponents,
+
+  dataSources: [],
+  activeDataSourceId: null,
 };
 
 export const UndoableFormStateContext = createContext<IFormDesignerStateContext>({

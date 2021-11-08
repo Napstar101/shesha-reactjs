@@ -19,7 +19,7 @@ export interface IFormDesignerStoryProps {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IFormDesignerStoryProps> = args => (
+const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
       <FormProvider path={args.formPath} mode="designer">
@@ -29,14 +29,19 @@ const Template: Story<IFormDesignerStoryProps> = args => (
   </ShaApplicationProvider>
 );
 
-export const TableContextProps = Template.bind({});
+export const TableContextProps = DesignerTemplate.bind({});
 
 TableContextProps.args = {
   formPath: '/settings/forms/playground'
-  // formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs-columns-editor\\src\\components\\formDesigner\\components\\dataTable\\tableContext\\settingsForm.json'
 };
 
-export const IndexPage = Template.bind({});
+export const ColumnProps = DesignerTemplate.bind({});
+const columnProps: IFormDesignerStoryProps = {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs\\src\\components\\formDesigner\\components\\dataTable\\table\\columnsEditor\\columnSettings.json'
+};
+ColumnProps.args = { ...columnProps };
+
+export const IndexPage = DesignerTemplate.bind({});
 const indexPageProps: IFormDesignerStoryProps = {
   formPath: '/indexTable',
 };
@@ -120,8 +125,6 @@ const ActionsTemplateContent: FC<IActionsTemplateProps> = (props) => {
     </div>
   );
 }
-
-
 
 export const RefactoringActions = ActionsTemplate.bind({});
 const refactoringArgs: IActionsTemplateProps = {

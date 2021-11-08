@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { IFormValidationErrors } from '../../interfaces';
+import { IDataSource } from '../formDesigner/models';
 import {
   IComponentAddPayload,
   IComponentDeletePayload,
@@ -45,6 +46,10 @@ export enum FormActionEnums {
   SetSelectedComponent = 'SET_SELECTED_COMPONENT',
   RegisterActions = 'REGISTER_ACTIONS',
   UpdateFormSettings = 'UPDATE_FORM_SETTINGS',
+
+  AddDataSource = 'ADD_DATA_SOURCE',
+  RemoveDataSource = 'REMOVE_DATA_SOURCE',
+  SetActiveDataSource = 'SET_ACTIVE_DATA_SOURCE',
 
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
@@ -122,3 +127,20 @@ export const updateFormSettingsAction = createAction<IFormSettings, IFormSetting
 );
 
 /* NEW_ACTION_GOES_HERE */
+
+//#region 
+export const addDataSourceAction = createAction<IDataSource, IDataSource>(
+  FormActionEnums.AddDataSource,
+  p => p
+);
+
+export const removeDataSourceAction = createAction<string, string>(
+  FormActionEnums.RemoveDataSource,
+  p => p
+);
+
+export const setActiveDataSourceAction = createAction<string, string>(
+  FormActionEnums.SetActiveDataSource,
+  p => p
+);
+//#endregion

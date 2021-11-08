@@ -1,17 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { LayoutOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
-import { useForm } from '../../../../../providers/form';
 import settingsFormJson from './settingsForm.json';
 import { IShaDataTableProps } from '../../../../../';
 import { DataTableSelectionProvider, useDataTableSelection } from '../../../../../providers/dataTableSelection';
 import ComponentsContainer from '../../../componentsContainer';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
-import { useDataTableStore } from '../../../../../providers';
+import { MetadataProvider, useDataTableStore, useForm } from '../../../../../providers';
 import DataTableProvider from '../../../../../providers/dataTable';
+import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 
 export interface ITableContextComponentProps extends IConfigurableFormComponent {
   tableConfigId?: string;
@@ -41,12 +40,36 @@ const TableContextComponent: IToolboxComponent<ITableContextComponentProps> = {
 
 export const TableContext: FC<ITableContextComponentProps> = props => {
   const [table, setTable] = useState(<></>);
+  const { addDataSource, removeDataSource } = useForm();
+  const { entityType } = props;
 
+   
   useEffect(() => {
-    setTable(<TableContextInner key={props.tableConfigId} {...props}></TableContextInner>);
+    const uniqueKey = `${props.tableConfigId ?? 'empty'}_${props.entityType ?? 'empty'}`; // is used just for re-rendering
+    setTable(<TableContextInner key={uniqueKey} {...props}></TableContextInner>);
   }, [props.tableConfigId, props.entityType]);
 
-  return table;
+  useEffect(() => {
+    removeDataSource(props.id);
+  }, [entityType]);
+
+  const onMetadataLoaded = (properties) => {
+    addDataSource({ id: props.id, name: entityType, containerType: entityType, items: properties });
+  }
+  const onMetadataCleanup = () => {
+    removeDataSource(props.id);
+  }
+
+  return entityType
+    ? <MetadataProvider
+        id={props.id}
+        containerType={entityType}
+        onMetadataLoaded={onMetadataLoaded}
+        cleanup={onMetadataCleanup}
+      >
+        {table}
+      </MetadataProvider>
+    : table;
 };
 
 export const TableContextInner: FC<ITableContextComponentProps> = props => {
@@ -55,7 +78,7 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
   const [selectedRow, setSelectedRow] = useState(-1);
   const isDesignMode = formMode === 'designer';
 
-  if (isDesignMode && !tableConfigId && !entityType) 
+  if (isDesignMode && !tableConfigId && !entityType)
     return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 
   const tableProps: IShaDataTableProps = {
@@ -74,7 +97,7 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
 
   return (
     <DataTableSelectionProvider>
-      <DataTableProvider 
+      <DataTableProvider
         userConfigId={props.id}
         tableId={tableProps.id}
         entityType={entityType}
