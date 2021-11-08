@@ -43,7 +43,6 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
   const { addDataSource, removeDataSource } = useForm();
   const { entityType } = props;
 
-   
   useEffect(() => {
     const uniqueKey = `${props.tableConfigId ?? 'empty'}_${props.entityType ?? 'empty'}`; // is used just for re-rendering
     setTable(<TableContextInner key={uniqueKey} {...props}></TableContextInner>);

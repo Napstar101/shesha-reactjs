@@ -13,8 +13,9 @@ import {
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import useThunkReducer from 'react-hook-thunk-reducer';
-import { useMetadataProperties } from '../../apis/metadata';
+import { metadataGetProperties } from '../../apis/metadata';
 import { IPropertyMetadata } from './models';
+import { useSheshaApplication } from '../../providers';
 
 export interface IMetadataProviderProps {
   id: string;
@@ -38,7 +39,7 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
 
   const [state, dispatch] = useThunkReducer(metadataReducer, initial);
 
-  const { /*loading, data, error,*/ mutate: fetchProperties } = useMetadataProperties({ queryParams: { container: containerType } });
+  //const parentProvider = useMetadata(false);
 
   // execute cleanup code on unmount
   useEffect(() => {
@@ -49,13 +50,14 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
     }
   }, []);
 
+  const { backendUrl, httpHeaders } = useSheshaApplication();
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   const loadProperties = (payload: ILoadPropertiesPayload) => {
     dispatch(loadPropertiesAction(payload));
     
     // fetch properties from the back-end
-    fetchProperties()
+    metadataGetProperties({ container: containerType }, { base: backendUrl, headers: httpHeaders })
       .then(response => {
         if (response.success){
           const properties = response.result.map<IPropertyMetadata>(p => ({
@@ -93,7 +95,6 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
   };
   
   useEffect(() => {
-    //console.log('fetch properties by MP, containerType: ' + containerType);
     loadProperties({ containerType: containerType });
   }, [containerType]);
 
