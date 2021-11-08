@@ -10,8 +10,14 @@ export interface ReferenceListItemValueDto {
   itemValue?: number | null;
 }
 
+/**
+ * Generic entity Dto with display text
+ */
 export interface GuidNullableEntityWithDisplayNameDto {
   id?: string | null;
+  /**
+   * Entity display name
+   */
   displayText?: string | null;
 }
 
@@ -69,6 +75,9 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
+/**
+ * Generic DTO of the simple autocomplete item
+ */
 export interface AutocompleteItemDto {
   value?: string | null;
   displayText?: string | null;
@@ -97,20 +106,13 @@ export interface PersonAccountDtoPagedResultDtoAjaxResponse {
   result?: PersonAccountDtoPagedResultDto;
 }
 
-export interface PersonCreateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type PersonCreateProps = Omit<
-  MutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonCreateQueryParams, CreatePersonAccountDto, void>,
+  MutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, CreatePersonAccountDto, void>,
   'path' | 'verb'
 >;
 
 export const PersonCreate = (props: PersonCreateProps) => (
-  <Mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonCreateQueryParams, CreatePersonAccountDto, void>
+  <Mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, CreatePersonAccountDto, void>
     verb="POST"
     path={`/api/services/app/Person/Create`}
     {...props}
@@ -118,41 +120,31 @@ export const PersonCreate = (props: PersonCreateProps) => (
 );
 
 export type UsePersonCreateProps = Omit<
-  UseMutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonCreateQueryParams, CreatePersonAccountDto, void>,
+  UseMutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, CreatePersonAccountDto, void>,
   'path' | 'verb'
 >;
 
 export const usePersonCreate = (props: UsePersonCreateProps) =>
-  useMutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonCreateQueryParams, CreatePersonAccountDto, void>(
+  useMutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, CreatePersonAccountDto, void>(
     'POST',
     `/api/services/app/Person/Create`,
     props
   );
 
-export const personCreate = (
-  props: RestfulShesha.MutateProps<
-    PersonAccountDtoAjaxResponse,
-    AjaxResponseBase,
-    PersonCreateQueryParams,
-    CreatePersonAccountDto,
-    void
-  >,
-  signal?: RequestInit['signal']
-) =>
-  RestfulShesha.mutate<
-    PersonAccountDtoAjaxResponse,
-    AjaxResponseBase,
-    PersonCreateQueryParams,
-    CreatePersonAccountDto,
-    void
-  >('POST', `/api/services/app/Person/Create`, props, signal);
+export type personCreateProps = Omit<
+  RestfulShesha.MutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, CreatePersonAccountDto, void>,
+  'data'
+>;
+export const personCreate = (data: CreatePersonAccountDto, props: personCreateProps) =>
+  RestfulShesha.mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, CreatePersonAccountDto, void>(
+    'POST',
+    `/api/services/app/Person/Create`,
+    data,
+    props
+  );
 
 export interface PersonAutocompleteByNameQueryParams {
   term?: string | null;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type PersonAutocompleteByNameProps = Omit<
@@ -178,28 +170,28 @@ export const usePersonAutocompleteByName = (props: UsePersonAutocompleteByNamePr
     props
   );
 
-export const personAutocompleteByName = (
-  props: RestfulShesha.GetProps<
+export type personAutocompleteByNameProps = Omit<
+  RestfulShesha.GetProps<
     AutocompleteItemDtoListAjaxResponse,
     AjaxResponseBase,
     PersonAutocompleteByNameQueryParams,
     void
   >,
-  signal?: RequestInit['signal']
+  'queryParams'
+>;
+export const personAutocompleteByName = (
+  queryParams: PersonAutocompleteByNameQueryParams,
+  props: personAutocompleteByNameProps
 ) =>
   RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, PersonAutocompleteByNameQueryParams, void>(
     `/api/services/app/Person/AutocompleteByName`,
-    props,
-    signal
+    queryParams,
+    props
   );
 
 export interface PersonAutocompleteByRoleQueryParams {
   term?: string | null;
   role?: string | null;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type PersonAutocompleteByRoleProps = Omit<
@@ -225,35 +217,32 @@ export const usePersonAutocompleteByRole = (props: UsePersonAutocompleteByRolePr
     props
   );
 
-export const personAutocompleteByRole = (
-  props: RestfulShesha.GetProps<
+export type personAutocompleteByRoleProps = Omit<
+  RestfulShesha.GetProps<
     AutocompleteItemDtoListAjaxResponse,
     AjaxResponseBase,
     PersonAutocompleteByRoleQueryParams,
     void
   >,
-  signal?: RequestInit['signal']
+  'queryParams'
+>;
+export const personAutocompleteByRole = (
+  queryParams: PersonAutocompleteByRoleQueryParams,
+  props: personAutocompleteByRoleProps
 ) =>
   RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, PersonAutocompleteByRoleQueryParams, void>(
     `/api/services/app/Person/AutocompleteByRole`,
-    props,
-    signal
+    queryParams,
+    props
   );
 
-export interface PersonUpdateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type PersonUpdateProps = Omit<
-  MutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonUpdateQueryParams, PersonAccountDto, void>,
+  MutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, PersonAccountDto, void>,
   'path' | 'verb'
 >;
 
 export const PersonUpdate = (props: PersonUpdateProps) => (
-  <Mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonUpdateQueryParams, PersonAccountDto, void>
+  <Mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, PersonAccountDto, void>
     verb="PUT"
     path={`/api/services/app/Person/Update`}
     {...props}
@@ -261,40 +250,31 @@ export const PersonUpdate = (props: PersonUpdateProps) => (
 );
 
 export type UsePersonUpdateProps = Omit<
-  UseMutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonUpdateQueryParams, PersonAccountDto, void>,
+  UseMutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, PersonAccountDto, void>,
   'path' | 'verb'
 >;
 
 export const usePersonUpdate = (props: UsePersonUpdateProps) =>
-  useMutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonUpdateQueryParams, PersonAccountDto, void>(
+  useMutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, PersonAccountDto, void>(
     'PUT',
     `/api/services/app/Person/Update`,
     props
   );
 
-export const personUpdate = (
-  props: RestfulShesha.MutateProps<
-    PersonAccountDtoAjaxResponse,
-    AjaxResponseBase,
-    PersonUpdateQueryParams,
-    PersonAccountDto,
-    void
-  >,
-  signal?: RequestInit['signal']
-) =>
-  RestfulShesha.mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonUpdateQueryParams, PersonAccountDto, void>(
+export type personUpdateProps = Omit<
+  RestfulShesha.MutateProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, PersonAccountDto, void>,
+  'data'
+>;
+export const personUpdate = (data: PersonAccountDto, props: personUpdateProps) =>
+  RestfulShesha.mutate<PersonAccountDtoAjaxResponse, AjaxResponseBase, void, PersonAccountDto, void>(
     'PUT',
     `/api/services/app/Person/Update`,
-    props,
-    signal
+    data,
+    props
   );
 
 export interface PersonGetQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type PersonGetProps = Omit<
@@ -320,24 +300,21 @@ export const usePersonGet = (props: UsePersonGetProps) =>
     props
   );
 
-export const personGet = (
-  props: RestfulShesha.GetProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>,
-  signal?: RequestInit['signal']
-) =>
+export type personGetProps = Omit<
+  RestfulShesha.GetProps<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>,
+  'queryParams'
+>;
+export const personGet = (queryParams: PersonGetQueryParams, props: personGetProps) =>
   RestfulShesha.get<PersonAccountDtoAjaxResponse, AjaxResponseBase, PersonGetQueryParams, void>(
     `/api/services/app/Person/Get`,
-    props,
-    signal
+    queryParams,
+    props
   );
 
 export interface PersonGetAllQueryParams {
   sorting?: string | null;
   skipCount?: number;
   maxResultCount?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type PersonGetAllProps = Omit<
@@ -363,27 +340,19 @@ export const usePersonGetAll = (props: UsePersonGetAllProps) =>
     props
   );
 
-export const personGetAll = (
-  props: RestfulShesha.GetProps<
-    PersonAccountDtoPagedResultDtoAjaxResponse,
-    AjaxResponseBase,
-    PersonGetAllQueryParams,
-    void
-  >,
-  signal?: RequestInit['signal']
-) =>
+export type personGetAllProps = Omit<
+  RestfulShesha.GetProps<PersonAccountDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonGetAllQueryParams, void>,
+  'queryParams'
+>;
+export const personGetAll = (queryParams: PersonGetAllQueryParams, props: personGetAllProps) =>
   RestfulShesha.get<PersonAccountDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonGetAllQueryParams, void>(
     `/api/services/app/Person/GetAll`,
-    props,
-    signal
+    queryParams,
+    props
   );
 
 export interface PersonDeleteQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type PersonDeleteProps = Omit<MutateProps<void, unknown, PersonDeleteQueryParams, void, void>, 'path' | 'verb'>;
@@ -406,13 +375,14 @@ export const usePersonDelete = (props: UsePersonDeleteProps) =>
     ...props,
   });
 
-export const personDelete = (
-  props: RestfulShesha.MutateProps<void, unknown, PersonDeleteQueryParams, void, void>,
-  signal?: RequestInit['signal']
-) =>
+export type personDeleteProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, PersonDeleteQueryParams, void, void>,
+  'data'
+>;
+export const personDelete = (props: personDeleteProps) =>
   RestfulShesha.mutate<void, unknown, PersonDeleteQueryParams, void, void>(
     'DELETE',
     `/api/services/app/Person/Delete`,
-    props,
-    signal
+    undefined,
+    props
   );

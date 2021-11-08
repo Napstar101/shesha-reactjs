@@ -9,11 +9,26 @@ export interface GuidEntityDto {
   id?: string;
 }
 
+/**
+ * Check list item DTO for tree component
+ */
 export interface CheckListTreeItemDto {
   id?: string;
+  /**
+   * Name
+   */
   name?: string | null;
+  /**
+   * Parent Id
+   */
   parentId?: string | null;
+  /**
+   * Order Index
+   */
   orderIndex?: number;
+  /**
+   * If true, indicates that item has child items
+   */
   hasChilds?: boolean;
 }
 
@@ -46,8 +61,17 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
+/**
+ * Input to get child check list items
+ */
 export interface GetChildCheckListItemsInput {
+  /**
+   * Id of the checklist
+   */
   checkListId?: string;
+  /**
+   * Id of the parent item
+   */
   parentId?: string | null;
 }
 
@@ -60,9 +84,21 @@ export interface CheckListTreeItemDtoListAjaxResponse {
   result?: CheckListTreeItemDto[] | null;
 }
 
+/**
+ * Move check list item input
+ */
 export interface UpdateChildItemsInput {
+  /**
+   * Id of the check list
+   */
   checkListId?: string;
+  /**
+   * Id of the new parent item
+   */
   parentId?: string | null;
+  /**
+   * List of child item ids
+   */
   childIds?: string[] | null;
 }
 
@@ -71,16 +107,43 @@ export interface ReferenceListItemValueDto {
   itemValue?: number | null;
 }
 
+/**
+ * CheckListItem DTO
+ */
 export interface CheckListItemDto {
   id?: string;
+  /**
+   * Id of the check list which current item belongs to
+   */
   checkListId?: string;
+  /**
+   * Parent item id
+   */
   parentId?: string | null;
+  /**
+   * Order index of the item
+   */
   orderIndex?: number;
   itemType?: ReferenceListItemValueDto;
+  /**
+   * Item name
+   */
   name?: string | null;
+  /**
+   * Item description
+   */
   description?: string | null;
+  /**
+   * If true, the user is able to add comments to this item/group
+   */
   allowAddComments?: boolean;
+  /**
+   * Heading of the comments box
+   */
   commentsHeading?: string | null;
+  /**
+   * Custom visibility of comments (javascript expression)
+   */
   commentsVisibilityExpression?: string | null;
 }
 
@@ -107,26 +170,16 @@ export interface CheckListItemDtoPagedResultDtoAjaxResponse {
   result?: CheckListItemDtoPagedResultDto;
 }
 
-export interface CheckListItemGetTreeItemQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type CheckListItemGetTreeItemProps = Omit<
-  MutateProps<
-    CheckListTreeItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetTreeItemQueryParams,
-    GuidEntityDto,
-    void
-  >,
+  MutateProps<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child areas of the specified parent
+ */
 export const CheckListItemGetTreeItem = (props: CheckListItemGetTreeItemProps) => (
-  <Mutate<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetTreeItemQueryParams, GuidEntityDto, void>
+  <Mutate<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>
     verb="POST"
     path={`/api/services/app/CheckListItem/GetTreeItem`}
     {...props}
@@ -134,69 +187,45 @@ export const CheckListItemGetTreeItem = (props: CheckListItemGetTreeItemProps) =
 );
 
 export type UseCheckListItemGetTreeItemProps = Omit<
-  UseMutateProps<
-    CheckListTreeItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetTreeItemQueryParams,
-    GuidEntityDto,
-    void
-  >,
+  UseMutateProps<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child areas of the specified parent
+ */
 export const useCheckListItemGetTreeItem = (props: UseCheckListItemGetTreeItemProps) =>
-  useMutate<
-    CheckListTreeItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetTreeItemQueryParams,
-    GuidEntityDto,
-    void
-  >('POST', `/api/services/app/CheckListItem/GetTreeItem`, props);
+  useMutate<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>(
+    'POST',
+    `/api/services/app/CheckListItem/GetTreeItem`,
+    props
+  );
 
-export const checkListItemGetTreeItem = (
-  props: RestfulShesha.MutateProps<
-    CheckListTreeItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetTreeItemQueryParams,
-    GuidEntityDto,
-    void
-  >,
-  signal?: RequestInit['signal']
-) =>
-  RestfulShesha.mutate<
-    CheckListTreeItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetTreeItemQueryParams,
-    GuidEntityDto,
-    void
-  >('POST', `/api/services/app/CheckListItem/GetTreeItem`, props, signal);
-
-export interface CheckListItemGetChildTreeItemsQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type checkListItemGetTreeItemProps = Omit<
+  RestfulShesha.MutateProps<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>,
+  'data'
+>;
+/**
+ * Returns child areas of the specified parent
+ */
+export const checkListItemGetTreeItem = (data: GuidEntityDto, props: checkListItemGetTreeItemProps) =>
+  RestfulShesha.mutate<CheckListTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>(
+    'POST',
+    `/api/services/app/CheckListItem/GetTreeItem`,
+    data,
+    props
+  );
 
 export type CheckListItemGetChildTreeItemsProps = Omit<
-  MutateProps<
-    CheckListTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput,
-    void
-  >,
+  MutateProps<CheckListTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildCheckListItemsInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child items of the specified parent
+ */
 export const CheckListItemGetChildTreeItems = (props: CheckListItemGetChildTreeItemsProps) => (
-  <Mutate<
-    CheckListTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput,
-    void
-  >
+  <Mutate<CheckListTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildCheckListItemsInput, void>
     verb="POST"
     path={`/api/services/app/CheckListItem/GetChildTreeItems`}
     {...props}
@@ -204,57 +233,54 @@ export const CheckListItemGetChildTreeItems = (props: CheckListItemGetChildTreeI
 );
 
 export type UseCheckListItemGetChildTreeItemsProps = Omit<
-  UseMutateProps<
-    CheckListTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput,
-    void
-  >,
+  UseMutateProps<CheckListTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildCheckListItemsInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child items of the specified parent
+ */
 export const useCheckListItemGetChildTreeItems = (props: UseCheckListItemGetChildTreeItemsProps) =>
-  useMutate<
-    CheckListTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput,
-    void
-  >('POST', `/api/services/app/CheckListItem/GetChildTreeItems`, props);
+  useMutate<CheckListTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildCheckListItemsInput, void>(
+    'POST',
+    `/api/services/app/CheckListItem/GetChildTreeItems`,
+    props
+  );
 
-export const checkListItemGetChildTreeItems = (
-  props: RestfulShesha.MutateProps<
+export type checkListItemGetChildTreeItemsProps = Omit<
+  RestfulShesha.MutateProps<
     CheckListTreeItemDtoListAjaxResponse,
     AjaxResponseBase,
-    CheckListItemGetChildTreeItemsQueryParams,
+    void,
     GetChildCheckListItemsInput,
     void
   >,
-  signal?: RequestInit['signal']
+  'data'
+>;
+/**
+ * Returns child items of the specified parent
+ */
+export const checkListItemGetChildTreeItems = (
+  data: GetChildCheckListItemsInput,
+  props: checkListItemGetChildTreeItemsProps
 ) =>
-  RestfulShesha.mutate<
-    CheckListTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemGetChildTreeItemsQueryParams,
-    GetChildCheckListItemsInput,
-    void
-  >('POST', `/api/services/app/CheckListItem/GetChildTreeItems`, props, signal);
-
-export interface CheckListItemUpdateChildItemsQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+  RestfulShesha.mutate<CheckListTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildCheckListItemsInput, void>(
+    'POST',
+    `/api/services/app/CheckListItem/GetChildTreeItems`,
+    data,
+    props
+  );
 
 export type CheckListItemUpdateChildItemsProps = Omit<
-  MutateProps<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>,
+  MutateProps<void, unknown, void, UpdateChildItemsInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Moves Area to a new parent
+ */
 export const CheckListItemUpdateChildItems = (props: CheckListItemUpdateChildItemsProps) => (
-  <Mutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>
+  <Mutate<void, unknown, void, UpdateChildItemsInput, void>
     verb="POST"
     path={`/api/services/app/CheckListItem/UpdateChildItems`}
     {...props}
@@ -262,40 +288,37 @@ export const CheckListItemUpdateChildItems = (props: CheckListItemUpdateChildIte
 );
 
 export type UseCheckListItemUpdateChildItemsProps = Omit<
-  UseMutateProps<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>,
+  UseMutateProps<void, unknown, void, UpdateChildItemsInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Moves Area to a new parent
+ */
 export const useCheckListItemUpdateChildItems = (props: UseCheckListItemUpdateChildItemsProps) =>
-  useMutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>(
+  useMutate<void, unknown, void, UpdateChildItemsInput, void>(
     'POST',
     `/api/services/app/CheckListItem/UpdateChildItems`,
     props
   );
 
-export const checkListItemUpdateChildItems = (
-  props: RestfulShesha.MutateProps<
-    void,
-    unknown,
-    CheckListItemUpdateChildItemsQueryParams,
-    UpdateChildItemsInput,
-    void
-  >,
-  signal?: RequestInit['signal']
-) =>
-  RestfulShesha.mutate<void, unknown, CheckListItemUpdateChildItemsQueryParams, UpdateChildItemsInput, void>(
+export type checkListItemUpdateChildItemsProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, void, UpdateChildItemsInput, void>,
+  'data'
+>;
+/**
+ * Moves Area to a new parent
+ */
+export const checkListItemUpdateChildItems = (data: UpdateChildItemsInput, props: checkListItemUpdateChildItemsProps) =>
+  RestfulShesha.mutate<void, unknown, void, UpdateChildItemsInput, void>(
     'POST',
     `/api/services/app/CheckListItem/UpdateChildItems`,
-    props,
-    signal
+    data,
+    props
   );
 
 export interface CheckListItemDeleteQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type CheckListItemDeleteProps = Omit<
@@ -323,23 +346,20 @@ export const useCheckListItemDelete = (props: UseCheckListItemDeleteProps) =>
     { ...props }
   );
 
-export const checkListItemDelete = (
-  props: RestfulShesha.MutateProps<void, unknown, CheckListItemDeleteQueryParams, void, void>,
-  signal?: RequestInit['signal']
-) =>
+export type checkListItemDeleteProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, CheckListItemDeleteQueryParams, void, void>,
+  'data'
+>;
+export const checkListItemDelete = (props: checkListItemDeleteProps) =>
   RestfulShesha.mutate<void, unknown, CheckListItemDeleteQueryParams, void, void>(
     'DELETE',
     `/api/services/app/CheckListItem/Delete`,
-    props,
-    signal
+    undefined,
+    props
   );
 
 export interface CheckListItemGetQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type CheckListItemGetProps = Omit<
@@ -365,24 +385,21 @@ export const useCheckListItemGet = (props: UseCheckListItemGetProps) =>
     props
   );
 
-export const checkListItemGet = (
-  props: RestfulShesha.GetProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>,
-  signal?: RequestInit['signal']
-) =>
+export type checkListItemGetProps = Omit<
+  RestfulShesha.GetProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>,
+  'queryParams'
+>;
+export const checkListItemGet = (queryParams: CheckListItemGetQueryParams, props: checkListItemGetProps) =>
   RestfulShesha.get<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemGetQueryParams, void>(
     `/api/services/app/CheckListItem/Get`,
-    props,
-    signal
+    queryParams,
+    props
   );
 
 export interface CheckListItemGetAllQueryParams {
   sorting?: string | null;
   skipCount?: number;
   maxResultCount?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type CheckListItemGetAllProps = Omit<
@@ -408,35 +425,29 @@ export const useCheckListItemGetAll = (props: UseCheckListItemGetAllProps) =>
     props
   );
 
-export const checkListItemGetAll = (
-  props: RestfulShesha.GetProps<
+export type checkListItemGetAllProps = Omit<
+  RestfulShesha.GetProps<
     CheckListItemDtoPagedResultDtoAjaxResponse,
     AjaxResponseBase,
     CheckListItemGetAllQueryParams,
     void
   >,
-  signal?: RequestInit['signal']
-) =>
+  'queryParams'
+>;
+export const checkListItemGetAll = (queryParams: CheckListItemGetAllQueryParams, props: checkListItemGetAllProps) =>
   RestfulShesha.get<CheckListItemDtoPagedResultDtoAjaxResponse, AjaxResponseBase, CheckListItemGetAllQueryParams, void>(
     `/api/services/app/CheckListItem/GetAll`,
-    props,
-    signal
+    queryParams,
+    props
   );
 
-export interface CheckListItemCreateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type CheckListItemCreateProps = Omit<
-  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto, void>,
+  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const CheckListItemCreate = (props: CheckListItemCreateProps) => (
-  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto, void>
+  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>
     verb="POST"
     path={`/api/services/app/CheckListItem/Create`}
     {...props}
@@ -444,55 +455,36 @@ export const CheckListItemCreate = (props: CheckListItemCreateProps) => (
 );
 
 export type UseCheckListItemCreateProps = Omit<
-  UseMutateProps<
-    CheckListItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemCreateQueryParams,
-    CheckListItemDto,
-    void
-  >,
+  UseMutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListItemCreate = (props: UseCheckListItemCreateProps) =>
-  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemCreateQueryParams, CheckListItemDto, void>(
+  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>(
     'POST',
     `/api/services/app/CheckListItem/Create`,
     props
   );
 
-export const checkListItemCreate = (
-  props: RestfulShesha.MutateProps<
-    CheckListItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemCreateQueryParams,
-    CheckListItemDto,
-    void
-  >,
-  signal?: RequestInit['signal']
-) =>
-  RestfulShesha.mutate<
-    CheckListItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemCreateQueryParams,
-    CheckListItemDto,
-    void
-  >('POST', `/api/services/app/CheckListItem/Create`, props, signal);
-
-export interface CheckListItemUpdateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type checkListItemCreateProps = Omit<
+  RestfulShesha.MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>,
+  'data'
+>;
+export const checkListItemCreate = (data: CheckListItemDto, props: checkListItemCreateProps) =>
+  RestfulShesha.mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>(
+    'POST',
+    `/api/services/app/CheckListItem/Create`,
+    data,
+    props
+  );
 
 export type CheckListItemUpdateProps = Omit<
-  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto, void>,
+  MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const CheckListItemUpdate = (props: CheckListItemUpdateProps) => (
-  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto, void>
+  <Mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>
     verb="PUT"
     path={`/api/services/app/CheckListItem/Update`}
     {...props}
@@ -500,37 +492,25 @@ export const CheckListItemUpdate = (props: CheckListItemUpdateProps) => (
 );
 
 export type UseCheckListItemUpdateProps = Omit<
-  UseMutateProps<
-    CheckListItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemUpdateQueryParams,
-    CheckListItemDto,
-    void
-  >,
+  UseMutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>,
   'path' | 'verb'
 >;
 
 export const useCheckListItemUpdate = (props: UseCheckListItemUpdateProps) =>
-  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, CheckListItemUpdateQueryParams, CheckListItemDto, void>(
+  useMutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>(
     'PUT',
     `/api/services/app/CheckListItem/Update`,
     props
   );
 
-export const checkListItemUpdate = (
-  props: RestfulShesha.MutateProps<
-    CheckListItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemUpdateQueryParams,
-    CheckListItemDto,
-    void
-  >,
-  signal?: RequestInit['signal']
-) =>
-  RestfulShesha.mutate<
-    CheckListItemDtoAjaxResponse,
-    AjaxResponseBase,
-    CheckListItemUpdateQueryParams,
-    CheckListItemDto,
-    void
-  >('PUT', `/api/services/app/CheckListItem/Update`, props, signal);
+export type checkListItemUpdateProps = Omit<
+  RestfulShesha.MutateProps<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>,
+  'data'
+>;
+export const checkListItemUpdate = (data: CheckListItemDto, props: checkListItemUpdateProps) =>
+  RestfulShesha.mutate<CheckListItemDtoAjaxResponse, AjaxResponseBase, void, CheckListItemDto, void>(
+    'PUT',
+    `/api/services/app/CheckListItem/Update`,
+    data,
+    props
+  );

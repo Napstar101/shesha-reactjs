@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import FormDesigner from './formDesigner';
-import { FormProvider, ShaApplicationProvider } from '../../providers';
+import { FormProvider, ShaApplicationProvider, useSheshaApplication } from '../../providers';
 import AuthContainer from '../authedContainer';
+import { Button } from 'antd';
+import { formGetByPath, formUpdateMarkup, formTestDelayGet, formTestDelayPost } from '../../apis/form';
 
 export default {
   title: 'Components/Temp/FormDesigner',
@@ -39,3 +41,92 @@ const indexPageProps: IFormDesignerStoryProps = {
   formPath: '/indexTable',
 };
 IndexPage.args = { ...indexPageProps };
+
+
+//#region for refactoring only
+
+export interface IActionsTemplateProps {
+  formPath: string;
+}
+const ActionsTemplate: Story<IActionsTemplateProps> = props => {
+  return (
+    <ShaApplicationProvider backendUrl={backendUrl}>
+      <AuthContainer layout={true}>
+        <ActionsTemplateContent {...props}></ActionsTemplateContent>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  );
+}
+
+const ActionsTemplateContent: FC<IActionsTemplateProps> = (props) => {
+  const { backendUrl, httpHeaders } = useSheshaApplication();
+
+  const [form, setForm] = useState(null);
+
+  const onLoadClick = () => {
+    formGetByPath({ path: props.formPath }, { base: backendUrl, headers: httpHeaders })
+      .then(response => {
+        console.log({ msg: 'loaded', response: response });
+        setForm(response.result);
+      })
+      .catch(error => {
+        console.log({ msg: 'failed to load', error: error });
+      });
+  }
+
+  const onSaveClick = () => {
+    if (!Boolean(form))
+    {
+      console.log('Form not loaded!');
+      return;
+    }
+    
+    formUpdateMarkup(form, { id: form.id, base: backendUrl, headers: httpHeaders })
+      .then(response => {
+        console.log({ msg: 'form saved', response: response });
+      })
+      .catch(err => {
+        console.log({ msg: 'form save failed', error: err });
+      });
+  }
+
+  const onPostClick = () => {
+    formTestDelayPost({ queryParams: { delayMs: 200 }, base: backendUrl, headers: httpHeaders })
+      .then(response => {
+        console.log({ msg: 'post success', response: response });
+      })
+      .catch(error => {
+        console.log({ msg: 'post failed', error: error });
+      });
+  }
+
+  const onGetClick = () => {
+    formTestDelayGet({ delayMs: 500 }, {base: backendUrl, headers: httpHeaders})
+      .then(response => {
+        console.log({ msg: 'get success', response: response });
+      })
+      .catch(err => {
+        console.log({ msg: 'get failed', error: err });
+      });
+  }
+
+  return (
+    <div>
+      <Button onClick={onLoadClick}>Load form by path</Button>
+      <Button onClick={onSaveClick}>Save form</Button>
+      
+      <Button onClick={onPostClick}>Test Post</Button>
+      <Button onClick={onGetClick}>Test Get</Button>
+    </div>
+  );
+}
+
+
+
+export const RefactoringActions = ActionsTemplate.bind({});
+const refactoringArgs: IActionsTemplateProps = {
+  formPath: '/indexTable'
+};
+RefactoringActions.args = refactoringArgs;
+
+//#endregion

@@ -15,6 +15,7 @@ import Mustache from 'mustache';
 import { IToolboxComponentBase, IToolboxComponentGroup, IToolboxComponents } from '../../interfaces';
 import Schema, { Rules, ValidateSource } from 'async-validator';
 import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
+import { formGet, formGetByPath } from '../../apis/form';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -126,8 +127,27 @@ export const componentsFlatStructureToTree = (
 /**
  * Load form from the back-end
  */
-export const loadForm = () => {
-
+export const loadFormById = (id: string) => {
+  return formGet({ id });
+  /*
+    if (id) {
+      dispatch(loadRequestAction({ id }));
+      fetcherById.refetch({});
+    } else if (path) {
+      dispatch(loadRequestAction({ path }));
+      fetcherByPath.refetch({ queryParams: { path: path } });  
+  */
+}
+export const loadFormByPath = (path: string) => {
+  return formGetByPath({ path }, {});
+  /*
+    if (id) {
+      dispatch(loadRequestAction({ id }));
+      fetcherById.refetch({});
+    } else if (path) {
+      dispatch(loadRequestAction({ path }));
+      fetcherByPath.refetch({ queryParams: { path: path } });  
+  */
 }
 
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
