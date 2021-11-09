@@ -87,12 +87,7 @@ export const ConfigurableComponent = <TSettings extends any>({
         </BlockOverlay>
       ))}
       {modalVisible && (
-        <ComponentSettingsModal<TSettings>
-          onCancel={onCancelClick}
-          onSave={onSave}
-          markup={null}
-          model={null}
-        ></ComponentSettingsModal>
+        <ComponentSettingsModal<TSettings> onCancel={onCancelClick} onSave={onSave} markup={null} model={null} />
       )}
     </>
   );

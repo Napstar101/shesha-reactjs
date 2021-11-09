@@ -61,22 +61,28 @@ const Template: Story<IExtendedChildTableProps> = args => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer>
-        <DataTableProvider tableId={args?.id} parentEntityId={args?.parentEntityId} >
-          <ChildTable {...args} tableRef={tableRef} toolbarItems={[
-            // {
-            //   title: 'Add something',
-            //   render: () => <Button size="small">Do Something</Button>
-            // },
-            {
-              title: 'Picker',
-              render: () => <EntityPicker tableId="Students_Picker_Index" useButtonPicker pickerButtonProps={{size: 'small'}} />
-            }
-          ]} />
+        <DataTableProvider tableId={args?.id} parentEntityId={args?.parentEntityId}>
+          <ChildTable
+            {...args}
+            tableRef={tableRef}
+            toolbarItems={[
+              // {
+              //   title: 'Add something',
+              //   render: () => <Button size="small">Do Something</Button>
+              // },
+              {
+                title: 'Picker',
+                render: () => (
+                  <EntityPicker tableId="Students_Picker_Index" useButtonPicker pickerButtonProps={{ size: 'small' }} />
+                ),
+              },
+            ]}
+          />
         </DataTableProvider>
       </AuthContainer>
     </ShaApplicationProvider>
   );
-}
+};
 
 export const SimpleChildTable = Template.bind({});
 SimpleChildTable.args = { label: 'Simple', ...simpleTableProps };

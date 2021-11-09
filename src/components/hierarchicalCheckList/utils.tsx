@@ -140,21 +140,19 @@ export const filterOnSelectionsChange = (
     ownerType,
     selection: selections.map(({ checkListItemId, selection, comments }) => {
       if (selection !== CheckListSelectionType.Yes && allChecked) {
-        allChecked = false
+        allChecked = false;
       }
 
       return {
         checkListItemId,
         selection,
         comments,
-      }
-    })
-  }
+      };
+    }),
+  };
 
-  return {...response, allChecked };
-}
-  
-
+  return { ...response, allChecked };
+};
 
 type ChecklistErrorTypes =
   | 'noCommentsNoSelections'

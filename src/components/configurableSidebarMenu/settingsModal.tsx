@@ -12,7 +12,7 @@ export interface IProps extends ISettingsEditorProps<ISideBarMenuProps> {
 export const ComponentSettingsModal: FC<IProps> = props => {
   return (
     <SidebarMenuConfiguratorProvider items={props.settings.items}>
-      <ComponentSettingsModalInner {...props}></ComponentSettingsModalInner>
+      <ComponentSettingsModalInner {...props} />
     </SidebarMenuConfiguratorProvider>
   );
 };
@@ -20,8 +20,10 @@ export const ComponentSettingsModal: FC<IProps> = props => {
 export const ComponentSettingsModalInner: FC<IProps> = ({ title, onSave, onCancel }) => {
   const { items } = useSidebarMenuConfigurator();
 
+  console.log('ComponentSettingsModalInner...');
+
   const onOk = () => {
-    onSave({ items: items });
+    onSave({ items });
   };
 
   return (

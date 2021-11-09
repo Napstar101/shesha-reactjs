@@ -12,6 +12,8 @@ export interface ISidebarConfiguratorProps {}
 export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
   const { items, addItem, addGroup } = useSidebarMenuConfigurator();
 
+  console.log('SidebarConfigurator...');
+
   return (
     <div className="sha-sidebar-configurator">
       <h4>You can customize the Menu component from this screen.</h4>

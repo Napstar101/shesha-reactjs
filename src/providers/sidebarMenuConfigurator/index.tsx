@@ -19,6 +19,7 @@ import {
 } from './actions';
 import { getItemById } from './utils';
 import { ISidebarMenuItem } from '../sidebarMenu';
+import { useDeepCompareMemo } from '../..';
 
 export interface ISidebarMenuConfiguratorProviderPropsBase {
   baseUrl?: string;
@@ -70,8 +71,12 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
+  const memoizedItems = useDeepCompareMemo(() => {
+    return state?.items;
+  }, [state?.items]);
+
   return (
-    <SidebarMenuConfiguratorStateContext.Provider value={state}>
+    <SidebarMenuConfiguratorStateContext.Provider value={{ ...state, items: memoizedItems }}>
       <SidebarMenuConfiguratorActionsContext.Provider
         value={{
           addItem,
