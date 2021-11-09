@@ -1,16 +1,15 @@
+import { ILabelValueEditorProps } from './../components/formDesigner/components/labelValueEditor/labelValueEditorComponent';
 import { ITextFieldProps } from './../components/formDesigner/components/textField/textField';
 import { IDropdownProps } from './../../dist/components/formDesigner/components/dropdown/models.d';
 import { IConfigurableFormComponent } from '.';
-import { IAlertProps } from '../components/formDesigner/components/alert/alertComponent';
 import { ISectionSeparatorProps } from '../components/sectionSeparator';
 import { IIconPickerComponentProps } from '../components/formDesigner/components/iconPicker';
 import { IAutocompleteProps } from '../components/formDesigner/components/autocomplete/autocomplete';
 import { ICheckboxProps } from '../components/formDesigner/components/checkbox/checkbox';
 import { INumberFieldProps } from '../components/formDesigner/components/numberField/models';
+import { IQueryBuilderProps } from '../components/formDesigner/components/queryBuilder/queryBuilderComponent';
 
 interface ToolbarSettingsProp extends Omit<IConfigurableFormComponent, 'type'> {}
-
-type AlertType = ToolbarSettingsProp & Omit<IAlertProps, 'type'>;
 
 type DropdownType = ToolbarSettingsProp & Omit<IDropdownProps, 'type'>;
 
@@ -26,16 +25,14 @@ type CheckboxType = ToolbarSettingsProp & Omit<ICheckboxProps, 'type'>;
 
 type NumberFieldType = ToolbarSettingsProp & Omit<INumberFieldProps, 'type'>;
 
-class ToolbarSettings {
+type LabelValueEditorType = ToolbarSettingsProp & Omit<ILabelValueEditorProps, 'type'>;
+
+type QueryBuilderType = ToolbarSettingsProp & Omit<IQueryBuilderProps, 'type'>;
+
+export class DesignerToolbarSettings {
   private settings: IConfigurableFormComponent[];
 
   constructor() {}
-
-  addAlert(props: AlertType) {
-    this.settings.push({ ...props, type: 'alert' });
-
-    return this;
-  }
 
   addDropdown(props: DropdownType) {
     this.settings.push({ ...props, type: 'dropdown' });
@@ -79,41 +76,17 @@ class ToolbarSettings {
     return this;
   }
 
-  // addSectionSeparator({ ...props }: ToolbarSettingsProp) {
-  //   this.settings.push({ ...props, type: 'sectionSeparator' });
+  addLabelValueEditor(props: LabelValueEditorType) {
+    this.settings.push({ ...props, type: 'labelValueEditor' });
 
-  //   return this;
-  // }
+    return this;
+  }
 
-  // addSectionSeparator({ ...props }: ToolbarSettingsProp) {
-  //   this.settings.push({ ...props, type: 'sectionSeparator' });
+  addQueryBuilder(props: QueryBuilderType) {
+    this.settings.push({ ...props, type: 'queryBuilder' });
 
-  //   return this;
-  // }
-
-  // addSectionSeparator({ ...props }: ToolbarSettingsProp) {
-  //   this.settings.push({ ...props, type: 'sectionSeparator' });
-
-  //   return this;
-  // }
-
-  // addSectionSeparator({ ...props }: ToolbarSettingsProp) {
-  //   this.settings.push({ ...props, type: 'sectionSeparator' });
-
-  //   return this;
-  // }
-
-  // addSectionSeparator({ ...props }: ToolbarSettingsProp) {
-  //   this.settings.push({ ...props, type: 'sectionSeparator' });
-
-  //   return this;
-  // }
-
-  // addSectionSeparator({ ...props }: ToolbarSettingsProp) {
-  //   this.settings.push({ ...props, type: 'sectionSeparator' });
-
-  //   return this;
-  // }
+    return this;
+  }
 
   toJson() {
     return this.settings;
@@ -125,15 +98,9 @@ class ToolbarSettings {
   }
 }
 
-const settings = new ToolbarSettings();
+const settings = new DesignerToolbarSettings();
 
 settings
-  ?.addAlert({
-    id: 'dce9c2e8-4190-11ec-81d3-0242ac130003',
-    name: '',
-    text: 'Some text comes in here',
-    description: 'Some description',
-  })
   .addDropdown({ id: 'dce9c4fa-4190-11ec-81d3-0242ac130003', name: 'someName', dataSourceType: 'entityList' })
   .addSectionSeparator({ id: 'dce9c7ca-4190-11ec-81d3-0242ac130003', name: 'someName', sectionName: 'someSection' })
   .addTextField({ id: 'dce9c89c-4190-11ec-81d3-0242ac130003', name: 'someTextField' })
@@ -146,4 +113,13 @@ settings
   })
   .addCheckbox({ id: 'dce9ca0e-4190-11ec-81d3-0242ac130003', name: 'checkboxName' })
   .addNumberField({ id: 'dce9cac2-4190-11ec-81d3-0242ac130003', name: 'someNumberField' })
+  .addLabelValueEditor({
+    id: 'dce9cb76-4190-11ec-81d3-0242ac130003',
+    name: 'someLabelValue',
+    labelName: 'labelName',
+    labelTitle: 'labelTitle',
+    valueName: 'valueName',
+    valueTitle: 'valueTitle',
+  })
+  .addQueryBuilder({ id: 'dce9cb76-4190-11ec-81d3-0242ac130003', name: 'queryBuilder' })
   .toJson();
