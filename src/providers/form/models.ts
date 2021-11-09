@@ -27,6 +27,29 @@ export interface IComponentValidationRules {
   maxLength?: number;
 }
 
+export type ConfigurableFormComponentTypes =
+  | 'alert'
+  | 'datatableContext'
+  | 'toolbar'
+  | 'tableViewSelector'
+  | 'dropdown'
+  | 'textField'
+  | 'textField'
+  | 'iconPicker'
+  | 'container'
+  | 'collapsiblePanel'
+  | 'autocomplete'
+  | 'checkbox'
+  | 'numberField'
+  | 'sectionSeparator'
+  | 'labelValueEditor'
+  | 'queryBuilder'
+  | 'datatable'
+  | 'datatable.advancedFilterButton'
+  | 'datatable.pager'
+  | 'datatable.quickSearch'
+  | 'datatable.selectColumnsButton';
+
 /**
  * Base model of the configurable component
  */
@@ -38,7 +61,7 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   label?: string;
 
   /** Type of the component */
-  type: string;
+  type: ConfigurableFormComponentTypes;
 
   /** Description of the field, is used for tooltips */
   description?: string;
