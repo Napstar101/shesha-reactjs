@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import FormDesigner from './formDesigner';
-import { FormProvider, ShaApplicationProvider, useSheshaApplication } from '../../providers';
+import { MetadataProvider, FormProvider, ShaApplicationProvider, useSheshaApplication } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button } from 'antd';
 import { formGetByPath, formUpdateMarkup, formTestDelayGet, formTestDelayPost } from '../../apis/form';
@@ -13,7 +13,8 @@ export default {
 } as Meta;
 
 export interface IFormDesignerStoryProps {
-  formPath: string;
+  formPath?: string;
+  formId?: string;
 }
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
@@ -22,9 +23,15 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
-      <FormProvider path={args.formPath} mode="designer">
-        <FormDesigner />
-      </FormProvider>
+      <MetadataProvider>
+        <FormProvider 
+          path={args.formPath}
+          id={args.formId}
+          mode="designer"
+        >
+          <FormDesigner />
+        </FormProvider>
+      </MetadataProvider>
     </AuthContainer>
   </ShaApplicationProvider>
 );
@@ -37,7 +44,8 @@ TableContextProps.args = {
 
 export const ColumnProps = DesignerTemplate.bind({});
 const columnProps: IFormDesignerStoryProps = {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs\\src\\components\\formDesigner\\components\\dataTable\\table\\columnsEditor\\columnSettings.json'
+  //formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs\\src\\components\\formDesigner\\components\\dataTable\\table\\columnsEditor\\columnSettings.json'
+  formId: '70D82B7E-73AD-4EB1-A445-F569CEC771E0'
 };
 ColumnProps.args = { ...columnProps };
 
@@ -133,3 +141,9 @@ const refactoringArgs: IActionsTemplateProps = {
 RefactoringActions.args = refactoringArgs;
 
 //#endregion
+
+export const SectionsUsage = DesignerTemplate.bind({});
+const sectionsUsageArgs: IFormDesignerStoryProps = {
+  formPath: '/settings/forms/playground'
+};
+SectionsUsage.args = sectionsUsageArgs;

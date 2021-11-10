@@ -1,24 +1,33 @@
 import { createAction } from 'redux-actions';
 import {
-  ILoadPropertiesPayload, ILoadPropertiesSuccessPayload,
+  ILoadMetadataErrorPayload,
+  ILoadMetadataPayload,
+  ILoadMetadataSuccessPayload,
 } from './contexts';
 
 export enum MetadataActionEnums {
   /*
   component: add delete update move
   */
-  LoadProperties = 'LOAD_PROPERTIES',
-  LoadPropertiesSuccess = 'LOAD_PROPERTIES_SUCCESS',
+  LoadMetadata = 'LOAD_METADATA',
+  LoadMetadataSuccess = 'LOAD_METADATA_SUCCESS',
+  LoadMetadataError = 'LOAD_METADATA_ERROR',
 
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
-export const loadPropertiesAction = createAction<ILoadPropertiesPayload, ILoadPropertiesPayload>(
-  MetadataActionEnums.LoadProperties,
+export const loadMetadataAction = createAction<ILoadMetadataPayload, ILoadMetadataPayload>(
+  MetadataActionEnums.LoadMetadata,
   p => p
 );
-export const loadPropertiesSuccessAction = createAction<ILoadPropertiesSuccessPayload, ILoadPropertiesSuccessPayload>(
-  MetadataActionEnums.LoadPropertiesSuccess,
+
+export const loadMetadataSuccessAction = createAction<ILoadMetadataSuccessPayload, ILoadMetadataSuccessPayload>(
+  MetadataActionEnums.LoadMetadataSuccess,
+  p => p
+);
+
+export const loadMetadataErrorAction = createAction<ILoadMetadataErrorPayload, ILoadMetadataErrorPayload>(
+  MetadataActionEnums.LoadMetadataError,
   p => p
 );
 

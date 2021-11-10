@@ -12,6 +12,7 @@ export interface IProps {
 }
 
 function ColumnsSettings(props: IProps) {
+
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
 

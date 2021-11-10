@@ -1,15 +1,18 @@
-import React, { FC, useContext, PropsWithChildren, useEffect } from 'react';
+import React, { FC, useContext, PropsWithChildren } from 'react';
 import metadataReducer from './reducer';
 import {
   MetadataActionsContext,
   MetadataStateContext,
   METADATA_CONTEXT_INITIAL_STATE,
-  ILoadPropertiesPayload,
   IMetadataStateContext,
   IMetadataActionsContext,
+  IGetMetadataPayload,
+  IModelMetadata,
 } from './contexts';
 import {
-  loadPropertiesAction as loadPropertiesAction, loadPropertiesSuccessAction,
+  loadMetadataAction,
+  loadMetadataSuccessAction,
+  loadMetadataErrorAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import useThunkReducer from 'react-hook-thunk-reducer';
@@ -18,65 +21,57 @@ import { IPropertyMetadata } from './models';
 import { useSheshaApplication } from '../../providers';
 
 export interface IMetadataProviderProps {
-  id: string;
-  containerType: string;
-  onMetadataLoaded?: (properties: IPropertyMetadata[]) => void;
-  cleanup?: () => void;
+  id?: string;
 }
 
 const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
   id,
   children,
-  containerType,
-  onMetadataLoaded,
-  cleanup,
 }) => {
   const initial: IMetadataStateContext = {
     ...METADATA_CONTEXT_INITIAL_STATE,
     id,
-    containerType: containerType,
   };
 
   const [state, dispatch] = useThunkReducer(metadataReducer, initial);
 
   //const parentProvider = useMetadata(false);
 
-  // execute cleanup code on unmount
-  useEffect(() => {
-    return () => {
-      //console.log('cleanup');
-      if (cleanup)
-        cleanup();
-    }
-  }, []);
-
   const { backendUrl, httpHeaders } = useSheshaApplication();
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
-  const loadProperties = (payload: ILoadPropertiesPayload) => {
-    dispatch(loadPropertiesAction(payload));
-    
-    // fetch properties from the back-end
-    metadataGetProperties({ container: containerType }, { base: backendUrl, headers: httpHeaders })
-      .then(response => {
-        if (response.success){
+  const getMetadata = (payload: IGetMetadataPayload) => {
+    const { modelType } = payload;
+    const loadedModel = state.models[payload.modelType];
+    if (loadedModel)
+      return Promise.resolve(loadedModel);
+
+    dispatch(loadMetadataAction({ modelType: payload.modelType }));
+
+    const result = new Promise<IModelMetadata>((resolve, reject) => {
+      metadataGetProperties({ container: modelType }, { base: backendUrl, headers: httpHeaders })
+        .then(response => {
+          if (!response.success) {
+            dispatch(loadMetadataErrorAction({ modelType: payload.modelType, error: response.error?.message }));
+            reject(response.error);
+          }
           const properties = response.result.map<IPropertyMetadata>(p => ({
             path: p.path,
             label: p.label,
             description: p.description,
-          
+
             isVisible: p.isVisible,
             readonly: p.readonly,
             orderIndex: p.orderIndex,
             groupName: p.groupName,
-          
+
             //#region data type
             dataType: p.dataType,
             entityTypeShortAlias: p.entityTypeShortAlias,
             referenceListName: p.referenceListName,
             referenceListNamespace: p.referenceListNamespace,
             //#endregion
-          
+
             //#region validation
             required: p.required,
             minLength: p.minLength,
@@ -85,21 +80,27 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
             max: p.max,
             isEmail: p.isEmail
           }));
-          dispatch(loadPropertiesSuccessAction({
-            properties: properties
-          }));
-          if (onMetadataLoaded)
-            onMetadataLoaded(properties);
-        }
-      });
-  };
-  
-  useEffect(() => {
-    loadProperties({ containerType: containerType });
-  }, [containerType]);
+          const meta: IModelMetadata = {
+            type: payload.modelType,
+            name: payload.modelType, // todo: fetch name from server
+            properties
+          };
+
+          dispatch(loadMetadataSuccessAction({ metadata: meta }));
+
+          resolve(meta);
+        })
+        .catch(e => {
+          dispatch(loadMetadataErrorAction({ modelType: payload.modelType, error: e }));
+          reject(e)
+        });
+    });
+
+    return result;
+  }
 
   const metadataActions: IMetadataActionsContext = {
-    loadProperties,
+    getMetadata,
     /* NEW_ACTION_GOES_HERE */
   };
 

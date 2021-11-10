@@ -8,7 +8,7 @@ import { DataTableSelectionProvider, useDataTableSelection } from '../../../../.
 import ComponentsContainer from '../../../componentsContainer';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
-import { MetadataProvider, useDataTableStore, useForm } from '../../../../../providers';
+import { MetadataProvider, useDataTableStore, useForm, useMetadata } from '../../../../../providers';
 import DataTableProvider from '../../../../../providers/dataTable';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 
@@ -48,23 +48,35 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
     setTable(<TableContextInner key={uniqueKey} {...props}></TableContextInner>);
   }, [props.tableConfigId, props.entityType]);
 
+  const { getMetadata } = useMetadata();
+
   useEffect(() => {
+    // remove old datasource
     removeDataSource(props.id);
+
+    if (entityType){
+      getMetadata({ modelType: entityType })
+        .then(meta => {
+          addDataSource({ id: props.id, name: entityType, containerType: entityType, items: meta.properties });
+        });
+    }
+
+    return () => {
+      // clean-up on unmount
+      removeDataSource(props.id);  
+    }
   }, [entityType]);
 
-  const onMetadataLoaded = (properties) => {
-    addDataSource({ id: props.id, name: entityType, containerType: entityType, items: properties });
-  }
-  const onMetadataCleanup = () => {
-    removeDataSource(props.id);
-  }
+  /*
+  // // works as a useEffect
+  // useMetadata(entityType, meta => {
+  //   applyMeta(meta);
+  // });
+  */
 
   return entityType
     ? <MetadataProvider
         id={props.id}
-        containerType={entityType}
-        onMetadataLoaded={onMetadataLoaded}
-        cleanup={onMetadataCleanup}
       >
         {table}
       </MetadataProvider>

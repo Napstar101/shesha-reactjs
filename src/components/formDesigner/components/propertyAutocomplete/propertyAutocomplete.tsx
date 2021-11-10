@@ -9,9 +9,9 @@ export interface IPropertyAutocompleteProps {
 }
 
 export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
-    const { getActiveDataSource: getActiveDataSurce } = useForm();
-    const dataSource = getActiveDataSurce();
-    console.log({ s:'propauto', dataSource });
+    const { getActiveDataSource, activeDataSourceId } = useForm();
+    const dataSource = getActiveDataSource();
+    console.log({ s:'propauto', dataSource, activeDataSourceId });
     const properties = dataSource?.items || [];
     const opts = properties.map(p => ({ value: p.path, label: p.label }));
 
