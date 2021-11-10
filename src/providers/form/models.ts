@@ -29,9 +29,8 @@ export interface IComponentValidationRules {
 
 export type ConfigurableFormComponentTypes =
   | 'alert'
-  | 'datatableContext'
+  | 'address'
   | 'toolbar'
-  | 'tableViewSelector'
   | 'dropdown'
   | 'textField'
   | 'textField'
@@ -43,13 +42,8 @@ export type ConfigurableFormComponentTypes =
   | 'checkbox'
   | 'numberField'
   | 'sectionSeparator'
-  | 'labelValueEditor'
   | 'queryBuilder'
-  | 'datatable'
-  | 'datatable.advancedFilterButton'
-  | 'datatable.pager'
-  | 'datatable.quickSearch'
-  | 'datatable.selectColumnsButton';
+  | 'labelValueEditor';
 
 /**
  * Base model of the configurable component
@@ -62,7 +56,7 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   label?: string;
 
   /** Type of the component */
-  type: ConfigurableFormComponentTypes;
+  type: string;
 
   /** Description of the field, is used for tooltips */
   description?: string;

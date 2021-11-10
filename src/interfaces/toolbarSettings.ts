@@ -1,7 +1,7 @@
+import { IDropdownProps } from './../components/formDesigner/components/dropdown/models';
 import { ITextAreaProps } from './../components/formDesigner/components/textArea/textArea';
 import { ILabelValueEditorProps } from './../components/formDesigner/components/labelValueEditor/labelValueEditorComponent';
 import { ITextFieldProps } from './../components/formDesigner/components/textField/textField';
-import { IDropdownProps } from './../../dist/components/formDesigner/components/dropdown/models.d';
 import { IConfigurableFormComponent } from '.';
 import { ISectionSeparatorProps } from '../components/sectionSeparator';
 import { IIconPickerComponentProps } from '../components/formDesigner/components/iconPicker';
@@ -33,7 +33,7 @@ type LabelValueEditorType = ToolbarSettingsProp & Omit<ILabelValueEditorProps, '
 type QueryBuilderType = ToolbarSettingsProp & Omit<IQueryBuilderProps, 'type'>;
 
 export class DesignerToolbarSettings {
-  private form: IConfigurableFormComponent[];
+  protected form: IConfigurableFormComponent[];
 
   constructor() {
     this.form = [];

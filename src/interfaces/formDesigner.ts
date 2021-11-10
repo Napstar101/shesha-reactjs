@@ -1,13 +1,7 @@
 import { ReactNode, MutableRefObject } from 'react';
-import {
-  IConfigurableFormComponent,
-  IFormComponentContainer,
-  FormMarkup,
-  ConfigurableFormComponentTypes,
-} from '../providers/form/models';
+import { IConfigurableFormComponent, IFormComponentContainer, FormMarkup } from '../providers/form/models';
 import { FormInstance } from 'antd';
 import { InternalNamePath } from 'rc-field-form/lib/interface';
-import { IAlertProps } from '../components/formDesigner/components/alert';
 
 export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
   model: TModel;
@@ -19,7 +13,7 @@ export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
 export type ISettingsFormFactory = (props: ISettingsFormFactoryArgs) => ReactNode;
 
 export interface IToolboxComponentBase {
-  type: ConfigurableFormComponentTypes;
+  type: string;
   name: string;
   icon: ReactNode;
   isHidden?: boolean;
