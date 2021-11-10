@@ -35,6 +35,7 @@ export type ConfigurableFormComponentTypes =
   | 'dropdown'
   | 'textField'
   | 'textField'
+  | 'textArea'
   | 'iconPicker'
   | 'container'
   | 'collapsiblePanel'

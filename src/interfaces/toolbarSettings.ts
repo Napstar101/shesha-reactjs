@@ -1,3 +1,4 @@
+import { ITextAreaProps } from './../components/formDesigner/components/textArea/textArea';
 import { ILabelValueEditorProps } from './../components/formDesigner/components/labelValueEditor/labelValueEditorComponent';
 import { ITextFieldProps } from './../components/formDesigner/components/textField/textField';
 import { IDropdownProps } from './../../dist/components/formDesigner/components/dropdown/models.d';
@@ -17,6 +18,8 @@ type SectionSeparatorType = ToolbarSettingsProp & Omit<ISectionSeparatorProps, '
 
 type TextFieldType = ToolbarSettingsProp & Omit<ITextFieldProps, 'type'>;
 
+type TextAreaType = ToolbarSettingsProp & Omit<ITextAreaProps, 'type'>;
+
 type IconPickerType = ToolbarSettingsProp & Omit<IIconPickerComponentProps, 'type'>;
 
 type AutocompleteType = ToolbarSettingsProp & Omit<IAutocompleteProps, 'type'>;
@@ -32,7 +35,9 @@ type QueryBuilderType = ToolbarSettingsProp & Omit<IQueryBuilderProps, 'type'>;
 export class DesignerToolbarSettings {
   private settings: IConfigurableFormComponent[];
 
-  constructor() {}
+  constructor() {
+    this.settings = [];
+  }
 
   addDropdown(props: DropdownType) {
     this.settings.push({ ...props, type: 'dropdown' });
@@ -46,13 +51,19 @@ export class DesignerToolbarSettings {
     return this;
   }
 
-  addTextField({ ...props }: TextFieldType) {
+  addTextField(props: TextFieldType) {
     this.settings.push({ ...props, type: 'textField' });
 
     return this;
   }
 
-  addIconPicker({ ...props }: IconPickerType) {
+  addTextArea(props: TextAreaType) {
+    this.settings.push({ ...props, type: 'textArea' });
+
+    return this;
+  }
+
+  addIconPicker(props: IconPickerType) {
     this.settings.push({ ...props, type: 'iconPicker' });
 
     return this;

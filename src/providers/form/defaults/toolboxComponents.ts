@@ -16,7 +16,7 @@ import AttachmentsEditor from '../../../components/formDesigner/components/attac
 import Button from '../../../components/formDesigner/components/button/button';
 import KeyValueEditor from '../../../components/formDesigner/components/labelValueEditor/labelValueEditorComponent';
 import CollapsiblePanel from '../../../components/formDesigner/components/collapsiblePanel/collapsiblePanelComponent';
-import Alert from '../../../components/formDesigner/components/alert/alertComponent';
+import Alert from '../../../components/formDesigner/components/alert';
 import Notes from '../../../components/formDesigner/components/notes/notesComponent';
 import ChildDataTable from '../../../components/formDesigner/components/childDataTable/childDataTableComponent';
 import Address from '../../../components/formDesigner/components/address/addressComponent';

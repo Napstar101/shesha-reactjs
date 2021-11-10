@@ -7,7 +7,7 @@ import {
 } from '../providers/form/models';
 import { FormInstance } from 'antd';
 import { InternalNamePath } from 'rc-field-form/lib/interface';
-import { IAlertProps } from '../components/formDesigner/components/alert/alertComponent';
+import { IAlertProps } from '../components/formDesigner/components/alert';
 
 export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
   model: TModel;
