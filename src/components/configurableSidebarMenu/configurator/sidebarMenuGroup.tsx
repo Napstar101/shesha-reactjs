@@ -37,7 +37,7 @@ export const SidebarMenuGroup: FC<IProps> = props => {
           <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
         </div>
         <div className="sha-sidebar-group-container">
-          <SidebarItemsContainer index={props.index} items={props.childItems || []}></SidebarItemsContainer>
+          <SidebarItemsContainer index={props.index} items={props.childItems || []} />
         </div>
         {/* { props.childItems && props.childItems.map((item, index) => {
           return <SidebarMenuItem {...item} key={index} index={[ ...props.index, index ]} />

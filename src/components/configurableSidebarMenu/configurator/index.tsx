@@ -7,7 +7,7 @@ import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfig
 import React from 'react';
 import '../styles/index.less';
 
-export interface ISidebarConfiguratorProps { }
+export interface ISidebarConfiguratorProps {}
 
 export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
   const { items, addItem, addGroup } = useSidebarMenuConfigurator();
@@ -30,7 +30,7 @@ export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
           content: () => <ToolbarItemProperties></ToolbarItemProperties>,
         }}
       >
-        <SidebarItemsContainer items={items} index={[]}></SidebarItemsContainer>
+        <SidebarItemsContainer items={items} index={[]} />
       </SidebarContainer>
     </div>
   );
