@@ -65,6 +65,7 @@ import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
 import { IAsyncValidationError, IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
+import { useMetadataDispatcher } from '../../providers';
 
 export interface IFormProviderProps {
   id?: string;
@@ -114,6 +115,8 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     toolboxComponentGroups: actualComponentGroups,
     ...flatComponents,
   };
+
+  const { activateProvider } = useMetadataDispatcher();
 
   const [state, dispatch] = useThunkReducer(formReducer, {
     past: [],
@@ -371,6 +374,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   };
 
   const setSelectedComponent = (id: string, dataSourceId: string, componentRef?: MutableRefObject<any>) => {
+    activateProvider(dataSourceId);
     dispatch(setSelectedComponentAction({ id, dataSourceId, componentRef }));
   };
 

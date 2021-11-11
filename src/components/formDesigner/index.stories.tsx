@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import FormDesigner from './formDesigner';
-import { MetadataProvider, FormProvider, ShaApplicationProvider, useSheshaApplication } from '../../providers';
+import { /*MetadataProvider,*/ FormProvider, ShaApplicationProvider, useSheshaApplication, MetadataDispatcherProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button } from 'antd';
 import { formGetByPath, formUpdateMarkup, formTestDelayGet, formTestDelayPost } from '../../apis/form';
@@ -23,15 +23,17 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
-      <MetadataProvider>
-        <FormProvider 
-          path={args.formPath}
-          id={args.formId}
-          mode="designer"
-        >
-          <FormDesigner />
-        </FormProvider>
-      </MetadataProvider>
+      <MetadataDispatcherProvider>
+        {/* <MetadataProvider> */}
+          <FormProvider 
+            path={args.formPath}
+            id={args.formId}
+            mode="designer"
+          >
+            <FormDesigner />
+          </FormProvider>
+        {/* </MetadataProvider> */}
+      </MetadataDispatcherProvider>
     </AuthContainer>
   </ShaApplicationProvider>
 );

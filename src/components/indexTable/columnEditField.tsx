@@ -8,7 +8,7 @@ import EntityDropdown from '../entityDropdown';
 import { IColumnEditFieldProps } from './interfaces';
 import {
   IGuidNullableEntityWithDisplayNameDto,
-  IReferenceListItemDto,
+  //IReferenceListItemDto,
   IReferenceListItemValueDto,
 } from '../../interfaces/shesha';
 import FormItem from 'antd/lib/form/FormItem';

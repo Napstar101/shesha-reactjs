@@ -8,7 +8,7 @@ import { DataTableSelectionProvider, useDataTableSelection } from '../../../../.
 import ComponentsContainer from '../../../componentsContainer';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
-import { MetadataProvider, useDataTableStore, useForm, useMetadata } from '../../../../../providers';
+import { MetadataProvider, useDataTableStore, useForm } from '../../../../../providers';
 import DataTableProvider from '../../../../../providers/dataTable';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 
@@ -40,14 +40,14 @@ const TableContextComponent: IToolboxComponent<ITableContextComponentProps> = {
 
 export const TableContext: FC<ITableContextComponentProps> = props => {
   const [table, setTable] = useState(<></>);
-  const { addDataSource, removeDataSource } = useForm();
+  //const { addDataSource, removeDataSource } = useForm();
   const { entityType } = props;
 
   useEffect(() => {
     const uniqueKey = `${props.tableConfigId ?? 'empty'}_${props.entityType ?? 'empty'}`; // is used just for re-rendering
     setTable(<TableContextInner key={uniqueKey} {...props}></TableContextInner>);
   }, [props.tableConfigId, props.entityType]);
-
+/*
   const { getMetadata } = useMetadata();
 
   useEffect(() => {
@@ -66,6 +66,7 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
       removeDataSource(props.id);  
     }
   }, [entityType]);
+  */
 
   /*
   // // works as a useEffect
@@ -77,6 +78,7 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
   return entityType
     ? <MetadataProvider
         id={props.id}
+        modelType={entityType}
       >
         {table}
       </MetadataProvider>

@@ -1,4 +1,4 @@
-import React, { FC, useContext, PropsWithChildren } from 'react';
+import React, { FC, useContext, PropsWithChildren, useEffect, useRef } from 'react';
 import metadataReducer from './reducer';
 import {
   MetadataActionsContext,
@@ -6,103 +6,54 @@ import {
   METADATA_CONTEXT_INITIAL_STATE,
   IMetadataStateContext,
   IMetadataActionsContext,
-  IGetMetadataPayload,
-  IModelMetadata,
+  IMetadataContext,
 } from './contexts';
 import {
-  loadMetadataAction,
-  loadMetadataSuccessAction,
-  loadMetadataErrorAction,
+  // loadMetadataAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import useThunkReducer from 'react-hook-thunk-reducer';
-import { metadataGetProperties } from '../../apis/metadata';
-import { IPropertyMetadata } from './models';
-import { useSheshaApplication } from '../../providers';
+import { useMetadataDispatcher } from '../../providers';
 
 export interface IMetadataProviderProps {
   id?: string;
+  modelType: string;
 }
 
 const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
   id,
+  modelType,
   children,
 }) => {
   const initial: IMetadataStateContext = {
     ...METADATA_CONTEXT_INITIAL_STATE,
     id,
+    modelType,
   };
-
+  //@ts-ignore
   const [state, dispatch] = useThunkReducer(metadataReducer, initial);
 
-  //const parentProvider = useMetadata(false);
+  // register provider in the dispatcher if exists
+  const { registerProvider, getMetadata: fetchMeta } = useMetadataDispatcher(false);
+  
+  useEffect(() => {
+    if (modelType)
+      fetchMeta({ modelType });
+  }, [modelType]);  
 
-  const { backendUrl, httpHeaders } = useSheshaApplication();
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
-  const getMetadata = (payload: IGetMetadataPayload) => {
-    const { modelType } = payload;
-    const loadedModel = state.models[payload.modelType];
-    if (loadedModel)
-      return Promise.resolve(loadedModel);
-
-    dispatch(loadMetadataAction({ modelType: payload.modelType }));
-
-    const result = new Promise<IModelMetadata>((resolve, reject) => {
-      metadataGetProperties({ container: modelType }, { base: backendUrl, headers: httpHeaders })
-        .then(response => {
-          if (!response.success) {
-            dispatch(loadMetadataErrorAction({ modelType: payload.modelType, error: response.error?.message }));
-            reject(response.error);
-          }
-          const properties = response.result.map<IPropertyMetadata>(p => ({
-            path: p.path,
-            label: p.label,
-            description: p.description,
-
-            isVisible: p.isVisible,
-            readonly: p.readonly,
-            orderIndex: p.orderIndex,
-            groupName: p.groupName,
-
-            //#region data type
-            dataType: p.dataType,
-            entityTypeShortAlias: p.entityTypeShortAlias,
-            referenceListName: p.referenceListName,
-            referenceListNamespace: p.referenceListNamespace,
-            //#endregion
-
-            //#region validation
-            required: p.required,
-            minLength: p.minLength,
-            maxLength: p.maxLength,
-            min: p.min,
-            max: p.max,
-            isEmail: p.isEmail
-          }));
-          const meta: IModelMetadata = {
-            type: payload.modelType,
-            name: payload.modelType, // todo: fetch name from server
-            properties
-          };
-
-          dispatch(loadMetadataSuccessAction({ metadata: meta }));
-
-          resolve(meta);
-        })
-        .catch(e => {
-          dispatch(loadMetadataErrorAction({ modelType: payload.modelType, error: e }));
-          reject(e)
-        });
-    });
-
-    return result;
+  const getMetadata = () => {
+    return fetchMeta({ modelType });
   }
 
   const metadataActions: IMetadataActionsContext = {
-    getMetadata,
     /* NEW_ACTION_GOES_HERE */
+    getMetadata
   };
+
+  const metaRef = useRef<IMetadataContext>({ ...state, ...metadataActions });  
+  registerProvider({ id, modelType, publicRef: metaRef });
 
   return (
     <MetadataStateContext.Provider value={state}>

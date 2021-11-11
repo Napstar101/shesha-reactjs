@@ -10,38 +10,21 @@ export interface IModelMetadata {
 
 export interface IMetadataStateContext {
   id: string;
-  models : { [key: string]: IModelMetadata };
-  inProgress: string[];
-  failed: string[];
-}
-
-export interface ILoadMetadataPayload {
-  modelType: string;
-}
-
-export interface ILoadMetadataSuccessPayload {
-  metadata: IModelMetadata;  
-}
-
-export interface ILoadMetadataErrorPayload {
-  modelType: string;
-  error: string;
-}
-
-export interface IGetMetadataPayload {
   modelType: string;
 }
 
 export interface IMetadataActionsContext {
-  getMetadata: (payload: IGetMetadataPayload) => Promise<IModelMetadata>;
+  getMetadata: () => Promise<IModelMetadata>;
+}
+
+export interface IMetadataContext extends IMetadataStateContext, IMetadataActionsContext {
+  
 }
 
 /** initial state */
 export const METADATA_CONTEXT_INITIAL_STATE: IMetadataStateContext = {
   id: null,
-  models: {},
-  failed: [],
-  inProgress: [],
+  modelType: null,
 };
 
 export const MetadataStateContext = createContext<IMetadataStateContext>(METADATA_CONTEXT_INITIAL_STATE);
