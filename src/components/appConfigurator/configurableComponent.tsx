@@ -1,4 +1,4 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useAppConfigurator /*, useConfigurableComponent*/ } from '../../providers';
 import { ComponentSettingsModal } from './componentSettingsModal';
 
