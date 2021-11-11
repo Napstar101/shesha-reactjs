@@ -17,7 +17,11 @@ export interface IToolboxComponentBase {
   name: string;
   icon: ReactNode;
   isHidden?: boolean;
-  factory: (model: IConfigurableFormComponent, componentRef: MutableRefObject<any>, form: FormInstance<any>) => ReactNode;
+  factory: (
+    model: IConfigurableFormComponent,
+    componentRef: MutableRefObject<any>,
+    form: FormInstance<any>
+  ) => ReactNode;
   initModel?: (model: IConfigurableFormComponent) => IConfigurableFormComponent;
   getContainers?: (model: IConfigurableFormComponent) => IFormComponentContainer[];
   customContainerNames?: string[];
@@ -39,12 +43,12 @@ export interface IToolboxComponents {
   [key: string]: IToolboxComponentBase;
 }
 
-export { IConfigurableFormComponent, IFormComponentContainer }
+export { IConfigurableFormComponent, IFormComponentContainer };
 
 export interface IFieldValidationErrors {
   name: InternalNamePath;
   errors: string[];
-};
+}
 
 export { ValidateErrorEntity } from 'rc-field-form/lib/interface';
 
@@ -53,6 +57,4 @@ export interface IAsyncValidationError {
   message: string;
 }
 
-export interface IFormValidationErrors {
-
-}
+export interface IFormValidationErrors {}

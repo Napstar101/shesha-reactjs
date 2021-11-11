@@ -1,11 +1,11 @@
 import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
+import { IConfigurableFormComponent } from '../../../../providers/form/models';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import settingsFormJson from './settingsForm.json';
 import { Alert } from 'antd';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
+import { alertSettingsForm } from './settings';
 
 export interface IAlertProps extends IConfigurableFormComponent {
   text: string;
@@ -13,8 +13,6 @@ export interface IAlertProps extends IConfigurableFormComponent {
   showIcon?: boolean;
   alertType?: 'success' | 'info' | 'warning' | 'error';
 }
-
-const settingsForm = settingsFormJson as FormMarkup;
 
 const AlertComponent: IToolboxComponent<IAlertProps> = {
   type: 'alert',
@@ -38,8 +36,8 @@ const AlertComponent: IToolboxComponent<IAlertProps> = {
       />
     );
   },
-  settingsFormMarkup: settingsForm,
-  validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  settingsFormMarkup: alertSettingsForm,
+  validateSettings: model => validateConfigurableComponentSettings(alertSettingsForm, model),
 };
 
 export default AlertComponent;

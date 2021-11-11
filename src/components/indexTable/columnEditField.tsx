@@ -6,11 +6,7 @@ import { IndexColumnDataType } from '../../providers/dataTable/interfaces';
 import RefListDropDown, { IRefListDropDownOption } from '../refListDropDown';
 import EntityDropdown from '../entityDropdown';
 import { IColumnEditFieldProps } from './interfaces';
-import {
-  IGuidNullableEntityWithDisplayNameDto,
-  IReferenceListItemDto,
-  IReferenceListItemValueDto,
-} from '../../interfaces/shesha';
+import { IGuidNullableEntityWithDisplayNameDto, IReferenceListItemValueDto } from '../../interfaces/shesha';
 import FormItem from 'antd/lib/form/FormItem';
 
 // (alias) type IndexColumnDataType = "string" | "number" | "boolean" | "date" | "datetime" | "time" | "refList" | "multiValueRefList" | "entityReference" | "other"
@@ -108,19 +104,8 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
   const renderRenderReflistDropdown = () => {
     const placeholder = `Select ${caption}`;
 
-    const onChange = (_: number | number[], option: any) => {
-      const val =
-        dataType === 'multiValueRefList'
-          ? (option as IRefListDropDownOption[])?.map<IReferenceListItemDto>(({ children, value }) => ({
-              itemValue: value as number,
-              item: children,
-            }))
-          : {
-              itemValue: (option as IRefListDropDownOption)?.value as number,
-              item: (option as IRefListDropDownOption)?.children,
-            };
-
-      handleChange(name, val);
+    const onChange = (value: any) => {
+      handleChange(name, value);
     };
 
     const getMultiValueRefListValues = () =>
@@ -142,7 +127,7 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
         placeholder={placeholder}
         style={{ width: '100%' }}
         onChange={onChange}
-        value={{ itemValue: Number(val) }}
+        value={val as any}
       />
     );
   };
