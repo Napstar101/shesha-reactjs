@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Modal } from 'antd';
 import { ISettingsEditorProps } from '../configurableComponent';
 import { ISideBarMenuProps } from '.';
@@ -17,10 +17,8 @@ export const ComponentSettingsModal: FC<IProps> = props => {
   );
 };
 
-export const ComponentSettingsModalInner: FC<IProps> = ({ title, onSave, onCancel }) => {
+export const ComponentSettingsModalInner: FC<IProps> = memo(({ title, onSave, onCancel }) => {
   const { items } = useSidebarMenuConfigurator();
-
-  console.log('ComponentSettingsModalInner...');
 
   const onOk = () => {
     onSave({ items });
@@ -31,6 +29,6 @@ export const ComponentSettingsModalInner: FC<IProps> = ({ title, onSave, onCance
       <SidebarConfigurator />
     </Modal>
   );
-};
+});
 
 export default ComponentSettingsModal;

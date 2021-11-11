@@ -1,4 +1,4 @@
-import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
+import React, { FC, useReducer, useContext, PropsWithChildren, useMemo } from 'react';
 import sidebarMenuReducer from './reducer';
 import {
   IUpdateChildItemsPayload,
@@ -20,6 +20,7 @@ import {
 import { getItemById } from './utils';
 import { ISidebarMenuItem } from '../sidebarMenu';
 import { useDeepCompareMemo } from '../..';
+import { usePrevious } from 'react-use';
 
 export interface ISidebarMenuConfiguratorProviderPropsBase {
   baseUrl?: string;
@@ -37,6 +38,9 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
     items: props.items || [],
   });
 
+  // We don't wanna rerender if selectItem is called with the same selected value
+  const previousSelectedItem = usePrevious(state?.selectedItemId);
+
   const addItem = () => {
     dispatch(addItemAction());
   };
@@ -46,7 +50,9 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
   };
 
   const selectItem = (uid: string) => {
-    dispatch(selectItemAction(uid));
+    if (previousSelectedItem !== uid) {
+      dispatch(selectItemAction(uid));
+    }
   };
 
   const updateChildItems = (payload: IUpdateChildItemsPayload) => {
@@ -75,8 +81,12 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
     return state?.items;
   }, [state?.items]);
 
+  const memoizedSelectedItemId = useMemo(() => state?.selectedItemId, [state.selectedItemId]);
+
   return (
-    <SidebarMenuConfiguratorStateContext.Provider value={{ ...state, items: memoizedItems }}>
+    <SidebarMenuConfiguratorStateContext.Provider
+      value={{ ...state, items: memoizedItems, selectedItemId: memoizedSelectedItemId }}
+    >
       <SidebarMenuConfiguratorActionsContext.Provider
         value={{
           addItem,

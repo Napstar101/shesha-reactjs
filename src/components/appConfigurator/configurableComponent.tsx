@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, memo, useState } from 'react';
 import { useAppConfigurator /*, useConfigurableComponent*/ } from '../../providers';
 import { ComponentSettingsModal } from './componentSettingsModal';
 
@@ -94,3 +94,4 @@ export const ConfigurableComponent = <TSettings extends any>({
 };
 
 export default ConfigurableComponent;
+// export default memo(ConfigurableComponent);

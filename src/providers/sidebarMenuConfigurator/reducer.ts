@@ -41,15 +41,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
     ) => {
       const { payload } = action;
 
-      console.log('state.items: ', state.items);
       const items = removeIdDeep([...state.items], payload);
-      // const newItems = state.items.filter(item => item.id !== payload);
-
-      // const position = getItemPositionById(newItems, payload);
-
-      // console.log('SidebarMenuActionEnums.DeleteItem position: ', position);
-
-      console.log('newItems: ', items);
 
       return {
         ...state,
@@ -80,13 +72,17 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       const newItems = [...state.items];
 
       const position = getItemPositionById(newItems, payload.id);
+
       if (!position) return state;
 
       let newArray = position.ownerArray;
+
       newArray[position.index] = {
         ...newArray[position.index],
         ...payload.settings,
       };
+
+      console.log('newArray: ', newArray);
 
       return {
         ...state,

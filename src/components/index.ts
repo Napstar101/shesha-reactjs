@@ -84,7 +84,7 @@ export { default as ProtectedContent, IProtectedContentProps } from './protected
 export { default as QuickFilters, IQuickFiltersProps } from './quickFilters';
 export { default as RefListDropDown, IRefListDropDownProps } from './refListDropDown';
 export { default as RefListRadioButtons, IRefListRadioButtonsProps } from './refListRadioButtons';
-export { default as SaveFilterModal, ISaveFilterModalProps } from './saveFilterModal';
+export { ISaveFilterModalProps, default as SaveFilterModal } from './saveFilterModal';
 export { default as Scroll, IScrollProps } from './scroll';
 export { default as SectionSeparator, ISectionSeparatorProps } from './sectionSeparator';
 export { default as ShaDivider } from './shaDivider';
@@ -101,7 +101,10 @@ export { default as ValidationErrors, IValidationErrorsProps } from './validatio
 export { default as HierarchicalCheckList, IHierarchicalCheckListProps } from './hierarchicalCheckList';
 export { default as ShaIcon, IShaIconProps } from './shaIcon';
 export { default as IconPicker, IIconPickerProps } from './iconPicker';
-export { default as AppEditModeToggler, IAppEditModeTogglerProps as IEditModeTogglerProps } from './appConfigurator/editModeToggler'; // todo: convert to subtype
+export {
+  default as AppEditModeToggler,
+  IAppEditModeTogglerProps as IEditModeTogglerProps,
+} from './appConfigurator/editModeToggler'; // todo: convert to subtype
 export { default as ConfigurableComponent } from './appConfigurator/configurableComponent'; // todo: convert to subtype
 export { default as FormDesigner, IFormDesignerProps } from './formDesigner/formDesigner';
 export { default as QueryBuilder, IQueryBuilderProps } from './queryBuilder';
