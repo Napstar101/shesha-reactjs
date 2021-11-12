@@ -74,8 +74,8 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
 
   const getEditor = () => {
     const emptyEditor = null;
-    if (!id) return;
-    emptyEditor;
+    if (!id) return
+      emptyEditor;
 
     const componentModel = getComponentModel(id);
     const toolboxComponent = getToolboxComponent(componentModel.type);

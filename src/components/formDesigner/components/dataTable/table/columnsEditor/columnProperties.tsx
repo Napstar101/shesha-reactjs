@@ -42,10 +42,7 @@ export const ColumnProperties: FC<IProps> = () => {
 
     const componentModel = getItem(selectedItemId);
 
-    return (<>
-    <div>
-      editor
-    </div>
+    return (
       <ConfigurableForm
         formRef={formRef}
         layout="vertical"
@@ -57,9 +54,8 @@ export const ColumnProperties: FC<IProps> = () => {
         form={form}
         initialValues={componentModel}
         onValuesChange={debouncedSave}
-      ></ConfigurableForm>
-
-      </>
+      >
+      </ConfigurableForm>
     );
   };
 
