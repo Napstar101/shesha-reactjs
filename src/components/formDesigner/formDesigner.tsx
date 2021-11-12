@@ -41,13 +41,13 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
           open: fieldPropertiesOpen,
           onOpen: toggleFieldPropertiesSidebar,
           onClose: toggleFieldPropertiesSidebar,
-          title: () => <ComponentPropertiesTitle></ComponentPropertiesTitle>,
-          content: () => <ComponentPropertiesPanel></ComponentPropertiesPanel>,
+          title: () => <ComponentPropertiesTitle />,
+          content: () => <ComponentPropertiesPanel />,
           placeholder: 'Properties',
         }}
-        header={() => <FormDesignerToolbar></FormDesignerToolbar>}
+        header={() => <FormDesignerToolbar />}
       >
-        <FormDesignerHeader></FormDesignerHeader>
+        <FormDesignerHeader />
         <ConfigurableFormRenderer
           onValuesChange={(_changedValues, allvalues) => {
             setFormValues(allvalues);
@@ -57,9 +57,7 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
             <>
               <Row>
                 <Col span={24}>
-                  <pre>
-                    {JSON.stringify(formValues)}
-                  </pre>
+                  <pre>{JSON.stringify(formValues)}</pre>
                 </Col>
               </Row>
             </>

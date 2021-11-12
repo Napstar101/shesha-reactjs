@@ -20,7 +20,7 @@
     {
       "id": "5d4d56fb-d7f8-4835-a529-c4fa93f3596d",
       "type": "textField",
-      "name": "name",
+      "name": "title",
       "label": "Title",
       "labelAlign": "right",
       "parentId": "root",

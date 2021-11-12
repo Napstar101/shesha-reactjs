@@ -18,13 +18,11 @@ export interface IConfigurableSidebarMenuProps {
 }
 
 // Create a master template for mapping args to render the component
-const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
-  <ShaApplicationProvider 
-    backendUrl={props.backendUrl || ''}
-  >
+const Template: Story<IConfigurableSidebarMenuProps> = props => (
+  <ShaApplicationProvider backendUrl={props.backendUrl || ''}>
     <AuthContainer layout={false}>
       <AppEditModeToggler />
-      <ConfigurableSidebarMenu 
+      <ConfigurableSidebarMenu
         id="9362F11A-EA9C-4152-9855-9516123467F7"
         defaultSettings={{
           items: [
@@ -40,7 +38,7 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
               itemType: 'button',
               childItems: undefined,
             },
-          ]
+          ],
         }}
       />
     </AuthContainer>
@@ -48,29 +46,26 @@ const Template: Story<IConfigurableSidebarMenuProps> = (props) => (
 );
 
 export const Basic = Template.bind({});
-Basic.args = { 
+Basic.args = {
   backendUrl: process.env.STORYBOOK_BASE_URL,
 };
-
 
 export interface IConfiguratorTemplateProps {
   backendUrl: string;
 }
 
 // Create a master template for mapping args to render the component
-const ConfiguratorTemplate: Story<IConfiguratorTemplateProps> = (props) => (
-  <ShaApplicationProvider 
-    backendUrl={props.backendUrl || ''}
-  >
+const ConfiguratorTemplate: Story<IConfiguratorTemplateProps> = props => (
+  <ShaApplicationProvider backendUrl={props.backendUrl || ''}>
     <AuthContainer layout={false}>
       <SidebarMenuConfiguratorProvider items={[]}>
-        <SidebarConfigurator></SidebarConfigurator>
+        <SidebarConfigurator />
       </SidebarMenuConfiguratorProvider>
     </AuthContainer>
   </ShaApplicationProvider>
 );
 
 export const Configurator = ConfiguratorTemplate.bind({});
-Configurator.args = { 
+Configurator.args = {
   backendUrl: process.env.STORYBOOK_BASE_URL,
 };

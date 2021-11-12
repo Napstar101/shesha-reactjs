@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { Button } from 'antd';
 import { SidebarContainer } from '../../';
 import { ToolbarItemProperties } from './itemProperties';
@@ -9,8 +9,10 @@ import '../styles/index.less';
 
 export interface ISidebarConfiguratorProps {}
 
-export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
+const Configurator: FC<ISidebarConfiguratorProps> = () => {
   const { items, addItem, addGroup } = useSidebarMenuConfigurator();
+
+  console.log('SidebarConfigurator...');
 
   return (
     <div className="sha-sidebar-configurator">
@@ -27,7 +29,7 @@ export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
         rightSidebarProps={{
           open: true,
           title: () => 'Properties',
-          content: () => <ToolbarItemProperties></ToolbarItemProperties>,
+          content: () => <ToolbarItemProperties />,
         }}
       >
         <SidebarItemsContainer items={items} index={[]} />
@@ -35,5 +37,7 @@ export const SidebarConfigurator: FC<ISidebarConfiguratorProps> = () => {
     </div>
   );
 };
+
+const SidebarConfigurator = memo(Configurator);
 
 export default SidebarConfigurator;

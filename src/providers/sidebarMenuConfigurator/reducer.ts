@@ -41,11 +41,12 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
     ) => {
       const { payload } = action;
 
-      const newItems = state.items.filter(item => item.id !== payload);
+      const items = removeIdDeep([...state.items], payload);
 
       return {
         ...state,
-        items: [...newItems],
+        items,
+        // items: [...newItems],
         selectedItemId: state.selectedItemId === payload ? null : state.selectedItemId,
       };
     },
@@ -71,13 +72,17 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       const newItems = [...state.items];
 
       const position = getItemPositionById(newItems, payload.id);
+
       if (!position) return state;
 
       let newArray = position.ownerArray;
+
       newArray[position.index] = {
         ...newArray[position.index],
         ...payload.settings,
       };
+
+      console.log('newArray: ', newArray);
 
       return {
         ...state,
@@ -126,7 +131,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       };
       return {
         ...state,
-        items: [...state.items, groupProps],
+        items: [groupProps, ...state.items],
         selectedItemId: groupProps.id,
       };
     },
@@ -151,3 +156,11 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
 );
 
 export default sidebarMenuReducer;
+
+function removeIdDeep(list: ISidebarMenuItem[], idToRemove: string) {
+  const filtered = list.filter(entry => entry.id !== idToRemove);
+  return filtered.map(entry => {
+    if (!entry.childItems) return entry;
+    return { ...entry, childItems: removeIdDeep(entry.childItems, idToRemove) };
+  });
+}

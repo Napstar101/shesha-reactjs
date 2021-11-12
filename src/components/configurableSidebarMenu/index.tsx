@@ -39,6 +39,7 @@ export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = props 
         {(componentState, BlockOverlay) => (
           <div className={`sidebar ${componentState.wrapperClassName}`}>
             <BlockOverlay></BlockOverlay>
+            
             <SidebarMenuProvider items={componentState.settings?.items || []}>
               <SidebarMenu theme={props.theme}></SidebarMenu>
             </SidebarMenuProvider>

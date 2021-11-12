@@ -28,6 +28,24 @@ export interface IComponentValidationRules {
   maxLength?: number;
 }
 
+export type ConfigurableFormComponentTypes =
+  | 'alert'
+  | 'address'
+  | 'toolbar'
+  | 'dropdown'
+  | 'textField'
+  | 'textField'
+  | 'textArea'
+  | 'iconPicker'
+  | 'container'
+  | 'collapsiblePanel'
+  | 'autocomplete'
+  | 'checkbox'
+  | 'numberField'
+  | 'sectionSeparator'
+  | 'queryBuilder'
+  | 'labelValueEditor';
+
 /**
  * Base model of the configurable component
  */

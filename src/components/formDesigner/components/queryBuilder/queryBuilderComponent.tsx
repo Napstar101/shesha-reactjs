@@ -25,7 +25,7 @@ const QueryBuilderComponent: IToolboxComponent<IQueryBuilderProps> = {
 
     return (
       <ConfigurableFormItem model={model}>
-        <QueryBuilderField fields={fields}></QueryBuilderField>
+        <QueryBuilderField fields={fields} />
       </ConfigurableFormItem>
     );
   },

@@ -6,11 +6,7 @@ import { IndexColumnDataType } from '../../providers/dataTable/interfaces';
 import RefListDropDown, { IRefListDropDownOption } from '../refListDropDown';
 import EntityDropdown from '../entityDropdown';
 import { IColumnEditFieldProps } from './interfaces';
-import {
-  IGuidNullableEntityWithDisplayNameDto,
-  //IReferenceListItemDto,
-  IReferenceListItemValueDto,
-} from '../../interfaces/shesha';
+import { IGuidNullableEntityWithDisplayNameDto, IReferenceListItemValueDto } from '../../interfaces/shesha';
 import FormItem from 'antd/lib/form/FormItem';
 
 // (alias) type IndexColumnDataType = "string" | "number" | "boolean" | "date" | "datetime" | "time" | "refList" | "multiValueRefList" | "entityReference" | "other"

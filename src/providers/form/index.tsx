@@ -96,8 +96,13 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   const formProps = getComponentsAndSettings(markup);
   const formComponents = formProps?.components;
 
-  const actualComponentGroups = toolboxComponentGroups || FORM_CONTEXT_INITIAL_STATE.toolboxComponentGroups || [];
+  const actualComponentGroups = [
+    ...(FORM_CONTEXT_INITIAL_STATE.toolboxComponentGroups || []),
+    ...(toolboxComponentGroups || []),
+  ];
+
   const toolboxComponents = useMemo(() => toolbarGroupsToComponents(actualComponentGroups), [toolboxComponentGroups]);
+
   const getToolboxComponent = (type: string) => toolboxComponents[type];
 
   const flatComponents = componentsTreeToFlatStructure(toolboxComponents, formComponents || []);
@@ -124,7 +129,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     future: [],
   });
 
-  const fetcherById = useFormGet({ lazy: true, id: id });
+  const fetcherById = useFormGet({ lazy: true, id });
   const fetcherByPath = useFormGetByPath({ lazy: true });
   const { loading: isFetchingFormInfo, error: fetchingFormInfoError, data: fetchingFormInfoResponse } = path
     ? fetcherByPath
@@ -136,7 +141,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
       fetcherById.refetch({});
     } else if (path) {
       dispatch(loadRequestAction({ path }));
-      fetcherByPath.refetch({ queryParams: { path: path } });
+      fetcherByPath.refetch({ queryParams: { path } });
     }
   };
 
@@ -405,7 +410,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
       let component = state.present.allComponents[currentId];
 
       let action = state.present.sections.find(a => a.owner == component?.parentId && a.name == name);
-      if (action) return (data) => action.body(data);
+      if (action) return data => action.body(data);
 
       currentId = component?.parentId;
     } while (currentId);

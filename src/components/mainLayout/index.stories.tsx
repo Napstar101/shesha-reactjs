@@ -5,6 +5,7 @@ import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../provi
 import AuthContainer from '../authedContainer';
 import MainLayout, { IMainLayoutProps } from './';
 import { SIDEBAR_MENU_ITEMS } from './menuItems';
+import { SimpleIndexPage } from '..';
 
 export default {
   title: 'Components/Layout',
@@ -30,13 +31,19 @@ const Template: Story<IMainLayoutProps> = args => (
     </AuthContainer>
   </ShaApplicationProvider>
 );
-
 export const Default = Template.bind({});
 
 Default.args = { ...defaultProps };
 
-export const IndexPage = Template.bind({});
+// // Create a master template for mapping args to render the Button component
+// const WithIndexTable: Story<IMainLayoutProps> = () => (
+//   <ShaApplicationProvider backendUrl={backendUrl}>
+//     <AuthContainer layout={true}>
+//       <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
+//         <SimpleIndexPage loading={false} tableConfigId="Users_Index" title="Invoice Allocations" />
+//       </SidebarMenuDefaultsProvider>
+//     </AuthContainer>
+//   </ShaApplicationProvider>
+// );
 
-const indexPageProps: IMainLayoutProps = {};
-
-IndexPage.args = { ...indexPageProps };
+// export const IndexPage = WithIndexTable.bind({});

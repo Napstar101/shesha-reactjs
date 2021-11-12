@@ -41,7 +41,7 @@ const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
 export const TableContextProps = DesignerTemplate.bind({});
 
 TableContextProps.args = {
-  formPath: '/settings/forms/playground'
+  formPath: '/settings/forms/playground',
 };
 
 export const ColumnProps = DesignerTemplate.bind({});

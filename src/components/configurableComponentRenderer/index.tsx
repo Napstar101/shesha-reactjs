@@ -24,8 +24,8 @@ export interface IConfigurableComponentRendererProps<TSettings = any> {
   canConfigure?: boolean;
   children: ConfigurableComponentChildrenFn<TSettings>;
   onStartEdit?: () => void;
-  contextAccessor: () => IConfigurableComponentContext<TSettings>,
-  settingsEditor?: ISettingsEditor<TSettings>,
+  contextAccessor: () => IConfigurableComponentContext<TSettings>;
+  settingsEditor?: ISettingsEditor<TSettings>;
 }
 
 export interface IBlockOverlayProps {
@@ -43,21 +43,20 @@ const BlockOverlay: FC<IBlockOverlayProps> = ({ onClick, children, visible }) =>
   );
 };
 
-export const ConfigurableComponentRenderer = <TSettings extends any>({ 
+export const ConfigurableComponentRenderer = <TSettings extends any>({
   children,
   canConfigure = true,
   onStartEdit,
   contextAccessor,
   settingsEditor,
 }: IConfigurableComponentRendererProps<TSettings>) => {
-
   const [editorIsVisible, setEditorIsVisible] = useState(false);
   const { mode } = useAppConfigurator();
   const { save, settings } = contextAccessor();
 
   if (!children) return null;
 
-  if (!canConfigure){
+  if (!canConfigure) {
     return (
       <>
         {children({ isEditMode: false, isSelected: false, wrapperClassName: '', settings: null }, () => (
@@ -66,7 +65,7 @@ export const ConfigurableComponentRenderer = <TSettings extends any>({
       </>
     );
   }
-  
+
   const componentState: IComponentStateProps = {
     isEditMode: mode === 'edit',
     isSelected: false,
@@ -84,11 +83,13 @@ export const ConfigurableComponentRenderer = <TSettings extends any>({
   };
 
   const onSave = (model: TSettings) => {
-    save(model).then(() => {
-      setEditorIsVisible(false);
-    }).catch(e => {
-      console.log(e);
-    });
+    save(model)
+      .then(() => {
+        setEditorIsVisible(false);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   return (
@@ -98,16 +99,9 @@ export const ConfigurableComponentRenderer = <TSettings extends any>({
           {overlayChildren}
         </BlockOverlay>
       ))}
-      {
-        editorIsVisible && Boolean(settingsEditor) && (settingsEditor.render({ settings, onSave, onCancel }))
-      }
+      {editorIsVisible && Boolean(settingsEditor) && settingsEditor.render({ settings, onSave, onCancel })}
       {editorIsVisible && !Boolean(settingsEditor) && (
-        <ComponentSettingsModal<TSettings>
-          onCancel={onCancel}
-          onSave={onSave}
-          markup={null}
-          model={null}
-        ></ComponentSettingsModal>
+        <ComponentSettingsModal<TSettings> onCancel={onCancel} onSave={onSave} markup={null} model={null} />
       )}
     </>
   );

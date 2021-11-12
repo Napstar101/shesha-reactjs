@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Modal } from 'antd';
 import { ISettingsEditorProps } from '../configurableComponent';
 import { ISideBarMenuProps } from '.';
@@ -12,16 +12,16 @@ export interface IProps extends ISettingsEditorProps<ISideBarMenuProps> {
 export const ComponentSettingsModal: FC<IProps> = props => {
   return (
     <SidebarMenuConfiguratorProvider items={props.settings.items}>
-      <ComponentSettingsModalInner {...props}></ComponentSettingsModalInner>
+      <ComponentSettingsModalInner {...props} />
     </SidebarMenuConfiguratorProvider>
   );
 };
 
-export const ComponentSettingsModalInner: FC<IProps> = ({ title, onSave, onCancel }) => {
+export const ComponentSettingsModalInner: FC<IProps> = memo(({ title, onSave, onCancel }) => {
   const { items } = useSidebarMenuConfigurator();
 
   const onOk = () => {
-    onSave({ items: items });
+    onSave({ items });
   };
 
   return (
@@ -29,6 +29,6 @@ export const ComponentSettingsModalInner: FC<IProps> = ({ title, onSave, onCance
       <SidebarConfigurator />
     </Modal>
   );
-};
+});
 
 export default ComponentSettingsModal;

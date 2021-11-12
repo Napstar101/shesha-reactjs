@@ -22,13 +22,13 @@ export const SidebarMenuItem: FC<IProps> = props => {
   if (selectedItemId === props.id) classes.push('selected');
 
   const { icon } = props;
-  const renderedIcon = icon
-    ? typeof (icon) === 'string'
-      ? <ShaIcon iconName={icon as IconType}></ShaIcon>
-      : React.isValidElement(icon)
-        ? icon
-        : null
-    : null;
+  const renderedIcon = icon ? (
+    typeof icon === 'string' ? (
+      <ShaIcon iconName={icon as IconType}></ShaIcon>
+    ) : React.isValidElement(icon) ? (
+      icon
+    ) : null
+  ) : null;
 
   return (
     <div className={classes.reduce((a, c) => a + ' ' + c)}>
