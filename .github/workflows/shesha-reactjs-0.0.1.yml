@@ -23,3 +23,18 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
+
+      
+    - name: Bump Version and Push Tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag_prefix: ""
+          
+    - name: Create a GitHub Release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ steps.tag_version.outputs.new_tag }}
+        name: ${{ steps.tag_version.outputs.new_tag }}
+        body: ${{ steps.tag_version.outputs.changelog }}

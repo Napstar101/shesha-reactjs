@@ -1,0 +1,5 @@
+name: version shesha-reactjs-0.x.x
+
+on:
+  push:
+    branches: [ main ]
