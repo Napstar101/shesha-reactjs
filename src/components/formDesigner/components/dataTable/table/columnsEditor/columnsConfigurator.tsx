@@ -6,6 +6,7 @@ import ToolbarItemsContainer from './columnsContainer';
 import { useColumnsConfigurator } from '../../../../../../providers/datatableColumnsConfigurator';
 import React from 'react';
 import './styles/index.less';
+import { TestConsumer } from '../../../../componentPropertiesPanel';
 
 export interface IColumnsConfiguratorProps { }
 
@@ -14,6 +15,7 @@ export const ColumnsConfigurator: FC<IColumnsConfiguratorProps> = () => {
 
   return (
     <div className="sha-toolbar-configurator">
+      <TestConsumer></TestConsumer>
       <h4>Here you can configure columns by adjusting their settings and ordering.</h4>
       <div className="sha-action-buttons">
         {false && (

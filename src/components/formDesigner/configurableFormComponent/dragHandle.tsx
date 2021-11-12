@@ -11,10 +11,10 @@ interface IDragHandleProps {
 export const DragHandle: FC<IDragHandleProps> = props => {
     const { selectedComponentId, setSelectedComponent } = useForm();
 
-    const { id: dataSourceId } = useMetadata(false);
+    const metadata = useMetadata(false);
 
     const onClick = () => {
-        setSelectedComponent(selectedComponentId === props.componentId ? null : props.componentId, dataSourceId, props.componentRef);
+        setSelectedComponent(selectedComponentId === props.componentId ? null : props.componentId, metadata?.id, props.componentRef);
     };
 
     return <div className="sha-component-drag-handle" style={{ border: '1px solid #ddd' }} onClick={onClick}></div>;

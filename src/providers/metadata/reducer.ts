@@ -1,20 +1,21 @@
 import {
   METADATA_CONTEXT_INITIAL_STATE,
   IMetadataStateContext,
+  ISetMetadataPayload,
 } from './contexts';
-//import { MetadataActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
+import { MetadataActionEnums } from './actions';
 
 const reducer = handleActions<IMetadataStateContext, any>(
   {
-    // [MetadataActionEnums.LoadMetadataSuccess]: (state: IMetadataStateContext, action: ReduxActions.Action<ILoadMetadataErrorPayload>) => {
-    //   const { payload } = action;
-
-    //   return {
-    //     ...state,
-    //     failed: [...state.failed, payload.modelType]
-    //   };
-    // },
+    [MetadataActionEnums.SetMetadata]: (state: IMetadataStateContext, action: ReduxActions.Action<ISetMetadataPayload>) => {
+      const { payload } = action;
+      
+      return {
+        ...state,
+        metadata: {...payload.metadata},
+      };
+    },
   },
 
   METADATA_CONTEXT_INITIAL_STATE

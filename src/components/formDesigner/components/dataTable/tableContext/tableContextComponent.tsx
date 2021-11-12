@@ -11,6 +11,7 @@ import { validateConfigurableComponentSettings } from '../../../../../providers/
 import { MetadataProvider, useDataTableStore, useForm } from '../../../../../providers';
 import DataTableProvider from '../../../../../providers/dataTable';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
+import { TestConsumer } from '../../../componentPropertiesPanel';
 
 export interface ITableContextComponentProps extends IConfigurableFormComponent {
   tableConfigId?: string;
@@ -80,6 +81,7 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
         id={props.id}
         modelType={entityType}
       >
+        <TestConsumer></TestConsumer>
         {table}
       </MetadataProvider>
     : table;

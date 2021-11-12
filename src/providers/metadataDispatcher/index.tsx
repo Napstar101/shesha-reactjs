@@ -1,4 +1,4 @@
-import React, { FC, useContext, PropsWithChildren } from 'react';
+import React, { FC, useContext, PropsWithChildren, useRef } from 'react';
 import metadataReducer from './reducer';
 import {
   MetadataDispatcherActionsContext,
@@ -11,16 +11,12 @@ import {
   IRegisterProviderPayload,
 } from './contexts';
 import {
-  loadMetadataAction,
-  loadMetadataSuccessAction,
-  loadMetadataErrorAction,
-  registerProviderAction,
   activateProviderAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { metadataGetProperties } from '../../apis/metadata';
-import { IPropertyMetadata } from './models';
+import { IModelsDictionary, IPropertyMetadata, IProvidersDictionary } from './models';
 import { useSheshaApplication } from '../../providers';
 
 export interface IMetadataDispatcherProviderProps {
@@ -33,26 +29,24 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
     ...METADATA_DISPATCHER_CONTEXT_INITIAL_STATE,
   };
 
-  const [state, dispatch] = useThunkReducer(metadataReducer, initial);
+  const providers = useRef<IProvidersDictionary>({});
+  const models = useRef<IModelsDictionary>({});
 
-  //const parentProvider = useMetadataDispatcher(false);
+  const [state, dispatch] = useThunkReducer(metadataReducer, initial);
 
   const { backendUrl, httpHeaders } = useSheshaApplication();
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   const getMetadata = (payload: IGetMetadataPayload) => {
     const { modelType } = payload;
-    const loadedModel = state.models[payload.modelType];
+    const loadedModel = models.current[payload.modelType];
     if (loadedModel)
       return Promise.resolve(loadedModel);
-
-    dispatch(loadMetadataAction({ modelType: payload.modelType }));
 
     const result = new Promise<IModelMetadata>((resolve, reject) => {
       metadataGetProperties({ container: modelType }, { base: backendUrl, headers: httpHeaders })
         .then(response => {
           if (!response.success) {
-            dispatch(loadMetadataErrorAction({ modelType: payload.modelType, error: response.error?.message }));
             reject(response.error);
           }
           const properties = response.result.map<IPropertyMetadata>(p => ({
@@ -79,6 +73,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
             min: p.min,
             max: p.max,
             isEmail: p.isEmail
+            //#endregion
           }));
           const meta: IModelMetadata = {
             type: payload.modelType,
@@ -86,12 +81,10 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
             properties
           };
 
-          dispatch(loadMetadataSuccessAction({ metadata: meta }));
-
+          models.current[payload.modelType] = meta;
           resolve(meta);
         })
         .catch(e => {
-          dispatch(loadMetadataErrorAction({ modelType: payload.modelType, error: e }));
           reject(e)
         });
     });
@@ -100,9 +93,12 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
   }
 
   const registerProvider = (payload: IRegisterProviderPayload) => {
-    const existingProvider = state.providers.find(p => p.id === payload.id);
+    providers.current[payload.id] = payload;
+    /*
+    const existingProvider = providers.current[payload.id];
     if (!existingProvider)
-      dispatch(registerProviderAction(payload));
+      providers.current[payload.id] = payload;
+    */
   }
 
   const activateProvider = (providerId: string) => {
@@ -110,9 +106,11 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
   }
 
   const getActiveProvider = () => {
-    return state.activeProvider
-      ? state.providers.find(p => p.id === state.activeProvider)?.publicRef.current
+    const registration = state.activeProvider 
+      ? providers.current[state.activeProvider]
       : null;
+    
+    return registration?.publicRef.current;
   }
 
   const metadataActions: IMetadataDispatcherActionsContext = {

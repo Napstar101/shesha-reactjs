@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { AutoComplete } from 'antd';
-import { useMetadataDispatcher } from '../../../../providers';
 import React from 'react';
+import { useMetadata } from '../../../../providers';
 
 export interface IPropertyAutocompleteProps {
     value?: string;
@@ -22,9 +22,22 @@ const testValues: IOption[] = [
 
 export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
     const [options, setOptions] = useState<IOption[]>(testValues);
+
+    const meta = useMetadata(false);
+    const { metadata } = meta || {};
+
+    useEffect(() => {
+        const properties = metadata?.properties || [];
+        const opts = properties.map(p => ({ value: p.path, label: p.label }));
+        setOptions(opts);
+    }, [metadata]);
+    /*
     const { getActiveProvider } = useMetadataDispatcher();
 
     const metaProvider = getActiveProvider();
+    console.log({metaProvider});
+
+
     useEffect(() => {
         return;
         if (!options) {
@@ -42,6 +55,7 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
                 console.log('provider missing')
         }
     }, [metaProvider]);
+    */
 
     const onSelect = (data: string) => {
         if (props.onChange)

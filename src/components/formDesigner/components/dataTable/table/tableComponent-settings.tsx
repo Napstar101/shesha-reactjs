@@ -20,11 +20,6 @@ function ColumnsSettings(props: IProps) {
     if (props.onValuesChange) props.onValuesChange(changedValues, values);
   };
 
-  const formFields = form.getFieldsValue();
-  console.log({
-    items: props.model.items,
-    formFields
-  });
   return (
     <>
       <Form form={form} onFinish={props.onSave} onValuesChange={onValuesChange}>

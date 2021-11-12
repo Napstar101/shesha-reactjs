@@ -1,17 +1,13 @@
 import React, { FC, useContext, PropsWithChildren, useEffect, useRef } from 'react';
 import metadataReducer from './reducer';
 import {
-  MetadataActionsContext,
-  MetadataStateContext,
   METADATA_CONTEXT_INITIAL_STATE,
   IMetadataStateContext,
   IMetadataActionsContext,
   IMetadataContext,
+  MetadataContext,
 } from './contexts';
-import {
-  // loadMetadataAction,
-  /* NEW_ACTION_IMPORT_GOES_HERE */
-} from './actions';
+import { setMetadataAction } from './actions';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useMetadataDispatcher } from '../../providers';
 
@@ -30,7 +26,7 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
     id,
     modelType,
   };
-  //@ts-ignore
+  
   const [state, dispatch] = useThunkReducer(metadataReducer, initial);
 
   // register provider in the dispatcher if exists
@@ -38,7 +34,9 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
   
   useEffect(() => {
     if (modelType)
-      fetchMeta({ modelType });
+      fetchMeta({ modelType }).then(meta => {
+        dispatch(setMetadataAction({ metadata: meta }));
+      });
   }, [modelType]);  
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
@@ -52,38 +50,25 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
     getMetadata
   };
 
-  const metaRef = useRef<IMetadataContext>({ ...state, ...metadataActions });  
+  const contextValue: IMetadataContext = { ...state, ...metadataActions };
+  const metaRef = useRef<IMetadataContext>(contextValue);
   registerProvider({ id, modelType, publicRef: metaRef });
 
   return (
-    <MetadataStateContext.Provider value={state}>
-      <MetadataActionsContext.Provider value={metadataActions}>{children}</MetadataActionsContext.Provider>
-    </MetadataStateContext.Provider>
+    <MetadataContext.Provider value={contextValue}>
+      {children}
+    </MetadataContext.Provider>
   );
 };
 
-function useMetadataState(require: boolean) {
-  const context = useContext(MetadataStateContext);
+function useMetadata(require: boolean) {
+  const context = useContext(MetadataContext);
 
   if (context === undefined && require) {
-    throw new Error('useMetadataState must be used within a MetadataProvider');
+    throw new Error('useMetadata must be used within a MetadataProvider');
   }
 
   return context;
 }
 
-function useMetadataActions(require: boolean) {
-  const context = useContext(MetadataActionsContext);
-
-  if (context === undefined && require) {
-    throw new Error('useMetadataActions must be used within a MetadataProvider');
-  }
-
-  return context;
-}
-
-function useMetadata(require: boolean = true) {
-  return { ...useMetadataState(require), ...useMetadataActions(require) };
-}
-
-export { MetadataProvider, useMetadataState, useMetadataActions, useMetadata };
+export { MetadataProvider, useMetadata };

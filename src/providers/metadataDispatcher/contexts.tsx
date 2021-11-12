@@ -10,25 +10,7 @@ export interface IModelMetadata {
 }
 
 export interface IMetadataDispatcherStateContext {
-  id: string;
-  models : { [key: string]: IModelMetadata };
-  inProgress: string[];
-  failed: string[];
-  providers: IMetadataProviderRegistration[];
   activeProvider?: string;
-}
-
-export interface ILoadMetadataPayload {
-  modelType: string;
-}
-
-export interface ILoadMetadataSuccessPayload {
-  metadata: IModelMetadata;  
-}
-
-export interface ILoadMetadataErrorPayload {
-  modelType: string;
-  error: string;
 }
 
 export interface IGetMetadataPayload {
@@ -57,11 +39,6 @@ export interface IMetadataProviderRegistration {
 
 /** initial state */
 export const METADATA_DISPATCHER_CONTEXT_INITIAL_STATE: IMetadataDispatcherStateContext = {
-  id: null,
-  models: {},
-  failed: [],
-  inProgress: [],
-  providers: [],
 };
 
 export const MetadataDispatcherStateContext = createContext<IMetadataDispatcherStateContext>(METADATA_DISPATCHER_CONTEXT_INITIAL_STATE);
