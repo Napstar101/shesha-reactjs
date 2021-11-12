@@ -93,12 +93,17 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
   }
 
   const registerProvider = (payload: IRegisterProviderPayload) => {
-    providers.current[payload.id] = payload;
-    /*
     const existingProvider = providers.current[payload.id];
-    if (!existingProvider)
-      providers.current[payload.id] = payload;
-    */
+    if (!existingProvider){
+      providers.current[payload.id] = {  
+        id: payload.id,
+        modelType: payload.modelType,
+        contextValue: payload.contextValue,
+      };
+    } else {
+      existingProvider.modelType = payload.modelType;
+      existingProvider.contextValue = payload.contextValue;
+    }      
   }
 
   const activateProvider = (providerId: string) => {
@@ -110,7 +115,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
       ? providers.current[state.activeProvider]
       : null;
     
-    return registration?.publicRef.current;
+    return registration?.contextValue;
   }
 
   const metadataActions: IMetadataDispatcherActionsContext = {

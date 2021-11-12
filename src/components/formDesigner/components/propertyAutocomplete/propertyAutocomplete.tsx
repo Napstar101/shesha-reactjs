@@ -72,16 +72,18 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
     }
 
     return (
-        <AutoComplete
-            value={props.value}
-            options={options}
-            style={{ width: 200 }}
-            onSelect={onSelect}
-            onSearch={onSearch}
-        // filterOption={(inputValue, option) =>
-        //     option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-        // }
-        ></AutoComplete>
+        <>
+            <AutoComplete
+                value={props.value}
+                options={options}
+                style={{ width: 200 }}
+                onSelect={onSelect}
+                onSearch={onSearch}
+            // filterOption={(inputValue, option) =>
+            //     option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+            // }
+            ></AutoComplete>
+        </>
     );
 }
 

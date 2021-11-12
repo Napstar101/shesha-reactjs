@@ -1,4 +1,4 @@
-import React, { FC, useContext, PropsWithChildren, useEffect, useRef } from 'react';
+import React, { FC, useContext, PropsWithChildren, useEffect } from 'react';
 import metadataReducer from './reducer';
 import {
   METADATA_CONTEXT_INITIAL_STATE,
@@ -51,8 +51,7 @@ const MetadataProvider: FC<PropsWithChildren<IMetadataProviderProps>> = ({
   };
 
   const contextValue: IMetadataContext = { ...state, ...metadataActions };
-  const metaRef = useRef<IMetadataContext>(contextValue);
-  registerProvider({ id, modelType, publicRef: metaRef });
+  registerProvider({ id, modelType, contextValue: contextValue });
 
   return (
     <MetadataContext.Provider value={contextValue}>

@@ -11,7 +11,6 @@ import { validateConfigurableComponentSettings } from '../../../../../providers/
 import { MetadataProvider, useDataTableStore, useForm } from '../../../../../providers';
 import DataTableProvider from '../../../../../providers/dataTable';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
-import { TestConsumer } from '../../../componentPropertiesPanel';
 
 export interface ITableContextComponentProps extends IConfigurableFormComponent {
   tableConfigId?: string;
@@ -41,47 +40,18 @@ const TableContextComponent: IToolboxComponent<ITableContextComponentProps> = {
 
 export const TableContext: FC<ITableContextComponentProps> = props => {
   const [table, setTable] = useState(<></>);
-  //const { addDataSource, removeDataSource } = useForm();
   const { entityType } = props;
 
   useEffect(() => {
     const uniqueKey = `${props.tableConfigId ?? 'empty'}_${props.entityType ?? 'empty'}`; // is used just for re-rendering
     setTable(<TableContextInner key={uniqueKey} {...props}></TableContextInner>);
   }, [props.tableConfigId, props.entityType]);
-/*
-  const { getMetadata } = useMetadata();
-
-  useEffect(() => {
-    // remove old datasource
-    removeDataSource(props.id);
-
-    if (entityType){
-      getMetadata({ modelType: entityType })
-        .then(meta => {
-          addDataSource({ id: props.id, name: entityType, containerType: entityType, items: meta.properties });
-        });
-    }
-
-    return () => {
-      // clean-up on unmount
-      removeDataSource(props.id);  
-    }
-  }, [entityType]);
-  */
-
-  /*
-  // // works as a useEffect
-  // useMetadata(entityType, meta => {
-  //   applyMeta(meta);
-  // });
-  */
 
   return entityType
     ? <MetadataProvider
         id={props.id}
         modelType={entityType}
       >
-        <TestConsumer></TestConsumer>
         {table}
       </MetadataProvider>
     : table;

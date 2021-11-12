@@ -1,4 +1,4 @@
-import { createContext, MutableRefObject } from 'react';
+import { createContext } from 'react';
 import { IMetadataContext } from '../metadata/contexts';
 import { IPropertyMetadata } from './models';
 
@@ -20,7 +20,7 @@ export interface IGetMetadataPayload {
 export interface IRegisterProviderPayload {
   id: string;
   modelType: string;
-  publicRef: MutableRefObject<IMetadataContext>;
+  contextValue: IMetadataContext;
 }
 
 export interface IMetadataDispatcherActionsContext {
@@ -34,7 +34,7 @@ export interface IMetadataDispatcherActionsContext {
 export interface IMetadataProviderRegistration {
   id: string;
   modelType: string;
-  publicRef: MutableRefObject<IMetadataContext>;
+  contextValue: IMetadataContext;
 }
 
 /** initial state */

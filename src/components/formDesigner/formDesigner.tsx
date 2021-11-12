@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 import { FormDto } from '../../apis/form';
 import Toolbox from './toolbox';
 import FormDesignerToolbar from './formDesignerToolbar';
-import ComponentPropertiesPanel, { TestConsumer } from './componentPropertiesPanel';
+import ComponentPropertiesPanel from './componentPropertiesPanel';
 import ComponentPropertiesTitle from './componentPropertiesTitle';
 import { useForm } from '../../providers/form';
 import { ConfigurableFormRenderer } from '../../components';
@@ -27,7 +27,6 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
 
   return (
     <div className="sha-form-designer">
-      <TestConsumer></TestConsumer>
       <SidebarContainer
         leftSidebarProps={{
           open: widgetsOpen,

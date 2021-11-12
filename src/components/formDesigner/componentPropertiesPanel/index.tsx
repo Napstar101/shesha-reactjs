@@ -5,7 +5,7 @@ import { Empty } from 'antd';
 import { useDebouncedCallback } from 'use-debounce';
 import { FormMarkup } from '../../../providers/form/models';
 import GenericSettingsForm from '../genericSettingsForm';
-import { useMetadata, useMetadataDispatcher } from '../../../providers';
+import { useMetadataDispatcher } from '../../../providers';
 import { MetadataContext } from '../../../providers/metadata/contexts';
 
 export interface IProps {
@@ -17,8 +17,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   const [editor, setEditor] = useState<ReactNode>(<></>);
   
   // @ts-ignore
-  const { getActiveProvider, acti } = useMetadataDispatcher();
-  const metaProvider = getActiveProvider();
+  const { getActiveProvider } = useMetadataDispatcher();
 
   const debouncedSave = useDebouncedCallback(
     values => {
@@ -62,6 +61,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   };
 
   const wrapEditor = (renderEditor: () => ReactNode) => {
+    const metaProvider = getActiveProvider();
     if (!metaProvider)
       return <>{renderEditor()}</>;
 
@@ -122,20 +122,5 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
     </>
   );
 };
-
-export const TestConsumer: FC = () => {
-  const meta = useMetadata(false);
-
-  return (
-    <div>
-      <p>
-        Metadata Provider: { meta ? "exists" : "missing" }
-      </p>
-      <p>
-        Metadata: { meta && meta.metadata ? "loaded" : "not loaded" }
-      </p>
-    </div>
-  );
-}
 
 export default ComponentPropertiesPanel;

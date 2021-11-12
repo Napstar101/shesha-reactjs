@@ -7,7 +7,6 @@ import { FormMarkup } from '../../../../../../providers/form/models';
 import { useDebouncedCallback } from 'use-debounce';
 import { ConfigurableFormInstance } from '../../../../../../providers/form/contexts';
 import React from 'react';
-import { TestConsumer } from '../../../../componentPropertiesPanel';
 
 export interface IProps {}
 
@@ -47,7 +46,6 @@ export const ColumnProperties: FC<IProps> = () => {
     <div>
       editor
     </div>
-      <TestConsumer></TestConsumer>
       <ConfigurableForm
         formRef={formRef}
         layout="vertical"
@@ -82,9 +80,7 @@ export const ColumnProperties: FC<IProps> = () => {
     console.log(values);
   };
 
-  return <>
-    <TestConsumer></TestConsumer>
-  {editor}</>;
+  return <>{editor}</>;
 };
 
 export default ColumnProperties;
