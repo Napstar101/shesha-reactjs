@@ -26,3 +26,19 @@ jobs:
       # install dependencies
       - name: Install Dependencies
         run: npm install
+      # build shesha-reactjs for pipeline
+      - name: Build shesha-reactjs for Pipeline
+      # build storybook
+      - name: Build Storybook
+        run: build-storybook
+      # tag shesha-reactjs
+      - name: Tag shesha-reactjs
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ""
+      # # build shesha-reactjs for production
+      # - name: Build shesha-reactjs for Production
+      # # publish shesha-reactjs
+      # - name: Publish shesha-reactjs
