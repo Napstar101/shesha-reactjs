@@ -39,7 +39,22 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: ""
-      # # build shesha-reactjs for production
-      # - name: Build shesha-reactjs for Production
+      # update package.json tag
+      - name: Update package.json
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: ${{ steps.tag_version.outputs.new_tag }}
+          # package: 'subproject-directory/'
+          # git-tag-version: 'true'
+      # build shesha-reactjs for production
+      - name: Build shesha-reactjs for Production
+        run: npm run start
+      # create github release
+      - name: Create Github Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
       # # publish shesha-reactjs
       # - name: Publish shesha-reactjs
