@@ -48,7 +48,7 @@ jobs:
           # git-tag-version: 'true'
       # build shesha-reactjs for production
       - name: Build shesha-reactjs for Production
-        run: npm run start
+        run: npm run build
       # create github release
       - name: Create Github Release
         uses: ncipollo/release-action@v1
