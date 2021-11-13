@@ -26,11 +26,12 @@ jobs:
       # install dependencies
       - name: Install Dependencies
         run: npm install
-      # build shesha-reactjs for pipeline
-      - name: Build shesha-reactjs for Pipeline
+      # prepare shesha-reactjs for pipeline
+      - name: Prepare shesha-reactjs for Pipeline
+        run: npm run prepare
       # build storybook
       - name: Build Storybook
-        run: build-storybook
+        run: npm run build-storybook
       # tag shesha-reactjs
       - name: Tag shesha-reactjs
         id: tag_version
