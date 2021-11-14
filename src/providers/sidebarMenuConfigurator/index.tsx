@@ -19,7 +19,6 @@ import {
 } from './actions';
 import { getItemById } from './utils';
 import { ISidebarMenuItem } from '../sidebarMenu';
-import { useDeepCompareMemo } from '../..';
 import { usePrevious } from 'react-use';
 
 export interface ISidebarMenuConfiguratorProviderPropsBase {
@@ -60,6 +59,8 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
   };
 
   const addGroup = () => {
+    // console.log('addGroup.... called');
+
     dispatch(addGroupAction());
   };
 
@@ -77,16 +78,10 @@ const SidebarMenuConfiguratorProvider: FC<PropsWithChildren<ISidebarMenuConfigur
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
-  const memoizedItems = useDeepCompareMemo(() => {
-    return state?.items;
-  }, [state?.items]);
-
   const memoizedSelectedItemId = useMemo(() => state?.selectedItemId, [state.selectedItemId]);
 
   return (
-    <SidebarMenuConfiguratorStateContext.Provider
-      value={{ ...state, items: memoizedItems, selectedItemId: memoizedSelectedItemId }}
-    >
+    <SidebarMenuConfiguratorStateContext.Provider value={{ ...state, selectedItemId: memoizedSelectedItemId }}>
       <SidebarMenuConfiguratorActionsContext.Provider
         value={{
           addItem,

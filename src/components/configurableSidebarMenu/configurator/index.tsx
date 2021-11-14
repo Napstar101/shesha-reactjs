@@ -12,8 +12,6 @@ export interface ISidebarConfiguratorProps {}
 const Configurator: FC<ISidebarConfiguratorProps> = () => {
   const { items, addItem, addGroup } = useSidebarMenuConfigurator();
 
-  console.log('SidebarConfigurator...');
-
   return (
     <div className="sha-sidebar-configurator">
       <h4>You can customize the Menu component from this screen.</h4>
@@ -28,8 +26,8 @@ const Configurator: FC<ISidebarConfiguratorProps> = () => {
       <SidebarContainer
         rightSidebarProps={{
           open: true,
-          title: () => 'Properties',
-          content: () => <ToolbarItemProperties />,
+          title: 'Properties',
+          content: <ToolbarItemProperties />,
         }}
       >
         <SidebarItemsContainer items={items} index={[]} />

@@ -55,15 +55,12 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
 
   const doFetch = () => {
     if (id && id !== previousId) {
-      console.log('Get ConfigurableComponents id, previousId: ', id, previousId);
       dispatch(loadRequestAction({ id }));
       refetch({});
     }
   };
 
   useEffect(() => {
-    console.log('Refetching ConfigurableComponents id: ', id);
-
     if (!Boolean(id)) return;
 
     doFetch();

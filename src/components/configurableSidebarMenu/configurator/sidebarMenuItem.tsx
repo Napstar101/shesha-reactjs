@@ -5,6 +5,7 @@ import { useSidebarMenuConfigurator } from '../../../providers/sidebarMenuConfig
 import DragHandle from './dragHandle';
 import React from 'react';
 import ShaIcon, { IconType } from '../../shaIcon';
+import classNames from 'classnames';
 import { ISidebarMenuItem } from '../../../interfaces/sidebar';
 
 export interface IProps extends ISidebarMenuItem {
@@ -18,10 +19,8 @@ export const SidebarMenuItem: FC<IProps> = props => {
     deleteItem(props.id);
   };
 
-  let classes = ['sha-sidebar-item'];
-  if (selectedItemId === props.id) classes.push('selected');
-
   const { icon } = props;
+
   const renderedIcon = icon ? (
     typeof icon === 'string' ? (
       <ShaIcon iconName={icon as IconType}></ShaIcon>
@@ -31,11 +30,12 @@ export const SidebarMenuItem: FC<IProps> = props => {
   ) : null;
 
   return (
-    <div className={classes.reduce((a, c) => a + ' ' + c)}>
+    <div className={classNames('sha-sidebar-item', { selected: selectedItemId === props.id })}>
       <div className="sha-sidebar-item-header">
-        <DragHandle id={props.id}></DragHandle>
+        <DragHandle id={props.id} />
         {renderedIcon}
         <span className="sha-sidebar-item-name">{props.title}</span>
+
         {props.tooltip && (
           <Tooltip title={props.tooltip}>
             <QuestionCircleOutlined className="sha-help-icon" />
