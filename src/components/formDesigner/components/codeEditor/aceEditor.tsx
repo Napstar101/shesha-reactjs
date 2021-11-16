@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import React, { FC } from "react";
 import type { IAceEditorProps } from 'react-ace';
-import { Ace } from 'ace-builds';
 import { metadataCodeCompleter } from './codeCompleter';
 
 const aceBaseUrl = 'https://cdn.jsdelivr.net/npm/ace-builds@1.4.13/src-noconflict';

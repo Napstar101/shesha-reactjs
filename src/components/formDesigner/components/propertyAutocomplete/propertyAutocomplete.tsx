@@ -65,8 +65,8 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
         properties.forEach(p => {
             if (p.path === data)
                 exactMatch = true;
-
-            if (p.path.startsWith(data))
+            
+            if (p.path.toLowerCase().startsWith(data.toLowerCase()))
                 filteredProperties.push({ value: p.path, label: p.path });
         });
         
@@ -95,9 +95,6 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
                     onSelect={onSelect}
                     onSearch={onSearch}
                     notFoundContent="Not found"
-                // filterOption={(inputValue, option) =>
-                //     option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-                // }
                 >
                 </AutoComplete>
                 <Button icon={<ThunderboltOutlined />} onClick={onFillPropsClick} disabled={!canFillProps}></Button>
