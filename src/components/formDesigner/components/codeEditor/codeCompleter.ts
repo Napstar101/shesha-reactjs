@@ -3,6 +3,7 @@ import { Ace } from 'ace-builds';
 /**
  * Gets token at current cursor posistion. Returns null if none
  */
+// @ts-ignore
 function getCurrentToken(editor) {
     try {
         var pos = editor.getSelectionRange().end;
@@ -24,36 +25,6 @@ export interface ICodeTreeItem {
 export interface ICodeTreeLevel {
     [key: string]: ICodeTreeItem;
 }
-const testCodeItems: ICodeTreeLevel = {
-    data: {
-        value: 'data',
-        caption: 'Current form fields',
-        loaded: false,
-        childs: {
-            Person: {
-                value: 'Person',
-                caption: 'Current person',
-                loaded: true,
-                childs: {
-                    Address: {
-                        value: 'Address',
-                        caption: 'Person Address',
-                        loaded: false
-                    },
-                    FirstName: {
-                        value: 'FirstName',
-                        loaded: false
-                    },
-                    LastName: {
-                        value: 'LastName',
-                        loaded: false
-                    },
-                }
-            }
-        }
-    }
-};
-
 const treeLevel2Completions = (level: ICodeTreeLevel, prefix: string = ''): Ace.Completion[] => {
     const completions: Ace.Completion[] = [];
     for (let key in level) {
@@ -69,21 +40,27 @@ const treeLevel2Completions = (level: ICodeTreeLevel, prefix: string = ''): Ace.
     return completions;
 }
 
-export const metadataCodeCompleter = {
+export const metadataCodeCompleter =
+{
     identifierRegexps: [/[a-zA-Z_0-9.$-u00A2-uFFFF]/],
     getCompletions: (
+        // @ts-ignore
         editor: Ace.Editor,
         _session: Ace.EditSession,
         _pos: Ace.Point,
         prefix: string,
         callback: Ace.CompleterCallback
     ): void => {
-        const token = getCurrentToken(editor);
-        console.log({ _prefix: prefix, token });
+        const shaMetadata = editor["shaMetadata"];
+        if (!shaMetadata)
+            return;
+
+        const shaTestData = editor["shaTestData"] as ICodeTreeLevel;
 
         if (prefix && prefix.endsWith('.')) {
             const parts = prefix.split('.');
-            let currentLevel: ICodeTreeLevel = testCodeItems;
+
+            let currentLevel: ICodeTreeLevel = shaTestData;
 
             let currentItem: ICodeTreeItem = null;
             do {
@@ -105,7 +82,8 @@ export const metadataCodeCompleter = {
                 callback(null, completions);
             }
         } else {
-            const completions = treeLevel2Completions(testCodeItems);
+            const completions = treeLevel2Completions(shaTestData);
+            console.log(completions);
             callback(null, completions);
         }
     },

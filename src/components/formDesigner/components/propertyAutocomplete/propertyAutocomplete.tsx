@@ -14,15 +14,8 @@ interface IOption {
     label: string;
 }
 
-const testValues: IOption[] = [
-    { value: 'FirstName', label: 'FirstName' },
-    { value: 'LastName', label: 'LastName' },
-    { value: 'Email1', label: 'Email1' },
-    { value: 'Email2', label: 'Email2' },
-];
-
 export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
-    const [options, setOptions] = useState<IOption[]>(testValues);
+    const [options, setOptions] = useState<IOption[]>([]);
 
     // @ts-ignore
     const [canFillProps, setCanFillProps] = useState(true);
