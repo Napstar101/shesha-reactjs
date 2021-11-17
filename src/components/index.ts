@@ -110,3 +110,4 @@ export { default as FormDesigner, IFormDesignerProps } from './formDesigner/form
 export { default as QueryBuilder, IQueryBuilderProps } from './queryBuilder';
 export { default as ConfigurableForm } from './configurableForm';
 export { IConfigurableFormRendererProps, IConfigurableFormProps } from './configurableForm/models';
+export { default as CodeEditor } from './codeEditor';
