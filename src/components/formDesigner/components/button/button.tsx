@@ -14,7 +14,7 @@ import ShaIcon, { IconType } from '../../../shaIcon';
 
 type ButtonActionType = 'submit' | 'reset' | 'close' | 'custom';
 
-export type IActionParameters = [{ key: string, value: string }];
+export type IActionParameters = [{ key: string; value: string }];
 
 export interface IButtonProps extends IConfigurableFormComponent {
   actionType: ButtonActionType;
@@ -63,7 +63,7 @@ const TextField: IToolboxComponent<IButtonProps> = {
 
         case 'close': // close modal or page
           if (closestModal) closestModal.close();
-          else router.back();
+          else router?.back();
           break;
 
         case 'custom':
@@ -88,11 +88,11 @@ const TextField: IToolboxComponent<IButtonProps> = {
 
     return (
       <ConfigurableFormItem model={fieldModel}>
-        <Button 
-          onClick={onClick} 
-          type={customProps.buttonType} 
+        <Button
+          onClick={onClick}
+          type={customProps.buttonType}
           danger={customProps.danger}
-          icon={customProps.icon ? <ShaIcon iconName={customProps.icon as IconType}/> : undefined}
+          icon={customProps.icon ? <ShaIcon iconName={customProps.icon as IconType} /> : undefined}
         >
           {customProps.label}
         </Button>

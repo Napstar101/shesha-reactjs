@@ -178,7 +178,7 @@ const GenericDualEditDetailsPage = forwardRef<CommonCrudHandles, IGenericDualEdi
 
     const handleClose = () => {
       if (props?.onClose) props.onClose(form);
-      else router.back();
+      else router?.back();
     };
 
     const editToolbarItems: IToolbarItem[] = [
@@ -230,7 +230,7 @@ const GenericDualEditDetailsPage = forwardRef<CommonCrudHandles, IGenericDualEdi
                 {...formItemLayout}
                 form={form}
                 onFinish={handleSubmit}
-                path={props?.formPath || router.pathname}
+                path={props?.formPath || router?.pathname}
                 markup={props.markup}
                 initialValues={model}
                 actions={props.formActions}

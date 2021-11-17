@@ -18,7 +18,7 @@ export const ShaLink: FC<IShaLinkProps> = ({ linkTo, icon, displayName, children
     event.preventDefault();
 
     if (linkTo) {
-      router.push(linkTo /*.toLowerCase() - it causes problems on prod because of case sensitivity of routings!*/);
+      router?.push(linkTo /*.toLowerCase() - it causes problems on prod because of case sensitivity of routings!*/);
     }
   };
 

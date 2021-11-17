@@ -59,7 +59,7 @@ const GenericCreatePage: NextPage<IGenericCreatePageProps> = ({
       title: 'Close',
       icon: <CloseOutlined />,
       onClick: () => {
-        router.back();
+        router?.back();
       },
     },
   ];
@@ -69,7 +69,7 @@ const GenericCreatePage: NextPage<IGenericCreatePageProps> = ({
 
     save(preparedValues).then(() => {
       if (onSuccess) onSuccess(form);
-      else router.back();
+      else router?.back();
     });
   };
   const { formItemLayout } = useUi();
@@ -84,7 +84,7 @@ const GenericCreatePage: NextPage<IGenericCreatePageProps> = ({
           {...formItemLayout}
           form={form}
           onFinish={handleSubmit}
-          path={formPath || router.pathname}
+          path={formPath || router?.pathname}
           initialValues={initialValues}
           actions={formActions}
           sections={formSections}
@@ -95,7 +95,7 @@ const GenericCreatePage: NextPage<IGenericCreatePageProps> = ({
             <Button
               icon={<CloseOutlined />}
               onClick={() => {
-                router.back();
+                router?.back();
               }}
             >
               Cancel

@@ -14,14 +14,16 @@ const ShaRoutingProvider: FC<PropsWithChildren<any>> = ({ children, router }) =>
   /* NEW_ACTION_DECLARATION_GOES_HERE */
   const goingToRoute = (route: string) => {
     state.router?.push(route);
-  }
-  
+  };
+
   return (
     <ShaRoutingStateContext.Provider value={{ ...state, router }}>
-      <ShaRoutingActionsContext.Provider value={{
+      <ShaRoutingActionsContext.Provider
+        value={{
           ...getFlagSetters(dispatch),
-          goingToRoute
-        }}>
+          goingToRoute,
+        }}
+      >
         {children}
       </ShaRoutingActionsContext.Provider>
     </ShaRoutingStateContext.Provider>

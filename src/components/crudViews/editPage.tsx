@@ -89,7 +89,7 @@ const GenericEditPage = forwardRef<CommonCrudHandles, IGenericEditPageProps>((pr
   const { mutate: save, loading: saving, error: savingError } = props.updater({});
 
   const goBack = () => {
-    router.back();
+    router?.back();
   };
 
   const { router } = useShaRouting();
@@ -136,7 +136,7 @@ const GenericEditPage = forwardRef<CommonCrudHandles, IGenericEditPageProps>((pr
             {...formItemLayout}
             form={form}
             onFinish={handleSubmit}
-            path={props?.formPath || router.pathname}
+            path={props?.formPath || router?.pathname}
             initialValues={model}
             actions={props.formActions}
             sections={props.formSections}
