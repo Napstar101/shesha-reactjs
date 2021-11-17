@@ -129,11 +129,13 @@ const GenericEditPage = forwardRef<CommonCrudHandles, IGenericEditPageProps>((pr
         toolbar={<IndexToolbar items={toolbarItems} />}
         headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
       >
-        <ValidationErrors error={savingError?.data || fetchError?.data}></ValidationErrors>
+        <ValidationErrors error={savingError?.data || fetchError?.data} />
+
         {model && (
           <ConfigurableForm
             mode="edit"
             {...formItemLayout}
+            markup={props?.markup}
             form={form}
             onFinish={handleSubmit}
             path={props?.formPath || router?.pathname}
