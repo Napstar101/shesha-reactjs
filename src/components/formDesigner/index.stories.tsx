@@ -149,3 +149,15 @@ const sectionsUsageArgs: IFormDesignerStoryProps = {
   formPath: '/settings/forms/playground'
 };
 SectionsUsage.args = sectionsUsageArgs;
+
+export const QueryBuilderSettings = DesignerTemplate.bind({});
+const queryBuilderSettingsArgs: IFormDesignerStoryProps = {
+  formId: '7490f400-1d50-47f7-ab84-97625e67ea29'
+};
+QueryBuilderSettings.args = queryBuilderSettingsArgs;
+
+export const TableViewSettings = DesignerTemplate.bind({});
+const tableViewSettingsArgs: IFormDesignerStoryProps = {
+  formId: '6f0f3e5c-c173-46c2-bb52-5b8d584068c5'
+};
+TableViewSettings.args = tableViewSettingsArgs;

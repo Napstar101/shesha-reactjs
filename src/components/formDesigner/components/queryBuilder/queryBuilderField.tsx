@@ -8,6 +8,7 @@ import { CodeEditor } from '../../..';
 import { CaretRightOutlined } from '@ant-design/icons';
 
 export interface IQueryBuilderFieldProps {
+  jsonExpanded?: boolean;
   fields: IProperty[];
   value?: object;
   onChange?: (value: any) => void;
@@ -16,7 +17,7 @@ export interface IQueryBuilderFieldProps {
 export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [jsonLogicResult, setJsonLogicResult] = useState<JsonLogicResult>(undefined);
-  const [jsonVisible, setJsonVisible] = useState(false);
+  const [jsonExpanded, setJsonExpanded] = useState(props.jsonExpanded ?? false);
 
   const onOkClick = () => {
     if (jsonLogicResult) {
@@ -38,14 +39,14 @@ export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
   };
 
   const onExpandClick = () => {
-    setJsonVisible(!jsonVisible);
+    setJsonExpanded(!jsonExpanded);
   }
 
   return (
     <>
       <Collapse
         className="sha-query-builder-field"
-        activeKey={jsonVisible ? "1" : null}
+        activeKey={jsonExpanded ? "1" : null}
         expandIconPosition='right'
         bordered={false}
         ghost={true}
