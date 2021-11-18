@@ -13,7 +13,7 @@ export default {
 
 const autocompleteProps: IAutocompleteProps = {
   dataSourceType: 'url',
-  dataSourceUrl: '/api​/v1​/BursMan​/ScheduleVisits​/MembersAutocomplete',
+  dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   // dataSourceType: 'entitiesList',
   // allowInherited: true,
   // typeShortAlias: 'Gma.Member',
