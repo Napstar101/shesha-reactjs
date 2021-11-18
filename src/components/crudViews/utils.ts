@@ -2,7 +2,7 @@ type GenericFormModelPayloadType = object | [];
 
 export interface IBoolGenericFormProps {
   readonly origin: boolean;
-  readonly mutate: string;
+  readonly mutate: string | boolean;
 }
 
 export interface IGenericFormFilter {

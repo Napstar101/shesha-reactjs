@@ -9,19 +9,21 @@ export interface IRoutingProviderProvider {
 }
 
 const ShaRoutingProvider: FC<PropsWithChildren<any>> = ({ children, router }) => {
-  const [state, dispatch] = useReducer(shaRoutingReducer, SHA_ROUTING_CONTEXT_INITIAL_STATE);
+  const [state, dispatch] = useReducer(shaRoutingReducer, { ...SHA_ROUTING_CONTEXT_INITIAL_STATE, router });
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
   const goingToRoute = (route: string) => {
     state.router?.push(route);
-  }
-  
+  };
+
   return (
-    <ShaRoutingStateContext.Provider value={{ ...state, router }}>
-      <ShaRoutingActionsContext.Provider value={{
+    <ShaRoutingStateContext.Provider value={state}>
+      <ShaRoutingActionsContext.Provider
+        value={{
           ...getFlagSetters(dispatch),
-          goingToRoute
-        }}>
+          goingToRoute,
+        }}
+      >
         {children}
       </ShaRoutingActionsContext.Provider>
     </ShaRoutingStateContext.Provider>

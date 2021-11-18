@@ -98,24 +98,24 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
     },
   }));
 
-  const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props.fetcher({
+  const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = props?.fetcher({
     lazy: true,
     requestOptions: { headers: requestHeaders() },
-    queryParams: { id: props.id },
+    queryParams: { id: props?.id },
   });
 
   // fetch data on page load or when the id changes
   useEffect(() => {
     fetchData();
-  }, [props.id]);
+  }, [props?.id]);
 
   useEffect(() => {
     if (props?.formValues) {
-      form.setFieldsValue(props.formValues);
+      form.setFieldsValue(props?.formValues);
     }
   }, [props?.formValues]);
 
-  const filters = props.formFilters || DEFAULT_FILTERS;
+  const filters = props?.formFilters || DEFAULT_FILTERS;
 
   const model = filterGenericModelData(serverData?.result, filters) as any;
 
@@ -125,7 +125,7 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
     if (props?.onDataLoaded) {
       props?.onDataLoaded(model);
     }
-    if (props.pageRef) {
+    if (props?.pageRef) {
       props.pageRef.current = model;
     }
   }, [loading]);
@@ -147,11 +147,13 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
       <MainLayout
         title={renderTitle()}
         description=""
-        showHeading={!!renderTitle() || !!props.headerControls}
+        showHeading={!!renderTitle() || !!props?.headerControls}
         toolbar={
-          props?.toolbarItems?.filter(({ hide }) => !hide)?.length ? <IndexToolbar items={props.toolbarItems} /> : null
+          props?.toolbarItems?.filter(({ hide }) => !hide)?.length ? <IndexToolbar items={props?.toolbarItems} /> : null
         }
-        headerControls={typeof props.headerControls === 'function' ? props.headerControls(model) : props.headerControls}
+        headerControls={
+          typeof props?.headerControls === 'function' ? props?.headerControls(model) : props?.headerControls
+        }
       >
         <ValidationErrors error={fetchError?.data}></ValidationErrors>
         {model && (
@@ -160,11 +162,11 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
               mode="readonly"
               {...formItemLayout}
               form={form}
-              path={props?.formPath || router.pathname}
-              markup={props.markup}
+              path={props?.formPath || router?.pathname}
+              markup={props?.markup}
               initialValues={model}
-              actions={props.formActions}
-              sections={props.formSections}
+              actions={props?.formActions}
+              sections={props?.formSections}
               onValuesChange={props?.onFormValuesChange}
             />
             {typeof props?.footer === 'function' ? props?.footer(model) : props?.footer}

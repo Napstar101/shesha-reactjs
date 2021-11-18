@@ -1,5 +1,0 @@
-name: publish shesha-reactjs-0.x.x
-
-on:
-  push:
-    branches: [ main ]

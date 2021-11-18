@@ -1,7 +1,7 @@
 shesha-reactjs
 ========================
 
-[![docs](https://readthedocs.org/projects/shesha-reactjs/badge/?version=latest)](https://shesha-reactjs.readthedocs.io/en/latest/?badge=latest)
+[![docs](https://readthedocs.org/projects/shesha-reactjs/badge/?version=latest)](https://shesha-reactjs.readthedocs.io/en/latest/?badge=latest) [![shesha-reactjs-0.x.x](https://github.com/Boxfusion/shesha-reactjs/actions/workflows/shesha-reactjs-0.x.x.yml/badge.svg)](https://github.com/Boxfusion/shesha-reactjs/actions/workflows/shesha-reactjs-0.x.x.yml)
 
 ## License
 

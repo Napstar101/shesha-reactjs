@@ -18,15 +18,16 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
         itemType: 'button',
         title: `New item`,
         childItems: [],
+        selected: false,
       };
 
       const newItems = [...state.items];
-      //const parent = state.selectedItemId ? getItemById(newItems, state.selectedItemId) : null;
+
       const parent = null;
 
       if (parent) {
         parent.childItems = [...parent.childItems, buttonProps];
-      } else newItems.push(buttonProps);
+      } else newItems.unshift(buttonProps);
 
       return {
         ...state,
@@ -46,7 +47,6 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       return {
         ...state,
         items,
-        // items: [...newItems],
         selectedItemId: state.selectedItemId === payload ? null : state.selectedItemId,
       };
     },
@@ -55,6 +55,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       state: ISidebarMenuConfiguratorStateContext,
       action: ReduxActions.Action<string>
     ) => {
+      // console.log('[SidebarMenuActionEnums.SelectItem]');
       const { payload } = action;
 
       return {
@@ -94,6 +95,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
       state: ISidebarMenuConfiguratorStateContext,
       action: ReduxActions.Action<IUpdateChildItemsPayload>
     ) => {
+      // console.log('[SidebarMenuActionEnums.UpdateChildItems]');
       const {
         payload: { index, childs: childIds },
       } = action;
@@ -128,7 +130,9 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
         itemType: 'group',
         title: `New Group`,
         childItems: [],
+        selected: false,
       };
+
       return {
         ...state,
         items: [groupProps, ...state.items],

@@ -1,7 +1,6 @@
 {
-  "name": "shesha-reactjs",
-  "version": "0.0.3-canary.14",
-  "description": "Shesha web component library",
+  "name": "@shesha/reactjs",
+  "description": "The reactjs frontend application and ui for the shesha framework.",
   "author": "Boxfusion",
   "license": "GPL-3.0",
   "repository": "https://github.com/Boxfusion/shesha-reactjs",

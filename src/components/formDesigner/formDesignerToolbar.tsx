@@ -36,7 +36,7 @@ export const FormDesignerToolbar: FC<IProps> = () => {
   };
 
   const onCancelClick = () => {
-    router.back();
+    router?.back();
   };
 
   return (
