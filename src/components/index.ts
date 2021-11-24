@@ -1,4 +1,4 @@
-export { default as Autocomplete, IAutocompleteProps } from './autocomplete';
+export { EntityDtoAutocomplete as Autocomplete, IAutocompleteProps } from './autocomplete';
 export { default as BasicDisplayFormItem, IBasicDisplayFormItemProps } from './basicDisplayFormItem';
 export { default as ConfigurableLogo } from './configurableLogo';
 export { default as GenericCreateModal, IGenericCreateModalProps } from './crudViews/createModal';

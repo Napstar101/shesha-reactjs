@@ -161,3 +161,15 @@ const tableViewSettingsArgs: IFormDesignerStoryProps = {
   formId: '6f0f3e5c-c173-46c2-bb52-5b8d584068c5'
 };
 TableViewSettings.args = tableViewSettingsArgs;
+
+export const IndexPageWithTableConfig = DesignerTemplate.bind({});
+const indexPageWithTableConfigArgs: IFormDesignerStoryProps = {
+  formPath: '/index-page-with-config'
+};
+IndexPageWithTableConfig.args = indexPageWithTableConfigArgs;
+
+export const TableContext = DesignerTemplate.bind({});
+const tableContextArgs: IFormDesignerStoryProps = {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\components\\dataTable\\tableContext\\settingsForm.json'
+};
+TableContext.args = tableContextArgs;

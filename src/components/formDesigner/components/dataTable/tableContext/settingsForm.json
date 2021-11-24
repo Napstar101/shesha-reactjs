@@ -1,1 +1,97 @@
-{"components":[{"id":"b8954bf6-f76d-4139-a850-c99bf06c8b69","type":"sectionSeparator","name":"separator1","parentId":"root","label":"Display"},{"id":"46d07439-4c18-468c-89e1-60c002ce96c5","type":"textField","name":"label","parentId":"root","label":"Title","validate":{}},{"id":"2d32fe70-99a0-4825-ae6c-8b933004e119","type":"textField","name":"description","parentId":"root","label":"Description"},{"id":"cfd7d45e-c7e3-4a27-987b-dc525c412448","type":"checkbox","name":"hidden","parentId":"root","label":"Hidden"},{"id":"8f8a9da8-1727-495a-b9eb-ff8627d97444","type":"autocomplete","name":"tableConfigId","label":"Table Configuration Id","labelAlign":"right","parentId":"root","hidden":false,"customVisibility":null,"validate":{"required":false},"dataSourceType":"url","dataSourceUrl":"/api/services/Shesha/NewDataTable/TableIdAutocomplete","settingsValidationErrors":[]},{"id":"6b0bd9c6-6a53-4a05-9de0-ad1b17eb0018","type":"autocomplete","name":"entityType","label":"Entity Type","labelAlign":"right","parentId":"root","hidden":false,"customVisibility":null,"dataSourceType":"url","validate":{},"dataSourceUrl":"/api/services/app/Metadata/EntityTypeAutocomplete","settingsValidationErrors":[]},{"id":"41721f44-adbc-42fe-8c70-69b30e36f4ca","type":"sectionSeparator","name":"sectionVisibility","parentId":"root","label":"Visibility"},{"id":"03959ffd-cadb-496c-bf6d-b742f7f6edc6","type":"textArea","name":"customVisibility","parentId":"root","label":"Custom Visibility","autoSize":false,"showCount":false,"allowClear":false,"description":"Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key."}],"formSettings":{"layout":"horizontal","colon":true,"labelCol":{"span":5},"wrapperCol":{"span":13},"displayName":"DEFAULT_FORM_SETTINGS","__docgenInfo":{"description":"Default form settings","displayName":"DEFAULT_FORM_SETTINGS","props":{}}}}
+{
+    "components": [
+        {
+            "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
+            "type": "sectionSeparator",
+            "name": "separator1",
+            "parentId": "root",
+            "label": "Display"
+        },
+        {
+            "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
+            "type": "textField",
+            "name": "label",
+            "parentId": "root",
+            "label": "Title",
+            "validate": {}
+        },
+        {
+            "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
+            "type": "textField",
+            "name": "description",
+            "parentId": "root",
+            "label": "Description"
+        },
+        {
+            "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+            "type": "checkbox",
+            "name": "hidden",
+            "parentId": "root",
+            "label": "Hidden"
+        },
+        {
+            "id": "8f8a9da8-1727-495a-b9eb-ff8627d97444",
+            "type": "autocomplete",
+            "name": "tableConfigId",
+            "label": "Table Configuration Id",
+            "labelAlign": "right",
+            "parentId": "root",
+            "hidden": false,
+            "customVisibility": null,
+            "validate": {
+                "required": false
+            },
+            "dataSourceType": "url",
+            "dataSourceUrl": "/api/services/Shesha/NewDataTable/TableIdAutocomplete",
+            "settingsValidationErrors": []
+        },
+        {
+            "id": "6b0bd9c6-6a53-4a05-9de0-ad1b17eb0018",
+            "type": "autocomplete",
+            "name": "entityType",
+            "label": "Entity Type",
+            "labelAlign": "right",
+            "parentId": "root",
+            "hidden": false,
+            "customVisibility": null,
+            "dataSourceType": "url",
+            "validate": {},
+            "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
+            "settingsValidationErrors": []
+        },
+        {
+            "id": "41721f44-adbc-42fe-8c70-69b30e36f4ca",
+            "type": "sectionSeparator",
+            "name": "sectionVisibility",
+            "parentId": "root",
+            "label": "Visibility"
+        },
+        {
+            "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc6",
+            "type": "textArea",
+            "name": "customVisibility",
+            "parentId": "root",
+            "label": "Custom Visibility",
+            "autoSize": false,
+            "showCount": false,
+            "allowClear": false,
+            "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key."
+        }
+    ],
+    "formSettings": {
+        "layout": "horizontal",
+        "colon": true,
+        "labelCol": {
+            "span": 5
+        },
+        "wrapperCol": {
+            "span": 13
+        },
+        "displayName": "DEFAULT_FORM_SETTINGS",
+        "__docgenInfo": {
+            "description": "Default form settings",
+            "displayName": "DEFAULT_FORM_SETTINGS",
+            "props": {}
+        }
+    }
+}

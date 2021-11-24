@@ -1,36 +1,50 @@
-import React, { FC, useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, ReactNode } from 'react';
 import { Select } from 'antd';
 import { AjaxResponseBase, AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
 import { useGet } from 'restful-react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { useDebouncedCallback } from 'use-debounce';
 import qs from 'qs';
+import { LabeledValue } from 'antd/lib/select';
 import { IGuidNullableEntityWithDisplayNameDto } from '../..';
-import _ from 'lodash';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
-interface IDropdownOptionData {
-  key?: string;
-  value?: string;
-  children?: any;
+export interface ISelectOption<TValue = any> { // todo: make generic
+  value: string | number;
+  label: string | React.ReactNode;
+  data: TValue;
 }
 
-export interface IAutocompleteProps {
+export type CustomLabeledValue<TValue = any> = LabeledValue & { data: TValue };
+
+export interface IAutocompleteProps<TValue = any> {
   /**
    * The value of the autocomplete
    *
    * If the value is of this form, then we do not need to fetch items from the server
    */
-  value?: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]; // string | string[]
-
-  defaultValue?: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]; // string | string[]
+  value?: TValue | TValue[];
 
   /**
-   * The text to display on the autocomplete
-   * @deprecated - the property is no longer needed since the type of the value has changed
+   * Default value
    */
-  displayText?: string;
+  defaultValue?: TValue | TValue[];
+
+  /**
+   * Get option from an item fetched from the back-end
+   */
+  getOptionFromFetchedItem?: (fetchedItem: object) => ISelectOption<TValue>;
+
+  /**
+   * Get CustomLabeledValue from value
+   */
+  getLabeledValue?: (value: TValue, options: ISelectOption<TValue>[]) => CustomLabeledValue<TValue>;
+
+  /**
+   * Specify content to show when no result matches
+   */
+  notFoundContent?: ReactNode;
 
   /**
    * The placeholder to display on the autocomplete
@@ -112,20 +126,26 @@ const trimQueryString = (url: string): string => {
 /**
  * A component for working with dynamic autocomplete
  */
-export const Autocomplete: FC<IAutocompleteProps> = ({
-  value,
-  placeHolder,
-  typeShortAlias,
-  allowInherited,
-  onChange,
-  disabled,
-  bordered,
-  dataSourceUrl,
-  dataSourceType,
-  style,
-  size,
-  mode,
-}) => {
+export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
+  const {
+    value,
+    defaultValue,
+    placeHolder,
+    typeShortAlias,
+    allowInherited,
+    onChange,
+    disabled,
+    bordered,
+    dataSourceUrl,
+    dataSourceType,
+    style,
+    size,
+    mode,
+    notFoundContent,
+    getOptionFromFetchedItem,
+    getLabeledValue,
+  } = props;
+
   const entityFetcher = useAutocompleteList({ lazy: true });
 
   const urlFetcher = useGet<any, AjaxResponseBase, UrlFetcherQueryParams, void>(
@@ -139,19 +159,13 @@ export const Autocomplete: FC<IAutocompleteProps> = ({
 
   const [autocompleteText, setAutocompleteText] = useState(null);
 
-  const memoizedValue = useMemo(() => {
-    if (Array.isArray(value)) {
-      return (value as IGuidNullableEntityWithDisplayNameDto[])?.map(({ id }) => {
-        return id;
-      });
-    } else if (typeof value === 'object') {
-      return value?.id;
-    }
-
-    return undefined;
-  }, [value]);
-
   const doFetchItems = (term: string) => {
+    const selectedValue = typeof (value) === 'string'
+      ? value
+      /*: isStringArray(value)
+        ? value*/
+      : undefined;
+
     // if value is specified but displayText is not specified - fetch text from the server
     if (dataSourceType === 'entitiesList') {
       entityFetcher.refetch({
@@ -159,7 +173,7 @@ export const Autocomplete: FC<IAutocompleteProps> = ({
           term: term,
           typeShortAlias: typeShortAlias,
           allowInherited: allowInherited,
-          // selectedValue: value, // This worked if value was a string, but now it's either an object or a list of object
+          selectedValue: selectedValue, // This worked if value was a string, but now it's either an object or a list of object. 17.11.2021 Ivan: But it doesn't mean that we can skip loose string values
         },
       });
     }
@@ -168,8 +182,9 @@ export const Autocomplete: FC<IAutocompleteProps> = ({
       const queryParams = {
         ...getQueryString(dataSourceUrl),
         term: term,
-        // selectedValue: value,
+        selectedValue: selectedValue,
       };
+
       urlFetcher.refetch({
         queryParams: queryParams,
       });
@@ -200,81 +215,155 @@ export const Autocomplete: FC<IAutocompleteProps> = ({
     200
   );
 
-  const getValuesArray = (val: IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[]) => {
-    if (!val) return [];
+  const wrapValue = (value: TValue | TValue[]): CustomLabeledValue<TValue> | CustomLabeledValue<TValue>[] => {
+    if (!Boolean(value))
+      return undefined;
+    if (mode === 'multiple' || mode === 'tags') {
+      return Array.isArray(value)
+        ? (value as TValue[]).map<CustomLabeledValue<TValue>>(o => {
+          return getLabeledValue(o, options);
+        })
+        : [getLabeledValue(value as TValue, options)];
+    } else
+      return getLabeledValue(value as TValue, options);
+  }
 
-    return Array.isArray(val)
-      ? val?.map(({ id, displayText }) => ({ value: id, displayText }))
-      : [
-          {
-            value: val?.id,
-            displayText: val?.displayText,
-          },
-        ];
-  };
-
-  const options: AutocompleteItemDto[] = useMemo(() => {
+  const options = useMemo<ISelectOption<TValue>[]>(() => {
     const fetchedData = getFetchedItems() || [];
 
-    const values = getValuesArray(value);
+    const fetchedItems = fetchedData.map<ISelectOption<TValue>>(item => {
 
-    const prevValues = []; //getValuesArray(previousValue) = ;
+      const option = Boolean(getOptionFromFetchedItem)
+        ? getOptionFromFetchedItem(item)  as ISelectOption<TValue>
+        : item as ISelectOption<TValue>;
 
-    return _.uniqBy([...fetchedData, ...values, ...prevValues], 'value') || [];
+      return option;
+    });
+
+    const selectedItem = wrapValue(value);
+    // Remove items which are already exist in the fetched items. 
+    // Note: we shouldn't process full list and make it unique because by this way we'll hide duplicates received from the back-end
+    const selectedItems = selectedItem
+      ? (Array.isArray(selectedItem) ? selectedItem : [selectedItem])
+        .filter(i => fetchedItems.findIndex(fi => fi.value === i.value) === -1)
+      : [];
+
+    const result = [...fetchedItems, ...selectedItems];
+    return result;
   }, [value, autocompleteText, entityFetcher || urlFetcher]);
 
-  const handleSearch = (value: any) => {
+  const handleSearch = (value: string) => {
     setAutocompleteText(value);
     if (value) {
       debouncedFetchItems(value);
     }
   };
 
-  const handleChange = (value: string, option: any) => {
-    if (mode === 'multiple' || (mode === 'tags' && Array.isArray(option))) {
-      if (Array.isArray(value)) {
-        const values: IGuidNullableEntityWithDisplayNameDto[] = (option as IDropdownOptionData[])?.map(
-          ({ key, children }) => ({ id: key, displayText: children })
-        );
-        onChange(values, values);
-      } else {
-        const val = { id: value, displayText: option?.children };
-        onChange([val], [val]);
-      }
-    } else {
-      const val = { id: value, displayText: option?.children };
-      onChange(val, val);
-    }
+  const handleChange = (_value: CustomLabeledValue<TValue>, option: any) => {
+    const selectedValue = Boolean(option)
+      ? Array.isArray(option)
+        ? (option as ISelectOption<TValue>[]).map(o => o.data)
+        : (option as ISelectOption<TValue>).data
+      : undefined;
+
+    if (mode === 'multiple' || mode === 'tags') {
+      onChange(Array.isArray(selectedValue) ? selectedValue : [selectedValue]);
+    } else
+      onChange(selectedValue);
   };
 
   return (
-    <Select
+    <Select<CustomLabeledValue<TValue> | CustomLabeledValue<TValue>[]>
       showSearch
+      labelInValue={true}
+      notFoundContent={notFoundContent}
+
       defaultActiveFirstOption={false}
       showArrow={false}
       filterOption={false}
       onSearch={handleSearch}
-      defaultValue={memoizedValue as any} // Type 'string | string[]' is not assignable to type 'string'. Type 'string[]' is not assignable to type 'string'.
-      value={memoizedValue as any}
-      notFoundContent={null}
+      value={wrapValue(value)}
+      defaultValue={wrapValue(defaultValue)}
       onChange={handleChange}
       allowClear={true}
       loading={itemsFetcher?.loading}
       placeholder={placeHolder}
-      // value={value}
       disabled={disabled}
       bordered={bordered}
       style={style}
       size={size}
       mode={value ? mode : undefined} // When mode is multiple and value is null, the control shows an empty tag
     >
-      {options?.map(({ value, displayText }) => (
-        <Select.Option value={value} key={value}>
-          {displayText}
+      {options?.map(({ value, label, data }) => (
+        <Select.Option value={value} key={value} data={data}>
+          {label}
         </Select.Option>
       ))}
     </Select>
   );
 };
+
+type IDtoType = IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[];
+
+export const EntityDtoAutocomplete = (props: IAutocompleteProps<IDtoType>) => {
+  const getDtoFromFetchedItem = (item): ISelectOption<IDtoType> => {
+    return {
+      value: item['value'],
+      label: item['displayText'],
+      data: {
+        id: item['value'],
+        displayText: item['displayText'],
+      }
+    };
+  }
+  
+  const labeledValueGetter = (itemValue: IGuidNullableEntityWithDisplayNameDto, _options: ISelectOption<IDtoType>[]) => {
+    return {
+      value: itemValue.id,
+      label: itemValue.displayText,
+      data: itemValue
+    }
+  }
+
+  return (
+    <Autocomplete 
+      getOptionFromFetchedItem={getDtoFromFetchedItem}
+      getLabeledValue={labeledValueGetter}
+      {...props}
+    ></Autocomplete>
+  );
+}
+
+export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
+  const getDtoFromFetchedItem = (item): ISelectOption<string> => {
+    return {
+      value: item['value'],
+      label: item['displayText'],
+      data: item['value'],
+    };
+  }
+  
+  const labeledValueGetter = (itemValue: string, options: ISelectOption<string>[]) => {
+    if (!Boolean(itemValue))
+      return null;
+    const item = options?.find(i => i.value === itemValue);
+    return {
+      value: itemValue,
+      label: item?.label ?? 'unknown',
+      data: itemValue,
+    }
+  }
+
+  return (
+    <Autocomplete<string> 
+      getOptionFromFetchedItem={getDtoFromFetchedItem}
+      getLabeledValue={labeledValueGetter}
+      {...props}
+    ></Autocomplete>
+  );
+}
+
+Autocomplete.Raw = RawAutocomplete;
+Autocomplete.EntityDto = EntityDtoAutocomplete;
 
 export default Autocomplete;
