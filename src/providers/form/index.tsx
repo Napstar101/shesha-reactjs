@@ -295,7 +295,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
     const dto: FormUpdateMarkupInput = {
       id: state.present.id,
-      markup: JSON.stringify(markup),
+      markup: JSON.stringify(markup, null, 2),
     };
     return saveFormHttp(dto, {})
       .then(_response => {

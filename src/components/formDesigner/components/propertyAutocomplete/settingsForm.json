@@ -117,7 +117,8 @@
     "dataSourceType": "url",
     "validate": {},
     "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
-    "entityTypeShortAlias": ""
+    "entityTypeShortAlias": "",
+    "useRawValues": true
   },
   {
     "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",

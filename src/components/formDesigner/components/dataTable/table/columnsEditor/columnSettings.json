@@ -259,7 +259,8 @@
                             "validate": {},
                             "dataSourceType": "entitiesList",
                             "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
-                            "entityTypeShortAlias": "Shesha.Framework.Form"
+                            "entityTypeShortAlias": "Shesha.Framework.Form",
+                            "useRawValues": true
                         },
                         {
                             "id": "2ab34541-6fa0-4be2-bb1e-eb65ec63b353",

@@ -12,6 +12,12 @@ export default {
   component: FormDesigner,
 } as Meta;
 
+const addStory = <TArgs,>(template: Story<TArgs>, args: TArgs) => {
+  const story = template.bind({});
+  story.args = args;
+  return story;
+}
+
 export interface IFormDesignerStoryProps {
   formPath?: string;
   formId?: string;
@@ -25,13 +31,13 @@ const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
     <AuthContainer layout={true}>
       <MetadataDispatcherProvider>
         {/* <MetadataProvider> */}
-          <FormProvider 
-            path={args.formPath}
-            id={args.formId}
-            mode="designer"
-          >
-            <FormDesigner />
-          </FormProvider>
+        <FormProvider
+          path={args.formPath}
+          id={args.formId}
+          mode="designer"
+        >
+          <FormDesigner />
+        </FormProvider>
         {/* </MetadataProvider> */}
       </MetadataDispatcherProvider>
     </AuthContainer>
@@ -44,19 +50,14 @@ TableContextProps.args = {
   formPath: '/settings/forms/playground',
 };
 
-export const ColumnProps = DesignerTemplate.bind({});
-const columnProps: IFormDesignerStoryProps = {
+export const ColumnProps = addStory(DesignerTemplate, {
   //formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs\\src\\components\\formDesigner\\components\\dataTable\\table\\columnsEditor\\columnSettings.json'
   formId: '70D82B7E-73AD-4EB1-A445-F569CEC771E0'
-};
-ColumnProps.args = { ...columnProps };
+})
 
-export const IndexPage = DesignerTemplate.bind({});
-const indexPageProps: IFormDesignerStoryProps = {
+export const IndexPage = addStory(DesignerTemplate, {
   formPath: '/indexTable',
-};
-IndexPage.args = { ...indexPageProps };
-
+});
 
 //#region for refactoring only
 
@@ -90,12 +91,11 @@ const ActionsTemplateContent: FC<IActionsTemplateProps> = (props) => {
   }
 
   const onSaveClick = () => {
-    if (!Boolean(form))
-    {
+    if (!Boolean(form)) {
       console.log('Form not loaded!');
       return;
     }
-    
+
     formUpdateMarkup(form, { id: form.id, base: backendUrl, headers: httpHeaders })
       .then(response => {
         console.log({ msg: 'form saved', response: response });
@@ -116,7 +116,7 @@ const ActionsTemplateContent: FC<IActionsTemplateProps> = (props) => {
   }
 
   const onGetClick = () => {
-    formTestDelayGet({ delayMs: 500 }, {base: backendUrl, headers: httpHeaders})
+    formTestDelayGet({ delayMs: 500 }, { base: backendUrl, headers: httpHeaders })
       .then(response => {
         console.log({ msg: 'get success', response: response });
       })
@@ -129,7 +129,7 @@ const ActionsTemplateContent: FC<IActionsTemplateProps> = (props) => {
     <div>
       <Button onClick={onLoadClick}>Load form by path</Button>
       <Button onClick={onSaveClick}>Save form</Button>
-      
+
       <Button onClick={onPostClick}>Test Post</Button>
       <Button onClick={onGetClick}>Test Get</Button>
     </div>
@@ -144,32 +144,25 @@ RefactoringActions.args = refactoringArgs;
 
 //#endregion
 
-export const SectionsUsage = DesignerTemplate.bind({});
-const sectionsUsageArgs: IFormDesignerStoryProps = {
+export const SectionsUsage = addStory(DesignerTemplate, {
   formPath: '/settings/forms/playground'
-};
-SectionsUsage.args = sectionsUsageArgs;
+});
 
-export const QueryBuilderSettings = DesignerTemplate.bind({});
-const queryBuilderSettingsArgs: IFormDesignerStoryProps = {
+export const QueryBuilderSettings = addStory(DesignerTemplate, {
   formId: '7490f400-1d50-47f7-ab84-97625e67ea29'
-};
-QueryBuilderSettings.args = queryBuilderSettingsArgs;
+});
 
-export const TableViewSettings = DesignerTemplate.bind({});
-const tableViewSettingsArgs: IFormDesignerStoryProps = {
+export const TableViewSettings = addStory(DesignerTemplate, {
   formId: '6f0f3e5c-c173-46c2-bb52-5b8d584068c5'
-};
-TableViewSettings.args = tableViewSettingsArgs;
+});
 
-export const IndexPageWithTableConfig = DesignerTemplate.bind({});
-const indexPageWithTableConfigArgs: IFormDesignerStoryProps = {
+export const IndexPageWithTableConfig = addStory(DesignerTemplate, {
   formPath: '/index-page-with-config'
-};
-IndexPageWithTableConfig.args = indexPageWithTableConfigArgs;
+});
 
-export const TableContext = DesignerTemplate.bind({});
-const tableContextArgs: IFormDesignerStoryProps = {
+export const TableContext = addStory(DesignerTemplate, {
   formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\components\\dataTable\\tableContext\\settingsForm.json'
-};
-TableContext.args = tableContextArgs;
+});
+export const AutocompleteProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\components\\autocomplete\\settingsForm.json'
+});

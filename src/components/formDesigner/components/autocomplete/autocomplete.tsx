@@ -14,6 +14,7 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   dataSourceUrl?: string;
   dataSourceType: AutocompleteDataSourceType;
   mode?: 'tags' | 'multiple';
+  useRawValues: boolean;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -30,18 +31,22 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
       ? replaceTags(customProps.dataSourceUrl, { data: formData })
       : customProps.dataSourceUrl;
 
+      const autocompleteProps = {
+        typeShortAlias: customProps?.entityTypeShortAlias?.id,
+        allowInherited: true, /*hardcoded for now*/
+        disabled: model.disabled,
+        bordered: !customProps.hideBorder,
+        dataSourceUrl: dataSourceUrl,
+        dataSourceType: customProps.dataSourceType,
+        mode: customProps?.mode
+      };
     // todo: implement other types of datasources!
     return (
       <ConfigurableFormItem model={model}>
-        <Autocomplete
-          typeShortAlias={customProps?.entityTypeShortAlias?.id}
-          allowInherited={true} /*hardcoded for now*/
-          disabled={model.disabled}
-          bordered={!customProps.hideBorder}
-          dataSourceUrl={dataSourceUrl}
-          dataSourceType={customProps.dataSourceType}
-          mode={customProps?.mode}
-        />
+        { customProps.useRawValues
+          ? <Autocomplete.Raw {...autocompleteProps} />
+          : <Autocomplete.EntityDto {...autocompleteProps} />
+        }
       </ConfigurableFormItem>
     );
   },
@@ -51,6 +56,7 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
     const customProps: IAutocompleteProps = {
       ...model,
       dataSourceType: 'entitiesList',
+      useRawValues: false,
     };
     return customProps;
   },

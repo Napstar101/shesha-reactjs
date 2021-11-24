@@ -11,7 +11,8 @@
       "customVisibility": null,
       "dataSourceType": "url",
       "dataSourceUrl": "/api/services/app/Metadata/TypeAutocomplete",
-      "validate": {}
+      "validate": {},
+      "useRawValues": true
     },
     {
       "id": "3c32d64a-9bda-457f-82f8-6a0f2c110430",
