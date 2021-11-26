@@ -1,145 +1,181 @@
-[
-  {
-    "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
-    "type": "sectionSeparator",
-    "name": "separator1",
-    "parentId": "root",
-    "label": "Display"
-  },
-  {
-    "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
-    "type": "textField",
-    "name": "name",
-    "parentId": "root",
-    "label": "Name",
-    "validate": {
-      "required": true
+{
+  "components": [
+    {
+      "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
+      "type": "sectionSeparator",
+      "name": "separator1",
+      "parentId": "root",
+      "label": "Display"
+    },
+    {
+      "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
+      "type": "textField",
+      "name": "name",
+      "parentId": "root",
+      "label": "Name",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
+      "type": "textField",
+      "name": "label",
+      "parentId": "root",
+      "label": "Label"
+    },
+    {
+      "id": "57a40a33-7e08-4ce4-9f08-a34d24a83338",
+      "type": "dropdown",
+      "name": "labelAlign",
+      "parentId": "root",
+      "label": "Label align",
+      "values": [
+        {
+          "label": "left",
+          "value": "left",
+          "id": "f01e54aa-a1a4-4bd6-ba73-c395e48af8ce"
+        },
+        {
+          "label": "right",
+          "value": "right",
+          "id": "b920ef96-ae27-4a01-bfad-b5b7d07218da"
+        }
+      ],
+      "dataSourceType": "values"
+    },
+    {
+      "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
+      "type": "textField",
+      "name": "description",
+      "parentId": "root",
+      "label": "Description"
+    },
+    {
+      "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+      "type": "checkbox",
+      "name": "hidden",
+      "parentId": "root",
+      "label": "Hidden"
+    },
+    {
+      "id": "c6885251-96a6-40ce-99b2-4b5209a9e01c",
+      "type": "checkbox",
+      "name": "hideLabel",
+      "parentId": "root",
+      "label": "Hide Label"
+    },
+    {
+      "id": "24a8be15-98eb-40f7-99ea-ebb602693e9c",
+      "type": "checkbox",
+      "name": "disabled",
+      "parentId": "root",
+      "label": "Disabled"
+    },
+    {
+      "id": "c5b6468a-acca-4d37-8e82-e10e88a27aaa",
+      "type": "sectionSeparator",
+      "name": "separator3",
+      "parentId": "root",
+      "label": "Data"
+    },
+    {
+      "id": "f93134cb-049c-47ce-8ad4-6193ffe43ecf",
+      "type": "dropdown",
+      "name": "dataSourceType",
+      "parentId": "root",
+      "label": "Data Source Type",
+      "dataSourceType": "values",
+      "values": [
+        {
+          "label": "Values",
+          "value": "values",
+          "id": "0a2931b3-dbb6-43c1-9b85-358dc637f1df"
+        },
+        {
+          "label": "Reference List",
+          "value": "referenceList",
+          "id": "447171c1-5d69-404b-bf58-1db2c28882a0"
+        }
+      ]
+    },
+    {
+      "id": "8c45d055-8cae-499c-a129-aa34facef0d0",
+      "type": "textField",
+      "name": "referenceListNamespace",
+      "parentId": "root",
+      "label": "ReferenceList Namespace",
+      "customVisibility": "return data.dataSourceType === 'referenceList'"
+    },
+    {
+      "id": "2a62f901-aa2e-48f1-87ef-ad0fca3f1286",
+      "type": "textField",
+      "name": "referenceListName",
+      "parentId": "root",
+      "label": "ReferenceList Name",
+      "customVisibility": "return data.dataSourceType === 'referenceList'"
+    },
+    {
+      "id": "58f715b9-624b-4189-812c-6144cafb7405",
+      "type": "labelValueEditor",
+      "name": "items",
+      "parentId": "root",
+      "label": "Items",
+      "labelTitle": "Name",
+      "labelName": "name",
+      "valueTitle": "Value",
+      "valueName": "value",
+      "customVisibility": "return data.dataSourceType === 'values'"
+    },
+    {
+      "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
+      "type": "sectionSeparator",
+      "name": "separator2",
+      "parentId": "root",
+      "label": "Validation"
+    },
+    {
+      "id": "3be9da3f-f47e-48ae-b4c3-f5cc36e534d9",
+      "type": "checkbox",
+      "name": "validate.required",
+      "parentId": "root",
+      "label": "Required"
+    },
+    {
+      "id": "fd96c8e3-9e41-48c5-9351-2a29abea27cf",
+      "type": "sectionSeparator",
+      "name": "separatorVisibility",
+      "parentId": "root",
+      "label": "Visibility"
+    },
+    {
+      "id": "e5008e17-beba-4a30-b4ac-bcc5a8a44985",
+      "type": "codeEditor",
+      "name": "customVisibility",
+      "label": "Custom Visibility",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
     }
-  },
-  {
-    "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
-    "type": "textField",
-    "name": "label",
-    "parentId": "root",
-    "label": "Label"
-  },
-  {
-    "id": "57a40a33-7e08-4ce4-9f08-a34d24a83338",
-    "type": "dropdown",
-    "name": "labelAlign",
-    "parentId": "root",
-    "label": "Label align",
-    "values": [
-      { "label": "left", "value": "left", "id": "f01e54aa-a1a4-4bd6-ba73-c395e48af8ce" },
-      { "label": "right", "value": "right", "id": "b920ef96-ae27-4a01-bfad-b5b7d07218da" }
-    ],
-    "dataSourceType": "values"
-  },
-  {
-    "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-    "type": "textField",
-    "name": "description",
-    "parentId": "root",
-    "label": "Description"
-  },
-  {
-    "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
-    "type": "checkbox",
-    "name": "hidden",
-    "parentId": "root",
-    "label": "Hidden"
-  },
-  {
-    "id": "c6885251-96a6-40ce-99b2-4b5209a9e01c",
-    "type": "checkbox",
-    "name": "hideLabel",
-    "parentId": "root",
-    "label": "Hide Label"
-  },
-  {
-    "id": "24a8be15-98eb-40f7-99ea-ebb602693e9c",
-    "type": "checkbox",
-    "name": "disabled",
-    "parentId": "root",
-    "label": "Disabled"
-  },
-  {
-    "id": "c5b6468a-acca-4d37-8e82-e10e88a27aaa",
-    "type": "sectionSeparator",
-    "name": "separator3",
-    "parentId": "root",
-    "label": "Data"
-  },
-  {
-    "id": "f93134cb-049c-47ce-8ad4-6193ffe43ecf",
-    "type": "dropdown",
-    "name": "dataSourceType",
-    "parentId": "root",
-    "label": "Data Source Type",
-    "dataSourceType": "values",
-    "values": [
-      { "label": "Values", "value": "values", "id": "0a2931b3-dbb6-43c1-9b85-358dc637f1df" },
-      { "label": "Reference List", "value": "referenceList", "id": "447171c1-5d69-404b-bf58-1db2c28882a0" }
-    ]
-  },
-  {
-    "id": "8c45d055-8cae-499c-a129-aa34facef0d0",
-    "type": "textField",
-    "name": "referenceListNamespace",
-    "parentId": "root",
-    "label": "ReferenceList Namespace",
-    "customVisibility": "return data.dataSourceType === 'referenceList'"
-  },
-  {
-    "id": "2a62f901-aa2e-48f1-87ef-ad0fca3f1286",
-    "type": "textField",
-    "name": "referenceListName",
-    "parentId": "root",
-    "label": "ReferenceList Name",
-    "customVisibility": "return data.dataSourceType === 'referenceList'"
-  },
-  {
-    "id": "58f715b9-624b-4189-812c-6144cafb7405",
-    "type": "labelValueEditor",
-    "name": "items",
-    "parentId": "root",
-    "label": "Items",
-    "labelTitle": "Name",
-    "labelName": "name",
-    "valueTitle": "Value",
-    "valueName": "value",
-    "customVisibility": "return data.dataSourceType === 'values'"
-  },
-  {
-    "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
-    "type": "sectionSeparator",
-    "name": "separator2",
-    "parentId": "root",
-    "label": "Validation"
-  },
-  {
-    "id": "3be9da3f-f47e-48ae-b4c3-f5cc36e534d9",
-    "type": "checkbox",
-    "name": "validate.required",
-    "parentId": "root",
-    "label": "Required"
-  },
-  {
-    "id": "fd96c8e3-9e41-48c5-9351-2a29abea27cf",
-    "type": "sectionSeparator",
-    "name": "separatorVisibility",
-    "parentId": "root",
-    "label": "Visibility"
-  },
-  {
-    "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc6",
-    "type": "textArea",
-    "name": "customVisibility",
-    "parentId": "root",
-    "label": "Custom Visibility",
-    "autoSize": false,
-    "showCount": false,
-    "allowClear": false,
-    "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key."
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": {
+      "span": 5
+    },
+    "wrapperCol": {
+      "span": 13
+    },
+    "displayName": "DEFAULT_FORM_SETTINGS",
+    "__docgenInfo": {
+      "description": "Default form settings",
+      "displayName": "DEFAULT_FORM_SETTINGS",
+      "props": {}
+    }
   }
-]
+}

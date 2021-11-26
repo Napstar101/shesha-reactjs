@@ -4,8 +4,10 @@ import { Story } from '@storybook/react';
 import FormDesigner from './formDesigner';
 import { /*MetadataProvider,*/ FormProvider, ShaApplicationProvider, useSheshaApplication, MetadataDispatcherProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 import { formGetByPath, formUpdateMarkup, formTestDelayGet, formTestDelayPost } from '../../apis/form';
+import allFormsJson from './allForms.json';
+import { LabeledValue } from 'antd/lib/select';
 
 export default {
   title: 'Components/Temp/FormDesigner',
@@ -166,3 +168,60 @@ export const TableContext = addStory(DesignerTemplate, {
 export const AutocompleteProps = addStory(DesignerTemplate, {
   formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\components\\autocomplete\\settingsForm.json'
 });
+export const CodeEditorProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\components\\codeEditor\\settingsForm.json'
+});
+
+interface FormInfo {
+  name: string;
+  path: string;
+  id: string;
+}
+export const FormsEditor: FC = () => {
+  const [currentForm, setCurrentForm] = useState(null);
+  const forms = allFormsJson as FormInfo[];
+  const options = forms.map<LabeledValue>(f => ({
+    value: f.id,
+    label: f.name
+  }));
+  return (
+    <div>
+      <div>
+        <Select<LabeledValue>
+          showSearch
+          optionFilterProp="label"
+          style={{ width: '100%' }}
+          options={options}
+          labelInValue={true}
+          onChange={(value) => setCurrentForm(value.value)}
+        >
+        </Select>
+      </div>
+      <div>
+        Designer {currentForm}
+        {currentForm && (
+          <MetadataDispatcherProvider>
+            {/* <MetadataProvider> */}
+            <FormProvider
+              id={currentForm}
+              mode="designer"
+            >
+              <FormDesigner />
+            </FormProvider>
+            {/* </MetadataProvider> */}
+          </MetadataDispatcherProvider>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const BrowserTemplate: Story = () => (
+  <ShaApplicationProvider backendUrl={backendUrl}>
+    <AuthContainer layout={true}>
+      <FormsEditor></FormsEditor>
+    </AuthContainer>
+  </ShaApplicationProvider>
+);
+
+export const Browser = addStory(BrowserTemplate, null);

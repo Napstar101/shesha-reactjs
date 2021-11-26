@@ -1,151 +1,181 @@
-[
-  {
-    "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
-    "type": "sectionSeparator",
-    "name": "separator1",
-    "parentId": "root",
-    "label": "Display"
-  },
-  {
-    "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
-    "type": "textField",
-    "name": "name",
-    "parentId": "root",
-    "label": "Name",
-    "validate": {
-      "required": true
+{
+  "components": [
+    {
+      "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
+      "type": "sectionSeparator",
+      "name": "separator1",
+      "parentId": "root",
+      "label": "Display"
+    },
+    {
+      "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
+      "type": "textField",
+      "name": "name",
+      "parentId": "root",
+      "label": "Name",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
+      "type": "textField",
+      "name": "label",
+      "parentId": "root",
+      "label": "Label"
+    },
+    {
+      "id": "57a40a33-7e08-4ce4-9f08-a34d24a83338",
+      "type": "dropdown",
+      "name": "labelAlign",
+      "parentId": "root",
+      "label": "Label align",
+      "values": [
+        {
+          "label": "left",
+          "value": "left",
+          "id": "f01e54aa-a1a4-4bd6-ba73-c395e48af8ce"
+        },
+        {
+          "label": "right",
+          "value": "right",
+          "id": "b920ef96-ae27-4a01-bfad-b5b7d07218da"
+        }
+      ],
+      "dataSourceType": "values"
+    },
+    {
+      "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
+      "type": "textField",
+      "name": "description",
+      "parentId": "root",
+      "label": "Description"
+    },
+    {
+      "id": "bc67960e-77e3-40f2-89cc-f18f94678cce",
+      "type": "sectionSeparator",
+      "name": "separatorVisibility",
+      "parentId": "root",
+      "label": "Visibility"
+    },
+    {
+      "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+      "type": "checkbox",
+      "name": "hidden",
+      "parentId": "root",
+      "label": "Hidden"
+    },
+    {
+      "id": "c6885251-96a6-40ce-99b2-4b5209a9e01c",
+      "type": "checkbox",
+      "name": "hideLabel",
+      "parentId": "root",
+      "label": "Hide Label"
+    },
+    {
+      "id": "24a8be15-98eb-40f7-99ea-ebb602693e9c",
+      "type": "checkbox",
+      "name": "disabled",
+      "parentId": "root",
+      "label": "Disabled"
+    },
+    {
+      "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
+      "type": "sectionSeparator",
+      "name": "separator2",
+      "parentId": "root",
+      "label": "Validation"
+    },
+    {
+      "id": "3be9da3f-f47e-48ae-b4c3-f5cc36e534d9",
+      "type": "checkbox",
+      "name": "validate.required",
+      "parentId": "root",
+      "label": "Required"
+    },
+    {
+      "id": "bc67960e-77e3-40f2-89cc-f18f94678ccf",
+      "type": "sectionSeparator",
+      "name": "separatorData",
+      "parentId": "root",
+      "label": "Data"
+    },
+    {
+      "id": "24a8be15-98eb-40f7-99ea-ebb602693e95",
+      "type": "checkbox",
+      "name": "dropdown",
+      "parentId": "root",
+      "label": "Dropdown"
+    },
+    {
+      "id": "48c5rw62-12fv-81y8-77ok-gvv514722x36",
+      "type": "checkbox",
+      "name": "saveLocally",
+      "parentId": "root",
+      "label": "Save Locally"
+    },
+    {
+      "id": "417ee22e-a49d-44f2-a1c7-fef32ec87504",
+      "type": "textField",
+      "name": "checklistId",
+      "parentId": "root",
+      "label": "Checklist Id"
+    },
+    {
+      "id": "417ee22e-a49d-44f2-a1c7-fef32ec87503",
+      "type": "textField",
+      "name": "ownerId",
+      "parentId": "root",
+      "label": "Owner Id"
+    },
+    {
+      "id": "c6ecd70c-7419-4ea7-a715-d42699d26e6e",
+      "type": "textField",
+      "name": "ownerType",
+      "parentId": "root",
+      "label": "Owner Type"
+    },
+    {
+      "id": "4ca94ede-106b-4900-a087-3532466ae569",
+      "type": "codeEditor",
+      "name": "customHint",
+      "label": "Custom Hint",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom alert Hint. You must return a value that will show in the alert hint.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "3c75b591-28f9-4867-b14a-d5274111850d",
+      "type": "codeEditor",
+      "name": "customVisibility",
+      "label": "Custom Visibility",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom visibility code. You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
     }
-  },
-  {
-    "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
-    "type": "textField",
-    "name": "label",
-    "parentId": "root",
-    "label": "Label"
-  },
-  {
-    "id": "57a40a33-7e08-4ce4-9f08-a34d24a83338",
-    "type": "dropdown",
-    "name": "labelAlign",
-    "parentId": "root",
-    "label": "Label align",
-    "values": [
-      { "label": "left", "value": "left", "id": "f01e54aa-a1a4-4bd6-ba73-c395e48af8ce" },
-      { "label": "right", "value": "right", "id": "b920ef96-ae27-4a01-bfad-b5b7d07218da" }
-    ],
-    "dataSourceType": "values"
-  },
-  {
-    "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-    "type": "textField",
-    "name": "description",
-    "parentId": "root",
-    "label": "Description"
-  },
-  {
-    "id": "bc67960e-77e3-40f2-89cc-f18f94678cce",
-    "type": "sectionSeparator",
-    "name": "separatorVisibility",
-    "parentId": "root",
-    "label": "Visibility"
-  },
-  {
-    "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
-    "type": "checkbox",
-    "name": "hidden",
-    "parentId": "root",
-    "label": "Hidden"
-  },
-  {
-    "id": "c6885251-96a6-40ce-99b2-4b5209a9e01c",
-    "type": "checkbox",
-    "name": "hideLabel",
-    "parentId": "root",
-    "label": "Hide Label"
-  },
-  {
-    "id": "24a8be15-98eb-40f7-99ea-ebb602693e9c",
-    "type": "checkbox",
-    "name": "disabled",
-    "parentId": "root",
-    "label": "Disabled"
-  },
-  {
-    "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
-    "type": "sectionSeparator",
-    "name": "separator2",
-    "parentId": "root",
-    "label": "Validation"
-  },
-  {
-    "id": "3be9da3f-f47e-48ae-b4c3-f5cc36e534d9",
-    "type": "checkbox",
-    "name": "validate.required",
-    "parentId": "root",
-    "label": "Required"
-  },
-  {
-    "id": "bc67960e-77e3-40f2-89cc-f18f94678ccf",
-    "type": "sectionSeparator",
-    "name": "separatorData",
-    "parentId": "root",
-    "label": "Data"
-  },
-  {
-    "id": "24a8be15-98eb-40f7-99ea-ebb602693e95",
-    "type": "checkbox",
-    "name": "dropdown",
-    "parentId": "root",
-    "label": "Dropdown"
-  },
-  {
-    "id": "48c5rw62-12fv-81y8-77ok-gvv514722x36",
-    "type": "checkbox",
-    "name": "saveLocally",
-    "parentId": "root",
-    "label": "Save Locally"
-  },
-  {
-    "id": "417ee22e-a49d-44f2-a1c7-fef32ec87504",
-    "type": "textField",
-    "name": "checklistId",
-    "parentId": "root",
-    "label": "Checklist Id"
-  },
-  {
-    "id": "417ee22e-a49d-44f2-a1c7-fef32ec87503",
-    "type": "textField",
-    "name": "ownerId",
-    "parentId": "root",
-    "label": "Owner Id"
-  },
-  {
-    "id": "c6ecd70c-7419-4ea7-a715-d42699d26e6e",
-    "type": "textField",
-    "name": "ownerType",
-    "parentId": "root",
-    "label": "Owner Type"
-  },
-  {
-    "id": "85632gkj-dftu-651v-dw4g-f654a4q9rlb1",
-    "type": "textArea",
-    "name": "customHint",
-    "parentId": "root",
-    "label": "Custom Hint",
-    "autoSize": false,
-    "showCount": false,
-    "allowClear": false,
-    "description": "Enter custom alert Hint. You must return a value that will show in the alert hint."
-  },
-  {
-    "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc6",
-    "type": "textArea",
-    "name": "customVisibility",
-    "parentId": "root",
-    "label": "Custom Visibility",
-    "autoSize": false,
-    "showCount": false,
-    "allowClear": false,
-    "description": "Enter custom visibility code. You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key."
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": {
+      "span": 5
+    },
+    "wrapperCol": {
+      "span": 13
+    },
+    "displayName": "DEFAULT_FORM_SETTINGS",
+    "__docgenInfo": {
+      "description": "Default form settings",
+      "displayName": "DEFAULT_FORM_SETTINGS",
+      "props": {}
+    }
   }
-]
+}
