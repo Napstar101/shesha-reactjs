@@ -9,7 +9,7 @@
     },
     {
       "id": "de0f8d68-de60-4ec6-9290-d9cfffa5bcbc",
-      "type": "textField",
+      "type": "propertyAutocomplete",
       "name": "name",
       "parentId": "root",
       "label": "Name",

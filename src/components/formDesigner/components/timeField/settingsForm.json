@@ -16,7 +16,7 @@
     },
     {
       "id": "b67e9759-a3be-4b51-85a7-f45c5aec7365",
-      "type": "textField",
+      "type": "propertyAutocomplete",
       "name": "name",
       "parentId": "root",
       "label": "Name",
