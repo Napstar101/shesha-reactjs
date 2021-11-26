@@ -19,6 +19,7 @@ import { UiProvider } from '../ui';
 
 export interface IShaApplicationProviderProps {
   backendUrl: string;
+  applicationName?: string;
   accessTokenName?: string;
   router?: Router; // todo: replace with IRouter
   unauthorizedRedirectUrl?: string;
@@ -28,6 +29,7 @@ export interface IShaApplicationProviderProps {
 const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>> = ({
   children,
   backendUrl,
+  applicationName,
   accessTokenName,
   router,
   unauthorizedRedirectUrl,
@@ -35,7 +37,8 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
 }) => {
   const [state, dispatch] = useReducer(appConfiguratorReducer, {
     ...SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
-    backendUrl: backendUrl,
+    backendUrl,
+    applicationName,
   });
 
   const onSetRequestHeaders = (headers: IRequestHeaders) => {

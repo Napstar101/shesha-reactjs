@@ -1,7 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import CancelButton from '../cancelButton';
 import { useAuth, useShaRouting } from '../../providers';
-import './styles/index.less';
 
 export interface IControlItemData {
   readonly name: string;
