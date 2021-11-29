@@ -234,7 +234,7 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
     const fetchedItems = fetchedData.map<ISelectOption<TValue>>(item => {
 
       const option = Boolean(getOptionFromFetchedItem)
-        ? getOptionFromFetchedItem(item)  as ISelectOption<TValue>
+        ? getOptionFromFetchedItem(item) as ISelectOption<TValue>
         : item as ISelectOption<TValue>;
 
       return option;
@@ -260,6 +260,8 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   };
 
   const handleChange = (_value: CustomLabeledValue<TValue>, option: any) => {
+    if (!Boolean(onChange))
+      return;
     const selectedValue = Boolean(option)
       ? Array.isArray(option)
         ? (option as ISelectOption<TValue>[]).map(o => o.data)
@@ -316,7 +318,7 @@ export const EntityDtoAutocomplete = (props: IAutocompleteProps<IDtoType>) => {
       }
     };
   }
-  
+
   const labeledValueGetter = (itemValue: IGuidNullableEntityWithDisplayNameDto, _options: ISelectOption<IDtoType>[]) => {
     return {
       value: itemValue.id,
@@ -326,7 +328,7 @@ export const EntityDtoAutocomplete = (props: IAutocompleteProps<IDtoType>) => {
   }
 
   return (
-    <Autocomplete 
+    <Autocomplete
       getOptionFromFetchedItem={getDtoFromFetchedItem}
       getLabeledValue={labeledValueGetter}
       {...props}
@@ -342,7 +344,7 @@ export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
       data: item['value'],
     };
   }
-  
+
   const labeledValueGetter = (itemValue: string, options: ISelectOption<string>[]) => {
     if (!Boolean(itemValue))
       return null;
@@ -355,7 +357,7 @@ export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
   }
 
   return (
-    <Autocomplete<string> 
+    <Autocomplete<string>
       getOptionFromFetchedItem={getDtoFromFetchedItem}
       getLabeledValue={labeledValueGetter}
       {...props}

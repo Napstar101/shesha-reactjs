@@ -41,8 +41,12 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
 export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, componentRef }) => {
   const { formMode } = useForm();
   const isDesignMode = formMode === 'designer';
-  const { columns } = useDataTableStore();
-  componentRef.current = { columns };
+  const { columns, getDataSourceType } = useDataTableStore();
+  const dataSourceType = getDataSourceType();
+  componentRef.current = {
+    columns,
+    dataSourceType
+  };
 
   if (filters.length === 0 && isDesignMode)
     return (

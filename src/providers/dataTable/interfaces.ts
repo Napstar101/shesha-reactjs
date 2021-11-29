@@ -2,6 +2,8 @@ import { Moment } from 'moment';
 import { IPublicDataTableActions } from './contexts';
 export type ColumnFilter = string[] | number[] | Moment[] | Date[] | string | number | Moment | Date | boolean;
 
+export type TableDataSourceType = 'entity' | 'tableConfig';
+
 export type IndexColumnDataType =
   | 'string'
   | 'number'

@@ -13,8 +13,6 @@ export interface ICodeEditorProps extends IAceEditorProps {
 const AceEditorLazy = React.lazy<typeof ReactAce>(() => new Promise(async resolve => {
     const reactAce = await import("react-ace");
 
-    console.log('configure ace');
-
     // prevent warning in console about misspelled props name.
     await import("ace-builds/src-noconflict/ext-language_tools");
 

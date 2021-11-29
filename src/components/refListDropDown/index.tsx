@@ -98,6 +98,8 @@ const RefListDropDown: FC<IRefListDropDownProps> = ({
   }, [value]);
 
   const handleChange = (value: string, option: any) => {
+    if (!Boolean(onChange))
+      return;
     if (mode === 'multiple' || (mode === 'tags' && Array.isArray(option))) {
       console.log('handleChange value, option : ', value, option);
 

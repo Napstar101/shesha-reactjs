@@ -551,6 +551,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     return state.tableFilterDirty || state.tableFilter || [];
   };
 
+  const getDataSourceType = () => {
+    return !tableId && entityType ? 'entity' : 'tableConfig';
+  }
+
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   return (
@@ -584,6 +588,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           deleteRowItem,
           registerConfigurableColumns,
           getCurrentFilter,
+          getDataSourceType,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

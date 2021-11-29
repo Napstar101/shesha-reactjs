@@ -8,17 +8,12 @@ import { Button, Select } from 'antd';
 import { formGetByPath, formUpdateMarkup, formTestDelayGet, formTestDelayPost } from '../../apis/form';
 import allFormsJson from './allForms.json';
 import { LabeledValue } from 'antd/lib/select';
+import { addStory } from '../../stories/utils';
 
 export default {
   title: 'Components/Temp/FormDesigner',
   component: FormDesigner,
 } as Meta;
-
-const addStory = <TArgs,>(template: Story<TArgs>, args: TArgs) => {
-  const story = template.bind({});
-  story.args = args;
-  return story;
-}
 
 export interface IFormDesignerStoryProps {
   formPath?: string;
