@@ -8,7 +8,7 @@ import { IDropdownProps, ILabelValue } from './models';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
-import { RefListDropDown } from '../../..';
+import RefListDropDown from '../../../refListDropDown';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -49,7 +49,7 @@ export const Dropdown: FC<IDropdownProps> = ({
 
   if (dataSourceType === 'referenceList') {
     return (
-      <RefListDropDown
+      <RefListDropDown.Dto
         onChange={onChange}
         listName={referenceListName}
         listNamespace={referenceListNamespace}

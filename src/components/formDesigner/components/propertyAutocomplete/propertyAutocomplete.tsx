@@ -84,13 +84,14 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
                 <AutoComplete
                     value={props.value}
                     options={options}
-                    style={{ width: '85%' }} /* todo: add normal styles like it's done for the search field*/
+                    //style={{ width: '85%' }} /* todo: add normal styles like it's done for the search field*/
+                    style={{ width: '100%' }}
                     onSelect={onSelect}
                     onSearch={onSearch}
                     notFoundContent="Not found"
                 >
                 </AutoComplete>
-                <Button icon={<ThunderboltOutlined />} onClick={onFillPropsClick} disabled={!canFillProps}></Button>
+                { false && <Button icon={<ThunderboltOutlined />} onClick={onFillPropsClick} disabled={!canFillProps}></Button> }
             </Input.Group>
         </>
     );

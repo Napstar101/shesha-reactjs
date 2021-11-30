@@ -78,12 +78,12 @@ export const metadataCodeCompleter =
             if (Boolean(currentLevel) && parts.length == 0) {
                 const completions = treeLevel2Completions(currentLevel, prefix);
 
-                console.log({ completions });
+                //console.log({ completions });
                 callback(null, completions);
             }
         } else {
             const completions = treeLevel2Completions(shaTestData);
-            console.log(completions);
+            //console.log(completions);
             callback(null, completions);
         }
     },

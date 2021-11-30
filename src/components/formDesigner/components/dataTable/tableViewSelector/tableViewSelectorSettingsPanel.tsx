@@ -65,12 +65,14 @@ function ColumnsSettings(props: IProps) {
     return [];
   }, [dataSourceType, columns, metadata]);
 
+  /*
   console.log({
     metadata,
     ref: selectedComponentRef.current,
     dataSourceType,
     fields
   });
+  */
 
   //console.log({ columns, fields });
 

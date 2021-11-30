@@ -8,11 +8,12 @@ export const DtoRefListDropDown: FC<IRefListDropDownProps<ReferenceListItemDto>>
   const getLabeledValue = (itemValue: ReferenceListItemDto, _options: ISelectOption<ReferenceListItemDto>[]) => {
     if (itemValue === undefined)
         return undefined;
-    return {
+    const result = {
       value: itemValue.itemValue,
       label: itemValue.item,
       data: itemValue
     }
+    return result;
   }
 
   const getOptionFromFetchedItem = (fetchedItem: ReferenceListItemDto): ISelectOption<ReferenceListItemDto> => {

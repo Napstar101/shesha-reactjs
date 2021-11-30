@@ -126,7 +126,8 @@ const trimQueryString = (url: string): string => {
 /**
  * A component for working with dynamic autocomplete
  */
-export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {1
+ 
+export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   const {
     value,
     defaultValue,
@@ -365,7 +366,14 @@ export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
   );
 }
 
-Autocomplete.Raw = RawAutocomplete;
-Autocomplete.EntityDto = EntityDtoAutocomplete;
+type InternalAutocompleteType = typeof Autocomplete;
+interface InternalAutocompleteInterface extends InternalAutocompleteType {
+  Raw: typeof RawAutocomplete;
+  EntityDto: typeof EntityDtoAutocomplete;
+}
 
-export default Autocomplete;
+const AutocompleteInterface = Autocomplete as InternalAutocompleteInterface;
+AutocompleteInterface.Raw = RawAutocomplete;
+AutocompleteInterface.EntityDto = EntityDtoAutocomplete;
+
+export default AutocompleteInterface;

@@ -82,7 +82,7 @@ export { default as NotesRendererBase, INotesRendererBaseProps } from './notesRe
 export { default as OverlayLoader, IOverlayLoaderProps } from './overlayLoader';
 export { default as ProtectedContent, IProtectedContentProps } from './protectedContent';
 export { default as QuickFilters, IQuickFiltersProps } from './quickFilters';
-export { default as RefListDropDown, IRefListDropDownProps } from './refListDropDown';
+export { DtoRefListDropDown as RefListDropDown, IRefListDropDownProps } from './refListDropDown';
 export { default as RefListRadioButtons, IRefListRadioButtonsProps } from './refListRadioButtons';
 export { ISaveFilterModalProps, default as SaveFilterModal } from './saveFilterModal';
 export { default as Scroll, IScrollProps } from './scroll';

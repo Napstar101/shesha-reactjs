@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Button, Form } from 'antd';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import RefListDropDown, { IRefListDropDownProps, RawRefListDropDown } from './';
+import RefListDropDown, { IRefListDropDownProps } from './';
 import { addStory } from '../../stories/utils';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
@@ -120,7 +120,7 @@ const DtoTemplate: Story<IStoryArgs> = args => {
   const { testValue, initialValue, ...refListProps} = args;
   return (
     <BaseTemplate {...args}>
-      <RefListDropDown
+      <RefListDropDown.Dto
         {...refListProps}
       />
     </BaseTemplate>
@@ -181,7 +181,7 @@ const RawTemplate: Story<IStoryArgs> = args => {
   const { testValue, initialValue, ...refListProps} = args;
   return (
     <BaseTemplate {...args}>
-      <RawRefListDropDown
+      <RefListDropDown.Raw
         {...refListProps}
       />
     </BaseTemplate>
