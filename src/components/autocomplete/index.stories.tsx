@@ -5,6 +5,7 @@ import Autocomplete, { IAutocompleteProps } from './';
 import { Button, Form } from 'antd';
 import AuthContainer from '../authedContainer';
 import { ShaApplicationProvider } from '../../providers';
+import { addStory } from '../../stories/utils';
 
 export default {
   title: 'Components/Autocomplete',
@@ -130,23 +131,19 @@ const singleEntityDtoBaseProps: IStoryArgs = {
   }
 };
 //#region Single Entity DTO
-const singleEntityDtoProps: IStoryArgs = {
+export const SingleEntityDto = addStory(EntityDtoTemplate, {
   ...singleEntityDtoBaseProps
-};
-export const SingleEntityDto = EntityDtoTemplate.bind({});
-SingleEntityDto.args = { ...singleEntityDtoProps };
+});
 //#endregion
 
 //#region Single Entity DTO with initial value
-const singleEntityDtoWithInitialValueProps: IStoryArgs = {
+export const SingleEntityDtoWithInitialValue = addStory(EntityDtoTemplate, {
   ...singleEntityDtoBaseProps,
   initialValue: {
     "id": "6FB28E47-591E-46ED-90B5-13A88C69C759",
     "displayText": "Dimakatso Masetlane"
   }
-};
-export const SingleEntityDtoWithInitialValue = EntityDtoTemplate.bind({});
-SingleEntityDtoWithInitialValue.args = { ...singleEntityDtoWithInitialValueProps };
+});
 //#endregion
 
 const multipleEntityDtoBaseProps: IStoryArgs = {
@@ -164,15 +161,13 @@ const multipleEntityDtoBaseProps: IStoryArgs = {
 };
 
 //#region Multiple Entity DTO
-const multipleEntityDtoProps: IStoryArgs = {
+export const MultipleEntityDto = addStory(EntityDtoTemplate, {
   ...multipleEntityDtoBaseProps
-};
-export const MultipleEntityDto = EntityDtoTemplate.bind({});
-MultipleEntityDto.args = { ...multipleEntityDtoProps };
+});
 //#endregion
 
 //#region Multiple Entity with initial value DTO
-const multipleEntityDtoWithInitialValueProps: IStoryArgs = {
+export const MultipleEntityDtoWithInitialValue = addStory(EntityDtoTemplate, {
   ...multipleEntityDtoBaseProps,
   initialValue: [
     {
@@ -184,13 +179,11 @@ const multipleEntityDtoWithInitialValueProps: IStoryArgs = {
       "displayText": "Jane Smith"
     }
   ]
-};
-export const MultipleEntityDtoWithInitialValue = EntityDtoTemplate.bind({});
-MultipleEntityDtoWithInitialValue.args = { ...multipleEntityDtoWithInitialValueProps };
+});
 //#endregion
 
 //#region Tags Entity DTO
-const tagsEntityDtoProps: IStoryArgs = {
+export const TagsEntityDto = addStory(EntityDtoTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   mode: 'tags',
@@ -202,50 +195,41 @@ const tagsEntityDtoProps: IStoryArgs = {
     "id": "291B86BE-27F1-41A0-8BFD-F867A3B38E32",
     "displayText": "Friday Green"
   }]
-};
-export const TagsEntityDto = EntityDtoTemplate.bind({});
-TagsEntityDto.args = { ...tagsEntityDtoProps };
+});
 //#endregion
 
 //#region Single Raw
-const singleRawProps: IStoryArgs = {
+export const SingleRaw = addStory(RawTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   testValue: "7F3076A1-E766-41A4-A05B-90E70A01D8AE",
-};
-export const SingleRaw = RawTemplate.bind({});
-SingleRaw.args = { ...singleRawProps };
+});
 //#endregion
 
 //#region Single Raw with initial value
-const singleRawWithInitialValueProps: IStoryArgs = {
+export const SingleRawWithInitialValue = addStory(RawTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   testValue: "7F3076A1-E766-41A4-A05B-90E70A01D8AE",
   initialValue: "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1",
-};
-export const SingleRawWithInitialValue = RawTemplate.bind({});
-SingleRawWithInitialValue.args = { ...singleRawWithInitialValueProps };
+});
 //#endregion
 
 //#region Multiple Raw
-const multipleRawProps: IStoryArgs = {
+export const MultipleRaw = addStory(RawTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   mode: 'multiple',
   testValue: ["7F3076A1-E766-41A4-A05B-90E70A01D8AE", "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1"],
-};
-export const MultipleRaw = RawTemplate.bind({});
-MultipleRaw.args = { ...multipleRawProps };
+});
 //#endregion
 
 //#region Multiple Raw with initial value
-const multipleRawWithInitialValueProps: IStoryArgs = {
-  dataSourceType: 'url',
-  dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
-  mode: 'multiple',
-  initialValue: ["7F3076A1-E766-41A4-A05B-90E70A01D8AE", "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1"],
-};
-export const MultipleRawWithInitialValue = RawTemplate.bind({});
-MultipleRawWithInitialValue.args = { ...multipleRawWithInitialValueProps };
+export const MultipleRawWithInitialValue = addStory(RawTemplate, 
+  {
+    dataSourceType: 'url',
+    dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
+    mode: 'multiple',
+    initialValue: ["7F3076A1-E766-41A4-A05B-90E70A01D8AE", "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1"],
+  });
 //#endregion

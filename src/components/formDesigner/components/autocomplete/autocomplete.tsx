@@ -19,7 +19,7 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const TextField: IToolboxComponent<IAutocompleteProps> = {
+const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
   type: 'autocomplete',
   name: 'Autocomplete',
   icon: <FileSearchOutlined />,
@@ -62,4 +62,4 @@ const TextField: IToolboxComponent<IAutocompleteProps> = {
   },
 };
 
-export default TextField;
+export default AutocompleteComponent;

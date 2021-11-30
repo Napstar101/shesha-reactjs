@@ -3,7 +3,7 @@ import { Input, DatePicker, InputNumber, Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import moment, { Moment, isMoment } from 'moment';
 import { IndexColumnDataType } from '../../providers/dataTable/interfaces';
-import RefListDropDown, { IRefListDropDownOption } from '../refListDropDown';
+import { RawRefListDropDown, IRefListDropDownOption } from '../refListDropDown';
 import EntityDropdown from '../entityDropdown';
 import { IColumnEditFieldProps } from './interfaces';
 import { IGuidNullableEntityWithDisplayNameDto, IReferenceListItemValueDto } from '../../interfaces/shesha';
@@ -119,7 +119,7 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
     const val = dataType === 'multiValueRefList' ? getMultiValueRefListValues() : getReferenceListItemValue();
 
     return (
-      <RefListDropDown
+      <RawRefListDropDown
         listName={referenceListName}
         listNamespace={referenceListNamespace}
         size="small"
