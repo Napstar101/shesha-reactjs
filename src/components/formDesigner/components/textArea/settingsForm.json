@@ -59,6 +59,21 @@
       "label": "Description"
     },
     {
+      "id": "fbdb6bb1-5994-4205-86b4-236ca62ae54e",
+      "type": "textField",
+      "name": "initialValue",
+      "parentId": "root",
+      "label": "Default value"
+    },
+    {
+      "id": "0225b82d-19aa-47c7-b665-90508112bd23",
+      "type": "checkbox",
+      "name": "passEmptyStringByDefault",
+      "parentId": "root",
+      "label": "Empty as default",
+      "description": "Whether the component should be initialized with an empty string"
+    },
+    {
       "id": "0225b82d-19aa-47c7-b665-90508111bd23",
       "type": "checkbox",
       "name": "autoSize",

@@ -14,6 +14,8 @@ export interface ITextFieldProps extends IConfigurableFormComponent {
   prefix?: string;
   suffix?: string;
   hideBorder?: boolean;
+  initialValue?: string;
+  passEmptyStringByDefault?: boolean;
   textType?: TextType;
 }
 
@@ -35,7 +37,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   factory: (model: IConfigurableFormComponent) => {
     const customProps = model as ITextFieldProps;
 
-    let inputProps: InputProps = {
+    const inputProps: InputProps = {
       placeholder: customProps.placeholder,
       prefix: customProps.prefix,
       suffix: customProps.suffix,
@@ -46,7 +48,10 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
     const InputComponentType = renderInput(customProps.textType);
 
     return (
-      <ConfigurableFormItem model={model}>
+      <ConfigurableFormItem
+        model={model}
+        initialValue={(customProps?.passEmptyStringByDefault && '') || customProps?.initialValue}
+      >
         <InputComponentType {...inputProps} />
       </ConfigurableFormItem>
     );
