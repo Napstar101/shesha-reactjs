@@ -117,7 +117,7 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
 
   const filters = props?.formFilters || DEFAULT_FILTERS;
 
-  const model = filterGenericModelData(serverData?.result, filters) as any;
+  const model = (filterGenericModelData(serverData?.result, filters) as any) || {};
 
   const { formItemLayout } = useUi();
 
@@ -155,7 +155,7 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
           typeof props?.headerControls === 'function' ? props?.headerControls(model) : props?.headerControls
         }
       >
-        <ValidationErrors error={fetchError?.data}></ValidationErrors>
+        <ValidationErrors error={fetchError?.data} />
         {model && (
           <>
             <ConfigurableForm
@@ -164,7 +164,7 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
               form={form}
               path={props?.formPath || router?.pathname}
               markup={props?.markup}
-              initialValues={model}
+              initialValues={props?.formValues || model}
               actions={props?.formActions}
               sections={props?.formSections}
               onValuesChange={props?.onFormValuesChange}
