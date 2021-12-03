@@ -1,4 +1,3 @@
-export { EntityDtoAutocomplete as Autocomplete, IAutocompleteProps } from './autocomplete';
 export { default as BasicDisplayFormItem, IBasicDisplayFormItemProps } from './basicDisplayFormItem';
 export { default as ConfigurableLogo } from './configurableLogo';
 export { default as GenericCreateModal, IGenericCreateModalProps } from './crudViews/createModal';
@@ -82,7 +81,6 @@ export { default as NotesRendererBase, INotesRendererBaseProps } from './notesRe
 export { default as OverlayLoader, IOverlayLoaderProps } from './overlayLoader';
 export { default as ProtectedContent, IProtectedContentProps } from './protectedContent';
 export { default as QuickFilters, IQuickFiltersProps } from './quickFilters';
-export { DtoRefListDropDown as RefListDropDown, IRefListDropDownProps } from './refListDropDown';
 export { default as RefListRadioButtons, IRefListRadioButtonsProps } from './refListRadioButtons';
 export { ISaveFilterModalProps, default as SaveFilterModal } from './saveFilterModal';
 export { default as Scroll, IScrollProps } from './scroll';
@@ -111,3 +109,19 @@ export { default as QueryBuilder, IQueryBuilderProps } from './queryBuilder';
 export { default as ConfigurableForm } from './configurableForm';
 export { IConfigurableFormRendererProps, IConfigurableFormProps } from './configurableForm/models';
 export { default as CodeEditor } from './codeEditor';
+
+export { 
+  //default as GenericRefListDropDown, 
+  DtoRefListDropDown,
+  DtoRefListDropDown as RefListDropDown, 
+  RawRefListDropDown,
+  IRefListDropDownProps
+} from './refListDropDown';
+
+export {
+  //default as GenericAutocomplete,
+  EntityDtoAutocomplete as Autocomplete, 
+  EntityDtoAutocomplete,
+  RawAutocomplete as RawAutocomplete,
+  IAutocompleteProps 
+} from './autocomplete';
