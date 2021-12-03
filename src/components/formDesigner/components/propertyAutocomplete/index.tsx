@@ -16,10 +16,7 @@ const PropertyAutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
   type: 'propertyAutocomplete',
   name: 'Property Autocomplete',
   icon: <FileSearchOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    // @ts-ignore
-    const customProps = model as IAutocompleteProps;
-
+  factory: (model: IAutocompleteProps) => {
     return (
       <FormItem model={model}>
         <PropertyAutocomplete

@@ -18,15 +18,13 @@ const QueryBuilderComponent: IToolboxComponent<IQueryBuilderProps> = {
   type: 'queryBuilder',
   name: 'Query Builder',
   icon: <FilterOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IQueryBuilderProps;
-    
+  factory: (model: IQueryBuilderProps) => {
     const queryBuilder = useQueryBuilder(false);
     const fields = queryBuilder?.fields || [];
 
     return (
       <ConfigurableFormItem model={model}>
-        <QueryBuilderField fields={fields} jsonExpanded={customProps.jsonExpanded}/>
+        <QueryBuilderField fields={fields} jsonExpanded={model.jsonExpanded}/>
       </ConfigurableFormItem>
     );
   },

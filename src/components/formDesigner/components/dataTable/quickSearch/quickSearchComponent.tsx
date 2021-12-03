@@ -14,13 +14,10 @@ const QuickSearchComponent: IToolboxComponent<IQuickSearchComponentProps> = {
   type: 'datatable.quickSearch',
   name: 'Quick Search',
   icon: <SearchOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    // @ts-ignore
-    const customProps = model as IQuickSearchComponentProps;
-
+  factory: (_model: IQuickSearchComponentProps) => {
     return <GlobalTableFilter></GlobalTableFilter>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: IQuickSearchComponentProps) => {
     return {
       ...model,
       items: [],

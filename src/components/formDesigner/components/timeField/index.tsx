@@ -62,19 +62,17 @@ const TimeField: IToolboxComponent<ITimePickerProps> = {
   type: 'timePicker',
   name: 'Time Picker',
   icon: <ClockCircleOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customModel = model as ITimePickerProps;
-
+  factory: (model: ITimePickerProps) => {
     return (
       <Fragment>
         <ConfigurableFormItem model={model}>
-          <TimePickerWrapper {...customModel} />
+          <TimePickerWrapper {...model} />
         </ConfigurableFormItem>
 
-        {customModel?.range && (
+        {model?.range && (
           <Fragment>
-            <HiddenFormItem name={`${customModel?.name}Start`} />
-            <HiddenFormItem name={`${customModel?.name}End`} />
+            <HiddenFormItem name={`${model?.name}Start`} />
+            <HiddenFormItem name={`${model?.name}End`} />
           </Fragment>
         )}
       </Fragment>

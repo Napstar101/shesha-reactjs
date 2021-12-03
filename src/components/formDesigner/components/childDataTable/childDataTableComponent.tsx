@@ -29,7 +29,7 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
   type: 'childDataTable',
   name: 'Child DataTable',
   icon: <TableOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: IChildDataTableProps) => {
     const {
       parentEntityId,
       tableConfigId,
@@ -38,7 +38,7 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
       crudOptions,
       enableAllCrudOptions,
       crudMode
-    } = model as IChildDataTableProps;
+    } = model;
     
     const { formMode, visibleComponentIds, formData } = useForm();
 

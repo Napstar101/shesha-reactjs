@@ -25,22 +25,21 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   type: 'textArea',
   name: 'Text Area',
   icon: <FontColorsOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as ITextAreaProps;
+  factory: (model: ITextAreaProps) => {
     const textAreaProps: TextAreaProps = {
-      placeholder: customProps.placeholder,
-      disabled: customProps.disabled,
-      autoSize: customProps.autoSize ? { minRows: 2 } : false,
-      showCount: customProps.showCount,
-      maxLength: customProps.maxLength,
-      allowClear: customProps.allowClear,
-      bordered: !customProps.hideBorder,
+      placeholder: model.placeholder,
+      disabled: model.disabled,
+      autoSize: model.autoSize ? { minRows: 2 } : false,
+      showCount: model.showCount,
+      maxLength: model.maxLength,
+      allowClear: model.allowClear,
+      bordered: !model.hideBorder,
     };
 
     return (
       <ConfigurableFormItem
         model={model}
-        initialValue={(customProps?.passEmptyStringByDefault && '') || customProps?.initialValue}
+        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
       >
         <Input.TextArea rows={2} {...textAreaProps} />
       </ConfigurableFormItem>

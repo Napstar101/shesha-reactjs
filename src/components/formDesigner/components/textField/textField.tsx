@@ -34,23 +34,21 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as ITextFieldProps;
-
+  factory: (model: ITextFieldProps) => {
     const inputProps: InputProps = {
-      placeholder: customProps.placeholder,
-      prefix: customProps.prefix,
-      suffix: customProps.suffix,
-      disabled: customProps.disabled,
-      bordered: !customProps.hideBorder,
+      placeholder: model.placeholder,
+      prefix: model.prefix,
+      suffix: model.suffix,
+      disabled: model.disabled,
+      bordered: !model.hideBorder,
     };
 
-    const InputComponentType = renderInput(customProps.textType);
+    const InputComponentType = renderInput(model.textType);
 
     return (
       <ConfigurableFormItem
         model={model}
-        initialValue={(customProps?.passEmptyStringByDefault && '') || customProps?.initialValue}
+        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
       >
         <InputComponentType {...inputProps} />
       </ConfigurableFormItem>

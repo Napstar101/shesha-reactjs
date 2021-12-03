@@ -23,27 +23,25 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
   type: 'autocomplete',
   name: 'Autocomplete',
   icon: <FileSearchOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IAutocompleteProps;
-
+  factory: (model: IAutocompleteProps) => {
     const { formData } = useForm();
-    const dataSourceUrl = customProps.dataSourceUrl
-      ? replaceTags(customProps.dataSourceUrl, { data: formData })
-      : customProps.dataSourceUrl;
+    const dataSourceUrl = model.dataSourceUrl
+      ? replaceTags(model.dataSourceUrl, { data: formData })
+      : model.dataSourceUrl;
 
       const autocompleteProps = {
-        typeShortAlias: customProps?.entityTypeShortAlias?.id,
+        typeShortAlias: model?.entityTypeShortAlias?.id,
         allowInherited: true, /*hardcoded for now*/
         disabled: model.disabled,
-        bordered: !customProps.hideBorder,
+        bordered: !model.hideBorder,
         dataSourceUrl: dataSourceUrl,
-        dataSourceType: customProps.dataSourceType,
-        mode: customProps?.mode
+        dataSourceType: model.dataSourceType,
+        mode: model?.mode
       };
     // todo: implement other types of datasources!
     return (
       <ConfigurableFormItem model={model}>
-        { customProps.useRawValues
+        { model.useRawValues
           ? <Autocomplete.Raw {...autocompleteProps} />
           : <Autocomplete.EntityDto {...autocompleteProps} />
         }

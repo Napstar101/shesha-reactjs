@@ -16,12 +16,10 @@ const SelectColumnsButtonComponent: IToolboxComponent<IPagerComponentProps> = {
   type: 'datatable.selectColumnsButton',
   name: 'Table Select Columns Button',
   icon: <SlidersOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IPagerComponentProps;
-
-    return <SelectColumnsButton {...customProps}></SelectColumnsButton>;
+  factory: (model: IPagerComponentProps) => {
+    return <SelectColumnsButton {...model}></SelectColumnsButton>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: IPagerComponentProps) => {
     return {
       ...model,
       items: [],

@@ -30,10 +30,8 @@ const ContainerComponent: IToolboxComponent<IContainerComponentProps> = {
   type: 'container',
   name: 'Container',
   icon: <GroupOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: IContainerComponentProps) => {
     const { formMode, visibleComponentIds } = useForm();
-
-    const customProps = model as IContainerComponentProps;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
@@ -42,14 +40,14 @@ const ContainerComponent: IToolboxComponent<IContainerComponentProps> = {
     return (
       <ComponentsContainer
         containerId={model.id}
-        direction={customProps.direction}
-        justifyContent={customProps.direction === 'horizontal' ? customProps?.justifyContent : null}
+        direction={model.direction}
+        justifyContent={model.direction === 'horizontal' ? model?.justifyContent : null}
       />
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: IContainerComponentProps) => {
     const customProps: IContainerComponentProps = {
       ...model,
       direction: 'vertical',

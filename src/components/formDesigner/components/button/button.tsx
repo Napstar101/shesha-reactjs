@@ -32,12 +32,11 @@ const TextField: IToolboxComponent<IButtonProps> = {
   type: 'button',
   name: 'Button',
   icon: <BorderOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: IButtonProps) => {
     const { form, getAction, formData } = useForm();
     const { router } = useShaRouting();
     const closestModal = useClosestModal();
 
-    const customProps = model as IButtonProps;
     const fieldModel = {
       ...model,
       label: null,
@@ -45,7 +44,7 @@ const TextField: IToolboxComponent<IButtonProps> = {
     };
 
     const onClick = () => {
-      switch (customProps.actionType) {
+      switch (model.actionType) {
         case 'submit':
           if (!Boolean(form)) {
             console.warn('Form not found');
@@ -67,12 +66,12 @@ const TextField: IToolboxComponent<IButtonProps> = {
           break;
 
         case 'custom':
-          const action = customProps.customAction ? getAction(model.id, customProps.customAction) : null;
+          const action = model.customAction ? getAction(model.id, model.customAction) : null;
 
           if (action) {
             let actionArgs = {};
-            for (let parameterIdx in customProps.customActionParameters) {
-              const parameter = customProps.customActionParameters[parameterIdx];
+            for (let parameterIdx in model.customActionParameters) {
+              const parameter = model.customActionParameters[parameterIdx];
               const value = evaluateValue(parameter.value, { data: formData });
               actionArgs[parameter.key] = value;
             }
@@ -90,11 +89,11 @@ const TextField: IToolboxComponent<IButtonProps> = {
       <ConfigurableFormItem model={fieldModel}>
         <Button
           onClick={onClick}
-          type={customProps.buttonType}
-          danger={customProps.danger}
-          icon={customProps.icon ? <ShaIcon iconName={customProps.icon as IconType} /> : undefined}
+          type={model.buttonType}
+          danger={model.danger}
+          icon={model.icon ? <ShaIcon iconName={model.icon as IconType} /> : undefined}
         >
-          {customProps.label}
+          {model.label}
         </Button>
       </ConfigurableFormItem>
     );

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
-import { IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { DownOutlined, DashOutlined } from '@ant-design/icons';
 import ToolbarSettings from './toolbarSettingsPanel';
 import { IToolbarProps } from './models';
@@ -15,12 +14,10 @@ const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
   type: 'toolbar',
   name: 'Toolbar',
   icon: <DashOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IToolbarProps;
-
-    return <Toolbar {...customProps}></Toolbar>;
+  factory: (model: IToolbarProps) => {
+    return <Toolbar {...model}></Toolbar>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: IToolbarProps) => {
     return {
       ...model,
       items: [],
@@ -29,7 +26,7 @@ const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
     return (
       <ToolbarSettings
-        model={model as IToolbarProps}
+        model={model}
         onSave={onSave}
         onCancel={onCancel}
         onValuesChange={onValuesChange}

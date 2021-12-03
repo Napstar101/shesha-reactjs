@@ -21,12 +21,10 @@ const AddressCompoment: IToolboxComponent<IAddressCompomentProps> = {
   type: 'address',
   name: 'Address',
   icon: <HomeOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IAddressCompomentProps;
-
+  factory: (model: IAddressCompomentProps) => {
     return (
       <ConfigurableFormItem model={model}>
-        <AutoCompletePlacesField {...customProps}></AutoCompletePlacesField>
+        <AutoCompletePlacesField {...model}></AutoCompletePlacesField>
       </ConfigurableFormItem>
     );
   },

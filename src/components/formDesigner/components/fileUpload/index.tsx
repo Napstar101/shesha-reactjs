@@ -25,23 +25,21 @@ const FileUploadComponent: IToolboxComponent<IFileUploadProps> = {
   type: 'fileUpload',
   name: 'File Upload',
   icon: <FileAddOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IFileUploadProps;
-
+  factory: (model: IFileUploadProps) => {
     const { backendUrl } = useSheshaApplication();
 
     // todo: refactor and implement a generic way for values evaluation
     const { formData } = useForm();
-    const ownerId = evaluateValue(customProps.ownerId, { data: formData });
+    const ownerId = evaluateValue(model.ownerId, { data: formData });
 
     return (
       <ConfigurableFormItem model={model}>
-        {customProps?.list ? (
-          <StoredFilesProvider ownerId={ownerId} ownerType={customProps.ownerType}>
+        {model?.list ? (
+          <StoredFilesProvider ownerId={ownerId} ownerType={model.ownerType}>
             <StoredFilesRenderer
               isDragger={false}
               uploadBtnProps={{ icon: null, type: 'link' }}
-              disabled={customProps?.disabled}
+              disabled={model?.disabled}
               noFilesCaption={null}
             />
           </StoredFilesProvider>
@@ -49,14 +47,14 @@ const FileUploadComponent: IToolboxComponent<IFileUploadProps> = {
           <StoredFileProvider
             baseUrl={backendUrl}
             ownerId={ownerId}
-            ownerType={customProps.ownerType}
-            propertyName={customProps.propertyName}
+            ownerType={model.ownerType}
+            propertyName={model.propertyName}
             uploadMode={ownerId ? 'async' : 'sync'}
           >
             <FileUpload
-              allowUpload={!customProps.disabled && customProps.allowUpload}
-              allowDelete={!customProps.disabled && customProps.allowDelete}
-              allowReplace={!customProps.disabled && customProps.allowReplace}
+              allowUpload={!model.disabled && model.allowUpload}
+              allowDelete={!model.disabled && model.allowDelete}
+              allowReplace={!model.disabled && model.allowReplace}
             />
           </StoredFileProvider>
         )}
