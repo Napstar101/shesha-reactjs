@@ -1,11 +1,10 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import { Button, Form, Modal, Spin } from 'antd';
 import { ValidationErrors, ConfigurableForm } from '../';
 import { FormInstance } from 'antd/lib/form';
 import { useUi } from '../../providers';
 import { IDataMutator } from './models';
-import { useState } from 'react';
-import { IFormActions, IFormSections } from '../../providers/form/models';
+import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 
 export interface IGenericCreateModalProps {
   /**
@@ -62,6 +61,8 @@ export interface IGenericCreateModalProps {
   sections?: IFormSections;
 
   destroyOnClose?: boolean;
+
+  formMarkup?: FormMarkup;
 }
 
 const GenericCreateModal: FC<IGenericCreateModalProps> = ({
@@ -79,6 +80,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
   actions,
   sections,
   destroyOnClose = true,
+  formMarkup,
 }) => {
   const { mutate: save, error, loading } = updater({});
 
@@ -140,7 +142,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
       }
     >
       <Spin spinning={loading} tip="Please wait...">
-        <ValidationErrors error={error?.data}></ValidationErrors>
+        <ValidationErrors error={error?.data} />
 
         <ConfigurableForm
           mode="edit"
@@ -148,6 +150,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
           form={form}
           onFinish={onFinish}
           path={formPath}
+          markup={formMarkup}
           onFieldsChange={onFieldsChange}
           actions={actions}
           sections={sections}

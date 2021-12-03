@@ -15,6 +15,8 @@ export interface ITextAreaProps extends IConfigurableFormComponent {
   maxLength?: number;
   allowClear: boolean;
   hideBorder?: boolean;
+  initialValue?: string;
+  passEmptyStringByDefault?: boolean;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -36,7 +38,10 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
     };
 
     return (
-      <ConfigurableFormItem model={model}>
+      <ConfigurableFormItem
+        model={model}
+        initialValue={(customProps?.passEmptyStringByDefault && '') || customProps?.initialValue}
+      >
         <Input.TextArea rows={2} {...textAreaProps} />
       </ConfigurableFormItem>
     );
