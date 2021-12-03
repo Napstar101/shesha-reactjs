@@ -16,8 +16,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   // note: we have to memoize the editor to prevent unneeded re-rendering and loosing of the focus
   const [editor, setEditor] = useState<ReactNode>(<></>);
   
-  // @ts-ignore
-  const { getActiveProvider } = useMetadataDispatcher();
+  const { getActiveProvider } = useMetadataDispatcher(false);
 
   const debouncedSave = useDebouncedCallback(
     values => {
@@ -61,7 +60,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   };
 
   const wrapEditor = (renderEditor: () => ReactNode) => {
-    const metaProvider = getActiveProvider();
+    const metaProvider = getActiveProvider ? getActiveProvider() : null;
     if (!metaProvider)
       return <>{renderEditor()}</>;
 

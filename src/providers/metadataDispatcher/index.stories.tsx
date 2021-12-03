@@ -22,18 +22,11 @@ const Template: Story<IMetadataDispatcherProviderProps> = args => {
 };
 
 const MetadataConsumer = () => {
-  const { properties = [] } = useMetadataDispatcher();
+  const { getActiveProvider } = useMetadataDispatcher(false);
+  const provider = Boolean(getActiveProvider) ? getActiveProvider() : null;
+  const properties = provider?.metadata?.properties;
 
   const opts = properties.map(p => ({ value: p.path, label: p.label }));
-  /*
-  const [options, setOptions] = useState<{ value: string }[]>(opts);
-  
-  const onSearch = (searchText: string) => {
-    setOptions(
-      !searchText ? [] : opts.filter(o => o.label.),
-    );
-  };
-  */
   
   const onSelect = (data: string) => {
     console.log('onSelect', data);

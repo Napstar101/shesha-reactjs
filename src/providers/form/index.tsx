@@ -121,7 +121,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     ...flatComponents,
   };
 
-  const { activateProvider } = useMetadataDispatcher();
+  const { activateProvider } = useMetadataDispatcher(false);
 
   const [state, dispatch] = useThunkReducer(formReducer, {
     past: [],
