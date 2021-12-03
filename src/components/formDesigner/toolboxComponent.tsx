@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { IToolboxComponentBase } from '../../interfaces';
+import { IToolboxComponent } from '../../interfaces';
 
 export interface IProps {
-  component: IToolboxComponentBase;
+  component: IToolboxComponent;
   index: number;
 }
 

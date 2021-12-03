@@ -12,7 +12,7 @@ export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
 
 export type ISettingsFormFactory<TModel = IConfigurableFormComponent> = (props: ISettingsFormFactoryArgs<TModel>) => ReactNode;
 
-export interface IToolboxComponentBase<T = IConfigurableFormComponent> {
+export interface IToolboxComponent<T = IConfigurableFormComponent> {
   /**
    * Type of the component. Must be unique in the project.
    */
@@ -63,16 +63,13 @@ export interface IToolboxComponentBase<T = IConfigurableFormComponent> {
   validateSettings?: (model: T) => Promise<any>;
 }
 
-export interface IToolboxComponent<T extends IConfigurableFormComponent> extends IToolboxComponentBase<T> {
-}
-
 export interface IToolboxComponentGroup {
   name: string;
-  components: IToolboxComponentBase[];
+  components: IToolboxComponent[];
 }
 
 export interface IToolboxComponents {
-  [key: string]: IToolboxComponentBase;
+  [key: string]: IToolboxComponent;
 }
 
 export { IConfigurableFormComponent, IFormComponentContainer };

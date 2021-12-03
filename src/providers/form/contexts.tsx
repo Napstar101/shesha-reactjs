@@ -3,7 +3,7 @@ import {
   IFlagsState,
   IFlagsSetters,
   IToolboxComponentGroup,
-  IToolboxComponentBase,
+  IToolboxComponent,
   IAsyncValidationError,
   IFormValidationErrors,
 } from '../../interfaces';
@@ -173,7 +173,7 @@ export interface IFormActionsContext
   getSection: (id: string, name: string) => FormSection;
   updateFormSettings: (settings: IFormSettings) => void;
 
-  getToolboxComponent: (type: string) => IToolboxComponentBase;
+  getToolboxComponent: (type: string) => IToolboxComponent;
 
   addDataSource: (dataSource: IDataSource) => void;
   removeDataSource: (id: string) => void;
