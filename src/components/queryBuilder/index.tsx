@@ -19,6 +19,7 @@ import EntityAutocompleteWidget from './widgets/entityAutocomplete';
 import RefListDropdownWidget from './widgets/refListDropDown';
 import EntityReferenceType from './types/entityReference';
 import RefListType from './types/refList';
+import { DataTypes } from '../../interfaces/dataTypes';
 const InitialConfig = AntdConfig;
 
 export interface IQueryBuilderColumn extends ITableColumn {
@@ -79,22 +80,51 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
     fields?.forEach(({ dataType, visible, propertyName, label, fieldSettings, preferWidgets }) => {
       let type: string = dataType;
       let defaultPreferWidgets = [];
+
+      /*
+      Fields can be of type:
+        simple (string, number, bool, date/time/datetime, list)
+        structs (will be displayed in selectbox as tree)
+        custom type (dev should add its own widget component in config for this)
+      */
       if (visible) {
         switch (dataType) {
           case 'string':
+          case DataTypes.string:
             type = 'text';
             break;
+
+          case DataTypes.date:
+            type = 'date';
+            break;
+          case DataTypes.dateTime:
+            type = 'datetime';
+            break;
+          case DataTypes.time:
+            type = 'time';
+            break;
+
+          case DataTypes.int32:
+          case DataTypes.int64:
+          case DataTypes.float:
+          case DataTypes.double:
+            type = 'number';
+            break;
+
           case 'entityReference':
+          case DataTypes.entityReference:
             type = 'entityReference';
             defaultPreferWidgets = ['entityAutocomplete'];
             break;
+
           case 'refList':
+          case DataTypes.refListValue:
             type = 'refList';
             defaultPreferWidgets = ['refListDropdown'];
             break;
-          case 'multiValueRefList':
-            type = 'multiselect';
-            break;
+          // case 'multiValueRefList':
+          //   type = 'multiselect';
+          //   break;
           case '!struct':
             type = dataType;
             break;

@@ -52,10 +52,6 @@ export const ColumnProps = addStory(DesignerTemplate, {
   formId: '70D82B7E-73AD-4EB1-A445-F569CEC771E0'
 })
 
-export const IndexPage = addStory(DesignerTemplate, {
-  formPath: '/indexTable',
-});
-
 //#region for refactoring only
 
 export interface IActionsTemplateProps {
@@ -151,6 +147,10 @@ export const QueryBuilderSettings = addStory(DesignerTemplate, {
 
 export const TableViewSettings = addStory(DesignerTemplate, {
   formId: '6f0f3e5c-c173-46c2-bb52-5b8d584068c5'
+});
+
+export const IndexPageWithEntityType = addStory(DesignerTemplate, {
+  formPath: '/indexTable',
 });
 
 export const IndexPageWithTableConfig = addStory(DesignerTemplate, {

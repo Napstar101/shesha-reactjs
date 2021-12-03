@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-//import styled from 'styled-components';
+import { DataTypes } from '../../interfaces/dataTypes';
 import { IPropertyMetadata } from '../../providers/metadata/models';
 import ShaIcon, { IconType } from '../shaIcon';
 
@@ -14,10 +14,13 @@ const Item = styled.div`
 `;
 */
 
-const getIconByDataType = (dataType: number):IconType => {
+const getIconByDataType = (dataType: string):IconType => {
   switch(dataType) {
-    case 1: return 'FieldStringOutlined';
-    case 2: return 'FieldNumberOutlined';
+    case DataTypes.string: return 'FieldStringOutlined';
+    case DataTypes.int32:
+    case DataTypes.int64:
+    case DataTypes.float:
+    case DataTypes.double: return 'FieldNumberOutlined';
     default: return null;
   }
 }
