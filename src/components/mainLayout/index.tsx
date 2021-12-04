@@ -11,6 +11,7 @@ import { withAuth } from '../../hocs';
 import { useSidebarMenuDefaults } from '../../providers/sidebarMenu';
 import ConfigurableSidebarMenu from '../configurableSidebarMenu';
 import { useLocalStorage } from '../..';
+import { SIDEBAR_MENU_ID } from '../../constants';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -133,11 +134,7 @@ const DefaultLayout: FC<PropsWithChildren<IMainLayoutProps>> = props => {
         }}
         theme={theme}
       >
-        <ConfigurableSidebarMenu
-          theme={theme}
-          id="9362F11A-EA9C-4152-9855-9516123467F7"
-          defaultSettings={{ items: sidebarDefaultItems }}
-        />
+        <ConfigurableSidebarMenu theme={theme} id={SIDEBAR_MENU_ID} defaultSettings={{ items: sidebarDefaultItems }} />
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={headerStyle}>

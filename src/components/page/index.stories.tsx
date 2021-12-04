@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import Page, { IPageProps } from './';
+import Page, { IBreadcrumbItem, IPageProps } from './';
 import { IToolbarItem } from '../..';
 import { CloseOutlined, DownloadOutlined, SaveOutlined } from '@ant-design/icons';
 import { ITagProps } from './pageHeaderTag';
@@ -43,6 +43,24 @@ const headerTagList: ITagProps[] = [
       color: 'blue',
       text: 'PAID',
     },
+  },
+];
+
+const breadcrumbItems: IBreadcrumbItem[] = [
+  {
+    text: 'Home',
+    link: '#',
+  },
+  {
+    text: 'Application Center',
+    link: '#',
+  },
+  {
+    text: 'Application List',
+    link: '#',
+  },
+  {
+    text: 'An Application',
   },
 ];
 
@@ -115,7 +133,14 @@ const CompleteExampleTemplate: Story<IPageProps> = args => (
   <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL} applicationName="Storybook">
     <AuthContainer layout={true}>
       <SidebarMenuDefaultsProvider items={[]}>
-        <Page {...args} title="Any title" toolbarItems={toolbarItems} headerTagList={headerTagList} backUrl="/">
+        <Page
+          {...args}
+          title="Any title"
+          toolbarItems={toolbarItems}
+          headerTagList={headerTagList}
+          breadcrumbItems={breadcrumbItems}
+          backUrl="/"
+        >
           <div>This is a div</div>
         </Page>
       </SidebarMenuDefaultsProvider>

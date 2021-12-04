@@ -11,7 +11,7 @@ export interface IShaSpin {
 export const ShaSpin: FC<PropsWithChildren<IShaSpin>> = ({ children, spinning, spinIconSize = 24, tip }) => (
   <Spin
     className="sha-spin"
-    spinning={spinning}
+    spinning={Boolean(spinning) || false}
     indicator={<LoadingOutlined style={{ fontSize: spinIconSize }} spin />}
     tip={tip}
   >

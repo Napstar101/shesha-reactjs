@@ -11,8 +11,6 @@ export interface ITagProps {
 }
 
 export const PageHeaderTag: FC<ITagProps> = ({ title, tag }) => {
-  console.log('PageHeaderTag: ', { title, tag });
-
   const getTag = () => {
     if (typeof tag === 'string') {
       return <span>{tag}</span>;
