@@ -3,7 +3,8 @@ import { IAsyncValidationError } from '../../interfaces';
 import { IFormSettings } from './contexts';
 
 export const ROOT_COMPONENT_KEY: string = 'root'; // root key of the flat components structure
-export const TOOLBOX_DROPPABLE_KEY: string = 'toolbox';
+export const TOOLBOX_COMPONENT_DROPPABLE_KEY: string = 'toolboxComponent';
+export const TOOLBOX_DATA_ITEM_DROPPABLE_KEY: string = 'toolboxDataItem';
 
 export type FormMode = 'designer' | 'edit' | 'readonly';
 

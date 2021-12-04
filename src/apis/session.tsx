@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface ApplicationInfoDto {
   version?: string | null;
@@ -78,97 +80,87 @@ export interface StringListAjaxResponse {
   result?: string[] | null;
 }
 
-export interface SessionGetCurrentLoginInformationsQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type SessionGetCurrentLoginInformationsProps = Omit<
-  GetProps<
-    GetCurrentLoginInformationsOutputAjaxResponse,
-    AjaxResponseBase,
-    SessionGetCurrentLoginInformationsQueryParams,
-    void
-  >,
+  GetProps<GetCurrentLoginInformationsOutputAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const SessionGetCurrentLoginInformations = (props: SessionGetCurrentLoginInformationsProps) => (
-  <Get<
-    GetCurrentLoginInformationsOutputAjaxResponse,
-    AjaxResponseBase,
-    SessionGetCurrentLoginInformationsQueryParams,
-    void
-  >
+  <Get<GetCurrentLoginInformationsOutputAjaxResponse, AjaxResponseBase, void, void>
     path={`/api/services/app/Session/GetCurrentLoginInformations`}
     {...props}
   />
 );
 
 export type UseSessionGetCurrentLoginInformationsProps = Omit<
-  UseGetProps<
-    GetCurrentLoginInformationsOutputAjaxResponse,
-    AjaxResponseBase,
-    SessionGetCurrentLoginInformationsQueryParams,
-    void
-  >,
+  UseGetProps<GetCurrentLoginInformationsOutputAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const useSessionGetCurrentLoginInformations = (props: UseSessionGetCurrentLoginInformationsProps) =>
-  useGet<
-    GetCurrentLoginInformationsOutputAjaxResponse,
-    AjaxResponseBase,
-    SessionGetCurrentLoginInformationsQueryParams,
-    void
-  >(`/api/services/app/Session/GetCurrentLoginInformations`, props);
+  useGet<GetCurrentLoginInformationsOutputAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/services/app/Session/GetCurrentLoginInformations`,
+    props
+  );
 
-export interface SessionGetGrantedShaRolesQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type sessionGetCurrentLoginInformationsProps = Omit<
+  RestfulShesha.GetProps<GetCurrentLoginInformationsOutputAjaxResponse, AjaxResponseBase, void, void>,
+  'queryParams'
+>;
+export const sessionGetCurrentLoginInformations = (props: sessionGetCurrentLoginInformationsProps) =>
+  RestfulShesha.get<GetCurrentLoginInformationsOutputAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/services/app/Session/GetCurrentLoginInformations`,
+    undefined,
+    props
+  );
 
 export type SessionGetGrantedShaRolesProps = Omit<
-  GetProps<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>,
+  GetProps<StringListAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
+/**
+ * I am using this method to get user roles and it is being used on login of a user and also when changing work Order Type, Please contact me(Moses) before removing it
+ */
 export const SessionGetGrantedShaRoles = (props: SessionGetGrantedShaRolesProps) => (
-  <Get<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>
+  <Get<StringListAjaxResponse, AjaxResponseBase, void, void>
     path={`/api/services/app/Session/GetGrantedShaRoles`}
     {...props}
   />
 );
 
 export type UseSessionGetGrantedShaRolesProps = Omit<
-  UseGetProps<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>,
+  UseGetProps<StringListAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
+/**
+ * I am using this method to get user roles and it is being used on login of a user and also when changing work Order Type, Please contact me(Moses) before removing it
+ */
 export const useSessionGetGrantedShaRoles = (props: UseSessionGetGrantedShaRolesProps) =>
-  useGet<StringListAjaxResponse, AjaxResponseBase, SessionGetGrantedShaRolesQueryParams, void>(
+  useGet<StringListAjaxResponse, AjaxResponseBase, void, void>(`/api/services/app/Session/GetGrantedShaRoles`, props);
+
+export type sessionGetGrantedShaRolesProps = Omit<
+  RestfulShesha.GetProps<StringListAjaxResponse, AjaxResponseBase, void, void>,
+  'queryParams'
+>;
+/**
+ * I am using this method to get user roles and it is being used on login of a user and also when changing work Order Type, Please contact me(Moses) before removing it
+ */
+export const sessionGetGrantedShaRoles = (props: sessionGetGrantedShaRolesProps) =>
+  RestfulShesha.get<StringListAjaxResponse, AjaxResponseBase, void, void>(
     `/api/services/app/Session/GetGrantedShaRoles`,
+    undefined,
     props
   );
 
-export interface SessionClearPermissionsCacheQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type SessionClearPermissionsCacheProps = Omit<MutateProps<void, unknown, void, void, void>, 'path' | 'verb'>;
 
-export type SessionClearPermissionsCacheProps = Omit<
-  MutateProps<void, unknown, SessionClearPermissionsCacheQueryParams, void, void>,
-  'path' | 'verb'
->;
-
+/**
+ * Clears permissions cache
+ */
 export const SessionClearPermissionsCache = (props: SessionClearPermissionsCacheProps) => (
-  <Mutate<void, unknown, SessionClearPermissionsCacheQueryParams, void, void>
+  <Mutate<void, unknown, void, void, void>
     verb="POST"
     path={`/api/services/app/Session/ClearPermissionsCache`}
     {...props}
@@ -176,13 +168,27 @@ export const SessionClearPermissionsCache = (props: SessionClearPermissionsCache
 );
 
 export type UseSessionClearPermissionsCacheProps = Omit<
-  UseMutateProps<void, unknown, SessionClearPermissionsCacheQueryParams, void, void>,
+  UseMutateProps<void, unknown, void, void, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Clears permissions cache
+ */
 export const useSessionClearPermissionsCache = (props: UseSessionClearPermissionsCacheProps) =>
-  useMutate<void, unknown, SessionClearPermissionsCacheQueryParams, void, void>(
+  useMutate<void, unknown, void, void, void>('POST', `/api/services/app/Session/ClearPermissionsCache`, props);
+
+export type sessionClearPermissionsCacheProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, void, void, void>,
+  'data'
+>;
+/**
+ * Clears permissions cache
+ */
+export const sessionClearPermissionsCache = (props: sessionClearPermissionsCacheProps) =>
+  RestfulShesha.mutate<void, unknown, void, void, void>(
     'POST',
     `/api/services/app/Session/ClearPermissionsCache`,
+    undefined,
     props
   );

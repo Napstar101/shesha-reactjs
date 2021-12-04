@@ -2,12 +2,23 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
+/**
+ * Generic entity Dto with display text
+ */
 export interface GuidNullableEntityWithDisplayNameDto {
   id?: string | null;
+  /**
+   * Entity display name
+   */
   displayText?: string | null;
 }
 
+/**
+ * Dto of the Shesha.Domain.ReferenceListItem
+ */
 export interface ReferenceListItemDto {
   id?: string;
   item?: string | null;
@@ -46,6 +57,9 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
+/**
+ * Dto of the Shesha.Domain.ReferenceList
+ */
 export interface ReferenceListDto {
   id?: string;
   name?: string | null;
@@ -81,10 +95,6 @@ export interface ReferenceListDtoPagedResultDtoAjaxResponse {
 export interface ReferenceListGetItemsQueryParams {
   namespace?: string | null;
   name?: string | null;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ReferenceListGetItemsProps = Omit<
@@ -92,6 +102,9 @@ export type ReferenceListGetItemsProps = Omit<
   'path'
 >;
 
+/**
+ * Get ReferenceList Items
+ */
 export const ReferenceListGetItems = (props: ReferenceListGetItemsProps) => (
   <Get<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams, void>
     path={`/api/services/app/ReferenceList/GetItems`}
@@ -104,18 +117,39 @@ export type UseReferenceListGetItemsProps = Omit<
   'path'
 >;
 
+/**
+ * Get ReferenceList Items
+ */
 export const useReferenceListGetItems = (props: UseReferenceListGetItemsProps) =>
   useGet<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams, void>(
     `/api/services/app/ReferenceList/GetItems`,
     props
   );
 
+export type referenceListGetItemsProps = Omit<
+  RestfulShesha.GetProps<
+    ReferenceListItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    ReferenceListGetItemsQueryParams,
+    void
+  >,
+  'queryParams'
+>;
+/**
+ * Get ReferenceList Items
+ */
+export const referenceListGetItems = (
+  queryParams: ReferenceListGetItemsQueryParams,
+  props: referenceListGetItemsProps
+) =>
+  RestfulShesha.get<ReferenceListItemDtoListAjaxResponse, AjaxResponseBase, ReferenceListGetItemsQueryParams, void>(
+    `/api/services/app/ReferenceList/GetItems`,
+    queryParams,
+    props
+  );
+
 export interface ReferenceListGetQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ReferenceListGetProps = Omit<
@@ -141,14 +175,21 @@ export const useReferenceListGet = (props: UseReferenceListGetProps) =>
     props
   );
 
+export type referenceListGetProps = Omit<
+  RestfulShesha.GetProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams, void>,
+  'queryParams'
+>;
+export const referenceListGet = (queryParams: ReferenceListGetQueryParams, props: referenceListGetProps) =>
+  RestfulShesha.get<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListGetQueryParams, void>(
+    `/api/services/app/ReferenceList/Get`,
+    queryParams,
+    props
+  );
+
 export interface ReferenceListGetAllQueryParams {
   sorting?: string | null;
   skipCount?: number;
   maxResultCount?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ReferenceListGetAllProps = Omit<
@@ -174,20 +215,29 @@ export const useReferenceListGetAll = (props: UseReferenceListGetAllProps) =>
     props
   );
 
-export interface ReferenceListCreateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type referenceListGetAllProps = Omit<
+  RestfulShesha.GetProps<
+    ReferenceListDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    ReferenceListGetAllQueryParams,
+    void
+  >,
+  'queryParams'
+>;
+export const referenceListGetAll = (queryParams: ReferenceListGetAllQueryParams, props: referenceListGetAllProps) =>
+  RestfulShesha.get<ReferenceListDtoPagedResultDtoAjaxResponse, AjaxResponseBase, ReferenceListGetAllQueryParams, void>(
+    `/api/services/app/ReferenceList/GetAll`,
+    queryParams,
+    props
+  );
 
 export type ReferenceListCreateProps = Omit<
-  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListCreateQueryParams, ReferenceListDto, void>,
+  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const ReferenceListCreate = (props: ReferenceListCreateProps) => (
-  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListCreateQueryParams, ReferenceListDto, void>
+  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>
     verb="POST"
     path={`/api/services/app/ReferenceList/Create`}
     {...props}
@@ -195,37 +245,36 @@ export const ReferenceListCreate = (props: ReferenceListCreateProps) => (
 );
 
 export type UseReferenceListCreateProps = Omit<
-  UseMutateProps<
-    ReferenceListDtoAjaxResponse,
-    AjaxResponseBase,
-    ReferenceListCreateQueryParams,
-    ReferenceListDto,
-    void
-  >,
+  UseMutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const useReferenceListCreate = (props: UseReferenceListCreateProps) =>
-  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListCreateQueryParams, ReferenceListDto, void>(
+  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>(
     'POST',
     `/api/services/app/ReferenceList/Create`,
     props
   );
 
-export interface ReferenceListUpdateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type referenceListCreateProps = Omit<
+  RestfulShesha.MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>,
+  'data'
+>;
+export const referenceListCreate = (data: ReferenceListDto, props: referenceListCreateProps) =>
+  RestfulShesha.mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>(
+    'POST',
+    `/api/services/app/ReferenceList/Create`,
+    data,
+    props
+  );
 
 export type ReferenceListUpdateProps = Omit<
-  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListUpdateQueryParams, ReferenceListDto, void>,
+  MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const ReferenceListUpdate = (props: ReferenceListUpdateProps) => (
-  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListUpdateQueryParams, ReferenceListDto, void>
+  <Mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>
     verb="PUT"
     path={`/api/services/app/ReferenceList/Update`}
     {...props}
@@ -233,29 +282,31 @@ export const ReferenceListUpdate = (props: ReferenceListUpdateProps) => (
 );
 
 export type UseReferenceListUpdateProps = Omit<
-  UseMutateProps<
-    ReferenceListDtoAjaxResponse,
-    AjaxResponseBase,
-    ReferenceListUpdateQueryParams,
-    ReferenceListDto,
-    void
-  >,
+  UseMutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>,
   'path' | 'verb'
 >;
 
 export const useReferenceListUpdate = (props: UseReferenceListUpdateProps) =>
-  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, ReferenceListUpdateQueryParams, ReferenceListDto, void>(
+  useMutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>(
     'PUT',
     `/api/services/app/ReferenceList/Update`,
     props
   );
 
+export type referenceListUpdateProps = Omit<
+  RestfulShesha.MutateProps<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>,
+  'data'
+>;
+export const referenceListUpdate = (data: ReferenceListDto, props: referenceListUpdateProps) =>
+  RestfulShesha.mutate<ReferenceListDtoAjaxResponse, AjaxResponseBase, void, ReferenceListDto, void>(
+    'PUT',
+    `/api/services/app/ReferenceList/Update`,
+    data,
+    props
+  );
+
 export interface ReferenceListDeleteQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ReferenceListDeleteProps = Omit<
@@ -281,4 +332,16 @@ export const useReferenceListDelete = (props: UseReferenceListDeleteProps) =>
     'DELETE',
     `/api/services/app/ReferenceList/Delete`,
     { ...props }
+  );
+
+export type referenceListDeleteProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, ReferenceListDeleteQueryParams, void, void>,
+  'data'
+>;
+export const referenceListDelete = (props: referenceListDeleteProps) =>
+  RestfulShesha.mutate<void, unknown, ReferenceListDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/app/ReferenceList/Delete`,
+    undefined,
+    props
   );

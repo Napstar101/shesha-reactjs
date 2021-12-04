@@ -1,6 +1,6 @@
 import { BaseWidget, BasicConfig, SelectFieldSettings } from 'react-awesome-query-builder';
 import { CustomFieldSettings } from '../../../../providers/queryBuilder/models';
-import { RefListDropDown } from '../../../../';
+import RefListDropDown from '../../../refListDropDown';
 import React from 'react';
 
 export type RefListDropdownWidgetType = BaseWidget & SelectFieldSettings;
@@ -17,7 +17,7 @@ const RefListDropdownWidget: RefListDropdownWidgetType = {
     };
 
     return (
-      <RefListDropDown
+      <RefListDropDown.Raw
         listName={customSettings.referenceListName}
         listNamespace={customSettings.referenceListNamespace}
         value={value}
@@ -25,7 +25,7 @@ const RefListDropdownWidget: RefListDropdownWidgetType = {
         style={{ minWidth: '150px' }}
         size="small"
         showArrow={true}
-      ></RefListDropDown>
+      />
     );
   },
 };

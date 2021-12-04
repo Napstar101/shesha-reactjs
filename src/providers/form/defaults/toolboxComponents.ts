@@ -41,6 +41,8 @@ import EntityPickerComponent from '../../../components/formDesigner/components/e
 import Section from '../../../components/formDesigner/components/section';
 import TimeField from '../../../components/formDesigner/components/timeField';
 import Statistic from '../../../components/formDesigner/components/statistic';
+import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
+import CodeEditor from '../../../components/formDesigner/components/codeEditor';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -82,6 +84,8 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       IconPicker,
       QueryBuilderComponent,
       EntityPickerComponent,
+      PropertyAutocomplete,
+      CodeEditor,
     ],
   },
   {

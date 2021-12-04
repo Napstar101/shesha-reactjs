@@ -24,7 +24,8 @@
     "generate-fetcher": "restful-react import --config restful-react.config.js",
     "postgenerate-fetcher": "prettier ./src/apis/*.tsx --write",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "commit": "cz"
   },
   "peerDependencies": {
     "@microsoft/signalr": "^5.0.3",
@@ -89,10 +90,12 @@
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-runtime": "6.26.0",
     "camelcase": "^6.2.0",
+    "chalk": "^4.1.2",
     "classnames": "^2.3.1",
     "cross-env": "5.2.0",
     "css-loader": "^5.2.4",
     "css-modules-loader-core": "1.1.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "6.0.0",
@@ -159,12 +162,14 @@
     "es"
   ],
   "dependencies": {
+    "ace-builds": "^1.4.13",
     "invert-color": "^2.0.0",
     "js-encoding-utils": "^0.6.2",
     "less-combiner": "^0.1.2",
     "less-compiler": "^0.2.4",
     "mustache": "^4.2.0",
     "point-in-polygon": "^1.1.0",
+    "react-ace": "^9.5.0",
     "react-awesome-query-builder": "^3.0.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-hook-thunk-reducer": "^0.2.4",
@@ -175,5 +180,10 @@
     "redux-undo": "^1.0.1",
     "tree-to-list": "^2.0.0",
     "use-debounce": "^6.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

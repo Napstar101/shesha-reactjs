@@ -1,8 +1,8 @@
 [
   {
     "id": "f061d971-8b38-4b82-b192-563259afc159",
-    "type": "textField",
-    "name": "name",
+      "type": "propertyAutocomplete",
+      "name": "name",
     "label": "Group Name",
     "labelAlign": "right",
     "parentId": "root",

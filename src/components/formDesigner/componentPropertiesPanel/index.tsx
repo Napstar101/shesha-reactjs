@@ -5,6 +5,8 @@ import { Empty } from 'antd';
 import { useDebouncedCallback } from 'use-debounce';
 import { FormMarkup } from '../../../providers/form/models';
 import GenericSettingsForm from '../genericSettingsForm';
+import { useMetadataDispatcher } from '../../../providers';
+import { MetadataContext } from '../../../providers/metadata/contexts';
 
 export interface IProps {
 }
@@ -13,6 +15,8 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   const { updateComponent, selectedComponentId: id, getComponentModel, getToolboxComponent } = useForm();
   // note: we have to memoize the editor to prevent unneeded re-rendering and loosing of the focus
   const [editor, setEditor] = useState<ReactNode>(<></>);
+  
+  const { getActiveProvider } = useMetadataDispatcher(false);
 
   const debouncedSave = useDebouncedCallback(
     values => {
@@ -22,7 +26,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
     300
   );
 
-  const onCancel = () => {};
+  const onCancel = () => { };
 
   const onSave = values => {
     updateComponent({ componentId: id, settings: { ...values, id: id } });
@@ -55,25 +59,37 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
     };
   };
 
+  const wrapEditor = (renderEditor: () => ReactNode) => {
+    const metaProvider = getActiveProvider ? getActiveProvider() : null;
+    if (!metaProvider)
+      return <>{renderEditor()}</>;
+
+    return (
+      <MetadataContext.Provider value={metaProvider}>
+        <>{renderEditor()}</>
+      </MetadataContext.Provider>
+    );
+  }
+
   const getEditor = () => {
     const emptyEditor = null;
-    if (!id) return;
-    emptyEditor;
+    if (!id) return
+      emptyEditor;
 
     const componentModel = getComponentModel(id);
     const toolboxComponent = getToolboxComponent(componentModel.type);
-    if (!Boolean(toolboxComponent)) 
+    if (!Boolean(toolboxComponent))
       return emptyEditor;
 
     const settingsFormFactory =
       'settingsFormFactory' in toolboxComponent
         ? toolboxComponent.settingsFormFactory
         : 'settingsFormMarkup' in toolboxComponent
-        ? getDefaultFactory(toolboxComponent.settingsFormMarkup)
-        : null;
+          ? getDefaultFactory(toolboxComponent.settingsFormMarkup)
+          : null;
     if (!settingsFormFactory) return emptyEditor;
 
-    return (
+    return wrapEditor(() =>
       <>
         {settingsFormFactory({
           model: componentModel,
@@ -99,7 +115,11 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
       </>
     );
 
-  return <>{editor}</>;
+  return (
+    <>
+      {editor}
+    </>
+  );
 };
 
 export default ComponentPropertiesPanel;

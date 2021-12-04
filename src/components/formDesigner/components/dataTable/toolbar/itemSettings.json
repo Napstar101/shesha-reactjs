@@ -33,7 +33,7 @@
     },
     {
       "id": "5d4d56fb-d7f8-4835-a529-c4fa93f3596d",
-      "type": "textField",
+      "type": "propertyAutocomplete",
       "name": "name",
       "label": "Title",
       "labelAlign": "right",
@@ -108,7 +108,7 @@
           "name": "buttonType",
           "label": "Button Type",
           "labelAlign": "right",
-          "parentId": "root",
+          "parentId": "345c2181-fb9f-48ed-9631-864ac357807b",
           "hidden": false,
           "customVisibility": null,
           "validate": {
@@ -154,7 +154,7 @@
           "name": "danger",
           "label": "Danger",
           "labelAlign": "right",
-          "parentId": "root",
+          "parentId": "345c2181-fb9f-48ed-9631-864ac357807b",
           "hidden": false,
           "customVisibility": null,
           "validate": {}
@@ -310,7 +310,8 @@
               "validate": {},
               "dataSourceType": "entitiesList",
               "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
-              "entityTypeShortAlias": "Shesha.Framework.Form"
+              "entityTypeShortAlias": "Shesha.Framework.Form",
+              "useRawValues": true
             },
             {
               "id": "2ab34541-6fa0-4be2-bb1e-eb65ec63b353",
@@ -362,36 +363,17 @@
       ]
     },
     {
-      "id": "fcfccb85-8fc3-436b-9f87-17e189bc3cdc",
-      "type": "textArea",
-      "name": "visibility",
-      "label": "Visibility",
+      "id": "341beffe-2d62-4c4c-8c97-5f2b433716bf",
+      "type": "codeEditor",
+      "name": "customVisibility",
+      "label": "Custom Visibility",
       "labelAlign": "right",
       "parentId": "root",
       "hidden": false,
-      "customVisibility": "",
-      "autoSize": false,
-      "showCount": false,
-      "allowClear": false,
+      "customVisibility": null,
+      "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
       "validate": {},
-      "dataSourceType": "values",
-      "values": [
-        {
-          "id": "8400a8ec-577d-4468-9347-5601f952b44c",
-          "label": "Button",
-          "value": "button"
-        },
-        {
-          "id": "cc268f50-47ca-4e4e-966f-7f2abfec902f",
-          "label": "Separator",
-          "value": "separator"
-        },
-        {
-          "id": "b4117249-8c2f-4991-a96c-9ea434293120",
-          "label": "Line",
-          "value": "line"
-        }
-      ]
+      "settingsValidationErrors": []
     },
     {
       "id": "26c68b22-3211-475d-91e1-0745a4447329",

@@ -12,6 +12,7 @@ export interface IConfigurableFormItemProps {
   className?: string;
   valuePropName?: string;
   initialValue?: any;
+  // tslint:disable-next-line:jsdoc-format
   /** Custom visibility code
    * available variables:
    * value - value of the current component

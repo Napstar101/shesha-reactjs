@@ -55,7 +55,7 @@ const TabsComponent: IToolboxComponent<ITabsComponentProps> = {
     );
   },
   initModel: model => {
-    let tabsModel: ITabsComponentProps = {
+    const tabsModel: ITabsComponentProps = {
       ...model,
       name: 'custom Name',
       tabs: [{ id: uuid(), title: 'Tab 1', key: 'tab1', components: [] }],

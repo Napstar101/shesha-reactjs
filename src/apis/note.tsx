@@ -2,20 +2,49 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
+/**
+ * Generic entity Dto with display text
+ */
 export interface GuidEntityWithDisplayNameDto {
   id?: string;
+  /**
+   * Entity display name
+   */
   displayText?: string | null;
 }
 
 export interface NoteDto {
   id?: string;
+  /**
+   * Id of the owner entity
+   */
   ownerId: string;
+  /**
+   * Type short alias of the owner entity
+   */
   ownerType: string;
+  /**
+   * Creation time
+   */
   creationTime?: string | null;
+  /**
+   * Category of the note. Is used to split notes into groups
+   */
   category?: number | null;
+  /**
+   * Note importance (priority)
+   */
   priority?: number | null;
+  /**
+   * Id of the parent note
+   */
   parentId?: string | null;
+  /**
+   * Text
+   */
   noteText: string;
   author?: GuidEntityWithDisplayNameDto;
 }
@@ -51,11 +80,29 @@ export interface AjaxResponseBase {
 
 export interface CreateNoteDto {
   id?: string;
+  /**
+   * Id of the owner entity
+   */
   ownerId: string;
+  /**
+   * Type short alias of the owner entity
+   */
   ownerType: string;
+  /**
+   * Category of the note. Is used to split notes into groups
+   */
   category?: number | null;
+  /**
+   * Note importance (priority)
+   */
   priority?: number | null;
+  /**
+   * Id of the parent note
+   */
   parentId?: string | null;
+  /**
+   * Text
+   */
   noteText: string;
 }
 
@@ -84,21 +131,41 @@ export interface NoteDtoPagedResultDtoAjaxResponse {
 
 export interface UpdateNoteDto {
   id?: string;
+  /**
+   * Category of the note. Is used to split notes into groups
+   */
   category?: number | null;
+  /**
+   * Note importance (priority)
+   */
   priority?: number | null;
+  /**
+   * Id of the parent note
+   */
   parentId?: string | null;
+  /**
+   * Text
+   */
   noteText: string;
 }
 
 export interface NoteGetListQueryParams {
-  ownerId: string;
-  ownerType: string;
-  category?: number | null;
-  allCategories?: boolean;
   /**
-   * The requested API version
+   * Id of the owner entity
    */
-  'api-version'?: string;
+  ownerId: string;
+  /**
+   * Type short alias of the owner entity
+   */
+  ownerType: string;
+  /**
+   * Category of the note. Is used to split notes into groups
+   */
+  category?: number | null;
+  /**
+   * Set to true to get notes of all categories
+   */
+  allCategories?: boolean;
 }
 
 export type NoteGetListProps = Omit<
@@ -124,20 +191,24 @@ export const useNoteGetList = (props: UseNoteGetListProps) =>
     props
   );
 
-export interface NoteCreateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type noteGetListProps = Omit<
+  RestfulShesha.GetProps<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>,
+  'queryParams'
+>;
+export const noteGetList = (queryParams: NoteGetListQueryParams, props: noteGetListProps) =>
+  RestfulShesha.get<NoteDtoListAjaxResponse, AjaxResponseBase, NoteGetListQueryParams, void>(
+    `/api/services/app/Note/GetList`,
+    queryParams,
+    props
+  );
 
 export type NoteCreateProps = Omit<
-  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>,
+  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, void, CreateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const NoteCreate = (props: NoteCreateProps) => (
-  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>
+  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, void, CreateNoteDto, void>
     verb="POST"
     path={`/api/services/app/Note/Create`}
     {...props}
@@ -145,23 +216,31 @@ export const NoteCreate = (props: NoteCreateProps) => (
 );
 
 export type UseNoteCreateProps = Omit<
-  UseMutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>,
+  UseMutateProps<NoteDtoAjaxResponse, AjaxResponseBase, void, CreateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const useNoteCreate = (props: UseNoteCreateProps) =>
-  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteCreateQueryParams, CreateNoteDto, void>(
+  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, void, CreateNoteDto, void>(
     'POST',
     `/api/services/app/Note/Create`,
     props
   );
 
+export type noteCreateProps = Omit<
+  RestfulShesha.MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, void, CreateNoteDto, void>,
+  'data'
+>;
+export const noteCreate = (data: CreateNoteDto, props: noteCreateProps) =>
+  RestfulShesha.mutate<NoteDtoAjaxResponse, AjaxResponseBase, void, CreateNoteDto, void>(
+    'POST',
+    `/api/services/app/Note/Create`,
+    data,
+    props
+  );
+
 export interface NoteGetQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type NoteGetProps = Omit<GetProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>, 'path'>;
@@ -181,14 +260,21 @@ export type UseNoteGetProps = Omit<
 export const useNoteGet = (props: UseNoteGetProps) =>
   useGet<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>(`/api/services/app/Note/Get`, props);
 
+export type noteGetProps = Omit<
+  RestfulShesha.GetProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>,
+  'queryParams'
+>;
+export const noteGet = (queryParams: NoteGetQueryParams, props: noteGetProps) =>
+  RestfulShesha.get<NoteDtoAjaxResponse, AjaxResponseBase, NoteGetQueryParams, void>(
+    `/api/services/app/Note/Get`,
+    queryParams,
+    props
+  );
+
 export interface NoteGetAllQueryParams {
   keyword?: string | null;
   skipCount?: number;
   maxResultCount?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type NoteGetAllProps = Omit<
@@ -214,20 +300,24 @@ export const useNoteGetAll = (props: UseNoteGetAllProps) =>
     props
   );
 
-export interface NoteUpdateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type noteGetAllProps = Omit<
+  RestfulShesha.GetProps<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>,
+  'queryParams'
+>;
+export const noteGetAll = (queryParams: NoteGetAllQueryParams, props: noteGetAllProps) =>
+  RestfulShesha.get<NoteDtoPagedResultDtoAjaxResponse, AjaxResponseBase, NoteGetAllQueryParams, void>(
+    `/api/services/app/Note/GetAll`,
+    queryParams,
+    props
+  );
 
 export type NoteUpdateProps = Omit<
-  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>,
+  MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, void, UpdateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const NoteUpdate = (props: NoteUpdateProps) => (
-  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>
+  <Mutate<NoteDtoAjaxResponse, AjaxResponseBase, void, UpdateNoteDto, void>
     verb="PUT"
     path={`/api/services/app/Note/Update`}
     {...props}
@@ -235,23 +325,31 @@ export const NoteUpdate = (props: NoteUpdateProps) => (
 );
 
 export type UseNoteUpdateProps = Omit<
-  UseMutateProps<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>,
+  UseMutateProps<NoteDtoAjaxResponse, AjaxResponseBase, void, UpdateNoteDto, void>,
   'path' | 'verb'
 >;
 
 export const useNoteUpdate = (props: UseNoteUpdateProps) =>
-  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, NoteUpdateQueryParams, UpdateNoteDto, void>(
+  useMutate<NoteDtoAjaxResponse, AjaxResponseBase, void, UpdateNoteDto, void>(
     'PUT',
     `/api/services/app/Note/Update`,
     props
   );
 
+export type noteUpdateProps = Omit<
+  RestfulShesha.MutateProps<NoteDtoAjaxResponse, AjaxResponseBase, void, UpdateNoteDto, void>,
+  'data'
+>;
+export const noteUpdate = (data: UpdateNoteDto, props: noteUpdateProps) =>
+  RestfulShesha.mutate<NoteDtoAjaxResponse, AjaxResponseBase, void, UpdateNoteDto, void>(
+    'PUT',
+    `/api/services/app/Note/Update`,
+    data,
+    props
+  );
+
 export interface NoteDeleteQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type NoteDeleteProps = Omit<MutateProps<void, unknown, NoteDeleteQueryParams, void, void>, 'path' | 'verb'>;
@@ -271,3 +369,12 @@ export type UseNoteDeleteProps = Omit<
 
 export const useNoteDelete = (props: UseNoteDeleteProps) =>
   useMutate<void, unknown, NoteDeleteQueryParams, void, void>('DELETE', `/api/services/app/Note/Delete`, { ...props });
+
+export type noteDeleteProps = Omit<RestfulShesha.MutateProps<void, unknown, NoteDeleteQueryParams, void, void>, 'data'>;
+export const noteDelete = (props: noteDeleteProps) =>
+  RestfulShesha.mutate<void, unknown, NoteDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/app/Note/Delete`,
+    undefined,
+    props
+  );

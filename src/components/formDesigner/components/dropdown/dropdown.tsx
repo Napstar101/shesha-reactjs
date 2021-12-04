@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
+import { FormMarkup } from '../../../../providers/form/models';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import ConfigurableFormItem from '../formItem';
@@ -8,7 +8,7 @@ import { IDropdownProps, ILabelValue } from './models';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
-import { RefListDropDown } from '../../..';
+import RefListDropDown from '../../../refListDropDown';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -16,11 +16,10 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   type: 'dropdown',
   name: 'Dropdown',
   icon: <DownSquareOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IDropdownProps;
+  factory: (model: IDropdownProps) => {
     return (
       <ConfigurableFormItem model={model}>
-        <Dropdown {...customProps} />
+        <Dropdown {...model} />
       </ConfigurableFormItem>
     );
   },
@@ -49,7 +48,7 @@ export const Dropdown: FC<IDropdownProps> = ({
 
   if (dataSourceType === 'referenceList') {
     return (
-      <RefListDropDown
+      <RefListDropDown.Dto
         onChange={onChange}
         listName={referenceListName}
         listNamespace={referenceListNamespace}

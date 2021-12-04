@@ -2,16 +2,48 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
+/**
+ * Authorization options
+ */
 export interface AuthorizationSettingsDto {
+  /**
+   * Lockout enabled (default value for new users)
+   */
   isLockoutEnabled?: boolean;
+  /**
+   * Lockout time in seconds
+   */
   defaultAccountLockoutSeconds?: number;
+  /**
+   * Max failed logon attempts before lockout
+   */
   maxFailedAccessAttemptsBeforeLockout?: number;
+  /**
+   * Passwords: require digits
+   */
   requireDigit?: boolean;
+  /**
+   * Passwords: require lower case character
+   */
   requireLowercase?: boolean;
+  /**
+   * Passwords: non alphanumeric character
+   */
   requireNonAlphanumeric?: boolean;
+  /**
+   * Passwords: require upper case character
+   */
   requireUppercase?: boolean;
+  /**
+   * Passwords: min length
+   */
   requiredLength?: number;
+  /**
+   * Auto logoff timeout (in case of user inactivity). Set to 0 to disable
+   */
   autoLogoffTimeout?: number;
 }
 
@@ -44,20 +76,13 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
-export interface AuthorizationSettingsUpdateSettingsQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type AuthorizationSettingsUpdateSettingsProps = Omit<
-  MutateProps<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>,
+  MutateProps<void, unknown, void, AuthorizationSettingsDto, void>,
   'path' | 'verb'
 >;
 
 export const AuthorizationSettingsUpdateSettings = (props: AuthorizationSettingsUpdateSettingsProps) => (
-  <Mutate<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>
+  <Mutate<void, unknown, void, AuthorizationSettingsDto, void>
     verb="PUT"
     path={`/api/services/app/AuthorizationSettings/UpdateSettings`}
     {...props}
@@ -65,48 +90,62 @@ export const AuthorizationSettingsUpdateSettings = (props: AuthorizationSettings
 );
 
 export type UseAuthorizationSettingsUpdateSettingsProps = Omit<
-  UseMutateProps<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>,
+  UseMutateProps<void, unknown, void, AuthorizationSettingsDto, void>,
   'path' | 'verb'
 >;
 
 export const useAuthorizationSettingsUpdateSettings = (props: UseAuthorizationSettingsUpdateSettingsProps) =>
-  useMutate<void, unknown, AuthorizationSettingsUpdateSettingsQueryParams, AuthorizationSettingsDto, void>(
+  useMutate<void, unknown, void, AuthorizationSettingsDto, void>(
     'PUT',
     `/api/services/app/AuthorizationSettings/UpdateSettings`,
     props
   );
 
-export interface AuthorizationSettingsGetSettingsQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type authorizationSettingsUpdateSettingsProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, void, AuthorizationSettingsDto, void>,
+  'data'
+>;
+export const authorizationSettingsUpdateSettings = (
+  data: AuthorizationSettingsDto,
+  props: authorizationSettingsUpdateSettingsProps
+) =>
+  RestfulShesha.mutate<void, unknown, void, AuthorizationSettingsDto, void>(
+    'PUT',
+    `/api/services/app/AuthorizationSettings/UpdateSettings`,
+    data,
+    props
+  );
 
 export type AuthorizationSettingsGetSettingsProps = Omit<
-  GetProps<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, AuthorizationSettingsGetSettingsQueryParams, void>,
+  GetProps<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const AuthorizationSettingsGetSettings = (props: AuthorizationSettingsGetSettingsProps) => (
-  <Get<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, AuthorizationSettingsGetSettingsQueryParams, void>
+  <Get<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void, void>
     path={`/api/services/app/AuthorizationSettings/GetSettings`}
     {...props}
   />
 );
 
 export type UseAuthorizationSettingsGetSettingsProps = Omit<
-  UseGetProps<
-    AuthorizationSettingsDtoAjaxResponse,
-    AjaxResponseBase,
-    AuthorizationSettingsGetSettingsQueryParams,
-    void
-  >,
+  UseGetProps<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const useAuthorizationSettingsGetSettings = (props: UseAuthorizationSettingsGetSettingsProps) =>
-  useGet<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, AuthorizationSettingsGetSettingsQueryParams, void>(
+  useGet<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void, void>(
     `/api/services/app/AuthorizationSettings/GetSettings`,
+    props
+  );
+
+export type authorizationSettingsGetSettingsProps = Omit<
+  RestfulShesha.GetProps<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void, void>,
+  'queryParams'
+>;
+export const authorizationSettingsGetSettings = (props: authorizationSettingsGetSettingsProps) =>
+  RestfulShesha.get<AuthorizationSettingsDtoAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/services/app/AuthorizationSettings/GetSettings`,
+    undefined,
     props
   );

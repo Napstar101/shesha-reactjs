@@ -12,6 +12,7 @@ import {
   IGetDataPayload,
   ITableCrudConfig,
   IEditableRowState,
+  TableDataSourceType,
 } from './interfaces';
 
 export type IFlagProgressFlags =
@@ -164,6 +165,7 @@ export interface IDataTableActionsContext
   updateLocalTableData?: () => void;
   deleteRowItem?: (idOfItemToDeleteOrUpdate: string) => void;
   getCurrentFilter: () => ITableFilter[];
+  getDataSourceType: () => TableDataSourceType; // todo: mode to component settings, provide backward compatibility
 
   /**
    * Register columns in the table context. Is used for configurable tables

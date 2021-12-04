@@ -14,6 +14,8 @@ export interface ITextFieldProps extends IConfigurableFormComponent {
   prefix?: string;
   suffix?: string;
   hideBorder?: boolean;
+  initialValue?: string;
+  passEmptyStringByDefault?: boolean;
   textType?: TextType;
 }
 
@@ -32,21 +34,22 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as ITextFieldProps;
-
-    let inputProps: InputProps = {
-      placeholder: customProps.placeholder,
-      prefix: customProps.prefix,
-      suffix: customProps.suffix,
-      disabled: customProps.disabled,
-      bordered: !customProps.hideBorder,
+  factory: (model: ITextFieldProps) => {
+    const inputProps: InputProps = {
+      placeholder: model.placeholder,
+      prefix: model.prefix,
+      suffix: model.suffix,
+      disabled: model.disabled,
+      bordered: !model.hideBorder,
     };
 
-    const InputComponentType = renderInput(customProps.textType);
+    const InputComponentType = renderInput(model.textType);
 
     return (
-      <ConfigurableFormItem model={model}>
+      <ConfigurableFormItem
+        model={model}
+        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
+      >
         <InputComponentType {...inputProps} />
       </ConfigurableFormItem>
     );

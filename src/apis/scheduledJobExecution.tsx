@@ -2,10 +2,24 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
+/**
+ * Represents event log item logged by Shesha.Scheduler.SignalR.SignalrAppender
+ */
 export interface EventLogItem {
+  /**
+   * Logged message
+   */
   message?: string | null;
+  /**
+   * Event timestamp
+   */
   timeStamp?: string;
+  /**
+   * Level (info/warn/error)
+   */
   level?: string | null;
 }
 
@@ -47,13 +61,25 @@ export interface FileStreamResultAjaxResponse {
   result?: string | null;
 }
 
+/**
+ * Generic entity Dto with display text
+ */
 export interface Int64NullableEntityWithDisplayNameDto {
   id?: number | null;
+  /**
+   * Entity display name
+   */
   displayText?: string | null;
 }
 
+/**
+ * Generic entity Dto with display text
+ */
 export interface GuidNullableEntityWithDisplayNameDto {
   id?: string | null;
+  /**
+   * Entity display name
+   */
   displayText?: string | null;
 }
 
@@ -64,11 +90,20 @@ export interface ReferenceListItemValueDto {
 
 export interface ScheduledJobExecutionDto {
   id?: string;
+  /**
+   * Datetime of the execution start
+   */
   startedOn?: string | null;
+  /**
+   * Datetime of the execution finish
+   */
   finishedOn?: string | null;
   startedBy?: Int64NullableEntityWithDisplayNameDto;
   job?: GuidNullableEntityWithDisplayNameDto;
   trigger?: GuidNullableEntityWithDisplayNameDto;
+  /**
+   * Error message
+   */
   errorMessage?: string | null;
   status?: ReferenceListItemValueDto;
 }
@@ -98,10 +133,6 @@ export interface ScheduledJobExecutionDtoPagedResultDtoAjaxResponse {
 
 export interface ScheduledJobExecutionGetEventLogItemsQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ScheduledJobExecutionGetEventLogItemsProps = Omit<
@@ -109,6 +140,9 @@ export type ScheduledJobExecutionGetEventLogItemsProps = Omit<
   'path'
 >;
 
+/**
+ * Get event log items for the specified job execution
+ */
 export const ScheduledJobExecutionGetEventLogItems = (props: ScheduledJobExecutionGetEventLogItemsProps) => (
   <Get<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams, void>
     path={`/api/services/Scheduler/ScheduledJobExecution/GetEventLogItems`}
@@ -121,18 +155,43 @@ export type UseScheduledJobExecutionGetEventLogItemsProps = Omit<
   'path'
 >;
 
+/**
+ * Get event log items for the specified job execution
+ */
 export const useScheduledJobExecutionGetEventLogItems = (props: UseScheduledJobExecutionGetEventLogItemsProps) =>
   useGet<EventLogItemListAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetEventLogItemsQueryParams, void>(
     `/api/services/Scheduler/ScheduledJobExecution/GetEventLogItems`,
     props
   );
 
+export type scheduledJobExecutionGetEventLogItemsProps = Omit<
+  RestfulShesha.GetProps<
+    EventLogItemListAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionGetEventLogItemsQueryParams,
+    void
+  >,
+  'queryParams'
+>;
+/**
+ * Get event log items for the specified job execution
+ */
+export const scheduledJobExecutionGetEventLogItems = (
+  queryParams: ScheduledJobExecutionGetEventLogItemsQueryParams,
+  props: scheduledJobExecutionGetEventLogItemsProps
+) =>
+  RestfulShesha.get<
+    EventLogItemListAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionGetEventLogItemsQueryParams,
+    void
+  >(`/api/services/Scheduler/ScheduledJobExecution/GetEventLogItems`, queryParams, props);
+
 export interface ScheduledJobExecutionDownloadLogFileQueryParams {
-  id?: string;
   /**
-   * The requested API version
+   * Id of the scheduled job execution
    */
-  'api-version'?: string;
+  id?: string;
 }
 
 export type ScheduledJobExecutionDownloadLogFileProps = Omit<
@@ -140,6 +199,9 @@ export type ScheduledJobExecutionDownloadLogFileProps = Omit<
   'path'
 >;
 
+/**
+ * Download log file of the job execution
+ */
 export const ScheduledJobExecutionDownloadLogFile = (props: ScheduledJobExecutionDownloadLogFileProps) => (
   <Get<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams, void>
     path={`/api/services/Scheduler/ScheduledJobExecution/DownloadLogFile`}
@@ -152,18 +214,40 @@ export type UseScheduledJobExecutionDownloadLogFileProps = Omit<
   'path'
 >;
 
+/**
+ * Download log file of the job execution
+ */
 export const useScheduledJobExecutionDownloadLogFile = (props: UseScheduledJobExecutionDownloadLogFileProps) =>
   useGet<FileStreamResultAjaxResponse, AjaxResponseBase, ScheduledJobExecutionDownloadLogFileQueryParams, void>(
     `/api/services/Scheduler/ScheduledJobExecution/DownloadLogFile`,
     props
   );
 
+export type scheduledJobExecutionDownloadLogFileProps = Omit<
+  RestfulShesha.GetProps<
+    FileStreamResultAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionDownloadLogFileQueryParams,
+    void
+  >,
+  'queryParams'
+>;
+/**
+ * Download log file of the job execution
+ */
+export const scheduledJobExecutionDownloadLogFile = (
+  queryParams: ScheduledJobExecutionDownloadLogFileQueryParams,
+  props: scheduledJobExecutionDownloadLogFileProps
+) =>
+  RestfulShesha.get<
+    FileStreamResultAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionDownloadLogFileQueryParams,
+    void
+  >(`/api/services/Scheduler/ScheduledJobExecution/DownloadLogFile`, queryParams, props);
+
 export interface ScheduledJobExecutionGetQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ScheduledJobExecutionGetProps = Omit<
@@ -189,14 +273,29 @@ export const useScheduledJobExecutionGet = (props: UseScheduledJobExecutionGetPr
     props
   );
 
+export type scheduledJobExecutionGetProps = Omit<
+  RestfulShesha.GetProps<
+    ScheduledJobExecutionDtoAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionGetQueryParams,
+    void
+  >,
+  'queryParams'
+>;
+export const scheduledJobExecutionGet = (
+  queryParams: ScheduledJobExecutionGetQueryParams,
+  props: scheduledJobExecutionGetProps
+) =>
+  RestfulShesha.get<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, ScheduledJobExecutionGetQueryParams, void>(
+    `/api/services/Scheduler/ScheduledJobExecution/Get`,
+    queryParams,
+    props
+  );
+
 export interface ScheduledJobExecutionGetAllQueryParams {
   sorting?: string | null;
   skipCount?: number;
   maxResultCount?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ScheduledJobExecutionGetAllProps = Omit<
@@ -239,32 +338,33 @@ export const useScheduledJobExecutionGetAll = (props: UseScheduledJobExecutionGe
     void
   >(`/api/services/Scheduler/ScheduledJobExecution/GetAll`, props);
 
-export interface ScheduledJobExecutionCreateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
-export type ScheduledJobExecutionCreateProps = Omit<
-  MutateProps<
-    ScheduledJobExecutionDtoAjaxResponse,
+export type scheduledJobExecutionGetAllProps = Omit<
+  RestfulShesha.GetProps<
+    ScheduledJobExecutionDtoPagedResultDtoAjaxResponse,
     AjaxResponseBase,
-    ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto,
+    ScheduledJobExecutionGetAllQueryParams,
     void
   >,
+  'queryParams'
+>;
+export const scheduledJobExecutionGetAll = (
+  queryParams: ScheduledJobExecutionGetAllQueryParams,
+  props: scheduledJobExecutionGetAllProps
+) =>
+  RestfulShesha.get<
+    ScheduledJobExecutionDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    ScheduledJobExecutionGetAllQueryParams,
+    void
+  >(`/api/services/Scheduler/ScheduledJobExecution/GetAll`, queryParams, props);
+
+export type ScheduledJobExecutionCreateProps = Omit<
+  MutateProps<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>,
   'path' | 'verb'
 >;
 
 export const ScheduledJobExecutionCreate = (props: ScheduledJobExecutionCreateProps) => (
-  <Mutate<
-    ScheduledJobExecutionDtoAjaxResponse,
-    AjaxResponseBase,
-    ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto,
-    void
-  >
+  <Mutate<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>
     verb="POST"
     path={`/api/services/Scheduler/ScheduledJobExecution/Create`}
     {...props}
@@ -272,51 +372,42 @@ export const ScheduledJobExecutionCreate = (props: ScheduledJobExecutionCreatePr
 );
 
 export type UseScheduledJobExecutionCreateProps = Omit<
-  UseMutateProps<
-    ScheduledJobExecutionDtoAjaxResponse,
-    AjaxResponseBase,
-    ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto,
-    void
-  >,
+  UseMutateProps<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>,
   'path' | 'verb'
 >;
 
 export const useScheduledJobExecutionCreate = (props: UseScheduledJobExecutionCreateProps) =>
-  useMutate<
+  useMutate<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>(
+    'POST',
+    `/api/services/Scheduler/ScheduledJobExecution/Create`,
+    props
+  );
+
+export type scheduledJobExecutionCreateProps = Omit<
+  RestfulShesha.MutateProps<
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
-    ScheduledJobExecutionCreateQueryParams,
-    ScheduledJobExecutionDto,
-    void
-  >('POST', `/api/services/Scheduler/ScheduledJobExecution/Create`, props);
-
-export interface ScheduledJobExecutionUpdateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
-export type ScheduledJobExecutionUpdateProps = Omit<
-  MutateProps<
-    ScheduledJobExecutionDtoAjaxResponse,
-    AjaxResponseBase,
-    ScheduledJobExecutionUpdateQueryParams,
+    void,
     ScheduledJobExecutionDto,
     void
   >,
+  'data'
+>;
+export const scheduledJobExecutionCreate = (data: ScheduledJobExecutionDto, props: scheduledJobExecutionCreateProps) =>
+  RestfulShesha.mutate<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>(
+    'POST',
+    `/api/services/Scheduler/ScheduledJobExecution/Create`,
+    data,
+    props
+  );
+
+export type ScheduledJobExecutionUpdateProps = Omit<
+  MutateProps<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>,
   'path' | 'verb'
 >;
 
 export const ScheduledJobExecutionUpdate = (props: ScheduledJobExecutionUpdateProps) => (
-  <Mutate<
-    ScheduledJobExecutionDtoAjaxResponse,
-    AjaxResponseBase,
-    ScheduledJobExecutionUpdateQueryParams,
-    ScheduledJobExecutionDto,
-    void
-  >
+  <Mutate<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>
     verb="PUT"
     path={`/api/services/Scheduler/ScheduledJobExecution/Update`}
     {...props}
@@ -324,31 +415,37 @@ export const ScheduledJobExecutionUpdate = (props: ScheduledJobExecutionUpdatePr
 );
 
 export type UseScheduledJobExecutionUpdateProps = Omit<
-  UseMutateProps<
-    ScheduledJobExecutionDtoAjaxResponse,
-    AjaxResponseBase,
-    ScheduledJobExecutionUpdateQueryParams,
-    ScheduledJobExecutionDto,
-    void
-  >,
+  UseMutateProps<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>,
   'path' | 'verb'
 >;
 
 export const useScheduledJobExecutionUpdate = (props: UseScheduledJobExecutionUpdateProps) =>
-  useMutate<
+  useMutate<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>(
+    'PUT',
+    `/api/services/Scheduler/ScheduledJobExecution/Update`,
+    props
+  );
+
+export type scheduledJobExecutionUpdateProps = Omit<
+  RestfulShesha.MutateProps<
     ScheduledJobExecutionDtoAjaxResponse,
     AjaxResponseBase,
-    ScheduledJobExecutionUpdateQueryParams,
+    void,
     ScheduledJobExecutionDto,
     void
-  >('PUT', `/api/services/Scheduler/ScheduledJobExecution/Update`, props);
+  >,
+  'data'
+>;
+export const scheduledJobExecutionUpdate = (data: ScheduledJobExecutionDto, props: scheduledJobExecutionUpdateProps) =>
+  RestfulShesha.mutate<ScheduledJobExecutionDtoAjaxResponse, AjaxResponseBase, void, ScheduledJobExecutionDto, void>(
+    'PUT',
+    `/api/services/Scheduler/ScheduledJobExecution/Update`,
+    data,
+    props
+  );
 
 export interface ScheduledJobExecutionDeleteQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type ScheduledJobExecutionDeleteProps = Omit<
@@ -374,4 +471,16 @@ export const useScheduledJobExecutionDelete = (props: UseScheduledJobExecutionDe
     'DELETE',
     `/api/services/Scheduler/ScheduledJobExecution/Delete`,
     { ...props }
+  );
+
+export type scheduledJobExecutionDeleteProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, ScheduledJobExecutionDeleteQueryParams, void, void>,
+  'data'
+>;
+export const scheduledJobExecutionDelete = (props: scheduledJobExecutionDeleteProps) =>
+  RestfulShesha.mutate<void, unknown, ScheduledJobExecutionDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/Scheduler/ScheduledJobExecution/Delete`,
+    undefined,
+    props
   );

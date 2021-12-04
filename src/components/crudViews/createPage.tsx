@@ -1,20 +1,20 @@
 import React from 'react';
 import { Form, Spin, Button } from 'antd';
-import { MainLayout, ValidationErrors, ConfigurableForm } from '../';
+import { MainLayout, ValidationErrors, ConfigurableForm, IndexToolbar } from '../';
 import { FormInstance } from 'antd/lib/form';
 import { useUi } from '../../providers';
 import { NextPage } from 'next';
 import { IDataMutator } from './models';
-import { IndexToolbar } from '../';
 import { IToolbarItem } from '../../interfaces';
 import { SaveOutlined, CloseOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import PageBtnContainer from '../pageBtnContainer';
 import { useShaRouting } from '../../providers/shaRouting';
-import { IFormActions, IFormSections } from '../../providers/form/models';
+import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 
 export interface IGenericCreatePageProps {
   title?: string;
   formPath?: string;
+  formMarkup?: FormMarkup;
   updater: (props: any) => IDataMutator;
   onSuccess?: (form: FormInstance) => void;
   prepareValues?: (values: any) => any;
@@ -41,6 +41,7 @@ const GenericCreatePage: NextPage<IGenericCreatePageProps> = ({
   formActions,
   formSections,
   actionButtonPosition = 'top',
+  formMarkup,
 }) => {
   const { mutate: save, error: saveError, loading: saveInProgress } = updater({});
 
@@ -83,6 +84,7 @@ const GenericCreatePage: NextPage<IGenericCreatePageProps> = ({
           mode="edit"
           {...formItemLayout}
           form={form}
+          markup={formMarkup}
           onFinish={handleSubmit}
           path={formPath || router?.pathname}
           initialValues={initialValues}

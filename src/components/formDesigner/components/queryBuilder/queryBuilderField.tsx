@@ -1,11 +1,14 @@
 import { FC, useState } from 'react';
 import { JsonLogicResult } from 'react-awesome-query-builder';
-import { Modal, Button, Input } from 'antd';
+import { Modal, Button, Collapse } from 'antd';
 import { IProperty } from '../../../../providers/queryBuilder/models';
 import React from 'react';
 import QueryBuilder from '../../../queryBuilder';
+import { CodeEditor } from '../../..';
+import { CaretRightOutlined } from '@ant-design/icons';
 
 export interface IQueryBuilderFieldProps {
+  jsonExpanded?: boolean;
   fields: IProperty[];
   value?: object;
   onChange?: (value: any) => void;
@@ -14,6 +17,7 @@ export interface IQueryBuilderFieldProps {
 export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [jsonLogicResult, setJsonLogicResult] = useState<JsonLogicResult>(undefined);
+  const [jsonExpanded, setJsonExpanded] = useState(props.jsonExpanded ?? false);
 
   const onOkClick = () => {
     if (jsonLogicResult) {
@@ -34,17 +38,51 @@ export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
     setJsonLogicResult(result);
   };
 
+  const onExpandClick = () => {
+    setJsonExpanded(!jsonExpanded);
+  }
+
   return (
     <>
-      <Button type="primary" onClick={() => setModalVisible(true)}>
-        Query Builder
-      </Button>
-      <Input.TextArea
-        disabled={true}
-        value={props.value ? JSON.stringify(props.value, null, 2) : null}
-        rows={5}
-        size="small"
-      ></Input.TextArea>
+      <Collapse
+        className="sha-query-builder-field"
+        activeKey={jsonExpanded ? "1" : null}
+        expandIconPosition='right'
+        bordered={false}
+        ghost={true}
+        expandIcon={({ isActive }) => isActive 
+          ? <span onClick={onExpandClick}>hide json <CaretRightOutlined rotate={90} /></span>
+          : <span onClick={onExpandClick}>show json <CaretRightOutlined rotate={0} /></span>
+        }
+      >
+        <Collapse.Panel header={
+          <Button type="primary" onClick={() => setModalVisible(true)}>
+            Query Builder
+          </Button>
+        } key="1">
+          <CodeEditor
+            width="100%"
+            readOnly={true}
+            value={props.value ? JSON.stringify(props.value, null, 2) : null}
+            mode="json"
+            theme="monokai"
+            fontSize={14}
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
+            setOptions={{
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: true,
+              enableSnippets: false,
+              showLineNumbers: true,
+              tabSize: 2,
+              autoScrollEditorIntoView: true,
+              minLines: 3,
+              maxLines: 100
+            }}
+          />
+        </Collapse.Panel>
+      </Collapse>
       <Modal
         visible={modalVisible}
         width="60%"

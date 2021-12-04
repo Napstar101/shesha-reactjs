@@ -8,7 +8,9 @@ import { useQueryBuilder } from '../../../../providers';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
-export interface IQueryBuilderProps extends IConfigurableFormComponent {}
+export interface IQueryBuilderProps extends IConfigurableFormComponent {
+  jsonExpanded?: boolean;
+}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -16,16 +18,13 @@ const QueryBuilderComponent: IToolboxComponent<IQueryBuilderProps> = {
   type: 'queryBuilder',
   name: 'Query Builder',
   icon: <FilterOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    /*
-    const customProps = model as IQueryBuilderProps;
-    */
+  factory: (model: IQueryBuilderProps) => {
     const queryBuilder = useQueryBuilder(false);
     const fields = queryBuilder?.fields || [];
 
     return (
       <ConfigurableFormItem model={model}>
-        <QueryBuilderField fields={fields} />
+        <QueryBuilderField fields={fields} jsonExpanded={model.jsonExpanded}/>
       </ConfigurableFormItem>
     );
   },

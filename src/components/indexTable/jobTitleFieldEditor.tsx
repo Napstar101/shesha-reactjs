@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useState, useEffect } from 'react';
 import { Input } from 'antd';
-import RefListDropDown, { IRefListDropDownOption } from '../refListDropDown';
+import RefListDropDown from '../refListDropDown';
 import { ReferenceListItemDto } from '../../apis/referenceList';
 import { IColumnEditFieldProps } from './interfaces';
 
@@ -33,12 +33,7 @@ export const JobTitleFieldEditor: FC<IColumnEditFieldProps> = ({
   const renderRenderRefListDropdown = () => {
     const placeholder = `Select ${caption}`;
 
-    const onChange = (_: number | number[], option: any) => {
-      const val = {
-        itemValue: (option as IRefListDropDownOption)?.value as number,
-        item: (option as IRefListDropDownOption)?.children,
-      };
-
+    const onChange = (val: ReferenceListItemDto) => {
       setSelectedOption(val);
 
       // handleChange(name, val);
@@ -46,8 +41,8 @@ export const JobTitleFieldEditor: FC<IColumnEditFieldProps> = ({
 
     const val =
       dataType === 'multiValueRefList'
-        ? (stateValue as ReferenceListItemDto[]).map(({ itemValue }) => itemValue).filter(Boolean)
-        : (stateValue as ReferenceListItemDto)?.itemValue;
+        ? (stateValue as ReferenceListItemDto[])
+        : (stateValue as ReferenceListItemDto);
 
     return (
       <Fragment>

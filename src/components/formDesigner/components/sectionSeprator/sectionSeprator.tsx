@@ -15,7 +15,7 @@ const SectionSeparatorComponent: IToolboxComponent<ISectionSeparatorProps> = {
   type: 'sectionSeparator',
   name: 'Section Separator',
   icon: <LineOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: ISectionSeparatorProps) => {
     const { formMode, visibleComponentIds } = useForm();
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);

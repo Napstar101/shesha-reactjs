@@ -1,6 +1,5 @@
 import { FC, MutableRefObject, useEffect } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
-import { IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { SelectOutlined } from '@ant-design/icons';
 import TableViewSelectorSettings from './tableViewSelectorSettingsPanel';
 import { ITableViewSelectorProps } from './models';
@@ -14,12 +13,10 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
   type: 'tableViewSelector',
   name: 'Table view selector',
   icon: <SelectOutlined />,
-  factory: (model: IConfigurableFormComponent, componentRef: MutableRefObject<any>) => {
-    const customProps = model as ITableViewSelectorProps;
-
-    return <TableViewSelector componentRef={componentRef} {...customProps}></TableViewSelector>;
+  factory: (model: ITableViewSelectorProps, componentRef: MutableRefObject<any>) => {
+    return <TableViewSelector componentRef={componentRef} {...model}></TableViewSelector>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: ITableViewSelectorProps) => {
     return {
       ...model,
       filters: [],
@@ -41,8 +38,12 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
 export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, componentRef }) => {
   const { formMode } = useForm();
   const isDesignMode = formMode === 'designer';
-  const { columns } = useDataTableStore();
-  componentRef.current = { columns };
+  const { columns, getDataSourceType } = useDataTableStore();
+  const dataSourceType = getDataSourceType();
+  componentRef.current = {
+    columns,
+    dataSourceType
+  };
 
   if (filters.length === 0 && isDesignMode)
     return (

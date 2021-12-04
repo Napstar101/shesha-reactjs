@@ -2,7 +2,12 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
+/**
+ * Generic DTO of the simple autocomplete item
+ */
 export interface AutocompleteItemDto {
   value?: string | null;
   displayText?: string | null;
@@ -42,10 +47,6 @@ export interface AutocompleteListQueryParams {
   typeShortAlias?: string | null;
   allowInherited?: boolean;
   selectedValue?: string | null;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type AutocompleteListProps = Omit<
@@ -53,6 +54,9 @@ export type AutocompleteListProps = Omit<
   'path'
 >;
 
+/**
+ * Get autocomplete list
+ */
 export const AutocompleteList = (props: AutocompleteListProps) => (
   <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>
     path={`/api/Autocomplete/List`}
@@ -65,8 +69,25 @@ export type UseAutocompleteListProps = Omit<
   'path'
 >;
 
+/**
+ * Get autocomplete list
+ */
 export const useAutocompleteList = (props: UseAutocompleteListProps) =>
   useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>(
     `/api/Autocomplete/List`,
+    props
+  );
+
+export type autocompleteListProps = Omit<
+  RestfulShesha.GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>,
+  'queryParams'
+>;
+/**
+ * Get autocomplete list
+ */
+export const autocompleteList = (queryParams: AutocompleteListQueryParams, props: autocompleteListProps) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AutocompleteListQueryParams, void>(
+    `/api/Autocomplete/List`,
+    queryParams,
     props
   );

@@ -2,10 +2,15 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface AuthenticateModel {
   userNameOrEmailAddress: string;
   password: string;
+  /**
+   * Optional IMEI number. Is used for mobile applications
+   */
   imei?: string | null;
 }
 
@@ -93,32 +98,13 @@ export interface ExternalAuthenticateResultModelAjaxResponse {
   result?: ExternalAuthenticateResultModel;
 }
 
-export interface TokenAuthAuthenticateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type TokenAuthAuthenticateProps = Omit<
-  MutateProps<
-    AuthenticateResultModelAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthAuthenticateQueryParams,
-    AuthenticateModel,
-    void
-  >,
+  MutateProps<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel, void>,
   'path' | 'verb'
 >;
 
 export const TokenAuthAuthenticate = (props: TokenAuthAuthenticateProps) => (
-  <Mutate<
-    AuthenticateResultModelAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthAuthenticateQueryParams,
-    AuthenticateModel,
-    void
-  >
+  <Mutate<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel, void>
     verb="POST"
     path={`/api/TokenAuth/Authenticate`}
     {...props}
@@ -126,39 +112,36 @@ export const TokenAuthAuthenticate = (props: TokenAuthAuthenticateProps) => (
 );
 
 export type UseTokenAuthAuthenticateProps = Omit<
-  UseMutateProps<
-    AuthenticateResultModelAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthAuthenticateQueryParams,
-    AuthenticateModel,
-    void
-  >,
+  UseMutateProps<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel, void>,
   'path' | 'verb'
 >;
 
 export const useTokenAuthAuthenticate = (props: UseTokenAuthAuthenticateProps) =>
-  useMutate<
-    AuthenticateResultModelAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthAuthenticateQueryParams,
-    AuthenticateModel,
-    void
-  >('POST', `/api/TokenAuth/Authenticate`, props);
+  useMutate<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel, void>(
+    'POST',
+    `/api/TokenAuth/Authenticate`,
+    props
+  );
 
-export interface TokenAuthSignOffQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type tokenAuthAuthenticateProps = Omit<
+  RestfulShesha.MutateProps<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel, void>,
+  'data'
+>;
+export const tokenAuthAuthenticate = (data: AuthenticateModel, props: tokenAuthAuthenticateProps) =>
+  RestfulShesha.mutate<AuthenticateResultModelAjaxResponse, AjaxResponseBase, void, AuthenticateModel, void>(
+    'POST',
+    `/api/TokenAuth/Authenticate`,
+    data,
+    props
+  );
 
 export type TokenAuthSignOffProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, void, void>,
   'path' | 'verb'
 >;
 
 export const TokenAuthSignOff = (props: TokenAuthSignOffProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, void, void>
     verb="POST"
     path={`/api/TokenAuth/SignOff`}
     {...props}
@@ -166,94 +149,70 @@ export const TokenAuthSignOff = (props: TokenAuthSignOffProps) => (
 );
 
 export type UseTokenAuthSignOffProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, void, void, void>,
   'path' | 'verb'
 >;
 
 export const useTokenAuthSignOff = (props: UseTokenAuthSignOffProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, TokenAuthSignOffQueryParams, void, void>(
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, void, void>('POST', `/api/TokenAuth/SignOff`, props);
+
+export type tokenAuthSignOffProps = Omit<
+  RestfulShesha.MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, void, void>,
+  'data'
+>;
+export const tokenAuthSignOff = (props: tokenAuthSignOffProps) =>
+  RestfulShesha.mutate<BooleanAjaxResponse, AjaxResponseBase, void, void, void>(
     'POST',
     `/api/TokenAuth/SignOff`,
+    undefined,
     props
   );
 
-export interface TokenAuthGetExternalAuthenticationProvidersQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type TokenAuthGetExternalAuthenticationProvidersProps = Omit<
-  GetProps<
-    ExternalLoginProviderInfoModelListAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthGetExternalAuthenticationProvidersQueryParams,
-    void
-  >,
+  GetProps<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const TokenAuthGetExternalAuthenticationProviders = (
   props: TokenAuthGetExternalAuthenticationProvidersProps
 ) => (
-  <Get<
-    ExternalLoginProviderInfoModelListAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthGetExternalAuthenticationProvidersQueryParams,
-    void
-  >
+  <Get<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void, void>
     path={`/api/TokenAuth/GetExternalAuthenticationProviders`}
     {...props}
   />
 );
 
 export type UseTokenAuthGetExternalAuthenticationProvidersProps = Omit<
-  UseGetProps<
-    ExternalLoginProviderInfoModelListAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthGetExternalAuthenticationProvidersQueryParams,
-    void
-  >,
+  UseGetProps<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const useTokenAuthGetExternalAuthenticationProviders = (
   props: UseTokenAuthGetExternalAuthenticationProvidersProps
 ) =>
-  useGet<
-    ExternalLoginProviderInfoModelListAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthGetExternalAuthenticationProvidersQueryParams,
-    void
-  >(`/api/TokenAuth/GetExternalAuthenticationProviders`, props);
+  useGet<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/TokenAuth/GetExternalAuthenticationProviders`,
+    props
+  );
 
-export interface TokenAuthExternalAuthenticateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type tokenAuthGetExternalAuthenticationProvidersProps = Omit<
+  RestfulShesha.GetProps<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void, void>,
+  'queryParams'
+>;
+export const tokenAuthGetExternalAuthenticationProviders = (props: tokenAuthGetExternalAuthenticationProvidersProps) =>
+  RestfulShesha.get<ExternalLoginProviderInfoModelListAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/TokenAuth/GetExternalAuthenticationProviders`,
+    undefined,
+    props
+  );
 
 export type TokenAuthExternalAuthenticateProps = Omit<
-  MutateProps<
-    ExternalAuthenticateResultModelAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthExternalAuthenticateQueryParams,
-    ExternalAuthenticateModel,
-    void
-  >,
+  MutateProps<ExternalAuthenticateResultModelAjaxResponse, AjaxResponseBase, void, ExternalAuthenticateModel, void>,
   'path' | 'verb'
 >;
 
 export const TokenAuthExternalAuthenticate = (props: TokenAuthExternalAuthenticateProps) => (
-  <Mutate<
-    ExternalAuthenticateResultModelAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthExternalAuthenticateQueryParams,
-    ExternalAuthenticateModel,
-    void
-  >
+  <Mutate<ExternalAuthenticateResultModelAjaxResponse, AjaxResponseBase, void, ExternalAuthenticateModel, void>
     verb="POST"
     path={`/api/TokenAuth/ExternalAuthenticate`}
     {...props}
@@ -261,21 +220,35 @@ export const TokenAuthExternalAuthenticate = (props: TokenAuthExternalAuthentica
 );
 
 export type UseTokenAuthExternalAuthenticateProps = Omit<
-  UseMutateProps<
-    ExternalAuthenticateResultModelAjaxResponse,
-    AjaxResponseBase,
-    TokenAuthExternalAuthenticateQueryParams,
-    ExternalAuthenticateModel,
-    void
-  >,
+  UseMutateProps<ExternalAuthenticateResultModelAjaxResponse, AjaxResponseBase, void, ExternalAuthenticateModel, void>,
   'path' | 'verb'
 >;
 
 export const useTokenAuthExternalAuthenticate = (props: UseTokenAuthExternalAuthenticateProps) =>
-  useMutate<
+  useMutate<ExternalAuthenticateResultModelAjaxResponse, AjaxResponseBase, void, ExternalAuthenticateModel, void>(
+    'POST',
+    `/api/TokenAuth/ExternalAuthenticate`,
+    props
+  );
+
+export type tokenAuthExternalAuthenticateProps = Omit<
+  RestfulShesha.MutateProps<
     ExternalAuthenticateResultModelAjaxResponse,
     AjaxResponseBase,
-    TokenAuthExternalAuthenticateQueryParams,
+    void,
     ExternalAuthenticateModel,
     void
-  >('POST', `/api/TokenAuth/ExternalAuthenticate`, props);
+  >,
+  'data'
+>;
+export const tokenAuthExternalAuthenticate = (
+  data: ExternalAuthenticateModel,
+  props: tokenAuthExternalAuthenticateProps
+) =>
+  RestfulShesha.mutate<
+    ExternalAuthenticateResultModelAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ExternalAuthenticateModel,
+    void
+  >('POST', `/api/TokenAuth/ExternalAuthenticate`, data, props);

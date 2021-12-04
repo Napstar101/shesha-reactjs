@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Form, Button } from 'antd';
 import { ITableViewSelectorProps } from './models';
 import TableViewSelectorSettingsModal from './tableViewSelectorSettingsModal';
 import { QueryBuilderProvider } from '../../../../../providers';
 import { useForm } from '../../../../../providers/form';
-import { ITableColumn } from '../../../../../';
+import { ITableColumn, useMetadata } from '../../../../../';
 import { IProperty } from '../../../../../providers/queryBuilder/models';
+import { TableDataSourceType } from '../../../../../providers/dataTable/interfaces';
 
 export interface IProps {
   model: ITableViewSelectorProps;
@@ -19,27 +20,61 @@ function ColumnsSettings(props: IProps) {
   const [form] = Form.useForm();
   const { selectedComponentRef } = useForm();
 
+  const metadata = useMetadata(false);
+
   const columns = (selectedComponentRef.current?.columns as ITableColumn[]) || [];
-  const fields: IProperty[] = [];
+  const dataSourceType: TableDataSourceType = selectedComponentRef.current?.dataSourceType;
 
-  columns.forEach(column => {
-    fields.push({
-      label: column.header,
-      propertyName: column.columnId,
-      visible: column.isVisible,
-      dataType: column.dataType,
-      fieldSettings: {
-        typeShortAlias: column.entityReferenceTypeShortAlias,
-        referenceListName: column.referenceListName,
-        referenceListNamespace: column.referenceListNamespace,
-        allowInherited: column.allowInherited,
-      },
-      //tooltip: column.description
-      //preferWidgets: ['']
-    });
+  const fields = useMemo<IProperty[]>(() => {
+    if (dataSourceType === 'tableConfig') {
+      return columns.map<IProperty>(column => (
+        {
+          label: column.header,
+          propertyName: column.columnId,
+          visible: column.isVisible,
+          dataType: column.dataType,
+          fieldSettings: {
+            typeShortAlias: column.entityReferenceTypeShortAlias,
+            referenceListName: column.referenceListName,
+            referenceListNamespace: column.referenceListNamespace,
+            allowInherited: column.allowInherited,
+          },
+          //tooltip: column.description
+          //preferWidgets: ['']
+        }
+      ));
+    }
+    if (dataSourceType === 'entity') {
+      const properties = metadata?.metadata?.properties || [];
+      if (Boolean(properties))
+        return properties.map<IProperty>(property => (
+          {
+            label: property.label,
+            propertyName: property.path,
+            visible: property.isVisible,
+            dataType: property.dataType,
+            fieldSettings: {
+              typeShortAlias: property.entityType,
+              referenceListName: property.referenceListName,
+              referenceListNamespace: property.referenceListNamespace,
+              allowInherited: true,
+            }
+          }
+        ));
+    }
+    return [];
+  }, [dataSourceType, columns, metadata]);
+
+  /*
+  console.log({
+    metadata,
+    ref: selectedComponentRef.current,
+    dataSourceType,
+    fields
   });
+  */
 
-  console.log({ columns, fields });
+  //console.log({ columns, fields });
 
   /* NOTE: don't delete this code, it's not needed now but will be used in another part of the system
   // take all columns with dots, create a list of 

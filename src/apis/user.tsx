@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export interface CreateUserDto {
   userName: string;
@@ -82,6 +84,9 @@ export interface ChangeUserLanguageDto {
 }
 
 export interface ResetPasswordSendOtpResponse {
+  /**
+   * Unique runtime identifier of the operation. Is used for resending
+   */
   operationId?: string;
 }
 
@@ -95,13 +100,25 @@ export interface ResetPasswordSendOtpResponseAjaxResponse {
 }
 
 export interface ResetPasswordVerifyOtpInput {
+  /**
+   * Unique runtime identifier of the operation. Is used for resending
+   */
   operationId?: string;
+  /**
+   * Value of the One Time Pin
+   */
   pin?: string | null;
   mobileNo: string;
 }
 
 export interface ResetPasswordVerifyOtpResponse {
+  /**
+   * Indicates that the OTP matches to the sent one
+   */
   isSuccess?: boolean;
+  /**
+   * Error message
+   */
   errorMessage?: string | null;
   token?: string | null;
   username?: string | null;
@@ -174,20 +191,13 @@ export interface UserDtoPagedResultDtoAjaxResponse {
   result?: UserDtoPagedResultDto;
 }
 
-export interface UserCreateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type UserCreateProps = Omit<
-  MutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>,
+  MutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto, void>,
   'path' | 'verb'
 >;
 
 export const UserCreate = (props: UserCreateProps) => (
-  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>
+  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto, void>
     verb="POST"
     path={`/api/services/app/User/Create`}
     {...props}
@@ -195,31 +205,36 @@ export const UserCreate = (props: UserCreateProps) => (
 );
 
 export type UseUserCreateProps = Omit<
-  UseMutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>,
+  UseMutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto, void>,
   'path' | 'verb'
 >;
 
 export const useUserCreate = (props: UseUserCreateProps) =>
-  useMutate<UserDtoAjaxResponse, AjaxResponseBase, UserCreateQueryParams, CreateUserDto, void>(
+  useMutate<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto, void>(
     'POST',
     `/api/services/app/User/Create`,
     props
   );
 
-export interface UserUpdateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type userCreateProps = Omit<
+  RestfulShesha.MutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto, void>,
+  'data'
+>;
+export const userCreate = (data: CreateUserDto, props: userCreateProps) =>
+  RestfulShesha.mutate<UserDtoAjaxResponse, AjaxResponseBase, void, CreateUserDto, void>(
+    'POST',
+    `/api/services/app/User/Create`,
+    data,
+    props
+  );
 
 export type UserUpdateProps = Omit<
-  MutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>,
+  MutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto, void>,
   'path' | 'verb'
 >;
 
 export const UserUpdate = (props: UserUpdateProps) => (
-  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>
+  <Mutate<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto, void>
     verb="PUT"
     path={`/api/services/app/User/Update`}
     {...props}
@@ -227,23 +242,27 @@ export const UserUpdate = (props: UserUpdateProps) => (
 );
 
 export type UseUserUpdateProps = Omit<
-  UseMutateProps<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>,
+  UseMutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto, void>,
   'path' | 'verb'
 >;
 
 export const useUserUpdate = (props: UseUserUpdateProps) =>
-  useMutate<UserDtoAjaxResponse, AjaxResponseBase, UserUpdateQueryParams, UserDto, void>(
+  useMutate<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto, void>('PUT', `/api/services/app/User/Update`, props);
+
+export type userUpdateProps = Omit<
+  RestfulShesha.MutateProps<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto, void>,
+  'data'
+>;
+export const userUpdate = (data: UserDto, props: userUpdateProps) =>
+  RestfulShesha.mutate<UserDtoAjaxResponse, AjaxResponseBase, void, UserDto, void>(
     'PUT',
     `/api/services/app/User/Update`,
+    data,
     props
   );
 
 export interface UserDeleteQueryParams {
   id?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type UserDeleteProps = Omit<MutateProps<void, unknown, UserDeleteQueryParams, void, void>, 'path' | 'verb'>;
@@ -264,50 +283,50 @@ export type UseUserDeleteProps = Omit<
 export const useUserDelete = (props: UseUserDeleteProps) =>
   useMutate<void, unknown, UserDeleteQueryParams, void, void>('DELETE', `/api/services/app/User/Delete`, { ...props });
 
-export interface UserGetRolesQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type userDeleteProps = Omit<RestfulShesha.MutateProps<void, unknown, UserDeleteQueryParams, void, void>, 'data'>;
+export const userDelete = (props: userDeleteProps) =>
+  RestfulShesha.mutate<void, unknown, UserDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/app/User/Delete`,
+    undefined,
+    props
+  );
 
-export type UserGetRolesProps = Omit<
-  GetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>,
-  'path'
->;
+export type UserGetRolesProps = Omit<GetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void, void>, 'path'>;
 
 export const UserGetRoles = (props: UserGetRolesProps) => (
-  <Get<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>
+  <Get<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void, void>
     path={`/api/services/app/User/GetRoles`}
     {...props}
   />
 );
 
 export type UseUserGetRolesProps = Omit<
-  UseGetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>,
+  UseGetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const useUserGetRoles = (props: UseUserGetRolesProps) =>
-  useGet<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, UserGetRolesQueryParams, void>(
+  useGet<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void, void>(`/api/services/app/User/GetRoles`, props);
+
+export type userGetRolesProps = Omit<
+  RestfulShesha.GetProps<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void, void>,
+  'queryParams'
+>;
+export const userGetRoles = (props: userGetRolesProps) =>
+  RestfulShesha.get<RoleDtoListResultDtoAjaxResponse, AjaxResponseBase, void, void>(
     `/api/services/app/User/GetRoles`,
+    undefined,
     props
   );
 
-export interface UserChangeLanguageQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
 export type UserChangeLanguageProps = Omit<
-  MutateProps<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>,
+  MutateProps<void, unknown, void, ChangeUserLanguageDto, void>,
   'path' | 'verb'
 >;
 
 export const UserChangeLanguage = (props: UserChangeLanguageProps) => (
-  <Mutate<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>
+  <Mutate<void, unknown, void, ChangeUserLanguageDto, void>
     verb="POST"
     path={`/api/services/app/User/ChangeLanguage`}
     {...props}
@@ -315,23 +334,30 @@ export const UserChangeLanguage = (props: UserChangeLanguageProps) => (
 );
 
 export type UseUserChangeLanguageProps = Omit<
-  UseMutateProps<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>,
+  UseMutateProps<void, unknown, void, ChangeUserLanguageDto, void>,
   'path' | 'verb'
 >;
 
 export const useUserChangeLanguage = (props: UseUserChangeLanguageProps) =>
-  useMutate<void, unknown, UserChangeLanguageQueryParams, ChangeUserLanguageDto, void>(
+  useMutate<void, unknown, void, ChangeUserLanguageDto, void>('POST', `/api/services/app/User/ChangeLanguage`, props);
+
+export type userChangeLanguageProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, void, ChangeUserLanguageDto, void>,
+  'data'
+>;
+export const userChangeLanguage = (data: ChangeUserLanguageDto, props: userChangeLanguageProps) =>
+  RestfulShesha.mutate<void, unknown, void, ChangeUserLanguageDto, void>(
     'POST',
     `/api/services/app/User/ChangeLanguage`,
+    data,
     props
   );
 
 export interface UserResetPasswordSendOtpQueryParams {
-  mobileNo?: string | null;
   /**
-   * The requested API version
+   * mobile number of the user
    */
-  'api-version'?: string;
+  mobileNo?: string | null;
 }
 
 export type UserResetPasswordSendOtpProps = Omit<
@@ -345,6 +371,9 @@ export type UserResetPasswordSendOtpProps = Omit<
   'path' | 'verb'
 >;
 
+/**
+ * Send One-time pin for password reset
+ */
 export const UserResetPasswordSendOtp = (props: UserResetPasswordSendOtpProps) => (
   <Mutate<ResetPasswordSendOtpResponseAjaxResponse, AjaxResponseBase, UserResetPasswordSendOtpQueryParams, void, void>
     verb="POST"
@@ -364,6 +393,9 @@ export type UseUserResetPasswordSendOtpProps = Omit<
   'path' | 'verb'
 >;
 
+/**
+ * Send One-time pin for password reset
+ */
 export const useUserResetPasswordSendOtp = (props: UseUserResetPasswordSendOtpProps) =>
   useMutate<
     ResetPasswordSendOtpResponseAjaxResponse,
@@ -373,32 +405,38 @@ export const useUserResetPasswordSendOtp = (props: UseUserResetPasswordSendOtpPr
     void
   >('POST', `/api/services/app/User/ResetPasswordSendOtp`, props);
 
-export interface UserResetPasswordVerifyOtpQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
-export type UserResetPasswordVerifyOtpProps = Omit<
-  MutateProps<
-    ResetPasswordVerifyOtpResponseAjaxResponse,
+export type userResetPasswordSendOtpProps = Omit<
+  RestfulShesha.MutateProps<
+    ResetPasswordSendOtpResponseAjaxResponse,
     AjaxResponseBase,
-    UserResetPasswordVerifyOtpQueryParams,
-    ResetPasswordVerifyOtpInput,
+    UserResetPasswordSendOtpQueryParams,
+    void,
     void
   >,
+  'data'
+>;
+/**
+ * Send One-time pin for password reset
+ */
+export const userResetPasswordSendOtp = (props: userResetPasswordSendOtpProps) =>
+  RestfulShesha.mutate<
+    ResetPasswordSendOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    UserResetPasswordSendOtpQueryParams,
+    void,
+    void
+  >('POST', `/api/services/app/User/ResetPasswordSendOtp`, undefined, props);
+
+export type UserResetPasswordVerifyOtpProps = Omit<
+  MutateProps<ResetPasswordVerifyOtpResponseAjaxResponse, AjaxResponseBase, void, ResetPasswordVerifyOtpInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Verify one-time pin that was used for password reset. Returns a token that should be used for password update
+ */
 export const UserResetPasswordVerifyOtp = (props: UserResetPasswordVerifyOtpProps) => (
-  <Mutate<
-    ResetPasswordVerifyOtpResponseAjaxResponse,
-    AjaxResponseBase,
-    UserResetPasswordVerifyOtpQueryParams,
-    ResetPasswordVerifyOtpInput,
-    void
-  >
+  <Mutate<ResetPasswordVerifyOtpResponseAjaxResponse, AjaxResponseBase, void, ResetPasswordVerifyOtpInput, void>
     verb="POST"
     path={`/api/services/app/User/ResetPasswordVerifyOtp`}
     {...props}
@@ -406,51 +444,52 @@ export const UserResetPasswordVerifyOtp = (props: UserResetPasswordVerifyOtpProp
 );
 
 export type UseUserResetPasswordVerifyOtpProps = Omit<
-  UseMutateProps<
-    ResetPasswordVerifyOtpResponseAjaxResponse,
-    AjaxResponseBase,
-    UserResetPasswordVerifyOtpQueryParams,
-    ResetPasswordVerifyOtpInput,
-    void
-  >,
+  UseMutateProps<ResetPasswordVerifyOtpResponseAjaxResponse, AjaxResponseBase, void, ResetPasswordVerifyOtpInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Verify one-time pin that was used for password reset. Returns a token that should be used for password update
+ */
 export const useUserResetPasswordVerifyOtp = (props: UseUserResetPasswordVerifyOtpProps) =>
-  useMutate<
+  useMutate<ResetPasswordVerifyOtpResponseAjaxResponse, AjaxResponseBase, void, ResetPasswordVerifyOtpInput, void>(
+    'POST',
+    `/api/services/app/User/ResetPasswordVerifyOtp`,
+    props
+  );
+
+export type userResetPasswordVerifyOtpProps = Omit<
+  RestfulShesha.MutateProps<
     ResetPasswordVerifyOtpResponseAjaxResponse,
     AjaxResponseBase,
-    UserResetPasswordVerifyOtpQueryParams,
+    void,
     ResetPasswordVerifyOtpInput,
     void
-  >('POST', `/api/services/app/User/ResetPasswordVerifyOtp`, props);
-
-export interface UserResetPasswordUsingTokenQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+  >,
+  'data'
+>;
+/**
+ * Verify one-time pin that was used for password reset. Returns a token that should be used for password update
+ */
+export const userResetPasswordVerifyOtp = (data: ResetPasswordVerifyOtpInput, props: userResetPasswordVerifyOtpProps) =>
+  RestfulShesha.mutate<
+    ResetPasswordVerifyOtpResponseAjaxResponse,
+    AjaxResponseBase,
+    void,
+    ResetPasswordVerifyOtpInput,
+    void
+  >('POST', `/api/services/app/User/ResetPasswordVerifyOtp`, data, props);
 
 export type UserResetPasswordUsingTokenProps = Omit<
-  MutateProps<
-    BooleanAjaxResponse,
-    AjaxResponseBase,
-    UserResetPasswordUsingTokenQueryParams,
-    ResetPasswordUsingTokenInput,
-    void
-  >,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Resets a password of the user using token
+ */
 export const UserResetPasswordUsingToken = (props: UserResetPasswordUsingTokenProps) => (
-  <Mutate<
-    BooleanAjaxResponse,
-    AjaxResponseBase,
-    UserResetPasswordUsingTokenQueryParams,
-    ResetPasswordUsingTokenInput,
-    void
-  >
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput, void>
     verb="POST"
     path={`/api/services/app/User/ResetPasswordUsingToken`}
     {...props}
@@ -458,39 +497,45 @@ export const UserResetPasswordUsingToken = (props: UserResetPasswordUsingTokenPr
 );
 
 export type UseUserResetPasswordUsingTokenProps = Omit<
-  UseMutateProps<
-    BooleanAjaxResponse,
-    AjaxResponseBase,
-    UserResetPasswordUsingTokenQueryParams,
-    ResetPasswordUsingTokenInput,
-    void
-  >,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Resets a password of the user using token
+ */
 export const useUserResetPasswordUsingToken = (props: UseUserResetPasswordUsingTokenProps) =>
-  useMutate<
-    BooleanAjaxResponse,
-    AjaxResponseBase,
-    UserResetPasswordUsingTokenQueryParams,
-    ResetPasswordUsingTokenInput,
-    void
-  >('POST', `/api/services/app/User/ResetPasswordUsingToken`, props);
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput, void>(
+    'POST',
+    `/api/services/app/User/ResetPasswordUsingToken`,
+    props
+  );
 
-export interface UserChangePasswordQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type userResetPasswordUsingTokenProps = Omit<
+  RestfulShesha.MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput, void>,
+  'data'
+>;
+/**
+ * Resets a password of the user using token
+ */
+export const userResetPasswordUsingToken = (
+  data: ResetPasswordUsingTokenInput,
+  props: userResetPasswordUsingTokenProps
+) =>
+  RestfulShesha.mutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordUsingTokenInput, void>(
+    'POST',
+    `/api/services/app/User/ResetPasswordUsingToken`,
+    data,
+    props
+  );
 
 export type UserChangePasswordProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const UserChangePassword = (props: UserChangePasswordProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto, void>
     verb="POST"
     path={`/api/services/app/User/ChangePassword`}
     {...props}
@@ -498,31 +543,36 @@ export const UserChangePassword = (props: UserChangePasswordProps) => (
 );
 
 export type UseUserChangePasswordProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const useUserChangePassword = (props: UseUserChangePasswordProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, UserChangePasswordQueryParams, ChangePasswordDto, void>(
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto, void>(
     'POST',
     `/api/services/app/User/ChangePassword`,
     props
   );
 
-export interface UserResetPasswordQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type userChangePasswordProps = Omit<
+  RestfulShesha.MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto, void>,
+  'data'
+>;
+export const userChangePassword = (data: ChangePasswordDto, props: userChangePasswordProps) =>
+  RestfulShesha.mutate<BooleanAjaxResponse, AjaxResponseBase, void, ChangePasswordDto, void>(
+    'POST',
+    `/api/services/app/User/ChangePassword`,
+    data,
+    props
+  );
 
 export type UserResetPasswordProps = Omit<
-  MutateProps<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>,
+  MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const UserResetPassword = (props: UserResetPasswordProps) => (
-  <Mutate<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>
+  <Mutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto, void>
     verb="POST"
     path={`/api/services/app/User/ResetPassword`}
     {...props}
@@ -530,53 +580,65 @@ export const UserResetPassword = (props: UserResetPasswordProps) => (
 );
 
 export type UseUserResetPasswordProps = Omit<
-  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>,
+  UseMutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto, void>,
   'path' | 'verb'
 >;
 
 export const useUserResetPassword = (props: UseUserResetPasswordProps) =>
-  useMutate<BooleanAjaxResponse, AjaxResponseBase, UserResetPasswordQueryParams, ResetPasswordDto, void>(
+  useMutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto, void>(
     'POST',
     `/api/services/app/User/ResetPassword`,
     props
   );
 
-export interface UserGetUserAuthConfigQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type userResetPasswordProps = Omit<
+  RestfulShesha.MutateProps<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto, void>,
+  'data'
+>;
+export const userResetPassword = (data: ResetPasswordDto, props: userResetPasswordProps) =>
+  RestfulShesha.mutate<BooleanAjaxResponse, AjaxResponseBase, void, ResetPasswordDto, void>(
+    'POST',
+    `/api/services/app/User/ResetPassword`,
+    data,
+    props
+  );
 
 export type UserGetUserAuthConfigProps = Omit<
-  GetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>,
+  GetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const UserGetUserAuthConfig = (props: UserGetUserAuthConfigProps) => (
-  <Get<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>
+  <Get<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void, void>
     path={`/api/services/app/User/GetUserAuthConfig`}
     {...props}
   />
 );
 
 export type UseUserGetUserAuthConfigProps = Omit<
-  UseGetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>,
+  UseGetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void, void>,
   'path'
 >;
 
 export const useUserGetUserAuthConfig = (props: UseUserGetUserAuthConfigProps) =>
-  useGet<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, UserGetUserAuthConfigQueryParams, void>(
+  useGet<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void, void>(
     `/api/services/app/User/GetUserAuthConfig`,
+    props
+  );
+
+export type userGetUserAuthConfigProps = Omit<
+  RestfulShesha.GetProps<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void, void>,
+  'queryParams'
+>;
+export const userGetUserAuthConfig = (props: userGetUserAuthConfigProps) =>
+  RestfulShesha.get<AbpUserAuthConfigDtoAjaxResponse, AjaxResponseBase, void, void>(
+    `/api/services/app/User/GetUserAuthConfig`,
+    undefined,
     props
   );
 
 export interface UserGetQueryParams {
   id?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type UserGetProps = Omit<GetProps<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>, 'path'>;
@@ -596,15 +658,22 @@ export type UseUserGetProps = Omit<
 export const useUserGet = (props: UseUserGetProps) =>
   useGet<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>(`/api/services/app/User/Get`, props);
 
+export type userGetProps = Omit<
+  RestfulShesha.GetProps<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>,
+  'queryParams'
+>;
+export const userGet = (queryParams: UserGetQueryParams, props: userGetProps) =>
+  RestfulShesha.get<UserDtoAjaxResponse, AjaxResponseBase, UserGetQueryParams, void>(
+    `/api/services/app/User/Get`,
+    queryParams,
+    props
+  );
+
 export interface UserGetAllQueryParams {
   keyword?: string | null;
   isActive?: boolean | null;
   skipCount?: number;
   maxResultCount?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type UserGetAllProps = Omit<
@@ -627,5 +696,16 @@ export type UseUserGetAllProps = Omit<
 export const useUserGetAll = (props: UseUserGetAllProps) =>
   useGet<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams, void>(
     `/api/services/app/User/GetAll`,
+    props
+  );
+
+export type userGetAllProps = Omit<
+  RestfulShesha.GetProps<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams, void>,
+  'queryParams'
+>;
+export const userGetAll = (queryParams: UserGetAllQueryParams, props: userGetAllProps) =>
+  RestfulShesha.get<UserDtoPagedResultDtoAjaxResponse, AjaxResponseBase, UserGetAllQueryParams, void>(
+    `/api/services/app/User/GetAll`,
+    queryParams,
     props
   );

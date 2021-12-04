@@ -54,7 +54,8 @@ export const ColumnProperties: FC<IProps> = () => {
         form={form}
         initialValues={componentModel}
         onValuesChange={debouncedSave}
-      ></ConfigurableForm>
+      >
+      </ConfigurableForm>
     );
   };
 

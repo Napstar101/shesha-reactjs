@@ -119,7 +119,7 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
     const val = dataType === 'multiValueRefList' ? getMultiValueRefListValues() : getReferenceListItemValue();
 
     return (
-      <RefListDropDown
+      <RefListDropDown.Raw
         listName={referenceListName}
         listNamespace={referenceListNamespace}
         size="small"

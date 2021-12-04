@@ -16,6 +16,7 @@ import { Router } from 'next/router';
 import { AppConfiguratorProvider } from '../appConfigurator';
 import { DynamicModalProvider } from '../dynamicModal';
 import { UiProvider } from '../ui';
+import { MetadataDispatcherProvider } from '..';
 
 export interface IShaApplicationProviderProps {
   backendUrl: string;
@@ -72,7 +73,11 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
               >
                 <AuthorizationSettingsProvider>
                   <AppConfiguratorProvider>
-                    <DynamicModalProvider>{children}</DynamicModalProvider>
+                    <MetadataDispatcherProvider>
+                      <DynamicModalProvider>
+                        {children}
+                      </DynamicModalProvider>
+                    </MetadataDispatcherProvider>
                   </AppConfiguratorProvider>
                 </AuthorizationSettingsProvider>
               </AuthProvider>

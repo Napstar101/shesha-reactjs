@@ -5,7 +5,6 @@ import { ISidebarMenuItem } from '../../../interfaces';
 import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../../providers';
 import AuthContainer from '../../authedContainer';
 import { MainLayout } from '../..';
-import { AppstoreOutlined, PieChartOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
 
 export interface IIndexPageTemplateProps {
   backendUrl: string;

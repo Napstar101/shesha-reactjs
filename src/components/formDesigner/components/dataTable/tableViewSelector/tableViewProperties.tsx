@@ -3,7 +3,7 @@ import { useTableViewSelectorConfigurator } from '../../../../../providers/table
 import { Empty, Form } from 'antd';
 import { ConfigurableForm } from '../../../../../components';
 import tableViewSettingsJson from './tableViewSettings.json';
-import { IConfigurableFormComponent } from '../../../../../providers/form/models';
+import { FormMarkup } from '../../../../../providers/form/models';
 import { useDebouncedCallback } from 'use-debounce';
 import React from 'react';
 
@@ -39,7 +39,7 @@ export const TableViewProperties: FC<IProps> = () => {
         labelCol={{ span: 24 }}
         wrapperCol={{ span: 24 }}
         mode="edit"
-        markup={tableViewSettingsJson as IConfigurableFormComponent[]}
+        markup={tableViewSettingsJson as FormMarkup}
         onFinish={onSettingsSave}
         form={form}
         initialValues={componentModel}

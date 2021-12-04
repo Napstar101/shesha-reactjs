@@ -2,9 +2,14 @@
 
 import React from 'react';
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react';
+
+import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 export type RefListAreaType = 1 | 2 | 3 | 4 | 5 | 6;
 
+/**
+ * Generic DTO of the simple autocomplete item
+ */
 export interface AutocompleteItemDto {
   value?: string | null;
   displayText?: string | null;
@@ -52,8 +57,14 @@ export interface AreaUpdateDto {
   areaType?: ReferenceListItemValueDto;
 }
 
+/**
+ * Generic entity Dto with display text
+ */
 export interface GuidNullableEntityWithDisplayNameDto {
   id?: string | null;
+  /**
+   * Entity display name
+   */
   displayText?: string | null;
 }
 
@@ -139,10 +150,6 @@ export interface AreaAutocompleteQueryParams {
   term?: string | null;
   areaType?: RefListAreaType;
   parentAreaId?: string | null;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type AreaAutocompleteProps = Omit<
@@ -168,13 +175,20 @@ export const useAreaAutocomplete = (props: UseAreaAutocompleteProps) =>
     props
   );
 
+export type areaAutocompleteProps = Omit<
+  RestfulShesha.GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams, void>,
+  'queryParams'
+>;
+export const areaAutocomplete = (queryParams: AreaAutocompleteQueryParams, props: areaAutocompleteProps) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaAutocompleteQueryParams, void>(
+    `/api/services/app/Area/Autocomplete`,
+    queryParams,
+    props
+  );
+
 export interface AreaCascadeSelectQueryParams {
   areaType?: RefListAreaType;
   parentAreaId?: string | null;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type AreaCascadeSelectProps = Omit<
@@ -200,20 +214,24 @@ export const useAreaCascadeSelect = (props: UseAreaCascadeSelectProps) =>
     props
   );
 
-export interface AreaUpdateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type areaCascadeSelectProps = Omit<
+  RestfulShesha.GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams, void>,
+  'queryParams'
+>;
+export const areaCascadeSelect = (queryParams: AreaCascadeSelectQueryParams, props: areaCascadeSelectProps) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, AreaCascadeSelectQueryParams, void>(
+    `/api/services/app/Area/CascadeSelect`,
+    queryParams,
+    props
+  );
 
 export type AreaUpdateProps = Omit<
-  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>,
+  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaUpdateDto, void>,
   'path' | 'verb'
 >;
 
 export const AreaUpdate = (props: AreaUpdateProps) => (
-  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>
+  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaUpdateDto, void>
     verb="PUT"
     path={`/api/services/app/Area/Update`}
     {...props}
@@ -221,23 +239,31 @@ export const AreaUpdate = (props: AreaUpdateProps) => (
 );
 
 export type UseAreaUpdateProps = Omit<
-  UseMutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>,
+  UseMutateProps<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaUpdateDto, void>,
   'path' | 'verb'
 >;
 
 export const useAreaUpdate = (props: UseAreaUpdateProps) =>
-  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaUpdateQueryParams, AreaUpdateDto, void>(
+  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaUpdateDto, void>(
     'PUT',
     `/api/services/app/Area/Update`,
     props
   );
 
+export type areaUpdateProps = Omit<
+  RestfulShesha.MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaUpdateDto, void>,
+  'data'
+>;
+export const areaUpdate = (data: AreaUpdateDto, props: areaUpdateProps) =>
+  RestfulShesha.mutate<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaUpdateDto, void>(
+    'PUT',
+    `/api/services/app/Area/Update`,
+    data,
+    props
+  );
+
 export interface AreaGetQueryParams {
   id?: string;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type AreaGetProps = Omit<GetProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>, 'path'>;
@@ -257,26 +283,27 @@ export type UseAreaGetProps = Omit<
 export const useAreaGet = (props: UseAreaGetProps) =>
   useGet<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>(`/api/services/app/Area/Get`, props);
 
-export interface AreaGetChildTreeItemsQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type areaGetProps = Omit<
+  RestfulShesha.GetProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>,
+  'queryParams'
+>;
+export const areaGet = (queryParams: AreaGetQueryParams, props: areaGetProps) =>
+  RestfulShesha.get<AreaDtoAjaxResponse, AjaxResponseBase, AreaGetQueryParams, void>(
+    `/api/services/app/Area/Get`,
+    queryParams,
+    props
+  );
 
 export type AreaGetChildTreeItemsProps = Omit<
-  MutateProps<
-    AreaTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    AreaGetChildTreeItemsQueryParams,
-    GetChildAreasInput,
-    void
-  >,
+  MutateProps<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildAreasInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child areas of the specified parent
+ */
 export const AreaGetChildTreeItems = (props: AreaGetChildTreeItemsProps) => (
-  <Mutate<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, AreaGetChildTreeItemsQueryParams, GetChildAreasInput, void>
+  <Mutate<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildAreasInput, void>
     verb="POST"
     path={`/api/services/app/Area/GetChildTreeItems`}
     {...props}
@@ -284,39 +311,45 @@ export const AreaGetChildTreeItems = (props: AreaGetChildTreeItemsProps) => (
 );
 
 export type UseAreaGetChildTreeItemsProps = Omit<
-  UseMutateProps<
-    AreaTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    AreaGetChildTreeItemsQueryParams,
-    GetChildAreasInput,
-    void
-  >,
+  UseMutateProps<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildAreasInput, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child areas of the specified parent
+ */
 export const useAreaGetChildTreeItems = (props: UseAreaGetChildTreeItemsProps) =>
-  useMutate<
-    AreaTreeItemDtoListAjaxResponse,
-    AjaxResponseBase,
-    AreaGetChildTreeItemsQueryParams,
-    GetChildAreasInput,
-    void
-  >('POST', `/api/services/app/Area/GetChildTreeItems`, props);
+  useMutate<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildAreasInput, void>(
+    'POST',
+    `/api/services/app/Area/GetChildTreeItems`,
+    props
+  );
 
-export interface AreaGetTreeItemQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type areaGetChildTreeItemsProps = Omit<
+  RestfulShesha.MutateProps<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildAreasInput, void>,
+  'data'
+>;
+/**
+ * Returns child areas of the specified parent
+ */
+export const areaGetChildTreeItems = (data: GetChildAreasInput, props: areaGetChildTreeItemsProps) =>
+  RestfulShesha.mutate<AreaTreeItemDtoListAjaxResponse, AjaxResponseBase, void, GetChildAreasInput, void>(
+    'POST',
+    `/api/services/app/Area/GetChildTreeItems`,
+    data,
+    props
+  );
 
 export type AreaGetTreeItemProps = Omit<
-  MutateProps<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>,
+  MutateProps<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child areas of the specified parent
+ */
 export const AreaGetTreeItem = (props: AreaGetTreeItemProps) => (
-  <Mutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>
+  <Mutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>
     verb="POST"
     path={`/api/services/app/Area/GetTreeItem`}
     {...props}
@@ -324,91 +357,86 @@ export const AreaGetTreeItem = (props: AreaGetTreeItemProps) => (
 );
 
 export type UseAreaGetTreeItemProps = Omit<
-  UseMutateProps<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>,
+  UseMutateProps<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>,
   'path' | 'verb'
 >;
 
+/**
+ * Returns child areas of the specified parent
+ */
 export const useAreaGetTreeItem = (props: UseAreaGetTreeItemProps) =>
-  useMutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, AreaGetTreeItemQueryParams, GuidEntityDto, void>(
+  useMutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>(
     'POST',
     `/api/services/app/Area/GetTreeItem`,
     props
   );
 
-export interface AreaDeleteQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
-export type AreaDeleteProps = Omit<
-  MutateProps<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>,
-  'path' | 'verb'
+export type areaGetTreeItemProps = Omit<
+  RestfulShesha.MutateProps<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>,
+  'data'
 >;
-
-export const AreaDelete = (props: AreaDeleteProps) => (
-  <Mutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>
-    verb="POST"
-    path={`/api/services/app/Area/Delete`}
-    {...props}
-  />
-);
-
-export type UseAreaDeleteProps = Omit<
-  UseMutateProps<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>,
-  'path' | 'verb'
->;
-
-export const useAreaDelete = (props: UseAreaDeleteProps) =>
-  useMutate<void, unknown, AreaDeleteQueryParams, GuidEntityDto, void>('POST', `/api/services/app/Area/Delete`, props);
-
-export interface AreaMoveAreaQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
-
-export type AreaMoveAreaProps = Omit<
-  MutateProps<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>,
-  'path' | 'verb'
->;
-
-export const AreaMoveArea = (props: AreaMoveAreaProps) => (
-  <Mutate<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>
-    verb="POST"
-    path={`/api/services/app/Area/MoveArea`}
-    {...props}
-  />
-);
-
-export type UseAreaMoveAreaProps = Omit<
-  UseMutateProps<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>,
-  'path' | 'verb'
->;
-
-export const useAreaMoveArea = (props: UseAreaMoveAreaProps) =>
-  useMutate<void, unknown, AreaMoveAreaQueryParams, MoveAreaInput, void>(
+/**
+ * Returns child areas of the specified parent
+ */
+export const areaGetTreeItem = (data: GuidEntityDto, props: areaGetTreeItemProps) =>
+  RestfulShesha.mutate<AreaTreeItemDtoAjaxResponse, AjaxResponseBase, void, GuidEntityDto, void>(
     'POST',
-    `/api/services/app/Area/MoveArea`,
+    `/api/services/app/Area/GetTreeItem`,
+    data,
     props
   );
 
-export interface AreaCreateQueryParams {
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
-}
+export type AreaDeleteProps = Omit<MutateProps<void, unknown, void, GuidEntityDto, void>, 'path' | 'verb'>;
+
+export const AreaDelete = (props: AreaDeleteProps) => (
+  <Mutate<void, unknown, void, GuidEntityDto, void> verb="POST" path={`/api/services/app/Area/Delete`} {...props} />
+);
+
+export type UseAreaDeleteProps = Omit<UseMutateProps<void, unknown, void, GuidEntityDto, void>, 'path' | 'verb'>;
+
+export const useAreaDelete = (props: UseAreaDeleteProps) =>
+  useMutate<void, unknown, void, GuidEntityDto, void>('POST', `/api/services/app/Area/Delete`, props);
+
+export type areaDeleteProps = Omit<RestfulShesha.MutateProps<void, unknown, void, GuidEntityDto, void>, 'data'>;
+export const areaDelete = (data: GuidEntityDto, props: areaDeleteProps) =>
+  RestfulShesha.mutate<void, unknown, void, GuidEntityDto, void>('POST', `/api/services/app/Area/Delete`, data, props);
+
+export type AreaMoveAreaProps = Omit<MutateProps<void, unknown, void, MoveAreaInput, void>, 'path' | 'verb'>;
+
+/**
+ * Moves Area to a new parent
+ */
+export const AreaMoveArea = (props: AreaMoveAreaProps) => (
+  <Mutate<void, unknown, void, MoveAreaInput, void> verb="POST" path={`/api/services/app/Area/MoveArea`} {...props} />
+);
+
+export type UseAreaMoveAreaProps = Omit<UseMutateProps<void, unknown, void, MoveAreaInput, void>, 'path' | 'verb'>;
+
+/**
+ * Moves Area to a new parent
+ */
+export const useAreaMoveArea = (props: UseAreaMoveAreaProps) =>
+  useMutate<void, unknown, void, MoveAreaInput, void>('POST', `/api/services/app/Area/MoveArea`, props);
+
+export type areaMoveAreaProps = Omit<RestfulShesha.MutateProps<void, unknown, void, MoveAreaInput, void>, 'data'>;
+/**
+ * Moves Area to a new parent
+ */
+export const areaMoveArea = (data: MoveAreaInput, props: areaMoveAreaProps) =>
+  RestfulShesha.mutate<void, unknown, void, MoveAreaInput, void>(
+    'POST',
+    `/api/services/app/Area/MoveArea`,
+    data,
+    props
+  );
 
 export type AreaCreateProps = Omit<
-  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>,
+  MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaCreateDto, void>,
   'path' | 'verb'
 >;
 
 export const AreaCreate = (props: AreaCreateProps) => (
-  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>
+  <Mutate<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaCreateDto, void>
     verb="POST"
     path={`/api/services/app/Area/Create`}
     {...props}
@@ -416,14 +444,26 @@ export const AreaCreate = (props: AreaCreateProps) => (
 );
 
 export type UseAreaCreateProps = Omit<
-  UseMutateProps<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>,
+  UseMutateProps<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaCreateDto, void>,
   'path' | 'verb'
 >;
 
 export const useAreaCreate = (props: UseAreaCreateProps) =>
-  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, AreaCreateQueryParams, AreaCreateDto, void>(
+  useMutate<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaCreateDto, void>(
     'POST',
     `/api/services/app/Area/Create`,
+    props
+  );
+
+export type areaCreateProps = Omit<
+  RestfulShesha.MutateProps<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaCreateDto, void>,
+  'data'
+>;
+export const areaCreate = (data: AreaCreateDto, props: areaCreateProps) =>
+  RestfulShesha.mutate<AreaDtoAjaxResponse, AjaxResponseBase, void, AreaCreateDto, void>(
+    'POST',
+    `/api/services/app/Area/Create`,
+    data,
     props
   );
 
@@ -431,10 +471,6 @@ export interface AreaGetAllQueryParams {
   sorting?: string | null;
   skipCount?: number;
   maxResultCount?: number;
-  /**
-   * The requested API version
-   */
-  'api-version'?: string;
 }
 
 export type AreaGetAllProps = Omit<
@@ -457,5 +493,16 @@ export type UseAreaGetAllProps = Omit<
 export const useAreaGetAll = (props: UseAreaGetAllProps) =>
   useGet<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>(
     `/api/services/app/Area/GetAll`,
+    props
+  );
+
+export type areaGetAllProps = Omit<
+  RestfulShesha.GetProps<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>,
+  'queryParams'
+>;
+export const areaGetAll = (queryParams: AreaGetAllQueryParams, props: areaGetAllProps) =>
+  RestfulShesha.get<AreaDtoPagedResultDtoAjaxResponse, AjaxResponseBase, AreaGetAllQueryParams, void>(
+    `/api/services/app/Area/GetAll`,
+    queryParams,
     props
   );
