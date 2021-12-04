@@ -66,7 +66,7 @@ export const Page: PageWithLayout<IPageProps> = ({ children, title, toolbarItems
 
       <Show when={!!toolbarItems?.length}>{<IndexToolbar items={toolbarItems?.filter(({ hide }) => !hide)} />}</Show>
 
-      <Fragment>{children}</Fragment>
+      <div className="sha-page-content">{children}</div>
     </section>
   );
 };

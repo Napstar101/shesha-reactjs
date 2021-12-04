@@ -4,6 +4,7 @@ import { Tooltip, Button } from 'antd';
 import { v4 as uuid } from 'uuid';
 import { IToolbarItem } from '../../interfaces';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import { joinStringValues } from '../..';
 
 export interface IActionButtonGroupProps {
   /** The items to display as buttons */
@@ -23,7 +24,7 @@ export interface IActionButtonGroupProps {
  */
 export const ActionButtonGroup: FC<IActionButtonGroupProps> = ({ items, className, btnSize = 'small' }) => {
   return (
-    <div className={`sha-action-btn-group ${className}`}>
+    <div className={joinStringValues(['sha-action-btn-group', className])}>
       <div className="sha-index-toolbar-left">
         <Fragment>
           <Fragment>
@@ -51,9 +52,8 @@ export const ActionButtonGroup: FC<IActionButtonGroupProps> = ({ items, classNam
                       {title}
                     </Button>
                   </Tooltip>
-                )
-              }
-            )}
+                );
+              })}
           </Fragment>
         </Fragment>
       </div>

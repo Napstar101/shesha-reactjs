@@ -1,4 +1,3 @@
-import { useMemo } from '@storybook/addons';
 import { Tag, TagProps } from 'antd';
 import React, { FC } from 'react';
 
@@ -12,14 +11,16 @@ export interface ITagProps {
 }
 
 export const PageHeaderTag: FC<ITagProps> = ({ title, tag }) => {
-  const memoizedTag = useMemo(() => {
+  console.log('PageHeaderTag: ', { title, tag });
+
+  const getTag = () => {
     if (typeof tag === 'string') {
       return <span>{tag}</span>;
     }
     const { text, ...tagProps } = tag;
 
     return <Tag {...tagProps}>{text}</Tag>;
-  }, [title, tag]);
+  };
 
   return (
     <span className="page-header-tags">
@@ -27,7 +28,7 @@ export const PageHeaderTag: FC<ITagProps> = ({ title, tag }) => {
         <strong>{title}</strong>
       </span>
 
-      <span className="page-header-tags-tag">{memoizedTag}</span>
+      <span className="page-header-tags-tag">{getTag()}</span>
     </span>
   );
 };
