@@ -2,7 +2,7 @@ import React, { useEffect, ReactNode, MutableRefObject, forwardRef, useImperativ
 import { Form, Spin } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { IToolbarItem } from '../../interfaces';
-import { IndexToolbar, ValidationErrors, ConfigurableForm } from '..';
+import { ValidationErrors, ConfigurableForm } from '..';
 import { useUi } from '../../providers';
 import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 import { UseGenericGetProps, IDataFetcher } from './models';
