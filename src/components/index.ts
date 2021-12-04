@@ -111,18 +111,24 @@ export { IConfigurableFormRendererProps, IConfigurableFormProps } from './config
 export { Show } from './show';
 export { default as CodeEditor } from './codeEditor';
 
-export { 
-  //default as GenericRefListDropDown, 
+export {
+  //default as GenericRefListDropDown,
   DtoRefListDropDown,
-  DtoRefListDropDown as RefListDropDown, 
+  DtoRefListDropDown as RefListDropDown,
   RawRefListDropDown,
-  IRefListDropDownProps
+  IRefListDropDownProps,
 } from './refListDropDown';
 
 export {
   //default as GenericAutocomplete,
-  EntityDtoAutocomplete as Autocomplete, 
+  EntityDtoAutocomplete as Autocomplete,
   EntityDtoAutocomplete,
-  RawAutocomplete as RawAutocomplete,
-  IAutocompleteProps 
+  RawAutocomplete,
+  IAutocompleteProps,
 } from './autocomplete';
+
+export { default as GenericCreatePageDefault } from './crudViews/plainCreatePage';
+export { default as GenericDetailsPageDefault } from './crudViews/plainDetailsPage';
+export { default as GenericIndexPageDefault } from './crudViews/plainEditPage';
+export { default as SimpleIndexPageDefault } from './crudViews/plainIndexPage';
+export { default as GenericEditPageDefault } from './crudViews/plainSimpleIndexPage';
