@@ -46,9 +46,72 @@ const headerTagList: ITagProps[] = [
   },
 ];
 
-//#region Without Layout
-// Create a master template for mapping args to render the Button component
-const Template: Story<IPageProps> = args => (
+//#region Default
+const BasicTemplate: Story<IPageProps> = args => (
+  <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL} applicationName="Storybook">
+    <AuthContainer layout={true}>
+      <SidebarMenuDefaultsProvider items={[]}>
+        <Page {...args} title="Any title">
+          <div>This is a div</div>
+        </Page>
+      </SidebarMenuDefaultsProvider>
+    </AuthContainer>
+  </ShaApplicationProvider>
+);
+
+export const Basic = BasicTemplate.bind({ ...defaultProps });
+//#endregion
+
+//#region WithToolBarItem
+const WithToolBarItemTemplate: Story<IPageProps> = args => (
+  <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL} applicationName="Storybook">
+    <AuthContainer layout={true}>
+      <SidebarMenuDefaultsProvider items={[]}>
+        <Page {...args} title="Any title" toolbarItems={toolbarItems}>
+          <div>This is a div</div>
+        </Page>
+      </SidebarMenuDefaultsProvider>
+    </AuthContainer>
+  </ShaApplicationProvider>
+);
+
+export const WithToolBarItem = WithToolBarItemTemplate.bind({ ...defaultProps });
+//#endregion
+
+//#region WithToolBarItem
+const WithHeaderListTemplate: Story<IPageProps> = args => (
+  <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL} applicationName="Storybook">
+    <AuthContainer layout={true}>
+      <SidebarMenuDefaultsProvider items={[]}>
+        <Page {...args} title="Any title" headerTagList={headerTagList}>
+          <div>This is a div</div>
+        </Page>
+      </SidebarMenuDefaultsProvider>
+    </AuthContainer>
+  </ShaApplicationProvider>
+);
+
+export const WithHeaderList = WithHeaderListTemplate.bind({ ...defaultProps });
+//#endregion
+
+//#region WithToolBarItem
+const WithBackButtonTemplate: Story<IPageProps> = args => (
+  <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL} applicationName="Storybook">
+    <AuthContainer layout={true}>
+      <SidebarMenuDefaultsProvider items={[]}>
+        <Page {...args} title="Any title" backUrl="/">
+          <div>This is a div</div>
+        </Page>
+      </SidebarMenuDefaultsProvider>
+    </AuthContainer>
+  </ShaApplicationProvider>
+);
+
+export const WithBackButton = WithBackButtonTemplate.bind({ ...defaultProps });
+//#endregion
+
+//#region WithToolBarItem
+const CompleteExampleTemplate: Story<IPageProps> = args => (
   <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL} applicationName="Storybook">
     <AuthContainer layout={true}>
       <SidebarMenuDefaultsProvider items={[]}>
@@ -59,8 +122,6 @@ const Template: Story<IPageProps> = args => (
     </AuthContainer>
   </ShaApplicationProvider>
 );
-export const Default = Template.bind({});
 
-const TestTemplate: Story<IPageProps> = () => <div>This is a div</div>;
-
-TestTemplate.args = { ...defaultProps };
+export const CompleteExample = CompleteExampleTemplate.bind({ ...defaultProps });
+//#endregion
