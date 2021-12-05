@@ -7,7 +7,9 @@
   }
 
   .sha-page-content {
-    padding: @padding-lg;
+    &:not(.no-padding) {
+      padding: @padding-lg;
+    }
   }
 }
 

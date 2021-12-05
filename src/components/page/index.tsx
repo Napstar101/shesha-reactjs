@@ -1,4 +1,5 @@
 import { Breadcrumb } from 'antd';
+import classNames from 'classnames';
 import { nanoid } from 'nanoid';
 import React, { FC, useEffect } from 'react';
 import { CancelButton, ShaSpin } from '..';
@@ -26,6 +27,7 @@ export interface IPageProps extends IPageHeadProps {
   breadcrumbItems?: IBreadcrumbItem[];
   headerTagList?: ITagProps[];
   loading?: boolean;
+  noPadding?: boolean;
   loadingText?: string;
 }
 
@@ -38,6 +40,7 @@ export const Page: FC<IPageProps> = ({
   loading,
   breadcrumbItems,
   loadingText = 'Loading...',
+  noPadding = false,
 }) => {
   const { router } = useShaRouting();
   const { applicationName } = useSheshaApplication();
@@ -52,34 +55,38 @@ export const Page: FC<IPageProps> = ({
 
   const hasTagList = !!headerTagList?.length;
 
+  const showHeading = !!title || hasBackUrl || hasTagList;
+
   return (
     <section className="sha-page">
       <ShaSpin spinning={loading || false} tip={loadingText}>
-        <div className="sha-page-heading">
-          <div className="sha-page-heading-left">
-            <Show when={!!title?.trim()}>
-              <h1 className="sha-page-title">{title}</h1>
-            </Show>
-          </div>
-
-          <Show when={hasBackUrl || hasTagList}>
-            <div className="sha-page-heading-right">
-              <Show when={hasTagList}>
-                {headerTagList?.map(tag => (
-                  <PageHeaderTag {...tag} key={nanoid()} />
-                ))}
-              </Show>
-
-              <Show when={hasBackUrl && hasTagList}>
-                <span className="sha-page-heading-right-tag-separator">|</span>
-              </Show>
-
-              <Show when={hasBackUrl}>
-                <CancelButton onCancel={onBackButtonClick} />
+        <Show when={showHeading}>
+          <div className="sha-page-heading">
+            <div className="sha-page-heading-left">
+              <Show when={!!title?.trim()}>
+                <h1 className="sha-page-title">{title}</h1>
               </Show>
             </div>
-          </Show>
-        </div>
+
+            <Show when={hasBackUrl || hasTagList}>
+              <div className="sha-page-heading-right">
+                <Show when={hasTagList}>
+                  {headerTagList?.map(tag => (
+                    <PageHeaderTag {...tag} key={nanoid()} />
+                  ))}
+                </Show>
+
+                <Show when={hasBackUrl && hasTagList}>
+                  <span className="sha-page-heading-right-tag-separator">|</span>
+                </Show>
+
+                <Show when={hasBackUrl}>
+                  <CancelButton onCancel={onBackButtonClick} />
+                </Show>
+              </div>
+            </Show>
+          </div>
+        </Show>
 
         <Show when={!!toolbarItems?.length}>{<IndexToolbar items={toolbarItems?.filter(({ hide }) => !hide)} />}</Show>
 
@@ -91,7 +98,7 @@ export const Page: FC<IPageProps> = ({
           </Breadcrumb>
         </Show>
 
-        <div className="sha-page-content">{children}</div>
+        <div className={classNames('sha-page-content', { 'no-padding': noPadding })}>{children}</div>
       </ShaSpin>
     </section>
   );

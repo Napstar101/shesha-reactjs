@@ -1,5 +1,5 @@
-import React, { FC, Fragment, useState } from 'react';
-import { GenericCreateModal, Show } from '../';
+import React, { FC, useState } from 'react';
+import { GenericCreateModal, Page, Show } from '../';
 import { PlusOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
 import { IDataMutator } from './models';
@@ -104,7 +104,7 @@ const TableWithControls: FC<IGenericIndexPageProps> = props => {
   };
 
   return (
-    <Fragment>
+    <Page noPadding>
       <IndexTableFull
         id={props.tableConfigId}
         header={props.title}
@@ -124,7 +124,7 @@ const TableWithControls: FC<IGenericIndexPageProps> = props => {
           {...props.createModalProps}
         />
       </Show>
-    </Fragment>
+    </Page>
   );
 };
 
