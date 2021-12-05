@@ -129,8 +129,8 @@ export {
 
 export { default as GenericCreatePageDefault } from './crudViews/plainCreatePage';
 export { default as GenericDetailsPageDefault } from './crudViews/plainDetailsPage';
-export { default as GenericIndexPageDefault } from './crudViews/plainEditPage';
-export { default as SimpleIndexPageDefault } from './crudViews/plainIndexPage';
-export { default as GenericEditPageDefault } from './crudViews/plainSimpleIndexPage';
+export { default as GenericEditPageDefault } from './crudViews/plainEditPage';
+export { default as GenericIndexPageDefault } from './crudViews/plainIndexPage';
+export { default as SimpleIndexPageDefault } from './crudViews/plainSimpleIndexPage';
 export { default as Page } from './page';
 export { default as DefaultLayout } from './defaultLayout';
