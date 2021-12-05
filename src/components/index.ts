@@ -133,3 +133,4 @@ export { default as GenericIndexPageDefault } from './crudViews/plainEditPage';
 export { default as SimpleIndexPageDefault } from './crudViews/plainIndexPage';
 export { default as GenericEditPageDefault } from './crudViews/plainSimpleIndexPage';
 export { default as Page } from './page';
+export { default as DefaultLayout } from './defaultLayout';

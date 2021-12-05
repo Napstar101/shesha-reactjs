@@ -4,11 +4,9 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import DefaultLayoutHeader from './defaultLayoutHeader';
 import { MenuTheme } from 'antd/lib/menu/MenuContext';
-import { IHtmlHeadProps } from '../htmlHead';
-import { withAuth } from '../../hocs';
 import { useSidebarMenuDefaults } from '../../providers/sidebarMenu';
 import ConfigurableSidebarMenu from '../configurableSidebarMenu';
-import { useLocalStorage } from '../..';
+import { useLocalStorage, withAuth } from '../..';
 import { SIDEBAR_MENU_ID } from '../../constants';
 
 const { Header, Content, Sider } = Layout;
@@ -21,14 +19,14 @@ const MenuTrigger: FC<IMenuTriggerProps> = ({ collapsed }) => {
   return <span>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>;
 };
 
-export interface IDefaultLayoutProps extends IHtmlHeadProps {
+export interface IDefaultLayoutProps {
   theme?: MenuTheme;
 }
 
 // TODO: Check if including props from the layout will
 // TODO not cause the app to misbehave, especially when navigating to other pages the layout
 
-const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({ children, theme = 'dark' }) => {
+export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({ children, theme = 'dark' }) => {
   const sidebarDefaults = useSidebarMenuDefaults();
   const sidebarDefaultItems = sidebarDefaults?.items || [];
 
@@ -63,4 +61,8 @@ const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({ children, t
   );
 };
 
-export default withAuth(DefaultLayout);
+const DefaultLayoutWithAuth = withAuth(DefaultLayout);
+
+export { DefaultLayoutWithAuth };
+
+export default DefaultLayout;

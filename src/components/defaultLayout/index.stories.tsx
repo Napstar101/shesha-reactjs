@@ -3,44 +3,53 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import MainLayout, { IDefaultLayoutProps } from '.';
+import DefaultLayout, { IDefaultLayoutProps } from './';
 import { SIDEBAR_MENU_ITEMS } from './menuItems';
-import { SimpleIndexPage } from '..';
+import Page from '../page';
 
 export default {
-  title: 'Components/Layout',
-  component: MainLayout,
+  title: 'Components/DefaultLayout',
+  component: DefaultLayout,
 } as Meta;
 
 const defaultProps: IDefaultLayoutProps = {};
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
+//#region Default template
 // Create a master template for mapping args to render the Button component
-const Template: Story<IDefaultLayoutProps> = args => (
+const BasicExampleTemplate: Story<IDefaultLayoutProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
       <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
-        <MainLayout {...args} title="Any title">
+        <DefaultLayout {...args}>
           <div>This is a div</div>
-        </MainLayout>
+        </DefaultLayout>
       </SidebarMenuDefaultsProvider>
     </AuthContainer>
   </ShaApplicationProvider>
 );
-export const Default = Template.bind({});
+export const BasicExample = BasicExampleTemplate.bind({});
 
-Default.args = { ...defaultProps };
+BasicExample.args = { ...defaultProps };
+//#endregion
 
-// // Create a master template for mapping args to render the Button component
-// const WithIndexTable: Story<IMainLayoutProps> = () => (
-//   <ShaApplicationProvider backendUrl={backendUrl}>
-//     <AuthContainer layout={true}>
-//       <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
-//         <SimpleIndexPage loading={false} tableConfigId="Users_Index" title="Invoice Allocations" />
-//       </SidebarMenuDefaultsProvider>
-//     </AuthContainer>
-//   </ShaApplicationProvider>
-// );
+//#region Default template
+// Create a master template for mapping args to render the Button component
+const WithPageTemplate: Story<IDefaultLayoutProps> = args => (
+  <ShaApplicationProvider backendUrl={backendUrl}>
+    <AuthContainer layout={true}>
+      <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
+        <DefaultLayout {...args}>
+          <Page title="Story Page">
+            <div>This is a div</div>
+          </Page>
+        </DefaultLayout>
+      </SidebarMenuDefaultsProvider>
+    </AuthContainer>
+  </ShaApplicationProvider>
+);
+export const WithPage = WithPageTemplate.bind({});
 
-// export const IndexPage = WithIndexTable.bind({});
+WithPage.args = { ...defaultProps };
+//#endregion
