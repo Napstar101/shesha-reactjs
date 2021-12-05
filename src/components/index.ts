@@ -132,3 +132,4 @@ export { default as GenericDetailsPageDefault } from './crudViews/plainDetailsPa
 export { default as GenericIndexPageDefault } from './crudViews/plainEditPage';
 export { default as SimpleIndexPageDefault } from './crudViews/plainIndexPage';
 export { default as GenericEditPageDefault } from './crudViews/plainSimpleIndexPage';
+export { default as Page } from './page';
