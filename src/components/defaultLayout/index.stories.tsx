@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import DefaultLayout, { IDefaultLayoutProps } from './';
-import { SIDEBAR_MENU_ITEMS } from './menuItems';
+// import { SIDEBAR_MENU_ITEMS } from './menuItems';
 import Page from '../page';
 
 export default {
@@ -18,11 +18,11 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 
 //#region Default template
 // Create a master template for mapping args to render the Button component
-const BasicExampleTemplate: Story<IDefaultLayoutProps> = args => (
+const BasicExampleTemplate: Story<IDefaultLayoutProps> = () => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
-      <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
-        <DefaultLayout {...args}>
+      <SidebarMenuDefaultsProvider items={[]}>
+        <DefaultLayout __hideHeader>
           <div>This is a div</div>
         </DefaultLayout>
       </SidebarMenuDefaultsProvider>
@@ -36,11 +36,11 @@ BasicExample.args = { ...defaultProps };
 
 //#region Default template
 // Create a master template for mapping args to render the Button component
-const WithPageTemplate: Story<IDefaultLayoutProps> = args => (
+const WithPageTemplate: Story<IDefaultLayoutProps> = () => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
-      <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
-        <DefaultLayout {...args}>
+      <SidebarMenuDefaultsProvider items={[]}>
+        <DefaultLayout __hideHeader>
           <Page title="Story Page">
             <div>This is a div</div>
           </Page>

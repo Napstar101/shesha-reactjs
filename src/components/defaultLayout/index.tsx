@@ -6,7 +6,7 @@ import DefaultLayoutHeader from './defaultLayoutHeader';
 import { MenuTheme } from 'antd/lib/menu/MenuContext';
 import { useSidebarMenuDefaults } from '../../providers/sidebarMenu';
 import ConfigurableSidebarMenu from '../configurableSidebarMenu';
-import { useLocalStorage, withAuth } from '../..';
+import { Show, useLocalStorage } from '../..';
 import { SIDEBAR_MENU_ID } from '../../constants';
 
 const { Header, Content, Sider } = Layout;
@@ -21,12 +21,21 @@ const MenuTrigger: FC<IMenuTriggerProps> = ({ collapsed }) => {
 
 export interface IDefaultLayoutProps {
   theme?: MenuTheme;
+
+  /**
+   * Hack! Please do not use this property unless you know what you're doing. If true, it hides the layout header
+   */
+  __hideHeader?: boolean; //
 }
 
 // TODO: Check if including props from the layout will
 // TODO not cause the app to misbehave, especially when navigating to other pages the layout
 
-export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({ children, theme = 'dark' }) => {
+export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({
+  children,
+  theme = 'dark',
+  __hideHeader = false,
+}) => {
   const sidebarDefaults = useSidebarMenuDefaults();
   const sidebarDefaultItems = sidebarDefaults?.items || [];
 
@@ -52,7 +61,9 @@ export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({ chil
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background">
-          <DefaultLayoutHeader collapsed={collapsed} />
+          <Show when={!__hideHeader}>
+            <DefaultLayoutHeader collapsed={collapsed} />
+          </Show>
         </Header>
 
         <Content className={classNames({ collapsed })}>{children}</Content>
@@ -61,8 +72,8 @@ export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({ chil
   );
 };
 
-const DefaultLayoutWithAuth = withAuth(DefaultLayout);
+// const DefaultLayoutWithAuth = withAuth(DefaultLayout);
 
-export { DefaultLayoutWithAuth };
+// export { DefaultLayoutWithAuth };
 
 export default DefaultLayout;
