@@ -193,6 +193,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
       showNow={showNow}
       showToday={showToday}
       showSecond={false}
+      picker={picker}
       {...rest}
     />
   );
