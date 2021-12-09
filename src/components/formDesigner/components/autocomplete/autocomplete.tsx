@@ -1,5 +1,5 @@
 import React from 'react';
-import { IGuidNullableEntityWithDisplayNameDto, IToolboxComponent } from '../../../../interfaces';
+import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FileSearchOutlined } from '@ant-design/icons';
 import ConfigurableFormItem from '../formItem';
@@ -9,7 +9,7 @@ import { useForm } from '../../../../providers/form';
 import { replaceTags, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
 export interface IAutocompleteProps extends IConfigurableFormComponent {
-  entityTypeShortAlias?: IGuidNullableEntityWithDisplayNameDto;
+  entityTypeShortAlias?: string;
   hideBorder?: boolean;
   dataSourceUrl?: string;
   dataSourceType: AutocompleteDataSourceType;
@@ -29,22 +29,23 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       ? replaceTags(model.dataSourceUrl, { data: formData })
       : model.dataSourceUrl;
 
-      const autocompleteProps = {
-        typeShortAlias: model?.entityTypeShortAlias?.id,
-        allowInherited: true, /*hardcoded for now*/
-        disabled: model.disabled,
-        bordered: !model.hideBorder,
-        dataSourceUrl: dataSourceUrl,
-        dataSourceType: model.dataSourceType,
-        mode: model?.mode
-      };
+    const autocompleteProps = {
+      typeShortAlias: model?.entityTypeShortAlias,
+      allowInherited: true /*hardcoded for now*/,
+      disabled: model.disabled,
+      bordered: !model.hideBorder,
+      dataSourceUrl: dataSourceUrl,
+      dataSourceType: model.dataSourceType,
+      mode: model?.mode,
+    };
     // todo: implement other types of datasources!
     return (
       <ConfigurableFormItem model={model}>
-        { model.useRawValues
-          ? <Autocomplete.Raw {...autocompleteProps} />
-          : <Autocomplete.EntityDto {...autocompleteProps} />
-        }
+        {model.useRawValues ? (
+          <Autocomplete.Raw {...autocompleteProps} />
+        ) : (
+          <Autocomplete.EntityDto {...autocompleteProps} />
+        )}
       </ConfigurableFormItem>
     );
   },
