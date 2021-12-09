@@ -90,7 +90,7 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
   const {
     mutate: saveFormHttp /*, loading: saveFormInProgress, error: saveFormError*/,
   } = useConfigurableComponentUpdateSettings({
-    id: id,
+    id,
   });
 
   const saveComponent = (settings: TSettings): Promise<void> => {

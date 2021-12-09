@@ -108,7 +108,7 @@ export { default as FormDesigner, IFormDesignerProps } from './formDesigner/form
 export { default as QueryBuilder, IQueryBuilderProps } from './queryBuilder';
 export { default as ConfigurableForm } from './configurableForm';
 export { IConfigurableFormRendererProps, IConfigurableFormProps } from './configurableForm/models';
-export { Show } from './show';
+export { default as Show, IShowProps } from './show';
 export { default as CodeEditor } from './codeEditor';
 
 export {
@@ -134,3 +134,4 @@ export { default as GenericIndexPageDefault } from './crudViews/plainIndexPage';
 export { default as SimpleIndexPageDefault } from './crudViews/plainSimpleIndexPage';
 export { default as Page } from './page';
 export { default as DefaultLayout } from './defaultLayout';
+export { default as EditableTagGroup, IEditableTagGroupProps } from './editableTagGroup';

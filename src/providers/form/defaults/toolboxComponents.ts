@@ -43,6 +43,7 @@ import TimeField from '../../../components/formDesigner/components/timeField';
 import Statistic from '../../../components/formDesigner/components/statistic';
 import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
 import CodeEditor from '../../../components/formDesigner/components/codeEditor';
+import EditableTagGroup from '../../../components/formDesigner/components/editableTagGroup';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -86,6 +87,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       EntityPickerComponent,
       PropertyAutocomplete,
       CodeEditor,
+      EditableTagGroup,
     ],
   },
   {

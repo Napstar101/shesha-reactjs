@@ -29,6 +29,7 @@
   },
   "peerDependencies": {
     "@microsoft/signalr": "^5.0.3",
+    "@use-it/interval": "^1.0.0",
     "async-validator": "^3.5.2",
     "axios": "^0.21.1",
     "classnames": "^2.3.1",
@@ -36,15 +37,14 @@
     "lodash": "^4.17.20",
     "nanoid": "^3.1.9",
     "prop-types": "^15.5.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-use": "^17.3.1",
-    "react-awesome-query-builder": "^3.0.0",
-    "restful-react": "^15.9.2",
-    "react-sortablejs": "^6.0.0",
     "qs": "^6.10.1",
-    "sortablejs": "^1.14.0",
-    "@use-it/interval": "^1.0.0"
+    "react": "^16.13.1",
+    "react-awesome-query-builder": "^3.0.0",
+    "react-dom": "^16.13.1",
+    "react-sortablejs": "^6.0.0",
+    "react-use": "^17.3.1",
+    "restful-react": "^15.9.2",
+    "sortablejs": "^1.14.0"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -169,6 +169,7 @@
     "less-compiler": "^0.2.4",
     "mustache": "^4.2.0",
     "point-in-polygon": "^1.1.0",
+    "rc-tween-one": "^3.0.3",
     "react-ace": "^9.5.0",
     "react-awesome-query-builder": "^3.0.0",
     "react-beautiful-dnd": "^13.1.0",

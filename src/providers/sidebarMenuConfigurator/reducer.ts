@@ -83,8 +83,6 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
         ...payload.settings,
       };
 
-      console.log('newArray: ', newArray);
-
       return {
         ...state,
         items: newItems,
