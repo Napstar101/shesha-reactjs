@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Input, InputProps, Tag } from 'antd';
-import { TweenOneGroup } from 'rc-tween-one';
+// import { TweenOneGroup } from 'rc-tween-one';
 import React, { FC, useState } from 'react';
 import Show from '../show';
 
@@ -101,7 +101,8 @@ export const EditableTagGroup: FC<IEditableTagGroupProps> = ({ value = [], onCha
   return (
     <>
       <div style={{ marginBottom: 16 }}>
-        <TweenOneGroup
+        {tagChild}
+        {/* <TweenOneGroup
           enter={{
             scale: 0.8,
             opacity: 0,
@@ -118,7 +119,7 @@ export const EditableTagGroup: FC<IEditableTagGroupProps> = ({ value = [], onCha
           appear={false}
         >
           {tagChild}
-        </TweenOneGroup>
+        </TweenOneGroup> */}
       </div>
 
       <Show when={inputVisible}>
