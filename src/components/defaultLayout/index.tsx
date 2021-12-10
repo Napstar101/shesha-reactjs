@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import { Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
@@ -72,8 +72,8 @@ export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({
   );
 };
 
-// const DefaultLayoutWithAuth = withAuth(DefaultLayout);
-
-// export { DefaultLayoutWithAuth };
+export function getDefaultLayout(page: ReactElement) {
+  return <DefaultLayout>{page}</DefaultLayout>;
+}
 
 export default DefaultLayout;
