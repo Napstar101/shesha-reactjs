@@ -78,6 +78,7 @@ export interface IFormProviderProps {
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
   toolboxComponentGroups?: IToolboxComponentGroup[];
+  onValuesChange?: (changedValues: any, values: any/*Values*/) => void;
 }
 
 const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({

@@ -70,7 +70,7 @@ export interface IAuthActionsContext
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   loginUser?: (loginFormData: ILoginForm) => void;
 
-  logoutUser?: () => void;
+  logoutUser?: () => Promise<unknown>;
 
   /** Returns true if any of specified permissions granted to the current user */
   anyOfPermissionsGranted: (permissions: string[]) => boolean;

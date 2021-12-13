@@ -20,7 +20,7 @@ import { OverlayLoader } from '../../components/overlayLoader';
 import { useSessionGetCurrentLoginInformations } from '../../apis/session';
 import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
 import { getFlagSetters } from '../utils/flagsSetters';
-import { getAccessToken, removeAccessToken, saveUserToken } from '../../utils/auth';
+import { getAccessToken, redirectRoute, removeAccessToken, saveUserToken } from '../../utils/auth';
 import {
   useTokenAuthAuthenticate,
   AuthenticateResultModelAjaxResponse,
@@ -91,13 +91,14 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
           } else if (returnUrl) {
             router?.push(returnUrl);
           } else {
-            router?.push(router);
+            router?.push(URL_HOME_PAGE);
           }
         }
       }
 
       if (fetchUserInfoErrorResult) {
         dispatch(loginUserErrorAction({ message: 'Oops, something went wrong' }));
+        router?.push(redirectRoute(router?.asPath, URL_HOME_PAGE, unauthorizedRedirectUrl));
       }
     }
   }, [isFetchingCurrentLoginInformation]);
@@ -118,6 +119,8 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
         fetchCurrentLoginInformation({ requestOptions: { headers } });
       }
     } else {
+      dispatch(loginUserErrorAction({ message: 'Oops, something went wrong' }));
+
       if (nextRoute) {
         if (unauthorizedRedirectUrl === URL_LOGIN_PAGE) {
           router?.push(`${unauthorizedRedirectUrl}?returnUrl=${nextRoute}`);
@@ -249,16 +252,24 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const { mutate: signOffRequest } = useTokenAuthSignOff({});
 
   /**
-   * Log the user
+   * Logout success
    */
-  const logoutUser = () => {
-    // We don't care if signing off was successful or not
-
-    signOffRequest(null);
-
+  const logoutSuccess = resolve => {
+    resolve(null);
     clearAccessToken();
     dispatch(logoutUserAction());
   };
+
+  /**
+   * Log the user
+   */
+  const logoutUser = () =>
+    new Promise((resolve, reject) =>
+      signOffRequest(null)
+        .then(() => logoutSuccess(resolve))
+        .catch(() => reject())
+    );
+
   //#endregion
 
   const anyOfPermissionsGranted = (permissions: string[]) => {
