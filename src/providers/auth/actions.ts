@@ -26,14 +26,17 @@ export enum AuthActionEnums {
 
 export const checkAuthAction = createAction<IAuthStateContext>(AuthActionEnums.CheckAuthAction, () => ({
   isCheckingAuth: true,
+  errorInfo: null,
 }));
 
 //#region  Login user
-export const loginUserAction = createAction<IAuthStateContext>(AuthActionEnums.LoginUserRequest, () => ({}));
+export const loginUserAction = createAction<IAuthStateContext>(AuthActionEnums.LoginUserRequest, () => ({
+  errorInfo: null,
+}));
 
 export const loginUserSuccessAction = createAction<IAuthStateContext, UserLoginInfoDto>(
   AuthActionEnums.LoginUserSuccess,
-  loginInfo => ({ loginInfo, isCheckingAuth: false })
+  loginInfo => ({ loginInfo, isCheckingAuth: false, errorInfo: null })
 );
 
 export const loginUserErrorAction = createAction<IAuthStateContext, IErrorInfo>(
