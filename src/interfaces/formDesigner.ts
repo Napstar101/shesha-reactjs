@@ -8,6 +8,7 @@ export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
   onSave: (values: TModel) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: TModel) => void;
+  toolboxComponent: IToolboxComponent;
 }
 
 export type ISettingsFormFactory<TModel = IConfigurableFormComponent> = (props: ISettingsFormFactoryArgs<TModel>) => ReactNode;
@@ -41,6 +42,10 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
    * Fills the component properties with some default values. Fired when the user drops a component to the form
    */
   initModel?: (model: T) => T;
+  /**
+   * Link component to a model metadata
+   */
+  linkToModelMetadata?: (model: T, metadata: any) => T;
   /**
    * Returns nested component containers. Is used in the complex components like tabs, panels etc.
    */
@@ -86,4 +91,4 @@ export interface IAsyncValidationError {
   message: string;
 }
 
-export interface IFormValidationErrors {}
+export interface IFormValidationErrors { }

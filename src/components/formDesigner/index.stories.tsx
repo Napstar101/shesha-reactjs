@@ -32,11 +32,9 @@ const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
       <MetadataDispatcherProvider>
-        {/* <MetadataProvider> */}
         <FormProvider path={args.formPath} id={args.formId} mode="designer">
           <FormDesigner />
         </FormProvider>
-        {/* </MetadataProvider> */}
       </MetadataDispatcherProvider>
     </AuthContainer>
   </ShaApplicationProvider>
@@ -171,6 +169,15 @@ export const CodeEditorProps = addStory(DesignerTemplate, {
     'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\components\\codeEditor\\settingsForm.json',
 });
 
+export const FormSettings = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\formSettings.json',
+});
+
+export const SimplePropsProps = addStory(DesignerTemplate, {
+  formPath: '/persons/edit',
+});
+
+
 interface FormInfo {
   name: string;
   path: string;
@@ -199,11 +206,9 @@ export const FormsEditor: FC = () => {
         Designer {currentForm}
         {currentForm && (
           <MetadataDispatcherProvider>
-            {/* <MetadataProvider> */}
             <FormProvider id={currentForm} mode="designer">
               <FormDesigner />
             </FormProvider>
-            {/* </MetadataProvider> */}
           </MetadataDispatcherProvider>
         )}
       </div>
