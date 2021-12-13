@@ -3,12 +3,12 @@ import { FormMarkup, IConfigurableFormComponent, IFormComponentContainer } from 
 import { FolderOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import ComponentsContainer from '../../componentsContainer';
-import { v4 as uuid } from 'uuid';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
 import { TabsType } from 'antd/lib/tabs';
+import { nanoid } from 'nanoid/non-secure';
 
 const { TabPane } = Tabs;
 
@@ -58,7 +58,7 @@ const TabsComponent: IToolboxComponent<ITabsComponentProps> = {
     const tabsModel: ITabsComponentProps = {
       ...model,
       name: 'custom Name',
-      tabs: [{ id: uuid(), title: 'Tab 1', key: 'tab1', components: [] }],
+      tabs: [{ id: nanoid(), title: 'Tab 1', key: 'tab1', components: [] }],
     };
     return tabsModel;
   },

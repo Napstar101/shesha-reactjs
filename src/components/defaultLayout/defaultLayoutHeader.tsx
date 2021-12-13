@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react';
 import classNames from 'classnames';
 import { Avatar, Dropdown, Input, Menu } from 'antd';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import { DownOutlined, LoginOutlined, UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../../providers';
 import ShaLink from '../shaLink';

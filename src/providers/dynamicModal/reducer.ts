@@ -2,7 +2,7 @@ import { DYNAMIC_MODAL_CONTEXT_INITIAL_STATE, IDynamicModalStateContext, IToggle
 import { DynamicModalActionEnums, ICreateModalPayload } from './actions';
 import { handleActions } from 'redux-actions';
 import { IModalInstance, IModalProps } from './models';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid/non-secure';
 
 export default handleActions<IDynamicModalStateContext, any>(
   {
@@ -39,7 +39,7 @@ export default handleActions<IDynamicModalStateContext, any>(
       const { payload } = action;
 
       const instance: IModalInstance = {
-        id: uuid(),
+        id: nanoid(),
         props: payload,
         isVisible: true,
       };

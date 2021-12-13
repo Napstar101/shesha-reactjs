@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Select } from 'antd';
-import { v4 as uuid } from 'uuid';
 import { ITableColumn } from '../../providers/dataTable/interfaces';
+import { nanoid } from 'nanoid/non-secure';
 
 const { Option } = Select;
 
@@ -38,7 +38,7 @@ export const ColumnsFilterSelectBase: FC<IColumnsFilterSelectBaseProps> = ({
         {columns
           .filter(({ isFilterable }) => isFilterable)
           .map(({ id, header }) => (
-            <Option value={id} key={uuid()}>
+            <Option value={id} key={nanoid()}>
               {header}
             </Option>
           ))}

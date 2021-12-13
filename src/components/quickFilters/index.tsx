@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Tag } from 'antd';
-import { v4 as uuid } from 'uuid';
 import { IQuickFilter } from '../../interfaces';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IQuickFiltersProps {
   quickFilters?: IQuickFilter[];
@@ -17,7 +17,7 @@ export const QuickFilters: FC<IQuickFiltersProps> = ({ quickFilters = [], toggle
     };
 
     return (
-      <Tag key={uuid()} onClick={handleFilterClose} color={selected ? '#2db7f5' : undefined}>
+      <Tag key={nanoid()} onClick={handleFilterClose} color={selected ? '#2db7f5' : undefined}>
         {name}
       </Tag>
     );
@@ -30,7 +30,7 @@ export const QuickFilters: FC<IQuickFiltersProps> = ({ quickFilters = [], toggle
       <span className="label">Quick filters</span>
       <>
         {quickFilters.map(filter => (
-          <SelectedFilter key={uuid()} {...filter} />
+          <SelectedFilter key={nanoid()} {...filter} />
         ))}
       </>
     </div>

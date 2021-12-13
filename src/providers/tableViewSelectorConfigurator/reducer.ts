@@ -6,15 +6,15 @@ import {
 } from './contexts';
 import { ColumnsActionEnums as TableViewSelectorActionEnums } from './actions';
 import { ITableViewProps } from './models';
-import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
 import { getItemPositionById } from './utils';
+import { nanoid } from 'nanoid/non-secure';
 
 const toolbarReducer = handleActions<ITableViewSelectorConfiguratorStateContext, any>(
   {
     [TableViewSelectorActionEnums.AddItem]: (state: ITableViewSelectorConfiguratorStateContext) => {
       const itemProps: ITableViewProps = {
-        id: uuid(),
+        id: nanoid(),
         sortOrder: state.items.length,
         name: `Filter ${state.items.length + 1}`,
         filterType: 'queryBuilder',

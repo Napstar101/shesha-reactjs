@@ -1,6 +1,6 @@
 import { Breadcrumb } from 'antd';
 import classNames from 'classnames';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import React, { FC, useEffect } from 'react';
 import { CancelButton, ShaSpin } from '..';
 import { useShaRouting, useSheshaApplication } from '../..';

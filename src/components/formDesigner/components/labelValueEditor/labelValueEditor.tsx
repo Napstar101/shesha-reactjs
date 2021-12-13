@@ -14,7 +14,7 @@ import { ILabelValueEditorPropsBase } from './models';
 import { IItemProps } from './models';
 import { Table, Popconfirm, Button, Form, Input } from 'antd';
 import { DeleteOutlined, MenuOutlined, PlusOutlined } from '@ant-design/icons';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IProps extends ILabelValueEditorPropsBase {
   value?: object;
@@ -133,7 +133,7 @@ export const LabelValueEditor: FC<IProps> = ({ value, onChange, labelTitle, labe
 
   const handleAddRow = () => {
     const newRow = {
-      id: uuid(),
+      id: nanoid(),
       [labelName]: `new ${labelTitle}`,
       [valueName]: `new ${valueTitle}`,
     };

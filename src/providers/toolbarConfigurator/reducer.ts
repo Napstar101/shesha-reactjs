@@ -6,16 +6,16 @@ import {
 } from './contexts';
 import { ToolbarActionEnums } from './actions';
 import { IToolbarButton, IButtonGroup } from './models';
-import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
 import { getItemById, getItemPositionById } from './utils';
+import { nanoid } from 'nanoid/non-secure';
 
 const toolbarReducer = handleActions<IToolbarConfiguratorStateContext, any>(
   {
     [ToolbarActionEnums.AddButton]: (state: IToolbarConfiguratorStateContext) => {
       const buttonsCount = state.items.filter(i => i.itemType === 'item').length;
       const buttonProps: IToolbarButton = {
-        id: uuid(),
+        id: nanoid(),
         itemType: 'item',
         sortOrder: state.items.length,
         name: `Button ${buttonsCount + 1}`,
@@ -53,7 +53,7 @@ const toolbarReducer = handleActions<IToolbarConfiguratorStateContext, any>(
     [ToolbarActionEnums.AddGroup]: (state: IToolbarConfiguratorStateContext) => {
       const groupsCount = state.items.filter(i => i.itemType === 'group').length;
       const groupProps: IButtonGroup = {
-        id: uuid(),
+        id: nanoid(),
         itemType: 'group',
         sortOrder: state.items.length,
         name: `Group ${groupsCount + 1}`,
