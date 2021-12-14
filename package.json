@@ -114,6 +114,7 @@
     "eslint-plugin-standard": "4.0.0",
     "file-saver": "^2.0.5",
     "generate-changelog": "1.8.0",
+    "gh-pages": "^3.2.3",
     "less": "^4.1.1",
     "less-bundle": "^0.1.2",
     "less-loader": "^5.0.0",
@@ -182,8 +183,7 @@
     "react-table": "^7.7.0",
     "redux-undo": "^1.0.1",
     "tree-to-list": "^2.0.0",
-    "use-debounce": "^6.0.1",
-    "gh-pages": "^3.2.3"
+    "use-debounce": "^6.0.1"
   },
   "config": {
     "commitizen": {
