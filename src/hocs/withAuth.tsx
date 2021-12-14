@@ -12,7 +12,7 @@ export const ComponentWithAuth: FC<IComponentWithAuthProps> = props => {
   const { landingPage, unauthorizedRedirectUrl } = props;
   const { isCheckingAuth, loginInfo, checkAuth, getAccessToken } = useAuth();
 
-  const { router } = useShaRouting();
+  const { goingToRoute, router } = useShaRouting();
 
   useEffect(() => {
     const token = getAccessToken();
@@ -21,7 +21,7 @@ export const ComponentWithAuth: FC<IComponentWithAuthProps> = props => {
       if (token) {
         checkAuth();
       } else {
-        router?.push(redirectRoute(router?.asPath, landingPage, unauthorizedRedirectUrl));
+        goingToRoute(redirectRoute(router?.asPath, landingPage, unauthorizedRedirectUrl));
       }
     }
   }, [isCheckingAuth]);
