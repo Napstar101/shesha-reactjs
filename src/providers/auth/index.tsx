@@ -91,7 +91,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
           } else if (returnUrl) {
             router?.push(returnUrl);
           } else {
-            router?.push(URL_HOME_PAGE);
+            router?.push(router);
           }
         }
       }
