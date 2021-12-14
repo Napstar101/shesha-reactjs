@@ -6,16 +6,16 @@ import {
 } from './contexts';
 import { ColumnsActionEnums } from './actions';
 import { IConfigurableColumnsProps, IConfigurableColumnGroup } from './models';
-import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
 import { getItemById, getItemPositionById } from './utils';
+import { nanoid } from 'nanoid/non-secure';
 
 const toolbarReducer = handleActions<IColumnsConfiguratorStateContext, any>(
   {
     [ColumnsActionEnums.AddButton]: (state: IColumnsConfiguratorStateContext) => {
       const buttonsCount = state.items.filter(i => i.itemType === 'item').length;
       const columnProps: IConfigurableColumnsProps = {
-        id: uuid(),
+        id: nanoid(),
         itemType: 'item',
         sortOrder: state.items.length,
         caption: `Column ${buttonsCount + 1}`,
@@ -24,7 +24,9 @@ const toolbarReducer = handleActions<IColumnsConfiguratorStateContext, any>(
       };
 
       const newItems = [...state.items];
-      const parent = state.selectedItemId ? (getItemById(newItems, state.selectedItemId) as IConfigurableColumnGroup) : null;
+      const parent = state.selectedItemId
+        ? (getItemById(newItems, state.selectedItemId) as IConfigurableColumnGroup)
+        : null;
       if (parent && parent.itemType == 'group') {
         parent.childItems = [...parent.childItems, columnProps];
       } else newItems.push(columnProps);
@@ -54,7 +56,7 @@ const toolbarReducer = handleActions<IColumnsConfiguratorStateContext, any>(
     [ColumnsActionEnums.AddGroup]: (state: IColumnsConfiguratorStateContext) => {
       const groupsCount = state.items.filter(i => i.itemType === 'group').length;
       const groupProps: IConfigurableColumnGroup = {
-        id: uuid(),
+        id: nanoid(),
         itemType: 'group',
         sortOrder: state.items.length,
         caption: `Group ${groupsCount + 1}`,

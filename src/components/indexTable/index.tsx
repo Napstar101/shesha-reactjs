@@ -20,7 +20,7 @@ import { Form, Modal } from 'antd';
 import { crudActionColumns } from './crudActionColumns';
 import { DataTableFullInstance } from '../../providers/dataTable/contexts';
 import { ModalProps } from 'antd/lib/modal';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import ReactTable from '../reactTable';
 import { removeUndefinedProperties } from '../../utils/array';
 import { ValidationErrors } from '..';

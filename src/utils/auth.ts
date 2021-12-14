@@ -52,3 +52,13 @@ export const removeAccessToken = (tokenName: string) => {
 export const hasTokenExpired = (date: string): boolean => {
   return new Date(date) < new Date();
 };
+
+export const redirectRoute = (asPath: string, landingPage: string, unauthorizedRedirectUrl: string) => {
+  let redirectUrl = '';
+
+  if (asPath !== landingPage && !asPath.includes(unauthorizedRedirectUrl)) {
+    redirectUrl = `/?redirectUrl=${asPath}`;
+  }
+
+  return `${unauthorizedRedirectUrl}${redirectUrl}`;
+};

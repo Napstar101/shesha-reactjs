@@ -18,8 +18,8 @@ export interface IPropertyMetadata {
     groupName?: string;
   
     //#region data type
-    dataType: number; // todo: create list of datatypes
-    entityTypeShortAlias?: string;
+    dataType: string;
+    entityType?: string;
     referenceListName?: string;
     referenceListNamespace?: string;
     //#endregion

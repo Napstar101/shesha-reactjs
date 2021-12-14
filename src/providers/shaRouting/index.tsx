@@ -13,7 +13,7 @@ const ShaRoutingProvider: FC<PropsWithChildren<any>> = ({ children, router }) =>
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
   const goingToRoute = (route: string) => {
-    state.router?.push(route);
+    state?.router?.push(route);
   };
 
   return (

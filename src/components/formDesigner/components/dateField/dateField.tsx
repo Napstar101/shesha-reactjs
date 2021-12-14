@@ -65,19 +65,17 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   type: 'dateField',
   name: 'Date field',
   icon: <CalendarOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customModel = model as IDateFieldProps;
-
+  factory: (model: IDateFieldProps) => {
     return (
       <Fragment>
         <ConfigurableFormItem model={model}>
-          <DatePickerWrapper {...customModel} />
+          <DatePickerWrapper {...model} />
         </ConfigurableFormItem>
 
-        {customModel?.range && (
+        {model?.range && (
           <Fragment>
-            <HiddenFormItem name={`${customModel?.name}Start`} />
-            <HiddenFormItem name={`${customModel?.name}End`} />
+            <HiddenFormItem name={`${model?.name}Start`} />
+            <HiddenFormItem name={`${model?.name}End`} />
           </Fragment>
         )}
       </Fragment>
@@ -195,6 +193,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
       showNow={showNow}
       showToday={showToday}
       showSecond={false}
+      picker={picker}
       {...rest}
     />
   );

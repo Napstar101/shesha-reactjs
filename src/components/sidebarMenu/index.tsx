@@ -34,6 +34,8 @@ export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
 
   const keys = openedKeys && openedKeys.length > 0 ? openedKeys : undefined;
 
+  // console.log('SidebarMenu items: ', items);
+
   return (
     <Menu
       mode="inline"

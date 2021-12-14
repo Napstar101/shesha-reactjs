@@ -114,16 +114,16 @@ const ReactTable: FC<IReactTableProps> = ({
             // The header can use the table's getToggleAllRowsSelectedProps method
             // to render a checkbox
             Header: ({ getToggleAllRowsSelectedProps }) => (
-              <div>
+              <span>
                 <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-              </div>
+              </span>
             ),
             // The cell can use the individual row's getToggleRowSelectedProps method
             // to the render a checkbox
             Cell: ({ row }) => (
-              <div>
+              <span>
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-              </div>
+              </span>
             ),
           },
           ...columns,
@@ -186,7 +186,7 @@ const ReactTable: FC<IReactTableProps> = ({
         <table {...getTableProps()} className="sha-table">
           {columns?.length > 1 &&
             headerGroups.map(headerGroup => (
-              <div
+              <span
                 {...headerGroup.getHeaderGroupProps({
                   // style: { paddingRight: '15px' },
                 })}
@@ -194,7 +194,7 @@ const ReactTable: FC<IReactTableProps> = ({
               >
                 {headerGroup?.headers?.map(column => {
                   return (
-                    <div
+                    <span
                       // {...column.getHeaderProps(headerProps)}
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       className={classNames('th', {
@@ -206,19 +206,19 @@ const ReactTable: FC<IReactTableProps> = ({
 
                       {/* Use column.getResizerProps to hook up the events correctly */}
                       {column.canResize && (
-                        <div
+                        <span
                           {...column.getResizerProps()}
                           className={classNames('resizer', { isResizing: column.isResizing })}
                           onClick={onResizeClick}
                         />
                       )}
-                    </div>
+                    </span>
                   );
                 })}
-              </div>
+              </span>
             ))}
 
-          <div
+          <span
             className="tbody"
             style={{
               height: scrollBodyHorizontally ? height || 250 : 'unset',
@@ -227,16 +227,16 @@ const ReactTable: FC<IReactTableProps> = ({
             {...getTableBodyProps()}
           >
             {rows?.length === 0 && !loading && (
-              <div className="sha-table-empty">
+              <span className="sha-table-empty">
                 <Empty description="There is no data for this table" />
-              </div>
+              </span>
             )}
 
             {rows.map((row, rowIndex) => {
               prepareRow(row);
 
               return (
-                <div
+                <span
                   onClick={() => handleSelectRow(row)}
                   onDoubleClick={() => handleDoubleClickRow(row)}
                   {...row.getRowProps()}
@@ -248,15 +248,15 @@ const ReactTable: FC<IReactTableProps> = ({
                 >
                   {row.cells.map(cell => {
                     return (
-                      <div {...cell.getCellProps(cellProps)} className="td">
+                      <span {...cell.getCellProps(cellProps)} className="td">
                         {cell.render('Cell')}
-                      </div>
+                      </span>
                     );
                   })}
-                </div>
+                </span>
               );
             })}
-          </div>
+          </span>
         </table>
       </div>
     </Spin>

@@ -13,7 +13,7 @@ import {
 import { IColumnProps } from './columns';
 import { Table, Space, Popconfirm, Button, Form, InputNumber } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IProps {
   value?: object;
@@ -131,7 +131,7 @@ export const ColumnsList: FC<IProps> = ({ value, onChange }) => {
 
   const handleAddColumn = () => {
     const newColumn: IColumnProps = {
-      id: uuid(),
+      id: nanoid(),
       flex: 6,
       offset: 0,
       push: 0,

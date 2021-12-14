@@ -52,9 +52,9 @@ function ColumnsSettings(props: IProps) {
             label: property.label,
             propertyName: property.path,
             visible: property.isVisible,
-            dataType: property.dataType?.toString(),
+            dataType: property.dataType,
             fieldSettings: {
-              typeShortAlias: property.entityTypeShortAlias,
+              typeShortAlias: property.entityType,
               referenceListName: property.referenceListName,
               referenceListNamespace: property.referenceListNamespace,
               allowInherited: true,

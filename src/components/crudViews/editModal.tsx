@@ -4,13 +4,14 @@ import { ValidationErrors, ConfigurableForm } from '../';
 import { FormInstance } from 'antd/lib/form';
 import { useUi } from '../../providers';
 import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
-import { IFormActions, IFormSections } from '../../providers/form/models';
+import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 
 export interface IGenericEditModalProps {
   id: string;
   title?: (model: any) => string;
   visible: boolean;
   formPath: string;
+  formMarkup?: FormMarkup;
   fetcher: (props: UseGenericGetProps) => IDataFetcher;
   updater: (props: any) => IDataMutator;
   onCancel: (form: FormInstance) => void;
@@ -38,6 +39,7 @@ const GenericEditModal: FC<IGenericEditModalProps> = ({
   actions,
   sections,
   destroyOnClose = true,
+  formMarkup,
 }) => {
   const { loading: loadingInProgress, refetch: doFetch, error: fetchError, data: fetchedData } = fetcher({
     lazy: true,
@@ -89,12 +91,13 @@ const GenericEditModal: FC<IGenericEditModalProps> = ({
       destroyOnClose={destroyOnClose}
     >
       <Spin spinning={loadingInProgress || saveInProgress} tip="Please wait...">
-        <ValidationErrors error={saveError?.data || fetchError?.data}></ValidationErrors>
+        <ValidationErrors error={saveError?.data || fetchError?.data} />
         {model && (
           <ConfigurableForm
             mode="edit"
             {...formItemLayout}
             form={form}
+            markup={formMarkup}
             onFinish={handleSubmit}
             path={formPath}
             initialValues={model}

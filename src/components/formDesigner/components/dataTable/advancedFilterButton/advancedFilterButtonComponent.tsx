@@ -17,17 +17,16 @@ const AdvancedFilterButtonComponent: IToolboxComponent<IPagerComponentProps> = {
   type: 'datatable.advancedFilterButton',
   name: 'Table Advanced Filter Button',
   icon: <FilterOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: IPagerComponentProps) => {
     const { formMode, visibleComponentIds } = useForm();
-    const customProps = model as IPagerComponentProps;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
-    return <AdvancedFilterButton {...customProps}></AdvancedFilterButton>;
+    return <AdvancedFilterButton {...model}></AdvancedFilterButton>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: IPagerComponentProps) => {
     return {
       ...model,
       items: [],

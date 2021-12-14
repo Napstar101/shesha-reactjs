@@ -7,6 +7,8 @@ import { FormMarkup } from '../../../../../../providers/form/models';
 import { useDebouncedCallback } from 'use-debounce';
 import { ConfigurableFormInstance } from '../../../../../../providers/form/contexts';
 import React from 'react';
+import { IPropertyMetadata } from '../../../../../../providers/metadata/models';
+import { IDataColumnsProps } from '../../../../../../providers/datatableColumnsConfigurator/models';
 
 export interface IProps {}
 
@@ -42,6 +44,17 @@ export const ColumnProperties: FC<IProps> = () => {
 
     const componentModel = getItem(selectedItemId);
 
+    const linkToModelMetadata = (metadata: IPropertyMetadata) => {
+      const values = form.getFieldsValue() as IDataColumnsProps;
+      const newValues: IDataColumnsProps = {
+        ...values,
+        columnType: 'data',
+        caption: metadata.label,
+        description: metadata.description,
+      };
+      form.setFieldsValue(newValues);
+    }
+
     return (
       <ConfigurableForm
         formRef={formRef}
@@ -54,6 +67,9 @@ export const ColumnProperties: FC<IProps> = () => {
         form={form}
         initialValues={componentModel}
         onValuesChange={debouncedSave}
+        actions={{
+          linkToModelMetadata: linkToModelMetadata
+        }}
       >
       </ConfigurableForm>
     );

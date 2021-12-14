@@ -17,10 +17,9 @@ const CodeEditorComponent: IToolboxComponent<ICodeEditorComponentProps> = {
   type: 'codeEditor',
   name: 'Code Editor',
   icon: <CodeSandboxOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as ICodeEditorComponentProps;
+  factory: (model: ICodeEditorComponentProps) => {
     const editorProps: ICodeEditorProps = {
-      ...customProps
+      ...model
     };
 
     return (

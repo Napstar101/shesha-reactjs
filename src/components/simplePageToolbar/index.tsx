@@ -1,9 +1,8 @@
 import React, { FC, Fragment } from 'react';
-import { nanoid } from 'nanoid';
 import { IToolbarItem } from '../../';
 import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
 import { Tooltip, Button } from 'antd';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IIndexToolbarProps {
   items: IToolbarItem[];
@@ -23,7 +22,7 @@ export const SimplePageToolbar: FC<IIndexToolbarProps> = ({ items, elementsRight
                     onClick={onClick}
                     disabled={disabled}
                     className={`toolbar-item ${disabled ? 'disabled' : ''} ${className || ''}`}
-                    key={uuid()}
+                    key={nanoid()}
                     type="link"
                     icon={icon}
                   >

@@ -26,19 +26,18 @@ const AttachmentsEditor: IToolboxComponent<IAttachmentsEditorProps> = {
   type: 'attachmentsEditor',
   name: 'Attachments editor',
   icon: <FolderAddOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IAttachmentsEditorProps;
+  factory: (model: IAttachmentsEditorProps) => {
     const { backendUrl } = useSheshaApplication();
 
     const { formData } = useForm();
-    const ownerId = evaluateValue(customProps.ownerId, { data: formData });
+    const ownerId = evaluateValue(model.ownerId, { data: formData });
 
     return (
       <ConfigurableFormItem model={model}>
         <StoredFilesProvider
           ownerId={ownerId}
-          ownerType={customProps.ownerType}
-          filesCategory={customProps.filesCategory}
+          ownerType={model.ownerType}
+          filesCategory={model.filesCategory}
           baseUrl={backendUrl}
         >
           <CustomFile

@@ -15,7 +15,7 @@ const SwitchComponent: IToolboxComponent<ISwitchProps> = {
   type: 'switch',
   name: 'Switch',
   icon: <SwitcherOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: ISwitchProps) => {
     return (
       <ConfigurableFormItem model={model}>
         <Switch defaultChecked disabled={model.disabled} />

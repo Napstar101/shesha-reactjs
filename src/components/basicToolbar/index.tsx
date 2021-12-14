@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, Fragment } from 'react';
 import ToolbarWrapper from '../toolbarWrapper';
 import { Button, Tooltip } from 'antd';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import { IToolbarItem } from '../..';
 
 interface IBasicToolbarProps {
@@ -23,15 +23,17 @@ export const BasicToolbar: FC<IBasicToolbarProps> = ({ items, extra }) => (
               type="link"
               icon={icon}
             >
-              {tooltipName || tooltip ? 
+              {tooltipName || tooltip ? (
                 <Tooltip title={tooltipName || tooltip} placement="right">
                   <span>{title}</span>
                 </Tooltip>
-                :
+              ) : (
                 title
-              }
+              )}
             </Button>
-          ) : undefined
+          ) : (
+            undefined
+          )
         )}
       </Fragment>
     </div>

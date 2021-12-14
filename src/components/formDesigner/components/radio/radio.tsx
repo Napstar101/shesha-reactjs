@@ -26,8 +26,8 @@ const TextField: IToolboxComponent<IRadioProps> = {
   type: 'radio',
   name: 'Radio',
   icon: <CheckCircleOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const { items = [] } = model as IRadioProps;
+  factory: (model: IRadioProps) => {
+    const { items = [] } = model;
     return (
       <ConfigurableFormItem model={model}>
         <Radio.Group>

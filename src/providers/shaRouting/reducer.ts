@@ -1,5 +1,4 @@
 import { IShaRoutingStateContext } from './contexts';
-import flagsReducer from '../utils/flagsReducer';
 import { RouteActionEnums } from './actions';
 
 export function shaRoutingReducer(
@@ -7,7 +6,7 @@ export function shaRoutingReducer(
   action: ReduxActions.Action<IShaRoutingStateContext>
 ): IShaRoutingStateContext {
   //#region Register flags reducer
-  const state = flagsReducer(incomingState, action);
+  // const state = flagsReducer(incomingState, action);
 
   const { type, payload } = action;
   //#endregion
@@ -16,12 +15,12 @@ export function shaRoutingReducer(
     case RouteActionEnums.GoingToRoute:
       /* NEW_ACTION_ENUM_GOES_HERE */
       return {
-        ...state,
+        ...incomingState,
         ...payload,
       };
 
     default: {
-      return state;
+      return incomingState;
     }
   }
 }

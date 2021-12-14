@@ -16,8 +16,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   // note: we have to memoize the editor to prevent unneeded re-rendering and loosing of the focus
   const [editor, setEditor] = useState<ReactNode>(<></>);
   
-  // @ts-ignore
-  const { getActiveProvider } = useMetadataDispatcher();
+  const { getActiveProvider } = useMetadataDispatcher(false);
 
   const debouncedSave = useDebouncedCallback(
     values => {
@@ -47,7 +46,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   };
 
   const getDefaultFactory = (markup: FormMarkup): ISettingsFormFactory => {
-    return ({ model, onSave, onCancel, onValuesChange }) => {
+    return ({ model, onSave, onCancel, onValuesChange, toolboxComponent, }) => {
       return (
         <GenericSettingsForm
           model={model}
@@ -55,13 +54,14 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
           onCancel={onCancel}
           markup={markup}
           onValuesChange={onValuesChange}
+          toolboxComponent={toolboxComponent}
         />
       );
     };
   };
 
   const wrapEditor = (renderEditor: () => ReactNode) => {
-    const metaProvider = getActiveProvider();
+    const metaProvider = getActiveProvider ? getActiveProvider() : null;
     if (!metaProvider)
       return <>{renderEditor()}</>;
 
@@ -97,6 +97,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
           onSave,
           onCancel,
           onValuesChange,
+          toolboxComponent,
         })}
       </>
     );

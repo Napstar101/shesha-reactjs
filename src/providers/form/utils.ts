@@ -12,7 +12,7 @@ import {
   IFormSections,
 } from './models';
 import Mustache from 'mustache';
-import { IToolboxComponentBase, IToolboxComponentGroup, IToolboxComponents } from '../../interfaces';
+import { IToolboxComponent, IToolboxComponentGroup, IToolboxComponents } from '../../interfaces';
 import Schema, { Rules, ValidateSource } from 'async-validator';
 import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
 import { formGet, formGetByPath } from '../../apis/form';
@@ -382,7 +382,7 @@ export const toolbarGroupsToComponents = (availableComponents: IToolboxComponent
 export const findToolboxComponent = (
   availableComponents: IToolboxComponentGroup[],
   type: string
-): IToolboxComponentBase => {
+): IToolboxComponent => {
   if (availableComponents) {
     for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
       const group = availableComponents[gIdx];

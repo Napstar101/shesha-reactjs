@@ -7,23 +7,19 @@ import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { PropertyAutocomplete } from './propertyAutocomplete';
 
-export interface IAutocompleteProps extends IConfigurableFormComponent {
+export interface IPropertyAutocompleteComponentProps extends IConfigurableFormComponent {
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const PropertyAutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
+const PropertyAutocompleteComponent: IToolboxComponent<IPropertyAutocompleteComponentProps> = {
   type: 'propertyAutocomplete',
   name: 'Property Autocomplete',
   icon: <FileSearchOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    // @ts-ignore
-    const customProps = model as IAutocompleteProps;
-
+  factory: (model: IPropertyAutocompleteComponentProps) => {
     return (
       <FormItem model={model}>
-        <PropertyAutocomplete
-        ></PropertyAutocomplete>
+        <PropertyAutocomplete id={model.id}></PropertyAutocomplete>
       </FormItem>
     );
   },

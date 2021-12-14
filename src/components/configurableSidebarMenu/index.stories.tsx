@@ -7,6 +7,7 @@ import AuthContainer from '../authedContainer';
 import { AppEditModeToggler } from '../..';
 import SidebarConfigurator from './configurator';
 import { SidebarMenuConfiguratorProvider } from '../../providers/sidebarMenuConfigurator';
+import { SIDEBAR_MENU_ID } from '../../constants';
 
 export default {
   title: 'Components/ConfigurableSidebarMenu',
@@ -23,7 +24,7 @@ const Template: Story<IConfigurableSidebarMenuProps> = props => (
     <AuthContainer layout={false}>
       <AppEditModeToggler />
       <ConfigurableSidebarMenu
-        id="9362F11A-EA9C-4152-9855-9516123467F7"
+        id={SIDEBAR_MENU_ID}
         defaultSettings={{
           items: [
             {

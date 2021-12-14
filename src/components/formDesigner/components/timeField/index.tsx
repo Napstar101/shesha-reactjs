@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { ClockCircleOutlined } from '@ant-design/icons';
@@ -6,12 +6,13 @@ import { TimePicker } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import moment, { Moment, isMoment } from 'moment';
-import React from 'react';
+
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
 import { HiddenFormItem } from '../../../hiddenFormItem';
 
 type RangeType = 'start' | 'end';
+// tslint:disable-next-line:interface-over-type-literal
 type RangeInfo = {
   range: RangeType;
 };
@@ -61,19 +62,17 @@ const TimeField: IToolboxComponent<ITimePickerProps> = {
   type: 'timePicker',
   name: 'Time Picker',
   icon: <ClockCircleOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customModel = model as ITimePickerProps;
-
+  factory: (model: ITimePickerProps) => {
     return (
       <Fragment>
         <ConfigurableFormItem model={model}>
-          <TimePickerWrapper {...customModel} />
+          <TimePickerWrapper {...model} />
         </ConfigurableFormItem>
 
-        {customModel?.range && (
+        {model?.range && (
           <Fragment>
-            <HiddenFormItem name={`${customModel?.name}Start`} />
-            <HiddenFormItem name={`${customModel?.name}End`} />
+            <HiddenFormItem name={`${model?.name}Start`} />
+            <HiddenFormItem name={`${model?.name}End`} />
           </Fragment>
         )}
       </Fragment>
@@ -107,8 +106,8 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
       ? defaultValue?.map(v => moment(new Date(v), format))
       : [null, null];
 
-  const handleTimePickerChange = (value: moment.Moment, dateString: string) => {
-    const newValue = isMoment(value) ? value.format(format) : value;
+  const handleTimePickerChange = (localValue: moment.Moment, dateString: string) => {
+    const newValue = isMoment(localValue) ? localValue.format(format) : localValue;
 
     (onChange as TimePickerChangeEvent)(newValue, dateString);
   };
@@ -117,7 +116,7 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
     (onChange as RangePickerChangeEvent)(values, formatString);
   };
 
-  const onCalendarChange = (_values: any[], formatString: [string, string], info: RangeInfo) => {
+  const onCalendarChange = (_, formatString: [string, string], info: RangeInfo) => {
     if (info?.range === 'end' && form) {
       form.setFieldsValue({
         [`${rest?.name}Start`]: formatString[0],

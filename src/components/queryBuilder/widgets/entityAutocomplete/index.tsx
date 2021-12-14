@@ -1,6 +1,6 @@
 import React from 'react';
 import { BaseWidget, BasicConfig, SelectFieldSettings } from 'react-awesome-query-builder';
-import { Autocomplete } from '../../../../components/autocomplete';
+import Autocomplete from '../../../../components/autocomplete';
 import { CustomFieldSettings } from '../../../../providers/queryBuilder/models';
 
 export type EntityAutocompleteWidgetType = BaseWidget & SelectFieldSettings;
@@ -16,7 +16,7 @@ const EntityAutocompleteWidget: EntityAutocompleteWidgetType = {
     };
 
     return (
-      <Autocomplete
+      <Autocomplete.Raw
         dataSourceType="entitiesList"
         typeShortAlias={customSettings.typeShortAlias}
         allowInherited={customSettings.allowInherited}

@@ -1,6 +1,6 @@
 import React, { CSSProperties, FC, Key, useEffect, useState } from 'react';
 import { Radio, RadioChangeEvent, RadioGroupProps } from 'antd';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import { ReferenceListItemDto, useReferenceListGetItems } from '../../apis/referenceList';
 import classNames from 'classnames';
 import { getCachedItems, saveListItems } from '../refListDropDown/utils';

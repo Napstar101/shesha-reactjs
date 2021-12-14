@@ -3,7 +3,7 @@ import {
   IFlagsState,
   IFlagsSetters,
   IToolboxComponentGroup,
-  IToolboxComponentBase,
+  IToolboxComponent,
   IAsyncValidationError,
   IFormValidationErrors,
 } from '../../interfaces';
@@ -52,6 +52,7 @@ export interface ILayoutProps {
 }
 
 export interface IFormSettings {
+  modelType?: string;
   postUrl?: string;
   getUrl?: string;
   layout: FormLayout;
@@ -169,11 +170,16 @@ export interface IFormActionsContext
   endDragging: () => void;
   setSelectedComponent: (id: string, dataSourceId: string, componentRef?: MutableRefObject<any>) => void;
   registerActions: (id: string, actions: IFormActions) => void;
+  /**
+   * Get closest form action by name
+   * @param id: id of the current component
+   * @param name: name of the action
+   */
   getAction: (id: string, name: string) => FormAction;
   getSection: (id: string, name: string) => FormSection;
   updateFormSettings: (settings: IFormSettings) => void;
 
-  getToolboxComponent: (type: string) => IToolboxComponentBase;
+  getToolboxComponent: (type: string) => IToolboxComponent;
 
   addDataSource: (dataSource: IDataSource) => void;
   removeDataSource: (id: string) => void;

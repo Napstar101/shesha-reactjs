@@ -15,17 +15,16 @@ const PagerComponent: IToolboxComponent<IPagerComponentProps> = {
   type: 'datatable.pager',
   name: 'Table Pager',
   icon: <ControlOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: IPagerComponentProps) => {
     const { formMode, visibleComponentIds } = useForm();
-    const customProps = model as IPagerComponentProps;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
-    return <TablePager {...customProps}></TablePager>;
+    return <TablePager {...model}></TablePager>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: IPagerComponentProps) => {
     return {
       ...model,
       items: [],

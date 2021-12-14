@@ -5,16 +5,16 @@ import {
   SIDEBAR_MENU_CONTEXT_INITIAL_STATE,
 } from './contexts';
 import { SidebarMenuActionEnums } from './actions';
-import { v4 as uuid } from 'uuid';
 import { handleActions } from 'redux-actions';
 import { getItemPositionById } from './utils';
 import { ISidebarMenuItem } from '../../interfaces/sidebar';
+import { nanoid } from 'nanoid/non-secure';
 
 const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, any>(
   {
     [SidebarMenuActionEnums.AddItem]: (state: ISidebarMenuConfiguratorStateContext) => {
       const buttonProps: ISidebarMenuItem = {
-        id: uuid(),
+        id: nanoid(),
         itemType: 'button',
         title: `New item`,
         childItems: [],
@@ -83,8 +83,6 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
         ...payload.settings,
       };
 
-      console.log('newArray: ', newArray);
-
       return {
         ...state,
         items: newItems,
@@ -126,7 +124,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
 
     [SidebarMenuActionEnums.AddGroup]: (state: ISidebarMenuConfiguratorStateContext) => {
       const groupProps: ISidebarMenuItem = {
-        id: uuid(),
+        id: nanoid(),
         itemType: 'group',
         title: `New Group`,
         childItems: [],

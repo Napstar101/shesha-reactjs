@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
+import { FormMarkup } from '../../../../providers/form/models';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import ConfigurableFormItem from '../formItem';
@@ -16,11 +16,10 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   type: 'dropdown',
   name: 'Dropdown',
   icon: <DownSquareOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as IDropdownProps;
+  factory: (model: IDropdownProps) => {
     return (
       <ConfigurableFormItem model={model}>
-        <Dropdown {...customProps} />
+        <Dropdown {...model} />
       </ConfigurableFormItem>
     );
   },

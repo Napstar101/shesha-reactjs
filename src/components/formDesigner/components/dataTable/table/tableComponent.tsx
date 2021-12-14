@@ -1,6 +1,5 @@
 import { FC, Fragment, useEffect } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
-import { IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { TableOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
 import { useForm } from '../../../../../providers/form';
@@ -20,12 +19,10 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
   type: 'datatable',
   name: 'DataTable',
   icon: <TableOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as ITableComponentProps;
-
-    return <TableWrapper {...customProps}></TableWrapper>;
+  factory: (model: ITableComponentProps) => {
+    return <TableWrapper {...model}></TableWrapper>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: ITableComponentProps) => {
     return {
       ...model,
       items: [],
@@ -34,7 +31,7 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
     return (
       <TableSettings
-        model={model as ITableComponentProps}
+        model={model}
         onSave={onSave}
         onCancel={onCancel}
         onValuesChange={onValuesChange}

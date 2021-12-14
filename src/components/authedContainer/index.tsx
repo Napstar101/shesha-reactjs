@@ -83,7 +83,6 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
               showIcon
               type="warning"
             />
-
           </Fragment>
         )}
 

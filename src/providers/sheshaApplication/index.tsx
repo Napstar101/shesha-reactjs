@@ -16,9 +16,11 @@ import { Router } from 'next/router';
 import { AppConfiguratorProvider } from '../appConfigurator';
 import { DynamicModalProvider } from '../dynamicModal';
 import { UiProvider } from '../ui';
+import { MetadataDispatcherProvider } from '..';
 
 export interface IShaApplicationProviderProps {
   backendUrl: string;
+  applicationName?: string;
   accessTokenName?: string;
   router?: Router; // todo: replace with IRouter
   unauthorizedRedirectUrl?: string;
@@ -28,6 +30,7 @@ export interface IShaApplicationProviderProps {
 const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>> = ({
   children,
   backendUrl,
+  applicationName,
   accessTokenName,
   router,
   unauthorizedRedirectUrl,
@@ -35,7 +38,8 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
 }) => {
   const [state, dispatch] = useReducer(appConfiguratorReducer, {
     ...SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
-    backendUrl: backendUrl,
+    backendUrl,
+    applicationName,
   });
 
   const onSetRequestHeaders = (headers: IRequestHeaders) => {
@@ -69,7 +73,11 @@ const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderPro
               >
                 <AuthorizationSettingsProvider>
                   <AppConfiguratorProvider>
-                    <DynamicModalProvider>{children}</DynamicModalProvider>
+                    <MetadataDispatcherProvider>
+                      <DynamicModalProvider>
+                        {children}
+                      </DynamicModalProvider>
+                    </MetadataDispatcherProvider>
                   </AppConfiguratorProvider>
                 </AuthorizationSettingsProvider>
               </AuthProvider>

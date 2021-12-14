@@ -8,39 +8,73 @@ export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
   onSave: (values: TModel) => void;
   onCancel: () => void;
   onValuesChange?: (changedValues: any, values: TModel) => void;
+  toolboxComponent: IToolboxComponent;
 }
 
-export type ISettingsFormFactory = (props: ISettingsFormFactoryArgs) => ReactNode;
+export type ISettingsFormFactory<TModel = IConfigurableFormComponent> = (props: ISettingsFormFactoryArgs<TModel>) => ReactNode;
 
-export interface IToolboxComponentBase {
+export interface IToolboxComponent<T = IConfigurableFormComponent> {
+  /**
+   * Type of the component. Must be unique in the project.
+   */
   type: string;
+  /**
+   * Component name. This name is displayed on the components toolbox
+   */
   name: string;
+  /**
+   * Icon that is displayed on the components toolbox
+   */
   icon: ReactNode;
+  /**
+   * If true, indicates that the component should not be displayed on the components toolbox
+   */
   isHidden?: boolean;
+  /**
+   * Component factory. Renders the component according to the passed model (props)
+   */
   factory: (
-    model: IConfigurableFormComponent,
+    model: T,
     componentRef: MutableRefObject<any>,
     form: FormInstance<any>
   ) => ReactNode;
-  initModel?: (model: IConfigurableFormComponent) => IConfigurableFormComponent;
-  getContainers?: (model: IConfigurableFormComponent) => IFormComponentContainer[];
+  /**
+   * Fills the component properties with some default values. Fired when the user drops a component to the form
+   */
+  initModel?: (model: T) => T;
+  /**
+   * Link component to a model metadata
+   */
+  linkToModelMetadata?: (model: T, metadata: any) => T;
+  /**
+   * Returns nested component containers. Is used in the complex components like tabs, panels etc.
+   */
+  getContainers?: (model: T) => IFormComponentContainer[];
+  /**
+   * Name of the child component containers. Note: may be changed in the future releases
+   */
   customContainerNames?: string[];
-  settingsFormFactory?: ISettingsFormFactory;
+  /**
+   * Settings form factory. Renders the component settings form
+   */
+  settingsFormFactory?: ISettingsFormFactory<T>;
+  /** 
+   * Markup of the settings form. Applied when the @settingsFormFactory is not specified, in this case you can render settings for in the designer itself
+  */
   settingsFormMarkup?: FormMarkup;
-  validateSettings?: (model: IConfigurableFormComponent) => Promise<any>;
-}
-
-export interface IToolboxComponent<T extends IConfigurableFormComponent> extends IToolboxComponentBase {
-  test?: (model: T) => ReactNode;
+  /**
+   * Settings validator
+   */
+  validateSettings?: (model: T) => Promise<any>;
 }
 
 export interface IToolboxComponentGroup {
   name: string;
-  components: IToolboxComponentBase[];
+  components: IToolboxComponent[];
 }
 
 export interface IToolboxComponents {
-  [key: string]: IToolboxComponentBase;
+  [key: string]: IToolboxComponent;
 }
 
 export { IConfigurableFormComponent, IFormComponentContainer };
@@ -57,4 +91,4 @@ export interface IAsyncValidationError {
   message: string;
 }
 
-export interface IFormValidationErrors {}
+export interface IFormValidationErrors { }

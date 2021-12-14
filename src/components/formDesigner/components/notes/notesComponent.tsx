@@ -19,20 +19,19 @@ const NotesComponent: IToolboxComponent<INotesProps> = {
   type: 'notes',
   name: 'Notes',
   icon: <FormOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
+  factory: (model: INotesProps) => {
     const { formMode, visibleComponentIds } = useForm();
-    const customProps = model as INotesProps;
 
     const { formData } = useForm();
-    const ownerId = evaluateValue(customProps.ownerId, { data: formData });
+    const ownerId = evaluateValue(model.ownerId, { data: formData });
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
     return (
-      <NotesProvider ownerId={ownerId} ownerType={customProps.ownerType}>
-        <NotesRenderer showCommentBox={customProps.disabled !== true} />
+      <NotesProvider ownerId={ownerId} ownerType={model.ownerType}>
+        <NotesRenderer showCommentBox={model.disabled !== true} />
       </NotesProvider>
     );
   },

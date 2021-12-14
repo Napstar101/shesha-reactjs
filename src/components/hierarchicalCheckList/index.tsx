@@ -30,7 +30,7 @@ import {
   ISelectProps,
 } from './interface';
 import _ from 'lodash';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import { CheckListItemModel, useCheckListGetCheckListTree, useCheckListSaveSelection } from '../../apis/checkList';
 import { useChecklistTreeSelections } from './useChecklistTreeSelections';
 import ValidationErrors from '../validationErrors';
@@ -219,7 +219,7 @@ const Checklist: ForwardRefRenderFunction<HierarchicalCheckListHandle, IHierarch
   // Memoize the selections selectedKeys
   const selectedKeys = useMemo(() => {
     if (onSelectionsChange) {
-      onSelectionsChange(filterOnSelectionsChange(selections, { id, ownerId, ownerType, }));
+      onSelectionsChange(filterOnSelectionsChange(selections, { id, ownerId, ownerType }));
     }
 
     return selections

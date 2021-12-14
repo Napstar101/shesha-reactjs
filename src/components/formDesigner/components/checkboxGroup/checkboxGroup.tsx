@@ -23,8 +23,8 @@ const TextField: IToolboxComponent<ICheckboxGoupProps> = {
   type: 'checkboxGroup',
   name: 'Checkbox group',
   icon: <ProfileOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const { items = [] } = model as ICheckboxGoupProps;
+  factory: (model: ICheckboxGoupProps) => {
+    const { items = [] } = model;
     const checkItems = items.map(item => ({ label: item.name, value: item.value }));
     return (
       <ConfigurableFormItem model={model}>

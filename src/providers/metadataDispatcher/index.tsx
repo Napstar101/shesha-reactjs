@@ -61,7 +61,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
 
             //#region data type
             dataType: p.dataType,
-            entityTypeShortAlias: p.entityTypeShortAlias,
+            entityType: p.entityType,
             referenceListName: p.referenceListName,
             referenceListNamespace: p.referenceListNamespace,
             //#endregion

@@ -93,6 +93,21 @@
       "label": "Suffix"
     },
     {
+      "id": "fbdb6bb1-5994-4205-86b4-236ca62ae54e",
+      "type": "textField",
+      "name": "initialValue",
+      "parentId": "root",
+      "label": "Default value"
+    },
+    {
+      "id": "0225b82d-19aa-47c7-b665-90508112bd23",
+      "type": "checkbox",
+      "name": "passEmptyStringByDefault",
+      "parentId": "root",
+      "label": "Empty as default",
+      "description": "Whether the component should be initialized with an empty string"
+    },
+    {
       "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
       "type": "checkbox",
       "name": "hidden",

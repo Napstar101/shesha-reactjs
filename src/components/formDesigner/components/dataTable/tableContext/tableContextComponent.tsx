@@ -23,12 +23,10 @@ const TableContextComponent: IToolboxComponent<ITableContextComponentProps> = {
   type: 'datatableContext',
   name: 'DataTable Context',
   icon: <LayoutOutlined />,
-  factory: (model: IConfigurableFormComponent) => {
-    const customProps = model as ITableContextComponentProps;
-
-    return <TableContext {...customProps}></TableContext>;
+  factory: (model: ITableContextComponentProps) => {
+    return <TableContext {...model}></TableContext>;
   },
-  initModel: (model: IConfigurableFormComponent) => {
+  initModel: (model: ITableContextComponentProps) => {
     return {
       ...model,
       items: [],

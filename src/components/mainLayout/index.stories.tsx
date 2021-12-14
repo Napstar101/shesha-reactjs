@@ -5,7 +5,6 @@ import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../provi
 import AuthContainer from '../authedContainer';
 import MainLayout, { IMainLayoutProps } from './';
 import { SIDEBAR_MENU_ITEMS } from './menuItems';
-import { SimpleIndexPage } from '..';
 
 export default {
   title: 'Components/Layout',

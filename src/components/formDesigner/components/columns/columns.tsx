@@ -5,8 +5,8 @@ import { SplitCellsOutlined } from '@ant-design/icons';
 import { Row, Col } from 'antd';
 import ColumnsSettings from './columnsSettings';
 import ComponentsContainer from '../../componentsContainer';
-import { v4 as uuid } from 'uuid';
 import { useForm } from '../../../../providers';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IColumnProps {
   id: string;
@@ -58,13 +58,13 @@ const ColumnsComponent: IToolboxComponent<IColumnsComponentProps> = {
       ...model,
       name: 'custom Name',
       columns: [
-        { id: uuid(), flex: 12, offset: 0, push: 0, pull: 0, components: [] },
-        { id: uuid(), flex: 12, offset: 0, push: 0, pull: 0, components: [] },
+        { id: nanoid(), flex: 12, offset: 0, push: 0, pull: 0, components: [] },
+        { id: nanoid(), flex: 12, offset: 0, push: 0, pull: 0, components: [] },
       ],
       gutterX: 12,
-      gutterY: 12
+      gutterY: 12,
     };
-    
+
     return tabsModel;
   },
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
