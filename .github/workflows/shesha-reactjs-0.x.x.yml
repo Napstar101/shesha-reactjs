@@ -34,7 +34,7 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
         env:
-          STORYBOOK_BASE_URL: https://shesha-mmsample-backend-dev.azurewebsites.net/swagger/index.html
+          STORYBOOK_BASE_URL: https://shesha-mmsample-backend-dev.azurewebsites.net
       # deploy storybook
       - name: Deploy Storybook
         uses: JamesIves/github-pages-deploy-action@3.6.2
