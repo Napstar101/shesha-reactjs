@@ -35,9 +35,9 @@ jobs:
         run: npm run build-storybook
       # deploy storybook
       - name: Deploy Storybook
+        run: npm run deploy-storybook
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run deploy-storybook
       # tag shesha-reactjs
       - name: Tag shesha-reactjs
         id: tag_version
