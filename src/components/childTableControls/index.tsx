@@ -5,8 +5,8 @@ import { useDataTable } from '../../providers';
 import GlobalTableFilter from '../globalTableFilter';
 import TablePager from '../tablePager';
 import { IToolbarItem } from '../../interfaces/toolbar';
-import { v4 as uuid } from 'uuid';
 import { ICrudState } from '../../providers/dataTable/interfaces';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IChildTableControlsProps {
   header?: string;
@@ -22,7 +22,6 @@ export const ChildTableControls: FC<IChildTableControlsProps> = ({
   crud,
   toolbarItems,
 }) => {
-  
   const {
     isInProgress: { isFiltering, isSelectingColumns, exportToExcel: isExportingToExcel },
     setIsInProgressFlag,
@@ -69,7 +68,7 @@ export const ChildTableControls: FC<IChildTableControlsProps> = ({
       <div className="index-table-controls-right">
         <GlobalTableFilter />
 
-        {(typeof crud === 'boolean' && crud|| (crud as ICrudState)?.create) && (
+        {((typeof crud === 'boolean' && crud) || (crud as ICrudState)?.create) && (
           <Button
             type="link"
             disabled={Boolean(newOrEditableRowData?.id)}
@@ -85,15 +84,14 @@ export const ChildTableControls: FC<IChildTableControlsProps> = ({
         {toolbarItems
           ?.filter(({ hide }) => !hide)
           ?.map(({ className, title, icon, onClick, disabled, render }) => {
-
             if (render && typeof render === 'function') {
               return render();
             }
-            
+
             return (
               <Button
                 type="link"
-                key={uuid()}
+                key={nanoid()}
                 disabled={disabled}
                 onClick={event => {
                   event?.stopPropagation();
@@ -105,7 +103,7 @@ export const ChildTableControls: FC<IChildTableControlsProps> = ({
               >
                 {title}
               </Button>
-            )
+            );
           })}
 
         <Button

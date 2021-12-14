@@ -18,11 +18,11 @@ import {
 import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure } from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import { v4 as uuid } from 'uuid';
 import { camelize, convertActions, findToolboxComponent } from './utils';
 import undoable, { includeAction } from 'redux-undo';
 import { IFormValidationErrors } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
+import { nanoid } from 'nanoid/non-secure';
 
 const reducer = handleActions<IFormStateContext, any>(
   {
@@ -44,7 +44,7 @@ const reducer = handleActions<IFormStateContext, any>(
       const componentName = `${toolboxComponent.name}${count + 1}`;
 
       let formComponent: IConfigurableFormComponent = {
-        id: uuid(),
+        id: nanoid(),
         type: toolboxComponent.type,
         name: camelize(componentName),
         label: componentName,
@@ -252,7 +252,7 @@ const reducer = handleActions<IFormStateContext, any>(
       let updatedRelations: { [index: string]: string[] } = {
         [payload.containerId]: payload.componentIds,
       };
-      
+
       payload.componentIds.forEach(id => {
         const component = state.allComponents[id];
         if (component.parentId != payload.containerId) {
@@ -347,29 +347,23 @@ const reducer = handleActions<IFormStateContext, any>(
       };
     },
 
-    [FormActionEnums.AddDataSource]: (
-      state: IFormStateContext,
-      action: ReduxActions.Action<IDataSource>
-    ) => {
+    [FormActionEnums.AddDataSource]: (state: IFormStateContext, action: ReduxActions.Action<IDataSource>) => {
       const { payload } = action;
 
       return {
         ...state,
-        dataSources: [...state.dataSources, payload]
+        dataSources: [...state.dataSources, payload],
       };
     },
 
-    [FormActionEnums.RemoveDataSource]: (
-      state: IFormStateContext,
-      action: ReduxActions.Action<string>
-    ) => {
+    [FormActionEnums.RemoveDataSource]: (state: IFormStateContext, action: ReduxActions.Action<string>) => {
       const { payload } = action;
 
       const newDataSources = state.dataSources.filter(ds => ds.id !== payload);
 
       return {
         ...state,
-        dataSources: [...newDataSources]
+        dataSources: [...newDataSources],
       };
     },
   },

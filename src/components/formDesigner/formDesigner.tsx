@@ -9,12 +9,14 @@ import ComponentPropertiesTitle from './componentPropertiesTitle';
 import { useForm } from '../../providers/form';
 import { ConfigurableFormRenderer } from '../../components';
 import { FormDesignerHeader } from './formDesignerHeader';
+import { MetadataProvider } from '../../providers';
+import ConditionalWrap from '../conditionalWrapper';
 
 export interface IFormDesignerProps {
   model?: FormDto;
 }
 
-export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
+export const FormDesigner: FC<IFormDesignerProps> = ({ }) => {
   const [widgetsOpen, setWidgetOpen] = useState(true);
   const [fieldPropertiesOpen, setFieldPropertiesOpen] = useState(true);
 
@@ -23,46 +25,58 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
   const toggleFieldPropertiesSidebar = () => setFieldPropertiesOpen(prop => !prop);
 
   const [formValues, setFormValues] = useState({});
-  const { isDebug } = useForm();
+  const { isDebug, formSettings } = useForm();
 
   return (
     <div className="sha-form-designer">
-      <SidebarContainer
-        leftSidebarProps={{
-          open: widgetsOpen,
-          onOpen: toggleWidgetSidebar,
-          onClose: toggleWidgetSidebar,
-          title: 'Builder Widgets',
-          content: () => <Toolbox></Toolbox>,
-          placeholder: 'Builder Widgets',
-        }}
-        rightSidebarProps={{
-          open: fieldPropertiesOpen,
-          onOpen: toggleFieldPropertiesSidebar,
-          onClose: toggleFieldPropertiesSidebar,
-          title: () => <ComponentPropertiesTitle />,
-          content: () => <ComponentPropertiesPanel />,
-          placeholder: 'Properties',
-        }}
-        header={() => <FormDesignerToolbar />}
+      <ConditionalWrap
+        condition={Boolean(formSettings.modelType)}
+        wrap={content => (
+          <MetadataProvider
+            id='designer'
+            modelType={formSettings.modelType}
+          >
+            {content}
+          </MetadataProvider>
+        )}
       >
-        <FormDesignerHeader />
-        <ConfigurableFormRenderer
-          onValuesChange={(_changedValues, allvalues) => {
-            setFormValues(allvalues);
+        <SidebarContainer
+          leftSidebarProps={{
+            open: widgetsOpen,
+            onOpen: toggleWidgetSidebar,
+            onClose: toggleWidgetSidebar,
+            title: 'Builder Widgets',
+            content: () => <Toolbox></Toolbox>,
+            placeholder: 'Builder Widgets',
           }}
+          rightSidebarProps={{
+            open: fieldPropertiesOpen,
+            onOpen: toggleFieldPropertiesSidebar,
+            onClose: toggleFieldPropertiesSidebar,
+            title: () => <ComponentPropertiesTitle />,
+            content: () => <ComponentPropertiesPanel />,
+            placeholder: 'Properties',
+          }}
+          header={() => <FormDesignerToolbar />}
         >
-          {isDebug && (
-            <>
-              <Row>
-                <Col span={24}>
-                  <pre>{JSON.stringify(formValues)}</pre>
-                </Col>
-              </Row>
-            </>
-          )}
-        </ConfigurableFormRenderer>
-      </SidebarContainer>
+          <FormDesignerHeader />
+          <ConfigurableFormRenderer
+            onValuesChange={(_changedValues, allvalues) => {
+              setFormValues(allvalues);
+            }}
+          >
+            {isDebug && (
+              <>
+                <Row>
+                  <Col span={24}>
+                    <pre>{JSON.stringify(formValues)}</pre>
+                  </Col>
+                </Row>
+              </>
+            )}
+          </ConfigurableFormRenderer>
+        </SidebarContainer>
+      </ConditionalWrap>
     </div>
   );
 };

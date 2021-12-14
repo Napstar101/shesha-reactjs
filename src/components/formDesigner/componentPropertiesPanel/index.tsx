@@ -46,7 +46,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   };
 
   const getDefaultFactory = (markup: FormMarkup): ISettingsFormFactory => {
-    return ({ model, onSave, onCancel, onValuesChange }) => {
+    return ({ model, onSave, onCancel, onValuesChange, toolboxComponent, }) => {
       return (
         <GenericSettingsForm
           model={model}
@@ -54,6 +54,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
           onCancel={onCancel}
           markup={markup}
           onValuesChange={onValuesChange}
+          toolboxComponent={toolboxComponent}
         />
       );
     };
@@ -96,6 +97,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
           onSave,
           onCancel,
           onValuesChange,
+          toolboxComponent,
         })}
       </>
     );

@@ -24,8 +24,9 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
     // custom handling here...
   };
 
-  const onValuesChange = (changedValues: any, values: any) => {
-    if (props.onValuesChange) props.onValuesChange(changedValues, values);
+  const onValuesChangeInternal = (changedValues: any, values: any) => {
+    if (props.onValuesChange) 
+      props.onValuesChange(changedValues, values);
 
     // recalculate components visibility
     setFormData({ values: values, mergeValues: true });
@@ -81,7 +82,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        onValuesChange={onValuesChange}
+        onValuesChange={onValuesChangeInternal}
         onFieldsChange={onFieldsChange}
         initialValues={props.initialValues}
         className={`sha-form sha-form-${formMode} ${isDragging ? 'sha-dragging' : ''}`}

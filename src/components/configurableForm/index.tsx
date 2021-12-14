@@ -37,6 +37,7 @@ export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
             sections={sections}
             context={context}
             formRef={formRef}
+            onValuesChange={restProps.onValuesChange}
           >
             <ConfigurableFormRenderer {...restProps} />
           </FormProvider>

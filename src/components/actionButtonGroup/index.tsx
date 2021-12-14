@@ -1,10 +1,9 @@
 import React, { FC, Fragment } from 'react';
-import { nanoid } from 'nanoid';
 import { Tooltip, Button } from 'antd';
-import { v4 as uuid } from 'uuid';
 import { IToolbarItem } from '../../interfaces';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { joinStringValues } from '../..';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IActionButtonGroupProps {
   /** The items to display as buttons */
@@ -44,7 +43,7 @@ export const ActionButtonGroup: FC<IActionButtonGroupProps> = ({ items, classNam
                       }}
                       disabled={disabled}
                       className={`toolbar-item ${disabled ? 'disabled' : ''} ${className || ''}`}
-                      key={uuid()}
+                      key={nanoid()}
                       type="link"
                       icon={icon}
                       size={btnSize}

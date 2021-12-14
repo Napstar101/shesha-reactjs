@@ -1,9 +1,9 @@
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import Search from 'antd/lib/input/Search';
 import React, { ChangeEvent, FC, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { useDataTable } from '../../providers';
 import { getSafelyTrimmedString } from '../../utils';
+import { nanoid } from 'nanoid/non-secure';
 
 export interface IIndexTableColumnVisibilityToggleProps {}
 
@@ -32,7 +32,7 @@ export const IndexTableColumnVisibilityToggle: FC<IIndexTableColumnVisibilityTog
           : visibleColumns
         ).map(({ header, show, id }) => {
           return (
-            <div key={uuid()} className="column-name" onClick={() => toggleColumnVisibility(id)}>
+            <div key={nanoid()} className="column-name" onClick={() => toggleColumnVisibility(id)}>
               <Checkbox checked={show}>{header}</Checkbox>
             </div>
           );

@@ -59,7 +59,7 @@ import { GetColumnsInput, DataTableColumnDtoListAjaxResponse } from '../../apis/
 import { IResult } from '../../interfaces/result';
 import { useLocalStorage } from '../../hooks';
 import { useAuth } from '../auth';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import { useDebouncedCallback } from 'use-debounce';
 import { useGet } from 'restful-react';
 import {
@@ -553,7 +553,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
   const getDataSourceType = () => {
     return !tableId && entityType ? 'entity' : 'tableConfig';
-  }
+  };
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
