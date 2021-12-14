@@ -30,6 +30,9 @@ jobs:
       # prepare shesha-reactjs for pipeline
       - name: Prepare shesha-reactjs for Pipeline
         run: npm run prepare
+      # build storybook
+      - name: Build Storybook
+        run: npm run build-storybook
       # deploy storybook
       - name: Deploy Storybook
         run: npm run deploy-storybook
