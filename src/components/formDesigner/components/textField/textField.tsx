@@ -56,6 +56,12 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  initModel: model => (
+    { 
+      textType: 'text',
+      ...model
+    }
+  )
 };
 
 export default TextField;
