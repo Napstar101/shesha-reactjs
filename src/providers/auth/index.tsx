@@ -30,6 +30,7 @@ import { getLocalizationOrDefault } from '../../utils/localization';
 import { getTenantId } from '../../utils/multitenancy';
 import { useShaRouting } from '../shaRouting';
 import IRequestHeaders from '../../interfaces/requestHeaders';
+import { useRouter } from 'next/router';
 
 interface IAuthProviderProps {
   /**
@@ -64,6 +65,8 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
 }) => {
   const { router, nextRoute } = useShaRouting();
 
+  const { pathname } = useRouter();
+
   const [state, dispatch] = useReducer(authReducer, AUTH_CONTEXT_INITIAL_STATE);
   const setters = getFlagSetters(dispatch);
 
@@ -86,12 +89,10 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
           router?.push(URL_CHANGE_PASSWORD);
         } else {
           const returnUrl = router?.query?.returnUrl as string;
-          if (router?.route === URL_LOGIN_PAGE) {
+          if (pathname?.startsWith(URL_LOGIN_PAGE)) {
             router?.push(returnUrl ?? URL_HOME_PAGE);
           } else if (returnUrl) {
             router?.push(returnUrl);
-          } else {
-            router?.push(router);
           }
         }
       }
