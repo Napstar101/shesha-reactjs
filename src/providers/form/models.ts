@@ -98,9 +98,13 @@ export interface IComponentsDictionary {
   [index: string]: IConfigurableFormComponent;
 }
 
+export interface IComponentRelations {
+  [index: string]: string[];
+}
+
 export interface IFlatComponentsStructure {
   allComponents: IComponentsDictionary;
-  componentRelations: { [index: string]: string[] };
+  componentRelations: IComponentRelations;
   visibleComponentIds?: string[];
 }
 

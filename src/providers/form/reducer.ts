@@ -14,18 +14,83 @@ import {
   IFormSettings,
   ISetSelectedComponentPayload,
   IComponentUpdateSettingsValidationPayload,
+  IAddDataPropertyPayload,
 } from './contexts';
 import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure } from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
 import { camelize, convertActions, findToolboxComponent } from './utils';
 import undoable, { includeAction } from 'redux-undo';
-import { IFormValidationErrors } from '../../interfaces';
+import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { nanoid } from 'nanoid/non-secure';
+import { IPropertyMetadata } from '../metadata/models';
+
+const addComponentToFlatStructure = (structure: IFlatComponentsStructure, formComponent: IConfigurableFormComponent, containerId: string, index: number): IFlatComponentsStructure => {
+  const allComponents = { ...structure.allComponents, [formComponent.id]: formComponent };
+
+  const currentLevel = containerId;
+
+  const containerComponents = structure.componentRelations[currentLevel]
+    ? [...structure.componentRelations[currentLevel]]
+    : [];
+  containerComponents.splice(index, 0, formComponent.id);
+  const componentRelations = { ...structure.componentRelations, [currentLevel]: containerComponents };
+
+  return {
+    ...structure,
+    allComponents,
+    componentRelations
+  };
+}
+
+const createComponentForProperty = (components: IToolboxComponentGroup[], propertyMetadata: IPropertyMetadata): IConfigurableFormComponent => {
+  const toolboxComponent = findToolboxComponent(components, c => (c.dataTypes ?? []).indexOf(propertyMetadata.dataType) > -1);
+  if (!Boolean(toolboxComponent))
+    return null;
+
+  // find appropriate toolbox component
+  // create instance of the component
+  // init default values for the component
+  // init component according to the metadata
+
+  let formComponent: IConfigurableFormComponent = {
+    id: nanoid(),
+    type: toolboxComponent.type,
+    name: camelize(propertyMetadata.path),
+    label: propertyMetadata.label,
+    labelAlign: 'right',
+    //parentId: containerId,
+    hidden: false,
+    customVisibility: null,
+    visibilityFunc: _data => true,
+  };
+  if (toolboxComponent.initModel)
+    formComponent = toolboxComponent.initModel(formComponent);
+  if (toolboxComponent.linkToModelMetadata)
+    formComponent = toolboxComponent.linkToModelMetadata(formComponent, propertyMetadata);
+
+  return formComponent;
+}
 
 const reducer = handleActions<IFormStateContext, any>(
   {
+    [FormActionEnums.DataPropertyAdd]: (state: IFormStateContext, action: ReduxActions.Action<IAddDataPropertyPayload>) => {
+      const { payload: { propertyMetadata, index, containerId } } = action;
+
+      const formComponent = createComponentForProperty(state.toolboxComponentGroups, propertyMetadata);
+      if (!Boolean(formComponent))
+        return state;
+
+      const newStructure = addComponentToFlatStructure(state, formComponent, containerId, index);
+
+      return {
+        ...state,
+        allComponents: newStructure.allComponents,
+        componentRelations: newStructure.componentRelations,
+        selectedComponentId: formComponent.id,
+      };
+    },
     [FormActionEnums.ComponentAdd]: (state: IFormStateContext, action: ReduxActions.Action<IComponentAddPayload>) => {
       const { payload } = action;
 
@@ -33,7 +98,7 @@ const reducer = handleActions<IFormStateContext, any>(
       const { componentType, index, containerId } = payload;
 
       // access to the list of toolbox  components
-      const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, componentType);
+      const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, c => c.type === componentType);
       if (!toolboxComponent) return state;
 
       // create new component
@@ -54,22 +119,15 @@ const reducer = handleActions<IFormStateContext, any>(
         customVisibility: null,
         visibilityFunc: _data => true,
       };
-      if (toolboxComponent.initModel) formComponent = toolboxComponent.initModel(formComponent);
+      if (toolboxComponent.initModel)
+        formComponent = toolboxComponent.initModel(formComponent);
 
-      const allComponents = { ...state.allComponents, [formComponent.id]: formComponent };
-
-      const currentLevel = containerId;
-
-      const containerComponents = state.componentRelations[currentLevel]
-        ? [...state.componentRelations[currentLevel]]
-        : [];
-      containerComponents.splice(index, 0, formComponent.id);
-      const componentRelations = { ...state.componentRelations, [currentLevel]: containerComponents };
+      const newStructure = addComponentToFlatStructure(state, formComponent, containerId, index);
 
       return {
         ...state,
-        allComponents: allComponents,
-        componentRelations: componentRelations,
+        allComponents: newStructure.allComponents,
+        componentRelations: newStructure.componentRelations,
         selectedComponentId: formComponent.id,
       };
     },
@@ -112,7 +170,7 @@ const reducer = handleActions<IFormStateContext, any>(
       const component = state.allComponents[payload.componentId];
       const newComponent = { ...component, ...payload.settings } as IConfigurableFormComponent;
 
-      const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, component.type);
+      const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, c => c.type === component.type);
 
       let newComponents = { ...state.allComponents, [payload.componentId]: newComponent };
       let componentRelations = { ...state.componentRelations };

@@ -21,8 +21,17 @@ const getIconByDataType = (dataType: string):IconType => {
     case DataTypes.int64:
     case DataTypes.float:
     case DataTypes.double: return 'FieldNumberOutlined';
+    case DataTypes.entityReference: return 'PartitionOutlined';
+    case DataTypes.date: return 'CalendarOutlined';
+    case DataTypes.dateTime: return 'FieldTimeOutlined';
+    case DataTypes.time: return 'ClockCircleOutlined';
+    case DataTypes.uuid: return 'LinkOutlined';
+    case DataTypes.boolean: return 'CheckSquareOutlined';
+    case DataTypes.refListValue: return 'BookOutlined';    
+    
     default: return null;
   }
+  
 }
 
 const DataSourceItem: FC<IProps> = ({ item /*, index*/ }) => {

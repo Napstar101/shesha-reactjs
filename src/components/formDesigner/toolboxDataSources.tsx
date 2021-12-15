@@ -3,70 +3,85 @@ import DataSourceItem from './dataSourceItem';
 import { Collapse } from 'antd';
 import { useLocalStorage } from '../../hooks';
 import { ItemInterface, ReactSortable } from 'react-sortablejs';
-import { useForm } from '../../providers';
+import { useForm, useMetadata } from '../../providers';
 import { TOOLBOX_DATA_ITEM_DROPPABLE_KEY } from '../../providers/form/models';
+import { IDataSource } from '../../providers/formDesigner/models';
 
 const { Panel } = Collapse;
 
 export interface IToolboxDataSourcesProps {
-    
+
 }
 
 export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
-    const [openedKeys, setOpenedKeys] = useLocalStorage('shaDesigner.toolbox.datasources.openedKeys', ['']);
+  const [openedKeys, setOpenedKeys] = useLocalStorage('shaDesigner.toolbox.datasources.openedKeys', ['']);
 
-    const { dataSources, activeDataSourceId } = useForm();
+  const currentMeta = useMetadata(false);
+  const currentDataSource: IDataSource = Boolean(currentMeta?.metadata?.properties)
+    ? {
+      id: currentMeta.id,
+      name: currentMeta.metadata?.name,
+      containerType: currentMeta.metadata?.type,
+      items: currentMeta.metadata?.properties
+    }
+    : null;
 
-    const onCollapseChange = (key: string | string[]) => {
-      setOpenedKeys(Array.isArray(key) ? key : [key]);
-    };
-    let idx = 0;    
-    return (
-        <Collapse activeKey={openedKeys} onChange={onCollapseChange}>
-        {dataSources.map((ds, dsIndex) => {
-          const visibleItems = ds.items.filter(c => c.isVisible === true);
+  const { dataSources: formDs , activeDataSourceId } = useForm();
+  const dataSources = [...formDs];
+  if (currentDataSource)
+    dataSources.push(currentDataSource);
 
-          const sortableItems = visibleItems.map<ItemInterface>(dsItem => {
-            return {
-              id: dsItem.path,
-              parent_id: null,
-              type: TOOLBOX_DATA_ITEM_DROPPABLE_KEY,
-            };
-          });
+  const onCollapseChange = (key: string | string[]) => {
+    setOpenedKeys(Array.isArray(key) ? key : [key]);
+  };
+  let idx = 0;
+  return (
+    <Collapse activeKey={openedKeys} onChange={onCollapseChange}>
+      {dataSources.map((ds, dsIndex) => {
+        const visibleItems = ds.items.filter(c => c.isVisible === true);
 
-          let classes = ['sha-toolbox-panel'];
-          if (ds.id === activeDataSourceId) classes.push('active');
+        const sortableItems = visibleItems.map<ItemInterface>(dsItem => {
+          return {
+            id: dsItem.path,
+            parent_id: null,
+            type: TOOLBOX_DATA_ITEM_DROPPABLE_KEY,
+            metadata: dsItem,
+          };
+        });
 
-          return visibleItems.length === 0 ? null : (
-            <Panel header={ds.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
-              <ReactSortable
-                list={sortableItems}
-                setList={() => {}}
-                group={{
-                  name: 'shared',
-                  pull: 'clone',
-                  put: false,
-                }}
-                sort={false}
-                draggable=".sha-toolbox-component"
-                ghostClass="sha-component-ghost"
-              >
-                {visibleItems.map((component, componentIndex) => {
-                  idx++;
-                  return (
-                    <DataSourceItem
-                      key={`Group${dsIndex}:DsItem${componentIndex}`}
-                      item={component}
-                      index={idx}
-                    ></DataSourceItem>
-                  );
-                })}
-              </ReactSortable>
-            </Panel>
-          );
-        })}
-      </Collapse>
-    );
+        let classes = ['sha-toolbox-panel'];
+        if (ds.id === activeDataSourceId) classes.push('active');
+
+        return visibleItems.length === 0 ? null : (
+          <Panel header={ds.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
+            <ReactSortable
+              list={sortableItems}
+              setList={() => { }}
+              group={{
+                name: 'shared',
+                pull: 'clone',
+                put: false,
+              }}
+              sort={false}
+              draggable=".sha-toolbox-component"
+              ghostClass="sha-component-ghost"
+            >
+              {visibleItems.map((item, itemIndex) => {
+                idx++;
+                return (
+                  <DataSourceItem
+                    key={`Group${dsIndex}:DsItem${itemIndex}`}
+                    item={item}
+                    index={idx}
+                  ></DataSourceItem>
+                );
+              })}
+            </ReactSortable>
+          </Panel>
+        );
+      })}
+    </Collapse>
+  );
 }
 
 export default ToolboxDataSources;

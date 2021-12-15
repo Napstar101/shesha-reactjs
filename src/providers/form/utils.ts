@@ -378,7 +378,7 @@ export const toolbarGroupsToComponents = (availableComponents: IToolboxComponent
   }
   return allComponents;
 };
-
+/*
 export const findToolboxComponent = (
   availableComponents: IToolboxComponentGroup[],
   type: string
@@ -388,6 +388,22 @@ export const findToolboxComponent = (
       const group = availableComponents[gIdx];
       for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
         if (group.components[cIdx].type === type) return group.components[cIdx];
+      }
+    }
+  }
+
+  return null;
+};
+*/
+export const findToolboxComponent = (
+  availableComponents: IToolboxComponentGroup[],
+  predicate: (component: IToolboxComponent) => boolean,
+): IToolboxComponent => {
+  if (availableComponents) {
+    for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
+      const group = availableComponents[gIdx];
+      for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
+        if (predicate(group.components[cIdx])) return group.components[cIdx];
       }
     }
   }

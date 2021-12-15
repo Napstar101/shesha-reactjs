@@ -13,6 +13,7 @@ import {
   IFormSettings,
   ISetSelectedComponentPayload,
   IComponentUpdateSettingsValidationPayload,
+  IAddDataPropertyPayload,
 } from './contexts';
 import { IFormProps, IFlatComponentsStructure, FormMode } from './models';
 
@@ -20,6 +21,7 @@ export enum FormActionEnums {
   /*
   component: add delete update move
   */
+  DataPropertyAdd = 'DATA_PROPERTY_ADD',
   ComponentAdd = 'COMPONENT_ADD',
   ComponentDelete = 'COMPONENT_DELETE',
   ComponentUpdate = 'COMPONENT_UPDATE',
@@ -53,6 +55,11 @@ export enum FormActionEnums {
 
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
+
+export const dataPropertyAddAction = createAction<IAddDataPropertyPayload, IAddDataPropertyPayload>(
+  FormActionEnums.DataPropertyAdd,
+  p => p
+);
 
 export const componentAddAction = createAction<IComponentAddPayload, IComponentAddPayload>(
   FormActionEnums.ComponentAdd,
