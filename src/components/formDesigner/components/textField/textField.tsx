@@ -18,6 +18,7 @@ export interface ITextFieldProps extends IConfigurableFormComponent {
   initialValue?: string;
   passEmptyStringByDefault?: boolean;
   textType?: TextType;
+  maxLength?: number;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -43,6 +44,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       suffix: model.suffix,
       disabled: model.disabled,
       bordered: !model.hideBorder,
+      maxLength: model.maxLength,
     };
 
     const InputComponentType = renderInput(model.textType);
@@ -63,7 +65,15 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       textType: 'text',
       ...model
     }
-  )
+  ),
+  linkToModelMetadata: (model, metadata): ITextFieldProps => {
+    return {
+      ...model,
+      label: metadata.label,
+      description: metadata.description,
+      maxLength: metadata.maxLength,
+    };
+  },
 };
 
 export default TextField;

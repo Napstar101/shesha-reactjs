@@ -30,6 +30,16 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  linkToModelMetadata: (model, metadata): INumberFieldProps => {
+    return {
+      ...model,
+      label: metadata.label,
+      description: metadata.description,
+      min: metadata.min,
+      max: metadata.max,
+      // todo: add decimal points and format
+    };
+  },
 };
 
 export default NumberField;

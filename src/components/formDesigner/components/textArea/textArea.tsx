@@ -60,6 +60,14 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  linkToModelMetadata: (model, metadata): ITextAreaProps => {
+    return {
+      ...model,
+      label: metadata.label,
+      description: metadata.description,
+      maxLength: metadata.maxLength,
+    };
+  },
 };
 
 export default TextField;

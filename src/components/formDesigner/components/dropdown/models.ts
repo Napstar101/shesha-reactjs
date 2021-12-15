@@ -1,6 +1,6 @@
 import { IConfigurableFormComponent } from '../../../../providers/form/models';
 
-export type DataSourceType = 'values' | 'referenceList' | 'entityList' | 'url';
+export type DataSourceType = 'values' | 'referenceList' | 'url';
 
 export interface ILabelValue<TValue = any> {
   id: string;

@@ -88,10 +88,20 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   initModel: model => {
     const customModel: IDateFieldProps = {
       ...model,
+      picker: 'date',
+      showTime: false,
       dateFormat: DATE_TIME_FORMATS?.date,
       timeFormat: DATE_TIME_FORMATS.time,
     };
     return customModel;
+  },
+  linkToModelMetadata: (model, metadata): IDateFieldProps => {
+    return {
+      ...model,
+      label: metadata.label,
+      description: metadata.description,
+      showTime: metadata.dataType === DataTypes.dateTime,
+    };
   },
 };
 

@@ -17,7 +17,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   type: 'dropdown',
   name: 'Dropdown',
   icon: <DownSquareOutlined />,
-  dataTypes: [DataTypes.refListValue, DataTypes.entityReference],
+  dataTypes: [DataTypes.refListValue],
   factory: (model: IDropdownProps) => {
     return (
       <ConfigurableFormItem model={model}>
@@ -27,6 +27,19 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  linkToModelMetadata: (model, metadata): IDropdownProps => {
+    return {
+      ...model,
+      label: metadata.label,
+      description: metadata.description,
+      dataSourceType: metadata.dataType === DataTypes.refListValue
+          ? 'referenceList'
+          : 'values',
+      referenceListNamespace: metadata.referenceListNamespace,
+      referenceListName: metadata.referenceListName,
+      mode: 'single',
+    };
+  },
 };
 
 export const Dropdown: FC<IDropdownProps> = ({
