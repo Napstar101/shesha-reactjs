@@ -38,7 +38,6 @@ const addComponentToFlatStructure = (structure: IFlatComponentsStructure, formCo
   const componentRelations = { ...structure.componentRelations, [currentLevel]: containerComponents };
 
   return {
-    ...structure,
     allComponents,
     componentRelations
   };
@@ -82,6 +81,7 @@ const reducer = handleActions<IFormStateContext, any>(
       if (!Boolean(formComponent))
         return state;
 
+      formComponent.parentId = containerId; // set parent
       const newStructure = addComponentToFlatStructure(state, formComponent, containerId, index);
 
       return {
@@ -431,6 +431,7 @@ const reducer = handleActions<IFormStateContext, any>(
 
 const undoableReducer = undoable(reducer, {
   filter: includeAction([
+    FormActionEnums.DataPropertyAdd,
     FormActionEnums.ComponentAdd,
     FormActionEnums.ComponentDelete,
     FormActionEnums.ComponentUpdate,
