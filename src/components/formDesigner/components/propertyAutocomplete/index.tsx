@@ -6,6 +6,7 @@ import FormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { PropertyAutocomplete } from './propertyAutocomplete';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface IPropertyAutocompleteComponentProps extends IConfigurableFormComponent {
 }
@@ -16,6 +17,7 @@ const PropertyAutocompleteComponent: IToolboxComponent<IPropertyAutocompleteComp
   type: 'propertyAutocomplete',
   name: 'Property Autocomplete',
   icon: <FileSearchOutlined />,
+  dataTypes: [DataTypes.string],
   factory: (model: IPropertyAutocompleteComponentProps) => {
     return (
       <FormItem model={model}>

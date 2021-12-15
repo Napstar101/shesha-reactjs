@@ -7,6 +7,7 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 type TextType = 'text' | 'password';
 export interface ITextFieldProps extends IConfigurableFormComponent {
@@ -34,6 +35,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
+  dataTypes: [DataTypes.string],
   factory: (model: ITextFieldProps) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,

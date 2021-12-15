@@ -34,4 +34,5 @@ export const DataTypes = {
     int64: `${BaseDataTypes.number}:${DataFormats.int64}`,
     boolean: BaseDataTypes.boolean,
     refListValue: `${BaseDataTypes.number}:${DataFormats.refListValue}`,
+    array: BaseDataTypes.array // not used, to be reviewed
 }

@@ -6,6 +6,7 @@ import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { ICodeEditorProps, CodeEditor } from './codeEditor';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -17,6 +18,7 @@ const CodeEditorComponent: IToolboxComponent<ICodeEditorComponentProps> = {
   type: 'codeEditor',
   name: 'Code Editor',
   icon: <CodeSandboxOutlined />,
+  dataTypes: [DataTypes.string],
   factory: (model: ICodeEditorComponentProps) => {
     const editorProps: ICodeEditorProps = {
       ...model

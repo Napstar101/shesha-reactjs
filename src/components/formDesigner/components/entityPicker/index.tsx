@@ -8,6 +8,7 @@ import { validateConfigurableComponentSettings } from '../../../../providers/for
 import { EntityPicker } from '../../..';
 import { Alert } from 'antd';
 import { useForm } from '../../../../providers';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface IEntityPickerComponentProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -23,6 +24,7 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
   type: 'entityPicker',
   name: 'Entity Picker',
   icon: <EllipsisOutlined />,
+  dataTypes: [DataTypes.entityReference],
   factory: (model: IEntityPickerComponentProps) => {
     const { formMode } = useForm()
 

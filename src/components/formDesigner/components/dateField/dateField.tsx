@@ -10,6 +10,7 @@ import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { HiddenFormItem } from '../../../hiddenFormItem';
 import { useForm } from '../../../../providers';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 const DATE_TIME_FORMATS = {
   time: 'HH:mm',
@@ -65,6 +66,7 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   type: 'dateField',
   name: 'Date field',
   icon: <CalendarOutlined />,
+  dataTypes: [DataTypes.date, DataTypes.dateTime],
   factory: (model: IDateFieldProps) => {
     return (
       <Fragment>

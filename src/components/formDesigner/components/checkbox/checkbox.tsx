@@ -6,6 +6,7 @@ import { Checkbox } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface ICheckboxProps extends IConfigurableFormComponent {}
 
@@ -15,6 +16,7 @@ const CheckboxComponent: IToolboxComponent<ICheckboxProps> = {
   type: 'checkbox',
   name: 'Checkbox',
   icon: <CheckSquareOutlined />,
+  dataTypes: [DataTypes.boolean],
   factory: (model: ICheckboxProps) => {
 
     return (

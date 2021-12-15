@@ -6,6 +6,7 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { EditableTagGroup } from '../../..';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface ITagsOutlinedComponentProps extends IConfigurableFormComponent {
   value?: string[];
@@ -19,6 +20,7 @@ const EditableTagGroupComponent: IToolboxComponent<ITagsOutlinedComponentProps> 
   type: 'editableTagGroup',
   name: 'TagsOutlined',
   icon: <HomeOutlined />,
+  dataTypes: [DataTypes.array],
   factory: (model: ITagsOutlinedComponentProps) => {
     return (
       <ConfigurableFormItem model={model}>

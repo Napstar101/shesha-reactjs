@@ -7,6 +7,7 @@ import { TextAreaProps } from 'antd/lib/input';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface ITextAreaProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -25,6 +26,7 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   type: 'textArea',
   name: 'Text Area',
   icon: <FontColorsOutlined />,
+  dataTypes: [DataTypes.string],
   factory: (model: ITextAreaProps) => {
     const textAreaProps: TextAreaProps = {
       placeholder: model.placeholder,

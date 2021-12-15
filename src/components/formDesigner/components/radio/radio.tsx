@@ -6,6 +6,7 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface ICheckItem {
   id: string;
@@ -26,6 +27,7 @@ const TextField: IToolboxComponent<IRadioProps> = {
   type: 'radio',
   name: 'Radio',
   icon: <CheckCircleOutlined />,
+  dataTypes: [DataTypes.array],
   factory: (model: IRadioProps) => {
     const { items = [] } = model;
     return (

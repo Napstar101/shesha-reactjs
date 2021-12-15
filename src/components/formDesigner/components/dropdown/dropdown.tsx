@@ -9,6 +9,7 @@ import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import RefListDropDown from '../../../refListDropDown';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -16,6 +17,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   type: 'dropdown',
   name: 'Dropdown',
   icon: <DownSquareOutlined />,
+  dataTypes: [DataTypes.refListValue, DataTypes.entityReference],
   factory: (model: IDropdownProps) => {
     return (
       <ConfigurableFormItem model={model}>

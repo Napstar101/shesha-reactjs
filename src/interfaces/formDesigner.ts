@@ -66,6 +66,11 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
    * Settings validator
    */
   validateSettings?: (model: T) => Promise<any>;
+
+  /**
+   * Supported data types
+   */
+  dataTypes?: string[];
 }
 
 export interface IToolboxComponentGroup {
