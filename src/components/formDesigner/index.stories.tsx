@@ -177,6 +177,13 @@ export const SimplePropsProps = addStory(DesignerTemplate, {
   formPath: '/persons/edit',
 });
 
+export const ModelItemProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\itemSettings.json',
+});
+
+export const ModelGroupProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\groupSettings.json',
+});
 
 interface FormInfo {
   name: string;
