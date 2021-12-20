@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { Form } from 'antd';
 import { ConfigurableForm } from '../../components';
 import { IConfigurableFormComponent, FormMarkup } from '../../providers/form/models';
-import { IPropertyMetadata } from '../../providers/metadata/models';
 import { IToolboxComponent } from '../../interfaces';
 import { ConfigurableFormInstance } from '../../providers/form/contexts';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 export interface IProps<TModel extends IConfigurableFormComponent> {
   model: TModel;

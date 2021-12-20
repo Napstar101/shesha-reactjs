@@ -80,6 +80,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
     <Spin spinning={submitting}>
       <Form
         form={form}
+        size={props.size}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         onValuesChange={onValuesChangeInternal}

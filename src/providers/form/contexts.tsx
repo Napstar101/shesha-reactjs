@@ -23,7 +23,7 @@ import { FormInstance } from 'antd';
 import { StateWithHistory } from 'redux-undo';
 import { FormLayout } from 'antd/lib/form/Form';
 import { IDataSource } from '../formDesigner/models';
-import { IPropertyMetadata } from '../metadata/models';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 export type IFlagProgressFlags =
   | 'addComponent'

@@ -13,12 +13,11 @@ import { nanoid } from 'nanoid/non-secure';
 const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
   {
     [ModelActionEnums.AddItem]: (state: IModelConfiguratorStateContext) => {
-      const buttonProps: IModelItem = {
+      const itemProps: IModelItem = {
         id: nanoid(),
-        itemType: 'button',
-        title: `New item`,
+        itemType: 'property',
+        name: `New property`,
         childItems: [],
-        selected: false,
       };
 
       const newItems = [...state.items];
@@ -26,13 +25,13 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
       const parent = null;
 
       if (parent) {
-        parent.childItems = [...parent.childItems, buttonProps];
-      } else newItems.unshift(buttonProps);
+        parent.childItems = [...parent.childItems, itemProps];
+      } else newItems.push(itemProps);
 
       return {
         ...state,
         items: newItems,
-        selectedItemId: buttonProps.id,
+        selectedItemId: itemProps.id,
       };
     },
 
@@ -126,9 +125,8 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
       const groupProps: IModelItem = {
         id: nanoid(),
         itemType: 'group',
-        title: `New Group`,
+        name: `New Group`,
         childItems: [],
-        selected: false,
       };
 
       return {

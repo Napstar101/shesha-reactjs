@@ -158,7 +158,7 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
       const getIsVisible = function(data = {}) {
         if (customVisibilityExecutor) {
           try {
-            return customVisibilityExecutor(data[name], data);
+            return customVisibilityExecutor(name ? data[name] : undefined, data);
           } catch (e) {
             console.warn(`Custom Visibility of field ${name} throws exception: ${e}`);
             return true;
@@ -213,7 +213,6 @@ export const getVisibilityFunc2 = (expression, name) => {
  * Return ids of visible components according to the custom visibility
  */
 export const getVisibleComponentIds = (components: IComponentsDictionary, values: any): string[] => {
-  //@ts-ignore
   let visibleComponents: string[] = [];
   for (let key in components) {
     const component = components[key] as IConfigurableFormComponent;
@@ -222,7 +221,6 @@ export const getVisibleComponentIds = (components: IComponentsDictionary, values
     const isVisible = component.visibilityFunc == null || component.visibilityFunc(values);
     if (isVisible) visibleComponents.push(key);
   }
-
   return visibleComponents;
 };
 

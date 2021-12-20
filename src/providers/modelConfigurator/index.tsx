@@ -1,4 +1,4 @@
-import React, { FC, useReducer, useContext, PropsWithChildren, useMemo } from 'react';
+import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
 import modelReducer from './reducer';
 import {
   IUpdateChildItemsPayload,
@@ -19,7 +19,6 @@ import {
 } from './actions';
 import { getItemById } from './utils';
 import { IModelItem } from '../../interfaces/modelConfigurator';
-import { usePrevious } from 'react-use';
 
 export interface IModelConfiguratorProviderPropsBase {
   baseUrl?: string;
@@ -37,9 +36,6 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
     items: props.items || [],
   });
 
-  // We don't wanna rerender if selectItem is called with the same selected value
-  const previousSelectedItem = usePrevious(state?.selectedItemId);
-
   const addItem = () => {
     dispatch(addItemAction());
   };
@@ -49,7 +45,7 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
   };
 
   const selectItem = (uid: string) => {
-    if (previousSelectedItem !== uid) {
+    if (state.selectedItemId !== uid) {
       dispatch(selectItemAction(uid));
     }
   };
@@ -78,10 +74,10 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
-  const memoizedSelectedItemId = useMemo(() => state?.selectedItemId, [state.selectedItemId]);
+  //const memoizedSelectedItemId = useMemo(() => state?.selectedItemId, [state.selectedItemId]);
 
   return (
-    <ModelConfiguratorStateContext.Provider value={{ ...state, selectedItemId: memoizedSelectedItemId }}>
+    <ModelConfiguratorStateContext.Provider value={{ ...state /*, selectedItemId: memoizedSelectedItemId*/ }}>
       <ModelConfiguratorActionsContext.Provider
         value={{
           addItem,

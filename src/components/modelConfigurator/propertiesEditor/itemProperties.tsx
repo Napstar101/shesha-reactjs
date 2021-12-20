@@ -1,10 +1,10 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { Empty, Form } from 'antd';
 import { useDebouncedCallback } from 'use-debounce';
-import { ConfigurableForm } from '../../components';
-import { useModelConfigurator } from '../../providers/modelConfigurator';
-import { FormMarkup } from '../../providers/form/models';
-import { ConfigurableFormInstance } from '../../providers/form/contexts';
+import { ConfigurableForm } from '../..';
+import { useModelConfigurator } from '../../../providers';
+import { FormMarkup } from '../../../providers/form/models';
+import { ConfigurableFormInstance } from '../../../providers/form/contexts';
 import itemSettingsJson from './itemSettings.json';
 import groupSettingsJson from './groupSettings.json';
 
@@ -49,6 +49,7 @@ export const ToolbarItemProperties: FC<IProps> = () => {
         : itemSettingsJson as FormMarkup;
     return (
       <ConfigurableForm
+        size='small'
         formRef={formRef}
         layout="vertical"
         labelCol={{ span: 24 }}

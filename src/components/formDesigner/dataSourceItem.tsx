@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { DataTypes } from '../../interfaces/dataTypes';
-import { IPropertyMetadata } from '../../providers/metadata/models';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 import ShaIcon, { IconType } from '../shaIcon';
 
 export interface IProps {

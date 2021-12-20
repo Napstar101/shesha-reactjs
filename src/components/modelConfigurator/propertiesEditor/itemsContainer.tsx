@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { ModelItem } from './modelItem';
-import { useModelConfigurator } from '../../providers/modelConfigurator';
+import { useModelConfigurator } from '../../../providers';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
-import { IModelItem } from '../../interfaces/modelConfigurator';
+import { IModelItem } from '../../../interfaces/modelConfigurator';
 import ModelGroup from './modelGroup';
 
 export interface IToolbarItemsSortableProps {
@@ -10,7 +10,7 @@ export interface IToolbarItemsSortableProps {
   items: IModelItem[];
 }
 
-export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
+export const ItemsContainer: FC<IToolbarItemsSortableProps> = props => {
   const { updateChildItems } = useModelConfigurator();
 
   const renderItem = (itemProps: IModelItem, index: number, key: string) => {
@@ -54,4 +54,4 @@ export const SidebarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
     </ReactSortable>
   );
 };
-export default SidebarItemsContainer;
+export default ItemsContainer;

@@ -24,7 +24,7 @@ import undoable, { includeAction } from 'redux-undo';
 import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { nanoid } from 'nanoid/non-secure';
-import { IPropertyMetadata } from '../metadata/models';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 const addComponentToFlatStructure = (structure: IFlatComponentsStructure, formComponent: IConfigurableFormComponent, containerId: string, index: number): IFlatComponentsStructure => {
   const allComponents = { ...structure.allComponents, [formComponent.id]: formComponent };

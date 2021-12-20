@@ -1,9 +1,3 @@
-export interface IProperty {
-    name: string;
-    displayName: string;
-    description?: string;
-}
-
 export interface IPropertyMetadata {
     path: string;
     label?: string;
@@ -16,6 +10,7 @@ export interface IPropertyMetadata {
   
     //#region data type
     dataType: string;
+    dataFormat: string;
     entityType?: string;
     referenceListName?: string;
     referenceListNamespace?: string;
@@ -27,6 +22,26 @@ export interface IPropertyMetadata {
     maxLength?: number;
     min?: number;
     max?: number;
-    isEmail: boolean;
+    //isEmail: boolean;
     //#endregion
+  }
+
+  export enum DataTypes {
+    string = 'string',
+    date = 'date',
+    datetime = 'datetime',
+    time = 'time',
+    entity = 'entity',
+    file = 'file',
+    number = 'number',
+    reflist = 'reflist',
+    boolean = 'boolean',
+    list = 'list',
+  }
+
+  export interface IModelMetadata {
+    type: string;
+    name?: string;
+    description?: string;
+    properties: IPropertyMetadata[];
   }

@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { Button, Tooltip } from 'antd';
 import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
-import { useModelConfigurator } from '../../providers/modelConfigurator';
+import { useModelConfigurator } from '../../../providers';
 import DragHandle from './dragHandle';
 import React from 'react';
-import ShaIcon, { IconType } from '../shaIcon';
+//import ShaIcon, { IconType } from '../../shaIcon';
 import classNames from 'classnames';
-import { IModelItem } from '../../interfaces/modelConfigurator';
+import { IModelItem } from '../../../interfaces/modelConfigurator';
 
 export interface IProps extends IModelItem {
   index: number[];
@@ -19,6 +19,7 @@ export const ModelItem: FC<IProps> = props => {
     deleteItem(props.id);
   };
 
+  /*
   const { icon } = props;
 
   const renderedIcon = icon ? (
@@ -28,16 +29,16 @@ export const ModelItem: FC<IProps> = props => {
       icon
     ) : null
   ) : null;
-
+*/
   return (
     <div className={classNames('sha-sidebar-item', { selected: selectedItemId === props.id })}>
       <div className="sha-sidebar-item-header">
         <DragHandle id={props.id} />
-        {renderedIcon}
-        <span className="sha-sidebar-item-name">{props.title}</span>
+        {/* {renderedIcon} */}
+        <span className="sha-sidebar-item-name">{props.name}</span>
 
-        {props.tooltip && (
-          <Tooltip title={props.tooltip}>
+        {props.label && (
+          <Tooltip title={props.label}>
             <QuestionCircleOutlined className="sha-help-icon" />
           </Tooltip>
         )}

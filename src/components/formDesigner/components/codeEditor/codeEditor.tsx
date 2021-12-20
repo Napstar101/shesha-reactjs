@@ -1,46 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FC } from 'react';
 import { IConfigurableFormComponent } from '../../../../interfaces';
 import { useMetadata } from '../../../../providers';
 import { CodeEditor as BaseCodeEditor } from "../../../..";
+import { ICodeTreeLevel } from '../../../codeEditor/codeCompleter';
+import { IPropertyMetadata } from '../../../../interfaces/metadata';
 
 export interface ICodeEditorProps extends IConfigurableFormComponent {
     placeholder?: string;
     value?: string;
     onChange?: (value: string) => void;
 }
-
-// import type { IAceEditorProps } from 'react-ace';
-// @ts-ignore
-const testCodeItems: ICodeTreeLevel = {
-    data: {
-        value: 'data',
-        caption: 'Current form fields',
-        loaded: false,
-        childs: {
-            Person: {
-                value: 'Person',
-                caption: 'Current person',
-                loaded: true,
-                childs: {
-                    Address: {
-                        value: 'Address',
-                        caption: 'Person Address',
-                        loaded: false
-                    },
-                    FirstName: {
-                        value: 'FirstName',
-                        loaded: false
-                    },
-                    LastName: {
-                        value: 'LastName',
-                        loaded: false
-                    },
-                }
-            }
-        }
-    }
-};
 
 export const CodeEditor: FC<ICodeEditorProps> = (props) => {
     const onChange = (value) => {
@@ -51,9 +21,35 @@ export const CodeEditor: FC<ICodeEditorProps> = (props) => {
 
     //const { editorProps = {}, ...restProps } = props;
 
+    const metaItems = useMemo<ICodeTreeLevel>(() => {
+        if (!Boolean(meta?.metadata))
+            return null;
+
+        const propsToLevel = (properties: IPropertyMetadata[]): ICodeTreeLevel => {
+            const result: ICodeTreeLevel = {};
+            properties.forEach(p => {
+                result[p.path] = {
+                    value: p.path,
+                    caption: p.label,
+                    loaded: true,
+                }
+            });
+            return result;
+        }
+
+        const metaTree: ICodeTreeLevel = {
+            data: {
+                value: 'data',
+                caption: meta.metadata.name,
+                loaded: true,
+                childs: propsToLevel(meta.metadata.properties),
+            }
+        };
+        return metaTree;
+    }, [meta]);
+
     const editorProps = {
-        shaMetadata: meta,
-        shaTestData: testCodeItems,
+        shaMetadata: metaItems,
     };
 
     return (

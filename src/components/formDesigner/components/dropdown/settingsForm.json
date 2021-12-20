@@ -50,7 +50,7 @@
       "type": "numberField",
       "name": "defaultValue",
       "parentId": "root",
-      "label": "Default tValue"
+      "label": "Default Value"
     },
     {
       "id": "fbdb6bb1-5994-4205-86b4-236ca61ae54e",

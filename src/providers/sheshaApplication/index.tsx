@@ -17,6 +17,16 @@ import { AppConfiguratorProvider } from '../appConfigurator';
 import { DynamicModalProvider } from '../dynamicModal';
 import { UiProvider } from '../ui';
 import { MetadataDispatcherProvider } from '..';
+/*
+import { 
+  AppConfiguratorProvider,
+  DynamicModalProvider,
+  UiProvider,
+  MetadataDispatcherProvider,
+  ShaRoutingProvider,
+  AuthProvider,
+  AuthorizationSettingsProvider } from '..';
+*/
 
 export interface IShaApplicationProviderProps {
   backendUrl: string;
