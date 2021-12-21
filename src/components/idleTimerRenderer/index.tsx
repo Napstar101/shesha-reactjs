@@ -1,113 +1,84 @@
+import useInterval from '@use-it/interval';
+import { Modal, Progress } from 'antd';
 import React, { FC, PropsWithChildren, useState } from 'react';
 import IdleTimer from 'react-idle-timer';
-import { Modal, Progress } from 'antd';
-import useInterval from '@use-it/interval';
 import { useAuth } from '../../providers/auth';
 import { useAuthorizationSettings } from '../../providers/authorizationSettings';
-
-const SIXTY = 60;
+import { getPercentage, getStatus, getTimeFormat, MIN_TIME, ONE_SECOND, SIXTY } from './util';
 
 export interface IIdleTimerRendererProps {}
 
+interface IIdleTimerState {
+  readonly isIdle: boolean;
+  readonly remainingTime: number;
+}
+
+const INIT_STATE: IIdleTimerState = {
+  isIdle: false,
+  remainingTime: SIXTY,
+};
+
 export const IdleTimerRenderer: FC<PropsWithChildren<IIdleTimerRendererProps>> = ({ children }) => {
-  // const idleTimerRef = useRef(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [intervalDelay, setIntervalDelay] = useState(0);
-  const [remainingTime, setRemainingTime] = useState(SIXTY);
-  const [hasTimeElapsed, setHasTimeElapsed] = useState(false);
   const { settings } = useAuthorizationSettings();
-  const [timerTimeout, setTimerTimeout] = useState(settings?.autoLogoffTimeout - SIXTY);
+  const { logoutUser, loginInfo } = useAuth();
 
-  const isTimeoutSet = settings?.autoLogoffTimeout > 0;
+  const [state, setState] = useState<IIdleTimerState>(INIT_STATE);
+  const { isIdle, remainingTime: rt } = state;
 
-  const { logoutUser } = useAuth();
+  const autoLogoffTimeout = settings?.autoLogoffTimeout;
 
-  const onAction = (_event: Event) => {
-    // console.log('user did something', event);
-    // console.log('onAction time remaining', idleTimerRef.current.getRemainingTime());
-  };
-
-  const onActive = (_event: Event) => {
-    // console.log('user is active', event);
-    // console.log('time remaining', idleTimerRef.current.getRemainingTime());
-  };
+  const isTimeoutSet = autoLogoffTimeout >= MIN_TIME && !!loginInfo;
+  const timeout = getTimeFormat(autoLogoffTimeout);
+  const visible = isIdle && isTimeoutSet;
 
   useInterval(() => {
-    if (intervalDelay) {
+    if (isIdle) {
       doCountdown();
     }
-  }, intervalDelay);
+  }, ONE_SECOND);
 
-  const onIdle = (_event: Event) => {
-    if (!isTimeoutSet) return;
+  const onAction = (_event: Event) => {};
 
-    if (!hasTimeElapsed) {
-      setIsModalVisible(true);
-      setHasTimeElapsed(true);
-      setTimerTimeout(SIXTY);
-      setIntervalDelay(1000);
-    }
-  };
+  const onActive = (_event: Event) => {};
+
+  const onIdle = (_event: Event) => setState(s => ({ ...s, isIdle: true }));
+
+  const logout = () => logoutUser().then(() => setState(INIT_STATE));
 
   const doCountdown = () => {
-    if (remainingTime === 0) {
-      setIntervalDelay(0);
-      logoutUser();
+    if (!rt) {
+      logout();
     } else {
-      setRemainingTime(currentCount => currentCount - 1);
+      setState(({ remainingTime: r, ...s }) => ({ ...s, remainingTime: r - 1 }));
     }
   };
 
-  const handleOk = () => {
-    logoutUser();
-  };
+  const onOk = () => logout();
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setHasTimeElapsed(false);
-    setIntervalDelay(0);
-    setTimerTimeout(settings?.autoLogoffTimeout - SIXTY);
-    setRemainingTime(SIXTY);
-  };
+  const onCancel = () => setState(s => ({ ...s, isIdle: false, remainingTime: SIXTY }));
 
-  const getPercentage = () => (remainingTime / SIXTY) * 100;
-
-  const getStatus = (): 'normal' | 'success' | 'exception' =>
-    getPercentage() >= 75 ? 'success' : getPercentage() >= 45 ? 'normal' : 'exception';
-
-  if (timerTimeout < 1 || !isTimeoutSet) {
+  if (!isTimeoutSet) {
     return <>{children}</>;
   }
 
   return (
     <div className="sha-idle-timer-renderer">
-      <IdleTimer
-        // ref={idleTimerRef}
-        onAction={onAction}
-        onActive={onActive}
-        onIdle={onIdle}
-        timeout={isTimeoutSet ? timerTimeout * 1000 : null}
-      >
+      <IdleTimer onAction={onAction} onActive={onActive} onIdle={onIdle} timeout={timeout}>
         {children}
         <Modal
           title="You have been idle"
-          visible={isTimeoutSet && isModalVisible}
+          visible={visible}
           cancelText="Keep me signed in"
           okText="Logoff"
-          onOk={handleOk}
-          onCancel={handleCancel}
+          onOk={onOk}
+          onCancel={onCancel}
         >
           <div className="idle-timer-content">
             <span className="idle-timer-content-top-hint">
               You have not been using the application for sometime. Please click on the
               <strong>Keep me signed in</strong> button, else you'll be automatically signed out in
             </span>
-            <Progress
-              type="circle"
-              percent={getPercentage()}
-              status={getStatus()}
-              format={() => <>{remainingTime}</>}
-            />
+            <Progress type="circle" percent={getPercentage(rt)} status={getStatus(rt)} format={() => <>{rt}</>} />
             <span className="idle-timer-content-bottom-hint">
               <strong>seconds</strong>
             </span>
