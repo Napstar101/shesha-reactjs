@@ -1,12 +1,13 @@
 import { FC } from 'react';
 import { Button, Tooltip } from 'antd';
-import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteFilled, LockOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useModelConfigurator } from '../../../providers';
 import DragHandle from './dragHandle';
 import React from 'react';
 //import ShaIcon, { IconType } from '../../shaIcon';
 import classNames from 'classnames';
 import { IModelItem } from '../../../interfaces/modelConfigurator';
+import { MetadataSourceType } from '../../../interfaces/metadata';
 
 export interface IProps extends IModelItem {
   index: number[];
@@ -35,6 +36,9 @@ export const ModelItem: FC<IProps> = props => {
       <div className="sha-sidebar-item-header">
         <DragHandle id={props.id} />
         {/* {renderedIcon} */}
+        
+        { props.source === MetadataSourceType.ApplicationCode && ( <LockOutlined /> ) }
+        
         <span className="sha-sidebar-item-name">{props.name}</span>
 
         {props.label && (

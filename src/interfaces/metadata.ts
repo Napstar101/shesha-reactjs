@@ -8,6 +8,8 @@ export interface IPropertyMetadata {
     orderIndex?: number;
     groupName?: string;
   
+    source?: MetadataSourceType;
+
     //#region data type
     dataType: string;
     dataFormat: string;
@@ -24,6 +26,11 @@ export interface IPropertyMetadata {
     max?: number;
     //isEmail: boolean;
     //#endregion
+  }
+
+  export enum MetadataSourceType {
+    ApplicationCode = 1,
+    UserDefined = 2,
   }
 
   export enum DataTypes {

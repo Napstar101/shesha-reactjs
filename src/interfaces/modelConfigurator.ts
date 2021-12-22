@@ -1,3 +1,5 @@
+import { MetadataSourceType } from "./metadata";
+
 export type SidebarItemType = 'property' | 'group';
 
 export interface IModelItem {
@@ -8,4 +10,5 @@ export interface IModelItem {
   
     itemType?: SidebarItemType;
     label?: string;
+    source?: MetadataSourceType;
 }

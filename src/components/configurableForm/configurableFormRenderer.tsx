@@ -85,6 +85,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
         onFinishFailed={onFinishFailed}
         onValuesChange={onValuesChangeInternal}
         onFieldsChange={onFieldsChange}
+        fields={props.fields}
         initialValues={props.initialValues}
         className={`sha-form sha-form-${formMode} ${isDragging ? 'sha-dragging' : ''}`}
         {...mergedProps}

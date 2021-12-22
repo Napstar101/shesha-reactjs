@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import ConfigurableForm from '.';
 import { Button, Col, Form, Row } from 'antd';
 import { IConfigurableFormProps } from './models';
-import { ShaApplicationProvider, ShaRoutingProvider, StoredFilesProvider } from '../../providers';
+import { ShaApplicationProvider, StoredFilesProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { IndexPageTemplate } from './stories/indexPage';
 import StoredFilesRenderer from '../storedFilesRenderer';
@@ -33,7 +33,7 @@ const Template: Story<IConfigurableFormProps> = () => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer>
-        <ShaRoutingProvider>
+        
           <Row>
             <Col span={24}>
               <ConfigurableForm
@@ -69,7 +69,7 @@ const Template: Story<IConfigurableFormProps> = () => {
               </Button>
             </Col>
           </Row>
-        </ShaRoutingProvider>
+        
       </AuthContainer>
     </ShaApplicationProvider>
   );

@@ -234,7 +234,7 @@
             {
               "id": "8voeOvZX7oxeb_sB0yb3K",
               "label": "int64",
-              "value": "new Value"
+              "value": "int64"
             }
           ]
         }
@@ -364,7 +364,7 @@
         {
           "id": "gSpdji-UoKd6FIiLtGU_k",
           "type": "textField",
-          "name": "EntityType",
+          "name": "entityType",
           "label": "Entity Type",
           "labelAlign": "right",
           "hidden": false,

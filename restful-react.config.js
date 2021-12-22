@@ -6,6 +6,7 @@ const STORYBOOK_BASE_URL = 'http://localhost:21021';
 const ROOT_PATH = './src/apis';
 
 const API_LIST = [
+  /*
   //'Applications',
   'Area',
   'AuthorizationSettings',
@@ -24,6 +25,10 @@ const API_LIST = [
   'TokenAuth',
   'User',
   'Metadata',
+  */
+  'EntityConfig',
+  'EntityProperty',
+  'ModelConfigurations',
 ];
 
 const defaultConfiguration = {

@@ -1,63 +1,23 @@
 import React, { FC } from 'react';
-//import { PropertiesEditor } from './propertiesEditor';
-import modelSettingsMarkup from './modelSettings.json';
-import { ConfigurableForm, ErrorBoundary } from '..';
-import { FormMarkup } from '../../providers/form/models';
-import { Form } from 'antd';
-//import { useDebouncedCallback } from 'use-debounce/lib';
-import { Test } from './test';
+import { ModelConfiguratorProvider } from '../..';
+import { ModelConfiguratorRenderer } from './renderer';
 
-export interface IModelConfiguratorProps { }
+export interface IModelConfiguratorProps {
+  id?: string;
+  name?: string;
+  nameSpace?: string;
+}
 
-export const ModelConfigurator: FC<IModelConfiguratorProps> = () => {
-
-  const [form] = Form.useForm();
-
-  // const onSettingsSave = values => {
-  //   console.log(values);
-  // };
-
-  // const debouncedSave = useDebouncedCallback(
-  //   values => {
-  //     console.log(values);
-  //     //updateItem({ id: selectedItemId, settings: values });
-  //   },
-  //   // delay in ms
-  //   300
-  // );
-
-
+export const ModelConfigurator: FC<IModelConfiguratorProps> = (props) => {
   return (
-    <>
-      <ErrorBoundary>
-        <Test></Test>
-      </ErrorBoundary>
-
-      {true && (
-        <ErrorBoundary>
-          <ConfigurableForm
-            size='small'
-            //formRef={formRef}
-            layout="vertical"
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-            mode="edit"
-            markup={modelSettingsMarkup as FormMarkup}
-            //onFinish={onSettingsSave}
-            form={form}
-            // initialValues={componentModel}
-            //onValuesChange={debouncedSave}
-          ></ConfigurableForm>
-        </ErrorBoundary>
-      )}
-      {/* {false && (
-        <ErrorBoundary>
-          <PropertiesEditor>
-
-          </PropertiesEditor>
-        </ErrorBoundary>
-      )} */}
-    </>
+    <ModelConfiguratorProvider 
+      id={props.id}
+      name ={ props.name }
+      namespace ={ props.nameSpace }
+      items={[]}
+    >
+      <ModelConfiguratorRenderer></ModelConfiguratorRenderer>
+    </ModelConfiguratorProvider>
   );
 };
 

@@ -11,12 +11,26 @@ export interface IUpdateItemSettingsPayload {
   settings: IModelItem;
 }
 
-export interface IModelConfiguratorStateContext {
+export interface IModelSettings {
+  id?: string;
+  className?: string;
+  namespace?: string;
+
+  friendlyName?: string | null;
+  typeShortAlias?: string | null;
+  tableName?: string | null;
+  discriminatorValue?: string | null;
+}
+
+export interface IModelConfiguratorStateContext extends IModelSettings{
   items: IModelItem[];
   selectedItemId?: string;
 }
 
 export interface IModelConfiguratorActionsContext {
+  load: () => void;
+  save: () => Promise<void>;
+  setModelSettings: (settings: IModelSettings) => void;
   addItem: () => void;
   deleteItem: (uid: string) => void;
   selectItem: (uid: string) => void;
@@ -30,12 +44,12 @@ export interface IModelConfiguratorActionsContext {
   /* NEW_ACTION_ACTION_DECLARATIOS_GOES_HERE */
 }
 
-export const SIDEBAR_MENU_CONTEXT_INITIAL_STATE: IModelConfiguratorStateContext = {
+export const MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE: IModelConfiguratorStateContext = {
   items: [],
 };
 
 export const ModelConfiguratorStateContext = createContext<IModelConfiguratorStateContext>(
-  SIDEBAR_MENU_CONTEXT_INITIAL_STATE
+  MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE
 );
 
 export const ModelConfiguratorActionsContext = createContext<IModelConfiguratorActionsContext>(undefined);

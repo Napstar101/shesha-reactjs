@@ -1,454 +1,130 @@
 {
-    "components": [
-      {
-        "id": "aYeIfcjqrSZpmuKd6Fijn",
-        "type": "textField",
-        "name": "name",
-        "label": "Name",
-        "labelAlign": "right",
-        "hidden": false,
-        "customVisibility": null,
-        "autoSize": false,
-        "showCount": false,
-        "allowClear": false,
-        "description": null,
-        "maxLength": null,
-        "parentId": "root",
-        "validate": {
-          "required": true
+  "components": [
+    {
+      "id": "aYeIfcjqrSZpmuKd6Fijn",
+      "type": "textField",
+      "name": "className",
+      "label": "Name",
+      "labelAlign": "right",
+      "hidden": false,
+      "customVisibility": null,
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "description": null,
+      "maxLength": null,
+      "parentId": "root",
+      "validate": {
+        "required": true
+      },
+      "settingsValidationErrors": [],
+      "textType": "text"
+    },
+    {
+      "id": "0XFvEV-W_E2LzxEHjLiGm",
+      "type": "textField",
+      "name": "namespace",
+      "label": "Name Space",
+      "labelAlign": "right",
+      "hidden": false,
+      "customVisibility": null,
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "description": null,
+      "maxLength": null,
+      "parentId": "root",
+      "validate": {
+        "required": true
+      },
+      "settingsValidationErrors": [],
+      "textType": "text"
+    },
+    {
+      "id": "l-9eRC4GuiPRx5qE1Mwrb",
+      "type": "container",
+      "name": "container1",
+      "label": "Container1",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": true,
+      "customVisibility": null,
+      "direction": "vertical",
+      "justifyContent": "left",
+      "settingsValidationErrors": [],
+      "components": [
+        {
+          "textType": "text",
+          "id": "Et3mXGSFcguEx-LcJOMtu",
+          "type": "textField",
+          "name": "typeShortAlias",
+          "label": "Type Short Alias",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
         },
-        "settingsValidationErrors": []
-      },
-      {
-        "id": "0XFvEV-W_E2LzxEHjLiGm",
-        "type": "textField",
-        "name": "label",
-        "label": "Label",
-        "labelAlign": "right",
-        "hidden": false,
-        "customVisibility": null,
-        "autoSize": false,
-        "showCount": false,
-        "allowClear": false,
-        "description": null,
-        "maxLength": null,
-        "parentId": "root",
-        "validate": {
-          "required": true
+        {
+          "textType": "text",
+          "id": "v6t36_JyRvu48U-5Fd_7i",
+          "type": "textField",
+          "name": "tableName",
+          "label": "Table Name",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
         },
-        "settingsValidationErrors": []
-      },
-      {
-        "id": "4SvCStsfdAUCwndFWVxi_",
-        "type": "textArea",
-        "name": "description",
-        "label": "Description",
-        "labelAlign": "right",
-        "hidden": false,
-        "customVisibility": null,
-        "autoSize": false,
-        "showCount": false,
-        "allowClear": false,
-        "description": null,
-        "maxLength": null,
-        "parentId": "root"
-      },
-      {
-        "id": "F7W3qRl8P_Jdv_R2Q-f3u",
-        "type": "dropdown",
-        "name": "dataType",
-        "label": "Data Type",
-        "labelAlign": "right",
-        "parentId": "root",
-        "hidden": false,
-        "customVisibility": null,
-        "mode": [
-          "single"
-        ],
-        "dataSourceType": "values",
-        "validate": {
-          "required": true
+        {
+          "textType": "text",
+          "id": "90iN1bbgFBVW5wzQfEoRh",
+          "type": "textField",
+          "name": "discriminatorValue",
+          "label": "Discriminator Value",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
         },
-        "settingsValidationErrors": [],
-        "values": [
-          {
-            "id": "R8Et3awUms5zQgj2ZlCT-",
-            "label": "string",
-            "value": "string"
-          },
-          {
-            "id": "1vazc9Yx6zJBMlfJxfZsM",
-            "label": "date",
-            "value": "date"
-          },
-          {
-            "id": "mqPLuVfEKgjMvaqqO_ouJ",
-            "label": "time",
-            "value": "time"
-          },
-          {
-            "id": "8skNr05iNJvcT8cftTsE9",
-            "label": "date time",
-            "value": "date-time"
-          },
-          {
-            "id": "Z3TqNTKkc1tjlw-j6PmAD",
-            "label": "entity",
-            "value": "entity"
-          },
-          {
-            "id": "Q0kAdFB4WlsU5Yml32khM",
-            "label": "file",
-            "value": "file"
-          },
-          {
-            "id": "ZGr5SDOzlttoGVm5LOgen",
-            "label": "number",
-            "value": "number"
-          },
-          {
-            "id": "qSKpsp4vwL4QRsfbs6k2Q",
-            "label": "reference list item",
-            "value": "reference-list-item"
-          },
-          {
-            "id": "EQ6Qc_8JnVBaLRsGJIqqQ",
-            "label": "boolean",
-            "value": "boolean"
-          },
-          {
-            "id": "ePVI2HM5PX0ntN1hgmMWJ",
-            "label": "list",
-            "value": "list"
-          }
-        ]
-      },
-      {
-        "id": "7cYicDJe6G4QZySqcHoIM",
-        "type": "container",
-        "name": "string-config",
-        "label": "Container1",
-        "labelAlign": "right",
-        "parentId": "root",
-        "hidden": false,
-        "customVisibility": "return data.dataType == 'string'",
-        "direction": "vertical",
-        "justifyContent": "left",
-        "settingsValidationErrors": [],
-        "components": [
-          {
-            "id": "2ZMc7dhCaBX00rMMK1H3n",
-            "type": "dropdown",
-            "name": "dataFormat",
-            "label": "String format",
-            "labelAlign": "right",
-            "parentId": "7cYicDJe6G4QZySqcHoIM",
-            "hidden": false,
-            "customVisibility": null,
-            "description": null,
-            "mode": "single",
-            "dataSourceType": "values",
-            "referenceListNamespace": null,
-            "referenceListName": null,
-            "validate": {},
-            "settingsValidationErrors": [],
-            "values": [
-              {
-                "id": "rwi4vhiLvAT9K23e_Ksgj",
-                "label": "single line",
-                "value": "singleline"
-              },
-              {
-                "id": "x-TvGzV2iRDO2i6YV9j3X",
-                "label": "multiline",
-                "value": "multiline"
-              },
-              {
-                "id": "--5BYr5Bdo5iypUL7CqIx",
-                "label": "html",
-                "value": "html"
-              },
-              {
-                "id": "D-c1l644RII3Lb3k3rQAt",
-                "label": "json",
-                "value": "json"
-              },
-              {
-                "id": "BOmZUc1tVLECruteER2lw",
-                "label": "javascript",
-                "value": "javascript"
-              },
-              {
-                "id": "6bdzeIQhcc81pDS2QJU4J",
-                "label": "email",
-                "value": "password"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "ipxZABhhFbnZBrO1iijxF",
-        "type": "container",
-        "name": "container2",
-        "label": "Container2",
-        "labelAlign": "right",
-        "parentId": "root",
-        "hidden": false,
-        "customVisibility": "return data.dataType === 'number'",
-        "direction": "vertical",
-        "justifyContent": "left",
-        "settingsValidationErrors": [],
-        "components": [
-          {
-            "id": "V6PekH9pFf_Qu-vmaKxfz",
-            "type": "dropdown",
-            "name": "dataFormat",
-            "label": "Number format",
-            "labelAlign": "right",
-            "parentId": "ipxZABhhFbnZBrO1iijxF",
-            "hidden": false,
-            "customVisibility": null,
-            "mode": [
-              "single"
-            ],
-            "dataSourceType": "values",
-            "validate": {},
-            "settingsValidationErrors": [],
-            "values": [
-              {
-                "id": "h0LdMbbQrqIvARnQmeKGZ",
-                "label": "float",
-                "value": "double"
-              },
-              {
-                "id": "nUxe-TK4m6R9JVenT-v3m",
-                "label": "double",
-                "value": "double"
-              },
-              {
-                "id": "4GuxqgahDOQeGhCPcIMYV",
-                "label": "int32",
-                "value": "int32"
-              },
-              {
-                "id": "8voeOvZX7oxeb_sB0yb3K",
-                "label": "int64",
-                "value": "new Value"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "gTpIAiV940w7puAHNwu5H",
-        "type": "container",
-        "name": "container3",
-        "label": "Data Type",
-        "labelAlign": "right",
-        "parentId": "root",
-        "hidden": false,
-        "customVisibility": "return data.dataType === 'reference-list-item'",
-        "direction": "vertical",
-        "justifyContent": "left",
-        "settingsValidationErrors": [],
-        "mode": [
-          "single"
-        ],
-        "dataSourceType": "values",
-        "validate": {
-          "required": false
-        },
-        "values": [
-          {
-            "id": "R8Et3awUms5zQgj2ZlCT-",
-            "label": "string",
-            "value": "string"
-          },
-          {
-            "id": "1vazc9Yx6zJBMlfJxfZsM",
-            "label": "date",
-            "value": "date"
-          },
-          {
-            "id": "mqPLuVfEKgjMvaqqO_ouJ",
-            "label": "time",
-            "value": "time"
-          },
-          {
-            "id": "8skNr05iNJvcT8cftTsE9",
-            "label": "date time",
-            "value": "date-time"
-          },
-          {
-            "id": "Z3TqNTKkc1tjlw-j6PmAD",
-            "label": "entity",
-            "value": "entity"
-          },
-          {
-            "id": "Q0kAdFB4WlsU5Yml32khM",
-            "label": "file",
-            "value": "file"
-          },
-          {
-            "id": "ZGr5SDOzlttoGVm5LOgen",
-            "label": "number",
-            "value": "number"
-          },
-          {
-            "id": "qSKpsp4vwL4QRsfbs6k2Q",
-            "label": "reference list item",
-            "value": "reference-list-item"
-          },
-          {
-            "id": "EQ6Qc_8JnVBaLRsGJIqqQ",
-            "label": "boolean",
-            "value": "boolean"
-          },
-          {
-            "id": "ePVI2HM5PX0ntN1hgmMWJ",
-            "label": "list",
-            "value": "list"
-          }
-        ],
-        "components": [
-          {
-            "id": "4bT3OMjJ9ssaBvfBkvNIl",
-            "type": "textField",
-            "name": "referenceListName",
-            "label": "Reference List name",
-            "labelAlign": "right",
-            "hidden": false,
-            "customVisibility": null,
-            "autoSize": false,
-            "showCount": false,
-            "allowClear": false,
-            "description": null,
-            "maxLength": null,
-            "parentId": "gTpIAiV940w7puAHNwu5H",
-            "validate": {},
-            "settingsValidationErrors": []
-          },
-          {
-            "id": "dsiSpDTinQZxtfTlJW4AE",
-            "type": "textField",
-            "name": "referenceListNamespace",
-            "label": "Reference List namespace",
-            "labelAlign": "right",
-            "hidden": false,
-            "customVisibility": null,
-            "autoSize": false,
-            "showCount": false,
-            "allowClear": false,
-            "description": null,
-            "maxLength": null,
-            "parentId": "gTpIAiV940w7puAHNwu5H",
-            "validate": {},
-            "settingsValidationErrors": []
-          }
-        ]
-      },
-      {
-        "id": "MwjxidwaPufFS-PixP6_j",
-        "type": "container",
-        "name": "container4",
-        "label": "Container4",
-        "labelAlign": "right",
-        "parentId": "root",
-        "hidden": false,
-        "customVisibility": "return data.dataType === 'entity'",
-        "direction": "vertical",
-        "justifyContent": "left",
-        "settingsValidationErrors": [],
-        "components": [
-          {
-            "id": "gSpdji-UoKd6FIiLtGU_k",
-            "type": "textField",
-            "name": "EntityType",
-            "label": "Entity Type",
-            "labelAlign": "right",
-            "hidden": false,
-            "customVisibility": null,
-            "autoSize": false,
-            "showCount": false,
-            "allowClear": false,
-            "maxLength": null,
-            "parentId": "MwjxidwaPufFS-PixP6_j",
-            "mode": [
-              "single"
-            ],
-            "dataSourceType": "values",
-            "validate": {
-              "required": false
-            },
-            "values": [
-              {
-                "id": "R8Et3awUms5zQgj2ZlCT-",
-                "label": "string",
-                "value": "string"
-              },
-              {
-                "id": "1vazc9Yx6zJBMlfJxfZsM",
-                "label": "date",
-                "value": "date"
-              },
-              {
-                "id": "mqPLuVfEKgjMvaqqO_ouJ",
-                "label": "time",
-                "value": "time"
-              },
-              {
-                "id": "8skNr05iNJvcT8cftTsE9",
-                "label": "date time",
-                "value": "date-time"
-              },
-              {
-                "id": "Z3TqNTKkc1tjlw-j6PmAD",
-                "label": "entity",
-                "value": "entity"
-              },
-              {
-                "id": "Q0kAdFB4WlsU5Yml32khM",
-                "label": "file",
-                "value": "file"
-              },
-              {
-                "id": "ZGr5SDOzlttoGVm5LOgen",
-                "label": "number",
-                "value": "number"
-              },
-              {
-                "id": "qSKpsp4vwL4QRsfbs6k2Q",
-                "label": "reference list item",
-                "value": "reference-list-item"
-              },
-              {
-                "id": "EQ6Qc_8JnVBaLRsGJIqqQ",
-                "label": "boolean",
-                "value": "boolean"
-              },
-              {
-                "id": "ePVI2HM5PX0ntN1hgmMWJ",
-                "label": "list",
-                "value": "list"
-              }
-            ],
-            "settingsValidationErrors": [],
-            "textType": "text",
-            "description": null
-          }
-        ]
-      }
-    ],
-    "formSettings": {
-      "layout": "horizontal",
-      "colon": true,
-      "labelCol": {
-        "span": 5
-      },
-      "wrapperCol": {
-        "span": 13
-      },
-      "modelType": "Shesha.Framework.EntityProperty"
+        {
+          "textType": "text",
+          "id": "-X1emhZPx1rM7w22GOcCp",
+          "type": "textField",
+          "name": "friendlyName",
+          "label": "Friendly Name",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
+        }
+      ]
     }
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": {
+      "span": 5
+    },
+    "wrapperCol": {
+      "span": 13
+    },
+    "modelType": "Shesha.Framework.EntityConfig"
   }
+}

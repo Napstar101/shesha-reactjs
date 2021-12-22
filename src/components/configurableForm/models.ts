@@ -18,6 +18,7 @@ export interface IConfigurableFormRendererProps<Values = any, FieldData = any> e
   initialValues?: Store;
   onValuesChange?: (changedValues: any, values: Values) => void;
   onFieldsChange?: (changedFields: FieldData[], allFields: FieldData[]) => void;
+  fields?: FieldData[];
   onFinish?: (values: Values) => void;
   onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
   form?: FormInstance<any>;

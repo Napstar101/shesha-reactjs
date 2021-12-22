@@ -35,3 +35,4 @@ src/apis/reportingReport.tsx
 src/apis/reportingReportParameter.tsx
 src/components/crudViews/editModal.stories.tsx
 *.playground.stories.tsx
+storybook-static

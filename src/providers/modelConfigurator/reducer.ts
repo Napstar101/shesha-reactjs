@@ -2,16 +2,55 @@ import {
   IModelConfiguratorStateContext,
   IUpdateChildItemsPayload,
   IUpdateItemSettingsPayload,
-  SIDEBAR_MENU_CONTEXT_INITIAL_STATE,
+  MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE,
 } from './contexts';
 import { ModelActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
 import { getItemPositionById } from './utils';
 import { IModelItem } from '../../interfaces/modelConfigurator';
 import { nanoid } from 'nanoid/non-secure';
+import { ModelConfigurationDto } from '../../apis/modelConfigurations';
 
 const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
   {
+    [ModelActionEnums.LoadRequest]: (state: IModelConfiguratorStateContext) => {
+      return {
+        ...state,
+        //id: payload
+      };
+    },
+
+    [ModelActionEnums.LoadSuccess]: (
+      state: IModelConfiguratorStateContext,
+      action: ReduxActions.Action<ModelConfigurationDto>
+    ) => {
+      const { payload } = action;
+
+      console.log('reducer: loaded', payload);
+
+      const items: IModelItem[] = payload.properties.map<IModelItem>(p => ({
+        id: p.id,
+        name: p.name,
+        itemType: 'property',
+        label: p.label,
+        //source: p.s
+      }));
+
+      return {
+        ...state,
+        className: payload.className,
+        namespace: payload.namespace,
+        items: items,
+
+        /*
+        friendlyName: payload.friendlyName,
+        typeShortAlias: payload.typeShortAlias,
+        tableName: payload.tableName,
+        discriminatorValue: payload.discriminatorValue,
+        */
+      };
+    },
+
     [ModelActionEnums.AddItem]: (state: IModelConfiguratorStateContext) => {
       const itemProps: IModelItem = {
         id: nanoid(),
@@ -152,7 +191,7 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
     },
   },
 
-  SIDEBAR_MENU_CONTEXT_INITIAL_STATE
+  MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE
 );
 
 export default modelReducer;
