@@ -44,6 +44,7 @@ import Statistic from '../../../components/formDesigner/components/statistic';
 import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
 import CodeEditor from '../../../components/formDesigner/components/codeEditor';
 import EditableTagGroup from '../../../components/formDesigner/components/editableTagGroup';
+import List from '../../../components/formDesigner/components/list';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -88,6 +89,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       PropertyAutocomplete,
       CodeEditor,
       EditableTagGroup,
+      List,
     ],
   },
   {
