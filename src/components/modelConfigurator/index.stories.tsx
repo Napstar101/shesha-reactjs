@@ -28,6 +28,10 @@ const Template: Story<IModelConfiguratorProps> = args => (
 export const NewModel = addStory(Template, {
 });
 
-export const ExistingModel = addStory(Template, {
-  id: '9353E349-6904-4C09-A679-9D02A350CF62',
+export const PersonModel = addStory(Template, {
+  id: '0789BFDA-2864-451B-BC38-9F58F70BA11A',
+});
+
+export const EntityPropertyModel = addStory(Template, {
+  id: '45AE2FE8-255B-462E-BDD8-FDA5C591AE08',
 });

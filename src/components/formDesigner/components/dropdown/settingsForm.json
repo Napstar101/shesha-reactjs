@@ -9,7 +9,7 @@
     },
     {
       "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
-      "type": "propertyAutocomplete",
+      "type": "textField",
       "name": "name",
       "parentId": "root",
       "label": "Name",
@@ -50,7 +50,9 @@
       "type": "numberField",
       "name": "defaultValue",
       "parentId": "root",
-      "label": "Default Value"
+      "label": "Default Value",
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "fbdb6bb1-5994-4205-86b4-236ca61ae54e",
@@ -153,31 +155,48 @@
       "dataSourceType": "values"
     },
     {
-      "id": "99bb19ad-1587-4f75-b738-ea6a075672b0",
-      "type": "textField",
-      "name": "referenceListNamespace",
+      "id": "ELxx5jarWvInJXJF5xHN2",
+      "type": "container",
+      "name": "container1",
+      "label": "Container1",
+      "labelAlign": "right",
       "parentId": "root",
-      "label": "ReferenceList Namespace",
-      "customVisibility": "return data.dataSourceType === 'referenceList'"
-    },
-    {
-      "id": "bd7a7eaa-021f-4f62-ac33-2aba0299d237",
-      "type": "textField",
-      "name": "referenceListName",
-      "parentId": "root",
-      "label": "ReferenceList Name",
-      "customVisibility": "return data.dataSourceType === 'referenceList'"
-    },
-    {
-      "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc5",
-      "type": "textArea",
-      "name": "ignoredValues",
-      "parentId": "root",
-      "label": "Ignored Values",
-      "autoSize": false,
-      "showCount": false,
-      "allowClear": true,
-      "description": "Pass an integer array of values you want to ignore like so: [1, 2, 3]. Each represents ReferenceList.ItemValue"
+      "hidden": false,
+      "customVisibility": "return data.dataSourceType === 'referenceList'",
+      "direction": "vertical",
+      "justifyContent": "left",
+      "settingsValidationErrors": [],
+      "components": [
+        {
+          "id": "99bb19ad-1587-4f75-b738-ea6a075672b0",
+          "type": "textField",
+          "name": "referenceListNamespace",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "label": "ReferenceList Namespace",
+          "customVisibility": "",
+          "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
+          "id": "bd7a7eaa-021f-4f62-ac33-2aba0299d237",
+          "type": "textField",
+          "name": "referenceListName",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "label": "ReferenceList Name",
+          "customVisibility": "return data.dataSourceType === 'referenceList'"
+        },
+        {
+          "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc5",
+          "type": "textArea",
+          "name": "ignoredValues",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "label": "Ignored Values",
+          "autoSize": false,
+          "showCount": false,
+          "allowClear": true,
+          "description": "Pass an integer array of values you want to ignore like so: [1, 2, 3]. Each represents ReferenceList.ItemValue"
+        }
+      ]
     },
     {
       "id": "eeea4825-2659-4d17-9c44-066b4636d4d7",

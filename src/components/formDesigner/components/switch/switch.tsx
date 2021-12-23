@@ -16,7 +16,7 @@ const SwitchComponent: IToolboxComponent<ISwitchProps> = {
   type: 'switch',
   name: 'Switch',
   icon: <SwitcherOutlined />,
-  dataTypes: [DataTypes.boolean],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.boolean,
   factory: (model: ISwitchProps) => {
     return (
       <ConfigurableFormItem model={model}>

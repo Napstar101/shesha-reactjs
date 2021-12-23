@@ -17,7 +17,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   type: 'dropdown',
   name: 'Dropdown',
   icon: <DownSquareOutlined />,
-  dataTypes: [DataTypes.refListValue],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.referenceListItem,
   factory: (model: IDropdownProps) => {
     return (
       <ConfigurableFormItem model={model}>
@@ -32,7 +32,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
       ...model,
       label: metadata.label,
       description: metadata.description,
-      dataSourceType: metadata.dataType === DataTypes.refListValue
+      dataSourceType: metadata.dataType === DataTypes.referenceListItem
           ? 'referenceList'
           : 'values',
       referenceListNamespace: metadata.referenceListNamespace,

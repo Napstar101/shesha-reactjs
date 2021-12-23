@@ -16,7 +16,7 @@ const CheckboxComponent: IToolboxComponent<ICheckboxProps> = {
   type: 'checkbox',
   name: 'Checkbox',
   icon: <CheckSquareOutlined />,
-  dataTypes: [DataTypes.boolean],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.boolean,
   factory: (model: ICheckboxProps) => {
 
     return (

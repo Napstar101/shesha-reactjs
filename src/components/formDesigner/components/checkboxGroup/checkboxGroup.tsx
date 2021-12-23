@@ -24,7 +24,7 @@ const TextField: IToolboxComponent<ICheckboxGoupProps> = {
   type: 'checkboxGroup',
   name: 'Checkbox group',
   icon: <ProfileOutlined />,
-  dataTypes: [DataTypes.array],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.array,
   factory: (model: ICheckboxGoupProps) => {
     const { items = [] } = model;
     const checkItems = items.map(item => ({ label: item.name, value: item.value }));

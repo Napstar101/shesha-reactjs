@@ -69,9 +69,9 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
   validateSettings?: (model: T) => Promise<any>;
 
   /**
-   * Supported data types
+   * Return true to indicate that the data type is supported by the component
    */
-  dataTypes?: string[];
+  dataTypeSupported?: (dataTypeInfo: { dataType: string; dataFormat?: string }) => boolean;
 }
 
 export interface IToolboxComponentGroup {

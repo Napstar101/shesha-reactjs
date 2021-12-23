@@ -27,7 +27,7 @@ const TextField: IToolboxComponent<IRadioProps> = {
   type: 'radio',
   name: 'Radio',
   icon: <CheckCircleOutlined />,
-  dataTypes: [DataTypes.array],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.array,
   factory: (model: IRadioProps) => {
     const { items = [] } = model;
     return (

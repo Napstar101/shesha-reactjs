@@ -57,6 +57,7 @@ export const FormSettingsEditor: FC<IFormSettingsEditorProps> = ({ isVisible, cl
         initialValues={formSettings}
         //onValuesChange={debouncedUpdateFormSettings}
       ></ConfigurableForm>
+      <pre>{JSON.stringify(formSettings, null, 2)}</pre>
     </Modal>
   );
 };

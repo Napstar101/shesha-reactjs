@@ -15,7 +15,7 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   type: 'numberField',
   name: 'Number field',
   icon: <NumberOutlined />,
-  dataTypes: [DataTypes.int32, DataTypes.int64, DataTypes.double, DataTypes.float],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.number,
   factory: (model: INumberFieldProps) => {
     return (
       <ConfigurableFormItem model={model}>

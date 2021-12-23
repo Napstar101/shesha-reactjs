@@ -1,4 +1,4 @@
-
+/*
 export const BaseDataTypes = {
     string: 'string',
     number: 'number',
@@ -35,4 +35,31 @@ export const DataTypes = {
     boolean: BaseDataTypes.boolean,
     refListValue: `${BaseDataTypes.number}:${DataFormats.refListValue}`,
     array: BaseDataTypes.array // not used, to be reviewed
+}
+*/
+export const DataTypes = {
+    guid: 'guid',
+    string: 'string',
+    number: 'number',
+    date: 'date',
+    time: 'time',
+    dateTime: 'date-time',
+    entityReference: 'entity',
+    file: 'file',
+    referenceListItem: 'reference-list-item',
+    boolean: 'boolean',
+    array: 'array',
+    object: 'object',
+}
+
+export const StringFormats = {
+    singleline: "singleline",
+    multiline: "multiline",
+    html: "html",
+    json: "json",
+    javascript: "javascript",
+    password: "password",
+    emailAddress: "email",
+    phoneNumber: "phone",
+    url: "url",
 }

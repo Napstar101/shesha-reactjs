@@ -20,7 +20,7 @@ const EditableTagGroupComponent: IToolboxComponent<ITagsOutlinedComponentProps> 
   type: 'editableTagGroup',
   name: 'TagsOutlined',
   icon: <HomeOutlined />,
-  dataTypes: [DataTypes.array],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.array,
   factory: (model: ITagsOutlinedComponentProps) => {
     return (
       <ConfigurableFormItem model={model}>

@@ -31,7 +31,7 @@ export const getItemPositionById = (items: IModelItem[], id: string): IItemPosit
         index,
       };
 
-    const childs = item.childItems;
+    const childs = item.properties;
     if (childs) {
       const itemPosition = getItemPositionById(childs, id);
       if (itemPosition) return itemPosition;

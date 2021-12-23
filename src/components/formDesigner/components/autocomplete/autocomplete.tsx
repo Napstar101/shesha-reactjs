@@ -24,7 +24,7 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
   type: 'autocomplete',
   name: 'Autocomplete',
   icon: <FileSearchOutlined />,
-  dataTypes: [DataTypes.entityReference],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.entityReference,
   factory: (model: IAutocompleteProps) => {
     const { formData } = useForm();
     const dataSourceUrl = model.dataSourceUrl

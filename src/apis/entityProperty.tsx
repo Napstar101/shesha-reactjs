@@ -6,6 +6,11 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
 /**
+ * Indicate the source of the entity/property metadata
+ */
+export type MetadataSourceType = 1 | 2;
+
+/**
  * Entity property DTO
  */
 export interface EntityPropertyDto {
@@ -27,6 +32,10 @@ export interface EntityPropertyDto {
    */
   dataType?: string | null;
   /**
+   * Data format
+   */
+  dataFormat?: string | null;
+  /**
    * Entity type. Aplicable for entity references
    */
   entityType?: string | null;
@@ -38,6 +47,7 @@ export interface EntityPropertyDto {
    * Reference list namespace
    */
   referenceListNamespace?: string | null;
+  source?: MetadataSourceType;
 }
 
 export interface ValidationErrorInfo {

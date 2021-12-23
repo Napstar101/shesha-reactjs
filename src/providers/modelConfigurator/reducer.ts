@@ -26,14 +26,19 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
     ) => {
       const { payload } = action;
 
-      console.log('reducer: loaded', payload);
-
       const items: IModelItem[] = payload.properties.map<IModelItem>(p => ({
         id: p.id,
         name: p.name,
         itemType: 'property',
         label: p.label,
-        //source: p.s
+        description: p.description,
+        dataType: p.dataType,
+        dataFormat: p.dataFormat,
+        entityType: p.entityType,
+        referenceListName: p.referenceListName,
+        referenceListNamespace: p.referenceListNamespace,
+        source: p.source,
+        //properties: p.properties,
       }));
 
       return {
@@ -47,7 +52,7 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
         typeShortAlias: payload.typeShortAlias,
         tableName: payload.tableName,
         discriminatorValue: payload.discriminatorValue,
-        */
+        */       
       };
     },
 
@@ -56,7 +61,7 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
         id: nanoid(),
         itemType: 'property',
         name: `New property`,
-        childItems: [],
+        //childItems: [],
       };
 
       const newItems = [...state.items];
@@ -149,10 +154,10 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
       const lastIndex = blockIndex.pop();
 
       // search for a parent item
-      const lastArr = blockIndex.reduce((arr, i) => arr[i]['childItems'], newItems);
+      const lastArr = blockIndex.reduce((arr, i) => arr[i]['properties'], newItems);
 
       // and set a list of childs
-      lastArr[lastIndex]['childItems'] = childIds;
+      lastArr[lastIndex]['properties'] = childIds;
 
       return {
         ...state,
@@ -165,7 +170,7 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
         id: nanoid(),
         itemType: 'group',
         name: `New Group`,
-        childItems: [],
+        properties: [],
       };
 
       return {
@@ -199,7 +204,7 @@ export default modelReducer;
 function removeIdDeep(list: IModelItem[], idToRemove: string) {
   const filtered = list.filter(entry => entry.id !== idToRemove);
   return filtered.map(entry => {
-    if (!entry.childItems) return entry;
-    return { ...entry, childItems: removeIdDeep(entry.childItems, idToRemove) };
+    if (!entry.properties) return entry;
+    return { ...entry, childItems: removeIdDeep(entry.properties, idToRemove) };
   });
 }

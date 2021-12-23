@@ -63,7 +63,7 @@ const TimeField: IToolboxComponent<ITimePickerProps> = {
   type: 'timePicker',
   name: 'Time Picker',
   icon: <ClockCircleOutlined />,
-  dataTypes: [DataTypes.time],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.time,
   factory: (model: ITimePickerProps) => {
     return (
       <Fragment>

@@ -28,8 +28,7 @@ import {
 } from './actions';
 import { getItemById } from './utils';
 import { IModelItem } from '../../interfaces/modelConfigurator';
-import { EntityConfigDto, /*entityConfigGet,*/ entityConfigUpdate } from '../../apis/entityConfig';
-import { /*ModelConfigurationDto,*/ modelConfigurationsGetById } from '../../apis/modelConfigurations';
+import { EntityPropertyDto, ModelConfigurationDto, modelConfigurationsGetById, modelConfigurationsUpdate } from '../../apis/modelConfigurations';
 import { useSheshaApplication } from '../../providers';
 
 export interface IModelConfiguratorProviderPropsBase {
@@ -54,12 +53,6 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
     id: props.id,
   });
 
-  /*
-  const { refetch: fetchConfig, data: fetchedConfig, error: _fetchError } = useEntityConfigGet({ lazy: true, queryParams: { id: props.id } });
-  useEffect(() => {
-    console.log({ fetchedConfig });
-  }, [fetchedConfig]);
-  */
   const addItem = () => {
     dispatch(addItemAction());
   };
@@ -97,15 +90,13 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   const load = () => {
-    if (state.id){
+    if (state.id) {
       dispatch(loadRequestAction());
 
       // { name: state.className, namespace: state.namespace }
       modelConfigurationsGetById({ id: state.id, base: backendUrl })
         .then(response => {
-          if (response.success)
-          {
-            console.log('fetched config', response.result);
+          if (response.success) {
             dispatch(loadSuccessAction(response.result));
           }
           else
@@ -117,25 +108,6 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
     }
     else
       console.error("Failed to fetch a model configuraiton by Id - Id not specified");
-
-    /*
-    if (props.id){
-      dispatch(loadRequestAction());
-
-      entityConfigGet({ id: state.id }, { base: backendUrl })
-        .then(response => {
-          if (response.success)
-            dispatch(loadSuccessAction(response.result));
-          else
-            dispatch(loadErrorAction(response.error));
-        })
-        .catch(e => {
-          dispatch(loadErrorAction({ message: 'Failed to load model', details: e }));
-        });
-    }
-    else
-      console.error("Failed to fetch a model configuraiton by Id - Id not specified");
-    */
   }
 
   const save = (): Promise<void> => {
@@ -145,18 +117,14 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
 
     dispatch(saveRequestAction());
 
-    const dto: EntityConfigDto = {
+    const dto: ModelConfigurationDto = {
       id: state.id,
       namespace: state.namespace,
       className: state.className,
-
-      friendlyName: state.friendlyName,
-      typeShortAlias: state.typeShortAlias,
-      tableName: state.tableName,
-      discriminatorValue: state.discriminatorValue,
+      properties: state.items.map<EntityPropertyDto>(p => ({ ...p }))
     };
 
-    return entityConfigUpdate(dto, { base: backendUrl })
+    return modelConfigurationsUpdate(dto, { base: backendUrl })
       .then(response => {
         if (response.success)
           dispatch(saveSuccessAction(response.result));
@@ -184,7 +152,7 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
           updateItem,
           addGroup,
           deleteGroup,
-          load, 
+          load,
           save,
           setModelSettings,
           /* NEW_ACTION_GOES_HERE */

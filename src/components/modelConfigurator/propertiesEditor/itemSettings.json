@@ -17,7 +17,8 @@
       "validate": {
         "required": true
       },
-      "settingsValidationErrors": []
+      "settingsValidationErrors": [],
+      "textType": "text"
     },
     {
       "id": "0XFvEV-W_E2LzxEHjLiGm",
@@ -118,8 +119,8 @@
         },
         {
           "id": "ePVI2HM5PX0ntN1hgmMWJ",
-          "label": "list",
-          "value": "list"
+          "label": "array",
+          "value": "array"
         }
       ]
     },
@@ -180,8 +181,18 @@
             },
             {
               "id": "6bdzeIQhcc81pDS2QJU4J",
-              "label": "email",
+              "label": "password",
               "value": "password"
+            },
+            {
+              "id": "xmJyjeobf5hRpr5uBDhJw",
+              "label": "email",
+              "value": "email"
+            },
+            {
+              "id": "5ksY0OlNdBo2jdlgWsbtD",
+              "label": "phone",
+              "value": "phone"
             }
           ]
         }
@@ -362,80 +373,22 @@
       "settingsValidationErrors": [],
       "components": [
         {
-          "id": "gSpdji-UoKd6FIiLtGU_k",
-          "type": "textField",
+          "id": "t9Ii1vy0dOVj1S2hSnaJD",
+          "type": "autocomplete",
           "name": "entityType",
           "label": "Entity Type",
           "labelAlign": "right",
+          "parentId": "MwjxidwaPufFS-PixP6_j",
           "hidden": false,
           "customVisibility": null,
-          "autoSize": false,
-          "showCount": false,
-          "allowClear": false,
-          "maxLength": null,
-          "parentId": "MwjxidwaPufFS-PixP6_j",
-          "mode": [
-            "single"
-          ],
-          "dataSourceType": "values",
-          "validate": {
-            "required": false
-          },
-          "values": [
-            {
-              "id": "R8Et3awUms5zQgj2ZlCT-",
-              "label": "string",
-              "value": "string"
-            },
-            {
-              "id": "1vazc9Yx6zJBMlfJxfZsM",
-              "label": "date",
-              "value": "date"
-            },
-            {
-              "id": "mqPLuVfEKgjMvaqqO_ouJ",
-              "label": "time",
-              "value": "time"
-            },
-            {
-              "id": "8skNr05iNJvcT8cftTsE9",
-              "label": "date time",
-              "value": "date-time"
-            },
-            {
-              "id": "Z3TqNTKkc1tjlw-j6PmAD",
-              "label": "entity",
-              "value": "entity"
-            },
-            {
-              "id": "Q0kAdFB4WlsU5Yml32khM",
-              "label": "file",
-              "value": "file"
-            },
-            {
-              "id": "ZGr5SDOzlttoGVm5LOgen",
-              "label": "number",
-              "value": "number"
-            },
-            {
-              "id": "qSKpsp4vwL4QRsfbs6k2Q",
-              "label": "reference list item",
-              "value": "reference-list-item"
-            },
-            {
-              "id": "EQ6Qc_8JnVBaLRsGJIqqQ",
-              "label": "boolean",
-              "value": "boolean"
-            },
-            {
-              "id": "ePVI2HM5PX0ntN1hgmMWJ",
-              "label": "list",
-              "value": "list"
-            }
-          ],
+          "dataSourceType": "url",
+          "useRawValues": true,
+          "description": null,
+          "validate": {},
+          "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
           "settingsValidationErrors": [],
-          "textType": "text",
-          "description": null
+          "maxLength": null,
+          "textType": "text"
         }
       ]
     }

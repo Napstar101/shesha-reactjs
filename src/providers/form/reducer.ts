@@ -44,7 +44,10 @@ const addComponentToFlatStructure = (structure: IFlatComponentsStructure, formCo
 }
 
 const createComponentForProperty = (components: IToolboxComponentGroup[], propertyMetadata: IPropertyMetadata): IConfigurableFormComponent => {
-  const toolboxComponent = findToolboxComponent(components, c => (c.dataTypes ?? []).indexOf(propertyMetadata.dataType) > -1);
+  const toolboxComponent = findToolboxComponent(
+    components, 
+    c => Boolean(c.dataTypeSupported) && c.dataTypeSupported({ dataType: propertyMetadata.dataType, dataFormat: propertyMetadata.dataFormat })
+  );
   if (!Boolean(toolboxComponent))
     return null;
 

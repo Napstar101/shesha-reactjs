@@ -37,7 +37,7 @@ export const ModelGroup: FC<IProps> = props => {
           <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
         </div>
         <div className="sha-sidebar-group-container">
-          <ItemsContainer index={props.index} items={props.childItems || []} />
+          <ItemsContainer index={props.index} items={props.properties || []} />
         </div>
         {/* { props.childItems && props.childItems.map((item, index) => {
           return <ModelItem {...item} key={index} index={[ ...props.index, index ]} />

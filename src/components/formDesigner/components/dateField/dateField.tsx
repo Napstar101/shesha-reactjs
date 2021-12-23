@@ -66,7 +66,7 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   type: 'dateField',
   name: 'Date field',
   icon: <CalendarOutlined />,
-  dataTypes: [DataTypes.date, DataTypes.dateTime],
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.date || dataType === DataTypes.dateTime,
   factory: (model: IDateFieldProps) => {
     return (
       <Fragment>

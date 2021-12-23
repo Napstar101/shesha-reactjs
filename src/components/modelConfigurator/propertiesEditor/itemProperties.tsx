@@ -8,7 +8,7 @@ import { ConfigurableFormInstance } from '../../../providers/form/contexts';
 import itemSettingsJson from './itemSettings.json';
 import groupSettingsJson from './groupSettings.json';
 
-export interface IProps {}
+export interface IProps { }
 
 export const ToolbarItemProperties: FC<IProps> = () => {
   const { selectedItemId, getItem, updateItem } = useModelConfigurator();
@@ -48,19 +48,22 @@ export const ToolbarItemProperties: FC<IProps> = () => {
         ? groupSettingsJson as FormMarkup
         : itemSettingsJson as FormMarkup;
     return (
-      <ConfigurableForm
-        size='small'
-        formRef={formRef}
-        layout="vertical"
-        labelCol={{ span: 24 }}
-        wrapperCol={{ span: 24 }}
-        mode="edit"
-        markup={markup}
-        onFinish={onSettingsSave}
-        form={form}
-        initialValues={componentModel}
-        onValuesChange={debouncedSave}
-      ></ConfigurableForm>
+      <>
+        <ConfigurableForm
+          size='small'
+          formRef={formRef}
+          layout="vertical"
+          labelCol={{ span: 24 }}
+          wrapperCol={{ span: 24 }}
+          mode="edit"
+          markup={markup}
+          onFinish={onSettingsSave}
+          form={form}
+          initialValues={componentModel}
+          onValuesChange={debouncedSave}
+        ></ConfigurableForm>
+        <pre>{JSON.stringify(componentModel, null, 2)}</pre>
+      </>
     );
   };
 
