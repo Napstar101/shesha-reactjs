@@ -3,34 +3,25 @@ import modelSettingsMarkup from '../modelSettings.json';
 import { ErrorBoundary } from '../..';
 import ConfigurableForm from '../../configurableForm';
 import { FormMarkup } from '../../../providers/form/models';
-import { Form } from 'antd';
-import { useDebouncedCallback } from 'use-debounce/lib';
-import PropertiesEditor from '../propertiesEditor';
+import { PropertiesEditorComponent } from '../propertiesEditor';
 import { ModelConfiguratorToolbar } from '../toolbar';
 import { useModelConfigurator } from '../../..';
+import { message } from 'antd';
 
 export interface IModelConfiguratorRendererProps {
 }
 
 export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = () => {
-  const [form] = Form.useForm();
-  const { className, namespace, friendlyName, discriminatorValue, tableName, typeShortAlias, setModelSettings } = useModelConfigurator();
+  const { modelConfiguration, form, save, id } = useModelConfigurator();
 
   const onSettingsSave = values => {
-    console.log(values);
+    const dto = { ...values, id };
+    save(dto)
+      .then(() => message.success('Model saved successfully'))
+      .catch(() => message.error('Failed to save model'));;
   };
 
-  const debouncedSave = useDebouncedCallback(
-    values => {
-      console.log(values);
-      setModelSettings(values);
-      //updateItem({ id: selectedItemId, settings: values });
-    },
-    // delay in ms
-    300
-  );
-
-  const initialValues = { className, namespace, friendlyName, discriminatorValue, tableName, typeShortAlias };
+  const initialValues = {...modelConfiguration};
 
   return (
     <>
@@ -44,15 +35,12 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
           markup={modelSettingsMarkup as FormMarkup}
           onFinish={onSettingsSave}
           form={form}
-          onValuesChange={debouncedSave}
           initialValues={initialValues}
+          sections={{
+            properties: () => (<PropertiesEditorComponent></PropertiesEditorComponent>)
+          }}
         ></ConfigurableForm>
-        {/* <pre className="language-bash">{JSON.stringify(fields, null, 2)}</pre> */}
       </ErrorBoundary>
-
-      <PropertiesEditor>
-
-      </PropertiesEditor>
     </>
   );
 };

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { SimpleProperty } from './simpleProperty';
-import { useModelConfigurator } from '../../../providers';
+import { usePropertiesEditor } from '../provider';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
-import { IModelItem } from '../../../interfaces/modelConfigurator';
+import { IModelItem } from '../../../../interfaces/modelConfigurator';
 import ComplexProperty from './complexProperty';
-import { DataTypes } from '../../../interfaces/dataTypes';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];
@@ -12,7 +12,7 @@ export interface IToolbarItemsSortableProps {
 }
 
 export const ItemsContainer: FC<IToolbarItemsSortableProps> = props => {
-  const { updateChildItems } = useModelConfigurator();
+  const { updateChildItems } = usePropertiesEditor();
 
   const renderItem = (itemProps: IModelItem, index: number, key: string) => {
     if (itemProps.dataType === DataTypes.object || itemProps.dataType === DataTypes.array) {

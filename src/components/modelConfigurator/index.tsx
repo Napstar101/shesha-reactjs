@@ -1,3 +1,4 @@
+import { Form } from 'antd';
 import React, { FC } from 'react';
 import { ModelConfiguratorProvider } from '../..';
 import { ModelConfiguratorRenderer } from './renderer';
@@ -9,12 +10,11 @@ export interface IModelConfiguratorProps {
 }
 
 export const ModelConfigurator: FC<IModelConfiguratorProps> = (props) => {
+  const [form] = Form.useForm();
   return (
     <ModelConfiguratorProvider 
       id={props.id}
-      name ={ props.name }
-      namespace ={ props.nameSpace }
-      items={[]}
+      form={form}
     >
       <ModelConfiguratorRenderer></ModelConfiguratorRenderer>
     </ModelConfiguratorProvider>

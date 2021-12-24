@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import {
   SaveOutlined,
   CloseCircleOutlined,
@@ -11,27 +11,16 @@ import { useModelConfigurator } from '../../../providers';
 export interface IProps { }
 
 export const ModelConfiguratorToolbar: FC<IProps> = () => {
-  const { load, save } = useModelConfigurator();
-  //const { saveForm, setFormMode, setDebugMode, formMode, undo, redo, canUndo, canRedo } = useForm();
+  const { load, submit } = useModelConfigurator();
   const { router } = useShaRouting();
 
   const onSaveClick = () => {
-    save()
-      .then(() => message.success('Model saved successfully'))
-      .catch(() => message.error('Failed to save model'));
+    submit();      
   };
 
   const onLoadClick = () => {
     load();
   };
-
-  //   const onUndoClick = () => {
-  //     undo();
-  //   };
-
-  //   const onRedoClick = () => {
-  //     redo();
-  //   };
 
   const onCancelClick = () => {
     router?.back();
@@ -39,14 +28,6 @@ export const ModelConfiguratorToolbar: FC<IProps> = () => {
 
   return (
     <div className="sha-designer-toolbar">
-      {/* <div className="sha-designer-toolbar-left">
-        <Button key="undo" shape="circle" onClick={onUndoClick} disabled={!canUndo} title="Undo">
-          <UndoOutlined />
-        </Button>
-        <Button key="redo" shape="circle" onClick={onRedoClick} disabled={!canRedo} title="Redo">
-          <RedoOutlined />
-        </Button>
-      </div> */}
       <div className="sha-designer-toolbar-right">
         {false && (
           <Button onClick={onCancelClick} type="primary" danger>

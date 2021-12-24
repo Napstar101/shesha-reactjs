@@ -1,16 +1,16 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { Empty, Form } from 'antd';
 import { useDebouncedCallback } from 'use-debounce';
-import { ConfigurableForm } from '../..';
-import { useModelConfigurator } from '../../../providers';
-import { FormMarkup } from '../../../providers/form/models';
-import { ConfigurableFormInstance } from '../../../providers/form/contexts';
+import { ConfigurableForm } from '../../..';
+import { usePropertiesEditor } from '../provider';
+import { FormMarkup } from '../../../../providers/form/models';
+import { ConfigurableFormInstance } from '../../../../providers/form/contexts';
 import propertySettingsJson from './propertySettings.json';
 
 export interface IProps { }
 
 export const ToolbarItemProperties: FC<IProps> = () => {
-  const { selectedItemId, getItem, updateItem } = useModelConfigurator();
+  const { selectedItemId, getItem, updateItem } = usePropertiesEditor();
   // note: we have to memoize the editor to prevent unneeded re-rendering and loosing of the focus
   const [editor, setEditor] = useState<ReactNode>(<></>);
   const [form] = Form.useForm();
@@ -48,7 +48,7 @@ export const ToolbarItemProperties: FC<IProps> = () => {
         <ConfigurableForm
           size='small'
           formRef={formRef}
-          layout="vertical"
+          layout="horizontal"
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
           mode="edit"
@@ -58,7 +58,6 @@ export const ToolbarItemProperties: FC<IProps> = () => {
           initialValues={componentModel}
           onValuesChange={debouncedSave}
         ></ConfigurableForm>
-        <pre>{JSON.stringify(componentModel, null, 2)}</pre>
       </>
     );
   };

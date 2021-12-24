@@ -1,21 +1,8 @@
-import { IModelItem } from '../../interfaces/modelConfigurator';
+import { IModelItem } from '../../../../interfaces/modelConfigurator';
 
 export const getItemById = (items: IModelItem[], id: string): IModelItem => {
   const position = getItemPositionById(items, id);
   return position ? position.ownerArray[position.index] : null;
-  /*
-  for (let index = 0; index < items.length; index++) {
-    const item = items[index];
-    if (item.id === id) return item;
-
-    const childs = (item as IButtonGroup)?.childItems;
-    if (childs) {
-      const childItem = getItemById(childs, id);
-      if (childItem) return childItem;
-    }
-  }
-  return null;
-  */
 };
 
 export interface IItemPosition {

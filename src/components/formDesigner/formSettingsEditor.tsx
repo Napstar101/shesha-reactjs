@@ -5,7 +5,6 @@ import formSettingsJson from './formSettings.json';
 import { FormMarkup } from '../../providers/form/models';
 import { useForm } from '../../providers/form';
 import React from 'react';
-//import { useDebouncedCallback } from 'use-debounce';
 
 export interface IFormSettingsEditorProps {
   isVisible: boolean;
@@ -16,21 +15,6 @@ export const FormSettingsEditor: FC<IFormSettingsEditorProps> = ({ isVisible, cl
   const [form] = Form.useForm();
   const { formSettings, updateFormSettings } = useForm();
 
-  /*
-    const debouncedUpdateFormSettings = useDebouncedCallback(
-        values => {
-            updateFormSettings(values);
-        },
-        // delay in ms
-        300
-      );
-    useEffect(() => {
-      form.resetFields();
-    });
-
-
-    updateFormSettings
-*/
   const onSave = values => {
     updateFormSettings(values);
     close();
@@ -55,9 +39,7 @@ export const FormSettingsEditor: FC<IFormSettingsEditorProps> = ({ isVisible, cl
         onFinish={onSave}
         markup={formSettingsJson as FormMarkup}
         initialValues={formSettings}
-        //onValuesChange={debouncedUpdateFormSettings}
       ></ConfigurableForm>
-      <pre>{JSON.stringify(formSettings, null, 2)}</pre>
     </Modal>
   );
 };

@@ -1,48 +1,52 @@
-import { FC, useMemo } from 'react';
-import { Button, Tabs } from 'antd';
-import { CodeEditor, SidebarContainer } from '../../';
-import { ToolbarItemProperties } from './itemProperties';
-import ItemsContainer from './itemsContainer';
-import { useModelConfigurator } from '../../../providers';
-import React from 'react';
+import React, { FC } from 'react';
+import { PropertiesEditorRenderer } from './renderer';
+import { PropertiesEditorProvider } from './provider';
+import { IModelItem } from '../../../interfaces/modelConfigurator';
+import { Form } from 'antd';
 
-export interface IModelConfiguratorProps { }
+export interface IPropertiesEditorComponentProps {
+}
+export const PropertiesEditorComponent: FC<IPropertiesEditorComponentProps> = () => {
+ return (
+    <Form.Item
+        name="properties"
+        labelCol={{ span: 0 }}
+        wrapperCol={{ span: 24 }}
+    >
+        <PropertiesEditor></PropertiesEditor>
+    </Form.Item>
+ );   
+}
 
-const { TabPane } = Tabs;
+export interface IPropertiesEditorProps extends IPropertiesEditorComponentProps {
+    value?: IModelItem[];
+    onChange?: (value: IModelItem[]) => void;    
+}
 
-export const PropertiesEditor: FC<IModelConfiguratorProps> = () => {
-  const { items, addItem } = useModelConfigurator();
+export const PropertiesEditor: FC<IPropertiesEditorProps> = (props) => {
+    return (
+        <PropertiesEditorProvider items={props.value} onChange={props.onChange}>
+            <PropertiesEditorRenderer></PropertiesEditorRenderer>
+        </PropertiesEditorProvider>
+    );
+}
 
-  const jsonSchema = useMemo(() => {
-    return JSON.stringify(items, null, 2);
-  }, [items]);
-
-  return (
-    <Tabs>
-      <TabPane tab="Designer" key="1">
-        <div className="sha-sidebar-configurator">
-          <div className="sha-action-buttons">
-            <Button onClick={addItem} type="primary">
-              Add New Property
-            </Button>
-          </div>
-          <SidebarContainer
-            rightSidebarProps={{
-              open: true,
-              title: 'Properties',
-              content: <ToolbarItemProperties />,
-            }}
-          >
-            <ItemsContainer items={items} index={[]} />
-          </SidebarContainer>
-        </div>
-      </TabPane>
-      <TabPane tab="Schema" key="2">
-        <CodeEditor value={jsonSchema} readOnly={true} width='100%'/>
-      </TabPane>
-    </Tabs>
-
-  );
-};
-
-export default PropertiesEditor;
+/*
+    <Form.Item
+      className={classNames(className, { 'form-item-hidden': model.hideLabel })}
+      // className={`${model.hideLabel ? 'form-item-hidden' : ''}`}
+      name={getFieldNameFromExpression(model.name)}
+      label={model.hideLabel ? null : model.label}
+      labelAlign={model.labelAlign}
+      hidden={isHidden}
+      valuePropName={valuePropName}
+      // initialValue={initialValue}
+      initialValue={model.defaultValue || initialValue}
+      tooltip={model.description}
+      rules={isHidden ? [] : getValidationRules(model)}
+      labelCol={labelCol}
+      wrapperCol={wrapperCol}
+    >
+      {children}
+    </Form.Item>
+*/

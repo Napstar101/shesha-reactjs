@@ -1,48 +1,30 @@
+import { FormInstance } from 'antd';
 import { createContext } from 'react';
+import { ModelConfigurationDto } from '../../apis/modelConfigurations';
 import { IModelItem } from '../../interfaces/modelConfigurator';
-
-export interface IUpdateChildItemsPayload {
-  index: number[];
-  childs: IModelItem[];
-}
 
 export interface IUpdateItemSettingsPayload {
   id: string;
   settings: IModelItem;
 }
 
-export interface IModelSettings {
+export interface IModelConfiguratorStateContext {
   id?: string;
-  className?: string;
-  namespace?: string;
-
-  friendlyName?: string | null;
-  typeShortAlias?: string | null;
-  tableName?: string | null;
-  discriminatorValue?: string | null;
-}
-
-export interface IModelConfiguratorStateContext extends IModelSettings{
-  items: IModelItem[];
-  selectedItemId?: string;
+  modelConfiguration?: ModelConfigurationDto;
+  form?: FormInstance;
 }
 
 export interface IModelConfiguratorActionsContext {
   load: () => void;
-  save: () => Promise<void>;
-  setModelSettings: (settings: IModelSettings) => void;
-  addItem: () => void;
-  deleteItem: (uid: string) => void;
-  selectItem: (uid: string) => void;
-  updateChildItems: (payload: IUpdateChildItemsPayload) => void;
-  getItem: (uid: string) => IModelItem;
-  updateItem: (payload: IUpdateItemSettingsPayload) => void;
+  save: (value: ModelConfigurationDto) => Promise<void>;
+  submit: () => void;
+  getValues: () => ModelConfigurationDto;
 
   /* NEW_ACTION_ACTION_DECLARATIOS_GOES_HERE */
 }
 
 export const MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE: IModelConfiguratorStateContext = {
-  items: [],
+
 };
 
 export const ModelConfiguratorStateContext = createContext<IModelConfiguratorStateContext>(

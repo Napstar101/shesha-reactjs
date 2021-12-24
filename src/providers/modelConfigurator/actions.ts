@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import { ModelConfigurationDto, ErrorInfo } from '../../apis/modelConfigurations';
-import { IModelSettings, IUpdateChildItemsPayload, IUpdateItemSettingsPayload } from './contexts';
 
 export enum ModelActionEnums {
   LoadRequest = 'LOAD_REQUEST',
@@ -13,12 +12,6 @@ export enum ModelActionEnums {
 
   SetModelSettings = 'SET_MODEL_SETTINGS',
 
-  Save = 'SAVE',
-  AddItem = 'ADD_ITEM',
-  DeleteItem = 'DELETE_ITEM',
-  UpdateItem = 'UPDATE_ITEM',
-  SelectItem = 'SELECT_ITEM',
-  UpdateChildItems = 'UPDATE_CHILD_ITEMS',
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
@@ -29,25 +22,5 @@ export const loadErrorAction = createAction<ErrorInfo, ErrorInfo>(ModelActionEnu
 export const saveRequestAction = createAction(ModelActionEnums.SaveRequest);
 export const saveSuccessAction = createAction(ModelActionEnums.SaveSuccess);
 export const saveErrorAction = createAction<ErrorInfo, ErrorInfo>(ModelActionEnums.SaveError, p => p);
-
-export const setModelSettingsAction = createAction<IModelSettings, IModelSettings>(ModelActionEnums.SetModelSettings, p => p);
-
-export const saveAction = createAction(ModelActionEnums.Save);
-
-export const addItemAction = createAction(ModelActionEnums.AddItem);
-
-export const deleteItemAction = createAction<string, string>(ModelActionEnums.DeleteItem, p => p);
-
-export const selectItemAction = createAction<string, string>(ModelActionEnums.SelectItem, p => p);
-
-export const updateChildItemsAction = createAction<IUpdateChildItemsPayload, IUpdateChildItemsPayload>(
-  ModelActionEnums.UpdateChildItems,
-  p => p
-);
-
-export const updateItemAction = createAction<IUpdateItemSettingsPayload, IUpdateItemSettingsPayload>(
-  ModelActionEnums.UpdateItem,
-  p => p
-);
 
 /* NEW_ACTION_GOES_HERE */

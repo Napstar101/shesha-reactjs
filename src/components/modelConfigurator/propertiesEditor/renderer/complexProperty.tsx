@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { Button, Tooltip } from 'antd';
 import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
-import { useModelConfigurator } from '../../../providers';
+import { usePropertiesEditor } from '../provider';
 import DragHandle from './dragHandle';
 import React from 'react';
 // import ShaIcon, { IconType } from '../../shaIcon';
-import { IModelItem } from '../../../interfaces/modelConfigurator';
+import { IModelItem } from '../../../../interfaces/modelConfigurator';
 import ItemsContainer from './itemsContainer';
 
 export interface IProps extends IModelItem {
@@ -13,17 +13,19 @@ export interface IProps extends IModelItem {
 }
 
 export const ComplexProperty: FC<IProps> = props => {
-  const { deleteItem, selectedItemId } = useModelConfigurator();
+  const { deleteItem, selectedItemId, selectedItemRef } = usePropertiesEditor();
 
   const onDeleteClick = () => {
     deleteItem(props.id);
   };
 
   let classes = ['sha-sidebar-item'];
-  if (selectedItemId === props.id) classes.push('selected');
+  if (selectedItemId === props.id) {
+    classes.push('selected');
+  }
 
   return (
-    <div className={classes.reduce((a, c) => a + ' ' + c)}>
+    <div className={classes.reduce((a, c) => a + ' ' + c)} ref={selectedItemId === props.id ? selectedItemRef : undefined}>
       <div className="sha-sidebar-item-header">
         <DragHandle id={props.id}></DragHandle>
         {/* {props.icon && <ShaIcon iconName={props.icon as IconType} />} */}

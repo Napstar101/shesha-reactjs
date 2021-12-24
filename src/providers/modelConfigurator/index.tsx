@@ -1,19 +1,11 @@
 import React, { FC, useReducer, useContext, PropsWithChildren, useEffect } from 'react';
 import modelReducer from './reducer';
 import {
-  IModelSettings,
-  IUpdateChildItemsPayload,
-  IUpdateItemSettingsPayload,
   ModelConfiguratorActionsContext,
   ModelConfiguratorStateContext,
   MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE,
 } from './contexts';
 import {
-  addItemAction,
-  deleteItemAction,
-  selectItemAction,
-  updateChildItemsAction,
-  updateItemAction,
   loadRequestAction,
   loadSuccessAction,
   loadErrorAction,
@@ -21,13 +13,11 @@ import {
   saveRequestAction,
   saveSuccessAction,
   saveErrorAction,
-  setModelSettingsAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
-import { getItemById } from './utils';
-import { IModelItem } from '../../interfaces/modelConfigurator';
-import { EntityPropertyDto, ModelConfigurationDto, modelConfigurationsGetById, modelConfigurationsUpdate, modelConfigurationsCreate } from '../../apis/modelConfigurations';
+import { ModelConfigurationDto, modelConfigurationsGetById, modelConfigurationsUpdate, modelConfigurationsCreate } from '../../apis/modelConfigurations';
 import { useSheshaApplication } from '../../providers';
+import { FormInstance } from 'antd';
 
 export interface IModelConfiguratorProviderPropsBase {
   baseUrl?: string;
@@ -35,9 +25,7 @@ export interface IModelConfiguratorProviderPropsBase {
 
 export interface IModelConfiguratorProviderProps {
   id?: string;
-  name?: string;
-  namespace?: string;
-  items: IModelItem[];
+  form: FormInstance;
 }
 
 const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProviderProps>> = props => {
@@ -47,39 +35,13 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
 
   const [state, dispatch] = useReducer(modelReducer, {
     ...MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE,
-    items: props.items || [],
     id: props.id,
+    form: props.form,
   });
 
   useEffect(() => {
     load();
   }, [state.id]);
-
-  const addItem = () => {
-    dispatch(addItemAction());
-  };
-
-  const deleteItem = (uid: string) => {
-    dispatch(deleteItemAction(uid));
-  };
-
-  const selectItem = (uid: string) => {
-    if (state.selectedItemId !== uid) {
-      dispatch(selectItemAction(uid));
-    }
-  };
-
-  const updateChildItems = (payload: IUpdateChildItemsPayload) => {
-    dispatch(updateChildItemsAction(payload));
-  };
-
-  const getItem = (uid: string): IModelItem => {
-    return getItemById(state.items, uid);
-  };
-
-  const updateItem = (payload: IUpdateItemSettingsPayload) => {
-    dispatch(updateItemAction(payload));
-  };
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
@@ -104,23 +66,20 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
       console.error("Failed to fetch a model configuraiton by Id - Id not specified");
   }
 
-  const save = (): Promise<void> => {
+  const submit = () => {
+    state.form.submit();
+  }
+
+  const save = (value: ModelConfigurationDto): Promise<void> => {
     // todo: validate all properties
 
     dispatch(saveRequestAction());
-
-    const dto: ModelConfigurationDto = {
-      id: state.id,
-      namespace: state.namespace,
-      className: state.className,
-      properties: state.items.map<EntityPropertyDto>(p => ({ ...p }))
-    };
 
     const mutate = state.id
       ? modelConfigurationsUpdate
       : modelConfigurationsCreate;
 
-    return mutate(dto, { base: backendUrl })
+    return mutate(value, { base: backendUrl })
       .then(response => {
         if (response.success)
           dispatch(saveSuccessAction(response.result));
@@ -132,23 +91,22 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
       });
   }
 
-  const setModelSettings = (settings: IModelSettings) => {
-    dispatch(setModelSettingsAction(settings));
+  const getValues = () => {
+    const values = state.form.getFieldsValue();
+    return {
+      ...values,
+      id: state.id
+    };
   }
 
   return (
     <ModelConfiguratorStateContext.Provider value={{ ...state }}>
       <ModelConfiguratorActionsContext.Provider
         value={{
-          addItem,
-          deleteItem,
-          selectItem,
-          updateChildItems,
-          getItem,
-          updateItem,
           load,
           save,
-          setModelSettings,
+          getValues,
+          submit,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

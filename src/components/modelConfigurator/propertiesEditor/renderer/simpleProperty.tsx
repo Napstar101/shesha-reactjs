@@ -1,41 +1,28 @@
 import { FC } from 'react';
 import { Button, Tooltip } from 'antd';
 import { DeleteFilled, LockOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { useModelConfigurator } from '../../../providers';
+import { usePropertiesEditor } from '../provider';
 import DragHandle from './dragHandle';
 import React from 'react';
-//import ShaIcon, { IconType } from '../../shaIcon';
 import classNames from 'classnames';
-import { IModelItem } from '../../../interfaces/modelConfigurator';
-import { MetadataSourceType } from '../../../interfaces/metadata';
+import { IModelItem } from '../../../../interfaces/modelConfigurator';
+import { MetadataSourceType } from '../../../../interfaces/metadata';
 
 export interface IProps extends IModelItem {
   index: number[];
 }
 
 export const SimpleProperty: FC<IProps> = props => {
-  const { deleteItem, selectedItemId } = useModelConfigurator();
+  const { deleteItem, selectedItemId, selectedItemRef } = usePropertiesEditor();
 
   const onDeleteClick = () => {
     deleteItem(props.id);
   };
 
-  /*
-  const { icon } = props;
-
-  const renderedIcon = icon ? (
-    typeof icon === 'string' ? (
-      <ShaIcon iconName={icon as IconType}></ShaIcon>
-    ) : React.isValidElement(icon) ? (
-      icon
-    ) : null
-  ) : null;
-*/
   return (
-    <div className={classNames('sha-sidebar-item', { selected: selectedItemId === props.id })}>
+    <div className={classNames('sha-sidebar-item', { selected: selectedItemId === props.id })} ref={selectedItemId === props.id ? selectedItemRef : undefined}>
       <div className="sha-sidebar-item-header">
         <DragHandle id={props.id} />
-        {/* {renderedIcon} */}
         
         { props.source === MetadataSourceType.ApplicationCode && ( <LockOutlined /> ) }
         
