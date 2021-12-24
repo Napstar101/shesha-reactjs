@@ -1,4 +1,4 @@
-import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
+import React, { FC, useReducer, useContext, PropsWithChildren, useEffect } from 'react';
 import modelReducer from './reducer';
 import {
   IModelSettings,
@@ -14,8 +14,6 @@ import {
   selectItemAction,
   updateChildItemsAction,
   updateItemAction,
-  addGroupAction,
-  deleteGroupAction,
   loadRequestAction,
   loadSuccessAction,
   loadErrorAction,
@@ -28,7 +26,7 @@ import {
 } from './actions';
 import { getItemById } from './utils';
 import { IModelItem } from '../../interfaces/modelConfigurator';
-import { EntityPropertyDto, ModelConfigurationDto, modelConfigurationsGetById, modelConfigurationsUpdate } from '../../apis/modelConfigurations';
+import { EntityPropertyDto, ModelConfigurationDto, modelConfigurationsGetById, modelConfigurationsUpdate, modelConfigurationsCreate } from '../../apis/modelConfigurations';
 import { useSheshaApplication } from '../../providers';
 
 export interface IModelConfiguratorProviderPropsBase {
@@ -53,6 +51,10 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
     id: props.id,
   });
 
+  useEffect(() => {
+    load();
+  }, [state.id]);
+
   const addItem = () => {
     dispatch(addItemAction());
   };
@@ -69,14 +71,6 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
 
   const updateChildItems = (payload: IUpdateChildItemsPayload) => {
     dispatch(updateChildItemsAction(payload));
-  };
-
-  const addGroup = () => {
-    dispatch(addGroupAction());
-  };
-
-  const deleteGroup = (uid: string) => {
-    dispatch(deleteGroupAction(uid));
   };
 
   const getItem = (uid: string): IModelItem => {
@@ -113,8 +107,6 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
   const save = (): Promise<void> => {
     // todo: validate all properties
 
-    if (!state.id) return new Promise(() => { });
-
     dispatch(saveRequestAction());
 
     const dto: ModelConfigurationDto = {
@@ -124,7 +116,11 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
       properties: state.items.map<EntityPropertyDto>(p => ({ ...p }))
     };
 
-    return modelConfigurationsUpdate(dto, { base: backendUrl })
+    const mutate = state.id
+      ? modelConfigurationsUpdate
+      : modelConfigurationsCreate;
+
+    return mutate(dto, { base: backendUrl })
       .then(response => {
         if (response.success)
           dispatch(saveSuccessAction(response.result));
@@ -141,7 +137,7 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
   }
 
   return (
-    <ModelConfiguratorStateContext.Provider value={{ ...state /*, selectedItemId: memoizedSelectedItemId*/ }}>
+    <ModelConfiguratorStateContext.Provider value={{ ...state }}>
       <ModelConfiguratorActionsContext.Provider
         value={{
           addItem,
@@ -150,8 +146,6 @@ const ModelConfiguratorProvider: FC<PropsWithChildren<IModelConfiguratorProvider
           updateChildItems,
           getItem,
           updateItem,
-          addGroup,
-          deleteGroup,
           load,
           save,
           setModelSettings,

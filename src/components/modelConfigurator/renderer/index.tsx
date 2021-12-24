@@ -9,18 +9,12 @@ import PropertiesEditor from '../propertiesEditor';
 import { ModelConfiguratorToolbar } from '../toolbar';
 import { useModelConfigurator } from '../../..';
 
-export interface IModelConfiguratorRendererProps { 
+export interface IModelConfiguratorRendererProps {
 }
 
 export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = () => {
   const [form] = Form.useForm();
-  const { className, namespace, friendlyName, discriminatorValue, tableName, typeShortAlias } = useModelConfigurator();
-
-  /*const [fields, setFields] = useState([]);
-
-  const onTestClick = () => {
-    console.log({ fields });
-  }*/
+  const { className, namespace, friendlyName, discriminatorValue, tableName, typeShortAlias, setModelSettings } = useModelConfigurator();
 
   const onSettingsSave = values => {
     console.log(values);
@@ -29,19 +23,12 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
   const debouncedSave = useDebouncedCallback(
     values => {
       console.log(values);
+      setModelSettings(values);
       //updateItem({ id: selectedItemId, settings: values });
     },
     // delay in ms
     300
   );
-
-  
-  /*
-  const onFieldsChange = (changedFields: any[], allFields: any[]) => {
-    console.log({ changedFields, allFields });
-    setFields(changedFields);
-  }
-  */
 
   const initialValues = { className, namespace, friendlyName, discriminatorValue, tableName, typeShortAlias };
 
@@ -59,17 +46,13 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
           form={form}
           onValuesChange={debouncedSave}
           initialValues={initialValues}
-          // onFieldsChange={onFieldsChange}
-          // fields={fields}
         ></ConfigurableForm>
         {/* <pre className="language-bash">{JSON.stringify(fields, null, 2)}</pre> */}
       </ErrorBoundary>
 
-      <ErrorBoundary>
-        <PropertiesEditor>
+      <PropertiesEditor>
 
-        </PropertiesEditor>
-      </ErrorBoundary>
+      </PropertiesEditor>
     </>
   );
 };

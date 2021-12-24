@@ -48,6 +48,10 @@ export interface EntityPropertyDto {
    */
   referenceListNamespace?: string | null;
   source?: MetadataSourceType;
+  /**
+   * Child properties, applicable for complex data types (e.g. object, array)
+   */
+  properties?: EntityPropertyDto[] | null;
 }
 
 /**
@@ -143,7 +147,7 @@ export type ModelConfigurationsUpdateProps = Omit<
 
 export const ModelConfigurationsUpdate = (props: ModelConfigurationsUpdateProps) => (
   <Mutate<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>
-    verb="POST"
+    verb="PUT"
     path={`/api/ModelConfigurations`}
     {...props}
   />
@@ -156,7 +160,7 @@ export type UseModelConfigurationsUpdateProps = Omit<
 
 export const useModelConfigurationsUpdate = (props: UseModelConfigurationsUpdateProps) =>
   useMutate<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>(
-    'POST',
+    'PUT',
     `/api/ModelConfigurations`,
     props
   );
@@ -166,6 +170,43 @@ export type modelConfigurationsUpdateProps = Omit<
   'data'
 >;
 export const modelConfigurationsUpdate = (data: ModelConfigurationDto, props: modelConfigurationsUpdateProps) =>
+  RestfulShesha.mutate<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>(
+    'PUT',
+    `/api/ModelConfigurations`,
+    data,
+    props
+  );
+
+export type ModelConfigurationsCreateProps = Omit<
+  MutateProps<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>,
+  'path' | 'verb'
+>;
+
+export const ModelConfigurationsCreate = (props: ModelConfigurationsCreateProps) => (
+  <Mutate<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>
+    verb="POST"
+    path={`/api/ModelConfigurations`}
+    {...props}
+  />
+);
+
+export type UseModelConfigurationsCreateProps = Omit<
+  UseMutateProps<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>,
+  'path' | 'verb'
+>;
+
+export const useModelConfigurationsCreate = (props: UseModelConfigurationsCreateProps) =>
+  useMutate<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>(
+    'POST',
+    `/api/ModelConfigurations`,
+    props
+  );
+
+export type modelConfigurationsCreateProps = Omit<
+  RestfulShesha.MutateProps<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>,
+  'data'
+>;
+export const modelConfigurationsCreate = (data: ModelConfigurationDto, props: modelConfigurationsCreateProps) =>
   RestfulShesha.mutate<ModelConfigurationDtoAjaxResponse, AjaxResponseBase, void, ModelConfigurationDto, void>(
     'POST',
     `/api/ModelConfigurations`,

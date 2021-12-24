@@ -13,7 +13,7 @@ export interface IProps extends IModelItem {
   index: number[];
 }
 
-export const ModelItem: FC<IProps> = props => {
+export const SimpleProperty: FC<IProps> = props => {
   const { deleteItem, selectedItemId } = useModelConfigurator();
 
   const onDeleteClick = () => {
@@ -54,4 +54,4 @@ export const ModelItem: FC<IProps> = props => {
   );
 };
 
-export default ModelItem;
+export default SimpleProperty;

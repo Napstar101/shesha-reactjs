@@ -114,6 +114,17 @@
           "maxLength": null
         }
       ]
+    },
+    {
+      "id": "dIECbRhuwwxW23ZZEC5Kr",
+      "type": "section",
+      "name": "properties",
+      "label": "Section1",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "settingsValidationErrors": []
     }
   ],
   "formSettings": {

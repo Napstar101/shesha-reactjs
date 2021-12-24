@@ -1,5 +1,6 @@
 import {
   IModelConfiguratorStateContext,
+  IModelSettings,
   IUpdateChildItemsPayload,
   IUpdateItemSettingsPayload,
   MODEL_CONFIGURATOR_CONTEXT_INITIAL_STATE,
@@ -9,7 +10,25 @@ import { handleActions } from 'redux-actions';
 import { getItemPositionById } from './utils';
 import { IModelItem } from '../../interfaces/modelConfigurator';
 import { nanoid } from 'nanoid/non-secure';
-import { ModelConfigurationDto } from '../../apis/modelConfigurations';
+import { EntityPropertyDto, ModelConfigurationDto } from '../../apis/modelConfigurations';
+
+const mapPropertyToModelItem = (property: EntityPropertyDto): IModelItem => {
+  const result = {
+    id: property.id,
+    name: property.name,
+    label: property.label,
+    description: property.description,
+    dataType: property.dataType,
+    dataFormat: property.dataFormat,
+    entityType: property.entityType,
+    referenceListName: property.referenceListName,
+    referenceListNamespace: property.referenceListNamespace,
+    source: property.source,
+    properties: property.properties.map<IModelItem>(p => mapPropertyToModelItem(p)),
+  }
+
+  return result;  
+}
 
 const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
   {
@@ -26,40 +45,31 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
     ) => {
       const { payload } = action;
 
-      const items: IModelItem[] = payload.properties.map<IModelItem>(p => ({
-        id: p.id,
-        name: p.name,
-        itemType: 'property',
-        label: p.label,
-        description: p.description,
-        dataType: p.dataType,
-        dataFormat: p.dataFormat,
-        entityType: p.entityType,
-        referenceListName: p.referenceListName,
-        referenceListNamespace: p.referenceListNamespace,
-        source: p.source,
-        //properties: p.properties,
-      }));
+      const items: IModelItem[] = payload.properties.map<IModelItem>(p => mapPropertyToModelItem(p));
 
       return {
         ...state,
         className: payload.className,
         namespace: payload.namespace,
         items: items,
+      };
+    },
 
-        /*
-        friendlyName: payload.friendlyName,
-        typeShortAlias: payload.typeShortAlias,
-        tableName: payload.tableName,
-        discriminatorValue: payload.discriminatorValue,
-        */       
+    [ModelActionEnums.SaveSuccess]: (
+      state: IModelConfiguratorStateContext,
+      action: ReduxActions.Action<ModelConfigurationDto>
+    ) => {
+      const { payload } = action;
+
+      return {
+        ...state,
+        id: payload.id,
       };
     },
 
     [ModelActionEnums.AddItem]: (state: IModelConfiguratorStateContext) => {
       const itemProps: IModelItem = {
         id: nanoid(),
-        itemType: 'property',
         name: `New property`,
         //childItems: [],
       };
@@ -165,33 +175,15 @@ const modelReducer = handleActions<IModelConfiguratorStateContext, any>(
       };
     },
 
-    [ModelActionEnums.AddGroup]: (state: IModelConfiguratorStateContext) => {
-      const groupProps: IModelItem = {
-        id: nanoid(),
-        itemType: 'group',
-        name: `New Group`,
-        properties: [],
-      };
-
-      return {
-        ...state,
-        items: [groupProps, ...state.items],
-        selectedItemId: groupProps.id,
-      };
-    },
-
-    [ModelActionEnums.DeleteGroup]: (
+    [ModelActionEnums.SetModelSettings]: (
       state: IModelConfiguratorStateContext,
-      action: ReduxActions.Action<string>
+      action: ReduxActions.Action<IModelSettings>
     ) => {
       const { payload } = action;
 
-      const newItems = state.items.filter(item => item.id !== payload);
-
       return {
         ...state,
-        items: [...newItems],
-        selectedItemId: state.selectedItemId === payload ? null : state.selectedItemId,
+        ...payload,
       };
     },
   },

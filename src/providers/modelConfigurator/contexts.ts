@@ -38,9 +38,6 @@ export interface IModelConfiguratorActionsContext {
   getItem: (uid: string) => IModelItem;
   updateItem: (payload: IUpdateItemSettingsPayload) => void;
 
-  addGroup: () => void;
-  deleteGroup: (uid: string) => void;
-
   /* NEW_ACTION_ACTION_DECLARATIOS_GOES_HERE */
 }
 

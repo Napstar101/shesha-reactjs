@@ -5,8 +5,7 @@ import { ConfigurableForm } from '../..';
 import { useModelConfigurator } from '../../../providers';
 import { FormMarkup } from '../../../providers/form/models';
 import { ConfigurableFormInstance } from '../../../providers/form/contexts';
-import itemSettingsJson from './itemSettings.json';
-import groupSettingsJson from './groupSettings.json';
+import propertySettingsJson from './propertySettings.json';
 
 export interface IProps { }
 
@@ -42,11 +41,8 @@ export const ToolbarItemProperties: FC<IProps> = () => {
 
     const componentModel = getItem(selectedItemId);
 
-    //const markup = itemSettingsJson as FormMarkup;
-    const markup =
-      componentModel.itemType === 'group'
-        ? groupSettingsJson as FormMarkup
-        : itemSettingsJson as FormMarkup;
+    const markup = propertySettingsJson as FormMarkup;
+    
     return (
       <>
         <ConfigurableForm

@@ -11,7 +11,7 @@ export interface IModelConfiguratorProps { }
 const { TabPane } = Tabs;
 
 export const PropertiesEditor: FC<IModelConfiguratorProps> = () => {
-  const { items, addItem, addGroup } = useModelConfigurator();
+  const { items, addItem } = useModelConfigurator();
 
   const jsonSchema = useMemo(() => {
     return JSON.stringify(items, null, 2);
@@ -22,11 +22,6 @@ export const PropertiesEditor: FC<IModelConfiguratorProps> = () => {
       <TabPane tab="Designer" key="1">
         <div className="sha-sidebar-configurator">
           <div className="sha-action-buttons">
-            {false && (
-              <Button onClick={addGroup} type="primary">
-                Add Group
-              </Button>
-            )}
             <Button onClick={addItem} type="primary">
               Add New Property
             </Button>

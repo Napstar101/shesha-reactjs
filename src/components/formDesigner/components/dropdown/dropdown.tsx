@@ -54,6 +54,7 @@ export const Dropdown: FC<IDropdownProps> = ({
   mode,
   defaultValue,
   ignoredValues = [],
+  placeholder,
 }) => {
   const getOptions = (): ILabelValue[] => {
     return value && typeof value === 'number' ? values.map(i => ({ ...i, value: parseInt(i.value) })) : values;
@@ -74,6 +75,7 @@ export const Dropdown: FC<IDropdownProps> = ({
         mode={selectedMode}
         filters={ignoredValues}
         includeFilters={false}
+        placeholder={placeholder}
       />
     );
   }
@@ -89,6 +91,8 @@ export const Dropdown: FC<IDropdownProps> = ({
       bordered={!hideBorder}
       disabled={disabled}
       mode={selectedMode}
+      placeholder={placeholder}
+      showSearch
     >
       {options.map((option, index) => (
         <Select.Option key={index} value={option.value}>

@@ -35,3 +35,7 @@ export const PersonModel = addStory(Template, {
 export const EntityPropertyModel = addStory(Template, {
   id: '45AE2FE8-255B-462E-BDD8-FDA5C591AE08',
 });
+
+export const School = addStory(Template, {
+  id: 'AA6ADB56-668A-4D7B-917E-2FFB4ED36C2C',
+});

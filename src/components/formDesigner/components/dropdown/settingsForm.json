@@ -46,27 +46,32 @@
       "dataSourceType": "values"
     },
     {
-      "id": "fbdb6bb1-5994-4205-86b4-236ca61ae53e",
-      "type": "numberField",
-      "name": "defaultValue",
+      "textType": "text",
+      "id": "VSSp87LcgvY8-B6nQN93T",
+      "type": "textField",
+      "name": "placeholder",
+      "label": "Placeholder",
+      "labelAlign": "right",
       "parentId": "root",
-      "label": "Default Value",
+      "hidden": false,
+      "customVisibility": null,
       "validate": {},
       "settingsValidationErrors": []
     },
     {
-      "id": "fbdb6bb1-5994-4205-86b4-236ca61ae54e",
-      "type": "textField",
-      "name": "placeholder",
-      "parentId": "root",
-      "label": "Placeholder"
-    },
-    {
-      "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-      "type": "textField",
+      "id": "vdHXORT_t16LbITksJNtm",
+      "type": "textArea",
       "name": "description",
+      "label": "Description",
+      "labelAlign": "right",
       "parentId": "root",
-      "label": "Description"
+      "hidden": false,
+      "customVisibility": null,
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
@@ -225,6 +230,15 @@
       "valueTitle": "Value",
       "valueName": "value",
       "customVisibility": "return data.dataSourceType === 'values'"
+    },
+    {
+      "id": "fbdb6bb1-5994-4205-86b4-236ca61ae53e",
+      "type": "numberField",
+      "name": "defaultValue",
+      "parentId": "root",
+      "label": "Default Value",
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",

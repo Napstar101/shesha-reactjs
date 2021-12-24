@@ -48,6 +48,10 @@ export interface EntityPropertyDto {
    */
   referenceListNamespace?: string | null;
   source?: MetadataSourceType;
+  /**
+   * Child properties, applicable for complex data types (e.g. object, array)
+   */
+  properties?: EntityPropertyDto[] | null;
 }
 
 export interface ValidationErrorInfo {
