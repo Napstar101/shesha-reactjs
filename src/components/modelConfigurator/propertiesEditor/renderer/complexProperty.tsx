@@ -4,9 +4,10 @@ import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
 import { usePropertiesEditor } from '../provider';
 import DragHandle from './dragHandle';
 import React from 'react';
-// import ShaIcon, { IconType } from '../../shaIcon';
 import { IModelItem } from '../../../../interfaces/modelConfigurator';
 import ItemsContainer from './itemsContainer';
+import { getIconByDataType } from '../../../../utils/metadata';
+import { ShaIcon } from '../../..';
 
 export interface IProps extends IModelItem {
   index: number[];
@@ -14,6 +15,8 @@ export interface IProps extends IModelItem {
 
 export const ComplexProperty: FC<IProps> = props => {
   const { deleteItem, selectedItemId, selectedItemRef } = usePropertiesEditor();
+
+  const icon = getIconByDataType(props.dataType);
 
   const onDeleteClick = () => {
     deleteItem(props.id);
@@ -28,10 +31,10 @@ export const ComplexProperty: FC<IProps> = props => {
     <div className={classes.reduce((a, c) => a + ' ' + c)} ref={selectedItemId === props.id ? selectedItemRef : undefined}>
       <div className="sha-sidebar-item-header">
         <DragHandle id={props.id}></DragHandle>
-        {/* {props.icon && <ShaIcon iconName={props.icon as IconType} />} */}
+        {icon && <ShaIcon iconName={icon}></ShaIcon>}
         <span className="sha-sidebar-item-name">{props.name}</span>
-        {props.label && (
-          <Tooltip title={props.label}>
+        {props.description && (
+          <Tooltip title={props.description}>
             <QuestionCircleOutlined className="sha-help-icon" />
           </Tooltip>
         )}

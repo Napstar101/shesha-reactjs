@@ -24,7 +24,7 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
   const initialValues = {...modelConfiguration};
 
   return (
-    <>
+    <div className="sha-model-configurator">
       <ModelConfiguratorToolbar></ModelConfiguratorToolbar>
       <ErrorBoundary>
         <ConfigurableForm
@@ -41,7 +41,7 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
           }}
         ></ConfigurableForm>
       </ErrorBoundary>
-    </>
+    </div>
   );
 };
 

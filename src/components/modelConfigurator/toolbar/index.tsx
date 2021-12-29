@@ -4,6 +4,7 @@ import {
   SaveOutlined,
   CloseCircleOutlined,
   ReloadOutlined,
+  FileAddOutlined,
 } from '@ant-design/icons';
 import { useShaRouting } from '../../../providers/shaRouting';
 import { useModelConfigurator } from '../../../providers';
@@ -11,11 +12,11 @@ import { useModelConfigurator } from '../../../providers';
 export interface IProps { }
 
 export const ModelConfiguratorToolbar: FC<IProps> = () => {
-  const { load, submit } = useModelConfigurator();
+  const { load, submit, id } = useModelConfigurator();
   const { router } = useShaRouting();
 
   const onSaveClick = () => {
-    submit();      
+    submit();
   };
 
   const onLoadClick = () => {
@@ -27,8 +28,8 @@ export const ModelConfiguratorToolbar: FC<IProps> = () => {
   };
 
   return (
-    <div className="sha-designer-toolbar">
-      <div className="sha-designer-toolbar-right">
+    <div className="sha-model-configurator-toolbar">
+      <div className="sha-model-configurator-toolbar-right">
         {false && (
           <Button onClick={onCancelClick} type="primary" danger>
             <CloseCircleOutlined /> Cancel
@@ -37,9 +38,16 @@ export const ModelConfiguratorToolbar: FC<IProps> = () => {
         <Button key="load" onClick={onLoadClick} type="default">
           <ReloadOutlined /> Load
         </Button>
-        <Button key="save" onClick={onSaveClick} type="primary">
-          <SaveOutlined /> Save
-        </Button>
+        {Boolean(id) && (
+          <Button key="save" onClick={onSaveClick} type="primary">
+            <SaveOutlined /> Save
+          </Button>
+        )}
+        {!Boolean(id) && (
+          <Button key="create" onClick={onSaveClick} type="primary">
+            <FileAddOutlined /> Create
+          </Button>
+        )}
       </div>
     </div>
   );

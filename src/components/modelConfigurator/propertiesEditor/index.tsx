@@ -30,23 +30,3 @@ export const PropertiesEditor: FC<IPropertiesEditorProps> = (props) => {
         </PropertiesEditorProvider>
     );
 }
-
-/*
-    <Form.Item
-      className={classNames(className, { 'form-item-hidden': model.hideLabel })}
-      // className={`${model.hideLabel ? 'form-item-hidden' : ''}`}
-      name={getFieldNameFromExpression(model.name)}
-      label={model.hideLabel ? null : model.label}
-      labelAlign={model.labelAlign}
-      hidden={isHidden}
-      valuePropName={valuePropName}
-      // initialValue={initialValue}
-      initialValue={model.defaultValue || initialValue}
-      tooltip={model.description}
-      rules={isHidden ? [] : getValidationRules(model)}
-      labelCol={labelCol}
-      wrapperCol={wrapperCol}
-    >
-      {children}
-    </Form.Item>
-*/
