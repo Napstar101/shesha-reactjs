@@ -30,7 +30,6 @@ import { getLocalizationOrDefault } from '../../utils/localization';
 import { getTenantId } from '../../utils/multitenancy';
 import { useShaRouting } from '../shaRouting';
 import IRequestHeaders from '../../interfaces/requestHeaders';
-import { useRouter } from 'next/router';
 
 interface IAuthProviderProps {
   /**
@@ -65,7 +64,9 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
 }) => {
   const { router, nextRoute } = useShaRouting();
 
-  const { pathname } = useRouter();
+  // const { pathname } = useRouter();
+
+  const pathname = router?.pathname;
 
   const [state, dispatch] = useReducer(authReducer, AUTH_CONTEXT_INITIAL_STATE);
   const setters = getFlagSetters(dispatch);
