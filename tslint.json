@@ -8,7 +8,9 @@
   "rules": {
     "quotemark": false,
     "array-type": false,
+    "radix": false,
     "ordered-imports": false,
+    "variable-name": false,
     "indent": [
       true,
       "spaces"

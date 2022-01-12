@@ -4,7 +4,7 @@ import { ReferenceListItemDto } from '../../apis/referenceList';
 import { IRefListDropDownProps, ISelectOption } from './models';
 
 export const DtoRefListDropDown: FC<IRefListDropDownProps<ReferenceListItemDto>> = props => {
-  const getLabeledValue = (itemValue: ReferenceListItemDto, _options: ISelectOption<ReferenceListItemDto>[]) => {
+  const getLabeledValue = (itemValue: ReferenceListItemDto, _: ISelectOption<ReferenceListItemDto>[]) => {
     if (itemValue === undefined) return undefined;
     const result = {
       value: itemValue?.itemValue,

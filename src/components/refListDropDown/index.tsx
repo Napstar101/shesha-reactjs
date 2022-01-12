@@ -7,12 +7,13 @@ export { RawRefListDropDown } from './rawRefListDropDown';
 export { DtoRefListDropDown } from './dtoRefListDropDown';
 
 type InternalDropDownType = typeof GenericRefListDropDown;
-interface InternalDropDownInterface extends InternalDropDownType {
+
+interface IInternalDropDownInterface extends InternalDropDownType {
   Raw: typeof RawRefListDropDown;
   Dto: typeof DtoRefListDropDown;
 }
 
-const DropDownInterface = GenericRefListDropDown as InternalDropDownInterface;
+const DropDownInterface = GenericRefListDropDown as IInternalDropDownInterface;
 DropDownInterface.Raw = RawRefListDropDown;
 DropDownInterface.Dto = DtoRefListDropDown;
 
