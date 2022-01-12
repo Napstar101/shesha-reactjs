@@ -118,7 +118,13 @@ export const GenericRefListDropDown = <TValue,>(props: IGenericRefListDropDownPr
       notFoundContent={null}
       allowClear={true}
       loading={loading}
-      filterOption={(input, option) => option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+      filterOption={(input, option) => {
+        if (typeof option?.children === 'string' && typeof input === 'string') {
+          return option?.children?.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        }
+
+        return false;
+      }}
       {...rest}
       style={{ width }}
       onChange={handleChange}
