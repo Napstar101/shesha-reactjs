@@ -14,7 +14,7 @@ const optionsArr = ['Yes', 'No'];
 
 export const BooleanDropDown: FC<IBooleanDropDownProps> = ({ objectItem, setObjectItem, itemKey, value, ...rest }) => {
   const handleOnSelect = arg => {
-    arg == 1 ? setObjectItem({ ...objectItem, [itemKey]: true }) : setObjectItem({ ...objectItem, [itemKey]: false });
+    arg === 1 ? setObjectItem({ ...objectItem, [itemKey]: true }) : setObjectItem({ ...objectItem, [itemKey]: false });
   };
 
   const options = optionsArr.map((a, index) => (
@@ -32,7 +32,7 @@ export const BooleanDropDown: FC<IBooleanDropDownProps> = ({ objectItem, setObje
       notFoundContent={null}
       allowClear={true}
       onSelect={handleOnSelect}
-      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+      filterOption={(inputValue, option) => option?.value?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
       {...selectProps}
     >
       {options}
