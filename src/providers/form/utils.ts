@@ -89,12 +89,12 @@ export const componentsFlatStructureToTree = (
     // iterate all component ids on the current level
     componentIds.forEach(id => {
       // extract current component and add to hierarchy
-      let component = { ...flat.allComponents[id] };
+      const component = { ...flat.allComponents[id] };
       container.push(component);
 
       //  process all childs if any
       if (id in flat.componentRelations) {
-        let childComponents: IConfigurableFormComponent[] = [];
+        const childComponents: IConfigurableFormComponent[] = [];
         processComponent(childComponents, id);
         component['components'] = childComponents;
       }
@@ -103,13 +103,13 @@ export const componentsFlatStructureToTree = (
       if (component.type) {
         const componentRegistration = toolboxComponents[component.type];
 
-        const customContainers = componentRegistration.customContainerNames || [];
+        const customContainers = componentRegistration?.customContainerNames || [];
         customContainers.forEach(containerName => {
           const childContainers = component[containerName] as IComponentsContainer[];
 
           if (childContainers) {
             childContainers.forEach(c => {
-              let childComponents: IConfigurableFormComponent[] = [];
+              const childComponents: IConfigurableFormComponent[] = [];
               processComponent(childComponents, c.id);
               c.components = childComponents;
             });
@@ -137,7 +137,7 @@ export const loadFormById = (id: string) => {
       dispatch(loadRequestAction({ path }));
       fetcherByPath.refetch({ queryParams: { path: path } });  
   */
-}
+};
 export const loadFormByPath = (path: string) => {
   return formGetByPath({ path }, {});
   /*
@@ -148,7 +148,7 @@ export const loadFormByPath = (path: string) => {
       dispatch(loadRequestAction({ path }));
       fetcherByPath.refetch({ queryParams: { path: path } });  
   */
-}
+};
 
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
   if (customVisibility) {
