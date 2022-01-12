@@ -1,4 +1,4 @@
-import { IToolboxComponent } from '../../../../interfaces';
+import { IReadOnly, IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CodeOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
@@ -7,8 +7,12 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useForm } from '../../../../providers';
+import Show from '../../../show';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 type TextType = 'text' | 'password';
+
 export interface ITextFieldProps extends IConfigurableFormComponent {
   placeholder?: string;
   prefix?: string;
@@ -45,11 +49,24 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
 
     const InputComponentType = renderInput(model.textType);
 
+    const { formMode, formData } = useForm();
+
+    const isReadOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
+
+    const value = formData && formData[model.name];
+
+    console.log('TextField value: ', value);
+
     return (
-      <ConfigurableFormItem
-        model={model}
-        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
-      >
+      <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
+        {/* <Show when={isReadOnly}>
+          <ReadOnlyDisplayFormItem>{value}</ReadOnlyDisplayFormItem>
+        </Show>
+
+        <Show when={!isReadOnly}>
+          <InputComponentType {...inputProps} />
+        </Show> */}
+
         <InputComponentType {...inputProps} />
       </ConfigurableFormItem>
     );

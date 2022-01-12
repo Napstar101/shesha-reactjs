@@ -28,7 +28,7 @@ const TextField: IToolboxComponent<ICheckboxGoupProps> = {
     const checkItems = items.map(item => ({ label: item.name, value: item.value }));
     return (
       <ConfigurableFormItem model={model}>
-        <Checkbox.Group options={checkItems}></Checkbox.Group>
+        <Checkbox.Group options={checkItems} />
       </ConfigurableFormItem>
     );
   },

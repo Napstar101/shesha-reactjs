@@ -48,7 +48,6 @@ const Template: Story<IConfigurableFormProps> = () => {
                     </StoredFilesProvider>
                   ),
                 }}
-                
                 initialValues={{
                   scheduleDateStart: '2021-10-30T00:40:40.317Z',
                   scheduleDateEnd: '2021-09-12T00:40:40.317Z',

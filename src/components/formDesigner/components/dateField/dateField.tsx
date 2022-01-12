@@ -144,8 +144,8 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
       ? defaultValue?.map(v => moment(new Date(v), pickerFormat))
       : [null, null];
 
-  const handleDatePickerChange = (value: any | null, dateString: string) => {
-    const newValue = isMoment(value) ? value.format() : value;
+  const handleDatePickerChange = (localValue: any | null, dateString: string) => {
+    const newValue = isMoment(localValue) ? localValue.format() : localValue;
 
     (onChange as TimePickerChangeEvent)(newValue, dateString);
   };
@@ -160,7 +160,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     (onChange as RangePickerChangeEvent)(dates, formatString);
   };
 
-  const onCalendarChange = (values: any[], _formatString: [string, string], info: RangeInfo) => {
+  const onCalendarChange = (values: any[], _: [string, string], info: RangeInfo) => {
     if (info?.range === 'end' && form) {
       form.setFieldsValue({
         [`${name}Start`]: values[0]?.toISOString(),
@@ -200,3 +200,8 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
 };
 
 export default DateField;
+
+// const DatePickerReadOnlyRenderer = () => {
+
+//   return <div></div>
+// }

@@ -1,10 +1,9 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Form, Modal } from 'antd';
 import { ConfigurableForm } from '../../components';
 import formSettingsJson from './formSettings.json';
 import { FormMarkup } from '../../providers/form/models';
 import { useForm } from '../../providers/form';
-import React from 'react';
 //import { useDebouncedCallback } from 'use-debounce';
 
 export interface IFormSettingsEditorProps {
@@ -15,6 +14,8 @@ export interface IFormSettingsEditorProps {
 export const FormSettingsEditor: FC<IFormSettingsEditorProps> = ({ isVisible, close }) => {
   const [form] = Form.useForm();
   const { formSettings, updateFormSettings } = useForm();
+
+  console.log('formSettings: ', formSettings);
 
   /*
     const debouncedUpdateFormSettings = useDebouncedCallback(
@@ -56,7 +57,7 @@ export const FormSettingsEditor: FC<IFormSettingsEditorProps> = ({ isVisible, cl
         markup={formSettingsJson as FormMarkup}
         initialValues={formSettings}
         //onValuesChange={debouncedUpdateFormSettings}
-      ></ConfigurableForm>
+      />
     </Modal>
   );
 };

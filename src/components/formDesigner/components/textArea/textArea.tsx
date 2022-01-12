@@ -7,6 +7,9 @@ import { TextAreaProps } from 'antd/lib/input';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useForm } from '../../../../providers';
+import Show from '../../../show';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 export interface ITextAreaProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -36,12 +39,20 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
       bordered: !model.hideBorder,
     };
 
+    const { formMode, formData } = useForm();
+
+    const isReadOnly = model?.readOnly || formMode === 'readonly';
+
+    const value = formData[model.name];
+
     return (
-      <ConfigurableFormItem
-        model={model}
-        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
-      >
-        <Input.TextArea rows={2} {...textAreaProps} />
+      <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
+        <Show when={isReadOnly}>
+          <ReadOnlyDisplayFormItem>{value}</ReadOnlyDisplayFormItem>
+        </Show>
+        <Show when={!isReadOnly}>
+          <Input.TextArea rows={2} {...textAreaProps} />
+        </Show>
       </ConfigurableFormItem>
     );
   },

@@ -29,6 +29,7 @@ export { DesignerToolbarSettings } from './toolbarSettings';
 export { IShaDataTableProps } from '../components/indexTable/interfaces';
 export { IChildTableProps } from '../components/childTable';
 export { IDataTableInstance } from '../providers/dataTable/interfaces';
+export { IReadOnly } from './readOnly'
 export type { PageWithLayout } from './pageWithLayout';
 export * from './formDesigner';
 export * from './shesha';

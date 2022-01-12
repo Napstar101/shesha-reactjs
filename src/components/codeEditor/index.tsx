@@ -14,7 +14,7 @@ const AceEditorLazy = React.lazy<typeof ReactAce>(() => new Promise(async resolv
     const reactAce = await import("react-ace");
 
     // prevent warning in console about misspelled props name.
-    await import("ace-builds/src-noconflict/ext-language_tools");
+         await import("ace-builds/src-noconflict/ext-language_tools");
 
     // import your theme/mode here. <AceEditor mode="javascript" theme="monokai" />
     await import("ace-builds/src-noconflict/mode-javascript");

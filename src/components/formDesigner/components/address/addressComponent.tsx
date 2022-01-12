@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IToolboxComponent } from '../../../../interfaces';
+import { IReadOnly, IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { HomeOutlined } from '@ant-design/icons';
 import { InputProps } from 'antd/lib/input';
@@ -7,8 +7,9 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { AutoCompletePlaces } from '../../../';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useForm } from '../../../..';
 
-export interface IAddressCompomentProps extends IConfigurableFormComponent {
+export interface IAddressCompomentProps extends IConfigurableFormComponent, IReadOnly {
   placeholder?: string;
   prefix?: string;
   suffix?: string;
@@ -22,9 +23,14 @@ const AddressCompoment: IToolboxComponent<IAddressCompomentProps> = {
   name: 'Address',
   icon: <HomeOutlined />,
   factory: (model: IAddressCompomentProps) => {
+    const { formMode } = useForm();
+
+    const completeModel = model;
+    completeModel.readOnly = model?.readOnly || formMode === 'readonly';
+
     return (
       <ConfigurableFormItem model={model}>
-        <AutoCompletePlacesField {...model}></AutoCompletePlacesField>
+        <AutoCompletePlacesField {...completeModel} />
       </ConfigurableFormItem>
     );
   },
@@ -32,19 +38,21 @@ const AddressCompoment: IToolboxComponent<IAddressCompomentProps> = {
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
 };
 
-interface IAutoCompletePlacesFieldProps extends IAddressCompomentProps {
+interface IAutoCompletePlacesFieldProps extends IAddressCompomentProps, IReadOnly {
   value?: any;
   onChange?: any;
 }
 
 const AutoCompletePlacesField: FC<IAutoCompletePlacesFieldProps> = props => {
-  let inputProps: InputProps = {
+  const inputProps: InputProps = {
     placeholder: props.placeholder,
     prefix: props.prefix,
     suffix: props.suffix,
     disabled: props.disabled,
     bordered: !props.hideBorder,
+    readOnly: props.readOnly,
   };
+
   return (
     <AutoCompletePlaces
       className="search-input text-center"

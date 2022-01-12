@@ -17,7 +17,7 @@ import {
   IFormSettings,
   DEFAULT_FORM_SETTINGS,
 } from './contexts';
-import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections } from './models';
+import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections, FormMode } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   componentAddAction,
@@ -42,13 +42,11 @@ import {
   changeMarkupAction,
   registerComponentActionsAction,
   updateFormSettingsAction,
-
   addDataSourceAction,
   removeDataSourceAction,
   setActiveDataSourceAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
-import { FormMode } from './models';
 import { useFormGet, useFormGetByPath, useFormUpdateMarkup, FormUpdateMarkupInput } from '../../apis/form';
 import {
   componentsTreeToFlatStructure,
@@ -78,7 +76,7 @@ export interface IFormProviderProps {
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
   toolboxComponentGroups?: IToolboxComponentGroup[];
-  onValuesChange?: (changedValues: any, values: any/*Values*/) => void;
+  onValuesChange?: (changedValues: any, values: any /*Values*/) => void;
 }
 
 const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
@@ -212,6 +210,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
             const parsedForm = parseForm(fetchedForm.markup);
 
             const flatComponents = componentsTreeToFlatStructure(toolboxComponents, parsedForm.components);
+
             const formContent: IFormProps = {
               // todo: use partial for loading
               id: fetchedForm.id,
@@ -285,7 +284,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   });
 
   const saveForm = (): Promise<void> => {
-    if (!state.present.id) return new Promise(() => { });
+    if (!state.present.id) return new Promise(() => {});
 
     dispatch(saveRequestAction());
 
@@ -426,20 +425,20 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   //#region move to designer
   const addDataSource = (dataSource: IDataSource) => {
     dispatch(addDataSourceAction(dataSource));
-  }
+  };
   const removeDataSource = (id: string) => {
     dispatch(removeDataSourceAction(id));
-  }
+  };
 
   const setActiveDataSource = (id: string) => {
     dispatch(setActiveDataSourceAction(id));
-  }
+  };
 
   const getActiveDataSource = () => {
     return state.present.activeDataSourceId
       ? state.present.dataSources.find(ds => ds.id === state.present.activeDataSourceId)
       : null;
-  }
+  };
   //#endregion
 
   const configurableFormActions: IFormActionsContext = {

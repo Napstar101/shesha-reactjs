@@ -87,6 +87,8 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   /**/
   settingsValidationErrors?: IAsyncValidationError[];
   //#endregion
+
+  readOnly?: boolean;
 }
 
 export interface IComponentsContainer {
