@@ -33,7 +33,7 @@ const getStyles = (props: Partial<TableHeaderProps | TableCellProps>, align = 'l
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }: any, ref) => {
   const defaultRef = useRef();
-  let resolvedRef = ref || defaultRef;
+  const resolvedRef = ref || defaultRef;
 
   useEffect(() => {
     // @ts-ignore

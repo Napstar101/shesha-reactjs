@@ -1,10 +1,22 @@
 {
-  "extends": ["tslint-config-standard", "tslint:latest", "tslint-react", "tslint-config-prettier"],
+  "extends": [
+    "tslint-config-standard",
+    "tslint:latest",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
   "rules": {
     "quotemark": false,
+    "array-type": false,
     "ordered-imports": false,
-    "indent": [true, "spaces"],
-    "interface-name": [true, "always-prefix"],
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "interface-name": [
+      true,
+      "always-prefix"
+    ],
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "max-line-length": false,
