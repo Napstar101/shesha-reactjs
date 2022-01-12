@@ -36,7 +36,11 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
-  dataTypeSupported: ({ dataType, dataFormat }) => dataType === DataTypes.string && dataFormat === StringFormats.singleline,
+  dataTypeSupported: ({ dataType, dataFormat }) => dataType === DataTypes.string && 
+    (dataFormat === StringFormats.singleline 
+      || dataFormat === StringFormats.emailAddress 
+      || dataFormat === StringFormats.phoneNumber 
+      || dataFormat === StringFormats.password),
   factory: (model: ITextFieldProps) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,
