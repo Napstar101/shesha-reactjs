@@ -26,13 +26,12 @@ export const BooleanDropDown: FC<IBooleanDropDownProps> = ({ objectItem, setObje
   const selectProps = { ...rest, value: options ? value : null };
   return (
     <Select
-      showSearch
+      showSearch={false}
       defaultActiveFirstOption={false}
       showArrow={false}
       notFoundContent={null}
       allowClear={true}
       onSelect={handleOnSelect}
-      filterOption={(inputValue, option) => option?.value?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
       {...selectProps}
     >
       {options}
