@@ -16,6 +16,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Empty, Spin } from 'antd';
 import _ from 'lodash';
 import { IReactTableProps } from './interfaces';
+import { nanoid } from 'nanoid/non-secure';
 // const headerProps = (props, { column }) => getStyles(props, column.align);
 
 const cellProps: CellPropGetter<object> = (props, { cell }) => getStyles(props, cell.column.align);
@@ -102,7 +103,7 @@ const ReactTable: FC<IReactTableProps> = ({
     // useBlockLayout,
     ({ useInstanceBeforeDimensions, allColumns }) => {
       if (useMultiSelect) {
-        allColumns.push(columns => [
+        allColumns.push(localColumns => [
           // Let's make a column for selection
           {
             id: 'selection',
@@ -126,13 +127,13 @@ const ReactTable: FC<IReactTableProps> = ({
               </span>
             ),
           },
-          ...columns,
+          ...localColumns,
         ]);
       }
-      useInstanceBeforeDimensions?.push(({ headerGroups }) => {
-        if (Array.isArray(headerGroups)) {
+      useInstanceBeforeDimensions?.push(({ headerGroups: localHeaderGroups }) => {
+        if (Array.isArray(localHeaderGroups)) {
           // fix the parent group of the selection button to not be resizable
-          const selectionGroupHeader = headerGroups[0]?.headers[0];
+          const selectionGroupHeader = localHeaderGroups[0]?.headers[0];
           if (selectionGroupHeader) {
             selectionGroupHeader.canResize = false;
           }
@@ -195,6 +196,7 @@ const ReactTable: FC<IReactTableProps> = ({
                 {headerGroup?.headers?.map(column => {
                   return (
                     <span
+                      key={nanoid()}
                       // {...column.getHeaderProps(headerProps)}
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       className={classNames('th', {
@@ -237,6 +239,7 @@ const ReactTable: FC<IReactTableProps> = ({
 
               return (
                 <span
+                  key={nanoid()}
                   onClick={() => handleSelectRow(row)}
                   onDoubleClick={() => handleDoubleClickRow(row)}
                   {...row.getRowProps()}
@@ -248,7 +251,7 @@ const ReactTable: FC<IReactTableProps> = ({
                 >
                   {row.cells.map(cell => {
                     return (
-                      <span {...cell.getCellProps(cellProps)} className="td">
+                      <span key={nanoid()} {...cell.getCellProps(cellProps)} className="td">
                         {cell.render('Cell')}
                       </span>
                     );
