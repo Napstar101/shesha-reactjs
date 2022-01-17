@@ -173,8 +173,12 @@ export const FormSettings = addStory(DesignerTemplate, {
   formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\formSettings.json',
 });
 
-export const SimplePropsProps = addStory(DesignerTemplate, {
+export const PersonEdit = addStory(DesignerTemplate, {
   formPath: '/persons/edit',
+});
+
+export const PersonDetails = addStory(DesignerTemplate, {
+  formPath: '/persons/details',
 });
 
 export const ModelItemProps = addStory(DesignerTemplate, {

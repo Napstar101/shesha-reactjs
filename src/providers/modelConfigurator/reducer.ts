@@ -5,9 +5,9 @@ import {
 import { ModelActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
 import { IModelItem } from '../../interfaces/modelConfigurator';
-import { EntityPropertyDto, ModelConfigurationDto } from '../../apis/modelConfigurations';
+import { ModelPropertyDto, ModelConfigurationDto } from '../../apis/modelConfigurations';
 
-const mapPropertyToModelItem = (property: EntityPropertyDto): IModelItem => {
+const mapPropertyToModelItem = (property: ModelPropertyDto): IModelItem => {
   const result = {
     id: property.id,
     name: property.name,

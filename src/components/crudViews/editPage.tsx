@@ -9,6 +9,11 @@ import { UseGenericGetProps, IDataFetcher, IDataMutator } from './models';
 import { IToolbarItem } from '../../interfaces';
 import { useShaRouting } from '../../providers/shaRouting';
 import { CommonCrudHandles } from './interfaces';
+import { MutateRequestOptions } from 'restful-react/dist/Mutate';
+
+export interface IMutateOptions extends Pick<MutateRequestOptions<any, any>, 'headers'>{
+  
+}
 
 export interface IGenericEditPageProps {
   id?: string;
@@ -111,6 +116,7 @@ const GenericEditPage = forwardRef<CommonCrudHandles, IGenericEditPageProps>((pr
 
   const handleSubmit = values => {
     const postData = { ...values, id: model.id };
+
     save(postData).then(() => {
       goBack();
     });

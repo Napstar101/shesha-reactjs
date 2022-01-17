@@ -8,6 +8,7 @@ import { ShaApplicationProvider, StoredFilesProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { IndexPageTemplate } from './stories/indexPage';
 import StoredFilesRenderer from '../storedFilesRenderer';
+import { addStory } from '../../stories/utils';
 // import { useApplicationsApplyForMembership } from '../../apis/applications';
 
 export default {
@@ -22,7 +23,7 @@ const configurableFormProps: IConfigurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IConfigurableFormProps> = () => {
+const Template: Story<IConfigurableFormProps> = (props) => {
   const [form] = Form.useForm();
 
   const onFinish = (data: any) => {
@@ -38,7 +39,7 @@ const Template: Story<IConfigurableFormProps> = () => {
             <Col span={24}>
               <ConfigurableForm
                 mode="edit"
-                path="/settings/forms/playground"
+                path={props.path}
                 onFinish={onFinish}
                 form={form}
                 sections={{
@@ -75,11 +76,18 @@ const Template: Story<IConfigurableFormProps> = () => {
   );
 };
 
-export const Basic = Template.bind({});
-Basic.args = { ...configurableFormProps };
+export const Basic = addStory(Template, {
+  ...configurableFormProps,
+  path: '/settings/forms/playground'
+});
 
 export const IndexPage = IndexPageTemplate.bind({});
 IndexPage.args = {
   backendUrl: backendUrl,
   formPath: '/indexTable',
 };
+
+export const PersonEditTest = addStory(Template, {
+  ...configurableFormProps,
+  path: '/persons/edit',
+});

@@ -11,10 +11,10 @@ export const SPEC_VERSION = 'v1';
 export type MetadataSourceType = 1 | 2;
 
 /**
- * Entity property DTO
+ * Model property DTO
  */
-export interface EntityPropertyDto {
-  id?: string;
+export interface ModelPropertyDto {
+  id?: string | null;
   /**
    * Property Name
    */
@@ -51,7 +51,7 @@ export interface EntityPropertyDto {
   /**
    * Child properties, applicable for complex data types (e.g. object, array)
    */
-  properties?: EntityPropertyDto[] | null;
+  properties?: ModelPropertyDto[] | null;
 }
 
 /**
@@ -61,7 +61,7 @@ export interface ModelConfigurationDto {
   id?: string;
   className?: string | null;
   namespace?: string | null;
-  properties?: EntityPropertyDto[] | null;
+  properties?: ModelPropertyDto[] | null;
 }
 
 export interface ValidationErrorInfo {
