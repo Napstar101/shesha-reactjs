@@ -7,11 +7,15 @@ import {
   togglePersonPickerVisibleAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
-import { ControlSize, UiActionsContext, UiStateContext, UI_CONTEXT_INITIAL_STATE } from './contexts';
+import { ControlSize, IUiStateContext, UiActionsContext, UiStateContext, UI_CONTEXT_INITIAL_STATE } from './contexts';
 import { getFlagSetters } from '../utils/flagsSetters';
 
-const UiProvider: FC<PropsWithChildren<any>> = ({ children }) => {
-  const [state, dispatch] = useReducer(uiReducer, UI_CONTEXT_INITIAL_STATE);
+export interface UiProviderProps {
+  settings?: IUiStateContext;
+}
+
+const UiProvider: FC<PropsWithChildren<UiProviderProps>> = ({ children, settings }) => {
+  const [state, dispatch] = useReducer(uiReducer, settings || UI_CONTEXT_INITIAL_STATE);
 
   const setControlsSize = (size: ControlSize) => {
     dispatch(setControlsSizeAction(size));
