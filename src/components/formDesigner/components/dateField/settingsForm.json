@@ -211,6 +211,73 @@
       "defaultValue": false
     },
     {
+      "id": "ac88293a-af3b-45a2-a57c-7703d882b473",
+      "type": "dropdown",
+      "name": "disabledDateMode",
+      "label": "Disabled date mode",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "dataSourceType": "values",
+      "defaultValue": "none",
+      "values": [
+        {
+          "id": "cedee63a-8679-4cc0-97a0-1814afa08b86",
+          "label": "None",
+          "value": "none"
+        },
+        {
+          "id": "db823427-ee53-4c62-9032-911da93dee9a",
+          "label": "Function template",
+          "value": "functionTemplate"
+        },
+        {
+          "id": "3e402036-63ac-434e-a399-c1551fc32890",
+          "label": "Custom function",
+          "value": "customFunction"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "id": "ebbd2969-f7d5-4e28-9a7c-56695ed09e59",
+      "type": "dropdown",
+      "name": "disabledDateTemplate",
+      "label": "Disabled date templates",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "return data.disabledDateMode === 'functionTemplate'",
+      "dataSourceType": "values",
+      "values": [
+        {
+          "id": "ec349b3e-ef29-467c-96fb-265320ac37a0",
+          "label": "Disable past dates",
+          "value": "return current && current < moment().endOf('day');"
+        },
+        {
+          "id": "41db4d59-249d-4ba2-8049-db0fd9fbde14",
+          "label": "Disable future dates",
+          "value": "return current && current > moment().endOf('day');"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "id": "a0143f52-5bdd-418a-9e22-89f2c5d4162d",
+      "type": "codeEditor",
+      "name": "disabledDateFunc",
+      "label": "Disabled Date Func",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "return data.disabledDateMode === 'customFunction'",
+      "description": "Enter disabled date code. You must return true to hide the date. Two objects are exposed to work with, namely 'current' and 'moment'. Use these variables to write the code that will hide the dates you want.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
       "type": "sectionSeparator",
       "name": "separator2",
