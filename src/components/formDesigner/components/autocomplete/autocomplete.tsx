@@ -65,8 +65,6 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
     
     return {
       ...model,
-      label: metadata.label,
-      description: metadata.description,
       useRawValues: true,
       dataSourceType: 'entitiesList',
       entityTypeShortAlias: metadata.entityType,

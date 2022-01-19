@@ -30,7 +30,6 @@ const API_LIST = [
   'EntityProperty',
   'ModelConfigurations',
   'PersonTest',
-  'PersonTest2',
 ];
 
 const defaultConfiguration = {

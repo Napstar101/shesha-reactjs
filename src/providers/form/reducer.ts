@@ -19,7 +19,7 @@ import {
 import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure } from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import { camelize, convertActions, findToolboxComponent } from './utils';
+import { camelize, convertActions, findToolboxComponent, listComponentToModelMetadata } from './utils';
 import undoable, { includeAction } from 'redux-undo';
 import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
@@ -56,7 +56,7 @@ const createComponentForProperty = (components: IToolboxComponentGroup[], proper
   // init default values for the component
   // init component according to the metadata
 
-  let formComponent: IConfigurableFormComponent = {
+  let componentModel: IConfigurableFormComponent = {
     id: nanoid(),
     type: toolboxComponent.type,
     name: camelize(propertyMetadata.path),
@@ -68,11 +68,11 @@ const createComponentForProperty = (components: IToolboxComponentGroup[], proper
     visibilityFunc: _data => true,
   };
   if (toolboxComponent.initModel)
-    formComponent = toolboxComponent.initModel(formComponent);
-  if (toolboxComponent.linkToModelMetadata)
-    formComponent = toolboxComponent.linkToModelMetadata(formComponent, propertyMetadata);
+    componentModel = toolboxComponent.initModel(componentModel);
 
-  return formComponent;
+  componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
+
+  return componentModel;
 }
 
 const reducer = handleActions<IFormStateContext, any>(

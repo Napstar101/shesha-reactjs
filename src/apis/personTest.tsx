@@ -57,7 +57,6 @@ export interface PersonDynamicDto {
   id?: string;
   firstName?: string | null;
   lastName?: string | null;
-  shaFormFields?: string[] | null;
 }
 
 export interface PersonTestGetQueryParams {

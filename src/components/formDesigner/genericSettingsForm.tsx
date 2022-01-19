@@ -5,6 +5,7 @@ import { IConfigurableFormComponent, FormMarkup } from '../../providers/form/mod
 import { IToolboxComponent } from '../../interfaces';
 import { ConfigurableFormInstance } from '../../providers/form/contexts';
 import { IPropertyMetadata } from '../../interfaces/metadata';
+import { listComponentToModelMetadata } from '../../providers/form/utils';
 
 export interface IProps<TModel extends IConfigurableFormComponent> {
   model: TModel;
@@ -33,7 +34,7 @@ function Settings<TModel extends IConfigurableFormComponent>({
     const currentModel = form.getFieldsValue() as TModel;
 
     const wrapper = toolboxComponent.linkToModelMetadata
-      ? m => toolboxComponent.linkToModelMetadata(m, metadata)
+      ? m => listComponentToModelMetadata(toolboxComponent, m, metadata)
       : m => m;
 
     const newModel: TModel = wrapper({

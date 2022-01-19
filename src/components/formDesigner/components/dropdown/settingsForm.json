@@ -191,6 +191,18 @@
           "customVisibility": "return data.dataSourceType === 'referenceList'"
         },
         {
+          "id": "9JXKnC0XHz9xIvoxfQ-AK",
+          "type": "checkbox",
+          "name": "useRawValues",
+          "label": "Use raw values",
+          "labelAlign": "right",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "hidden": false,
+          "customVisibility": null,
+          "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
           "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc5",
           "type": "textArea",
           "name": "ignoredValues",

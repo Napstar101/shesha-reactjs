@@ -63,8 +63,6 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   linkToModelMetadata: (model, metadata): ITextAreaProps => {
     return {
       ...model,
-      label: metadata.label,
-      description: metadata.description,
       maxLength: metadata.maxLength,
     };
   },

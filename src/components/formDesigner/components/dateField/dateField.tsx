@@ -98,8 +98,6 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   linkToModelMetadata: (model, metadata): IDateFieldProps => {
     return {
       ...model,
-      label: metadata.label,
-      description: metadata.description,
       showTime: metadata.dataType === DataTypes.dateTime,
     };
   },
@@ -131,7 +129,9 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
   const getFormat = () => {
     switch (picker) {
       case 'date':
-        return dateFormat;
+        return showTime
+          ? `${dateFormat} ${timeFormat}`
+          : dateFormat;
       case 'year':
         return yearFormat;
       case 'month':
@@ -206,6 +206,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
       showToday={showToday}
       showSecond={false}
       picker={picker}
+      format={pickerFormat}
       {...rest}
     />
   );

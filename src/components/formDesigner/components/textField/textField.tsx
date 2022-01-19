@@ -73,8 +73,6 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   linkToModelMetadata: (model, metadata): ITextFieldProps => {
     return {
       ...model,
-      label: metadata.label,
-      description: metadata.description,
       maxLength: metadata.maxLength,
       textType: metadata.dataFormat === StringFormats.password ? 'password' : 'text',
     };

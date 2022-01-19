@@ -27,17 +27,24 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  initModel: model => {
+    const customProps: IDropdownProps = {
+      ...model,
+      dataSourceType: 'values',
+      useRawValues: false,
+    };
+    return customProps;
+  },
   linkToModelMetadata: (model, metadata): IDropdownProps => {
     return {
       ...model,
-      label: metadata.label,
-      description: metadata.description,
       dataSourceType: metadata.dataType === DataTypes.referenceListItem
           ? 'referenceList'
           : 'values',
       referenceListNamespace: metadata.referenceListNamespace,
       referenceListName: metadata.referenceListName,
       mode: 'single',
+      useRawValues: true,
     };
   },
 };
@@ -55,6 +62,7 @@ export const Dropdown: FC<IDropdownProps> = ({
   defaultValue,
   ignoredValues = [],
   placeholder,
+  useRawValues,
 }) => {
   const getOptions = (): ILabelValue[] => {
     return value && typeof value === 'number' ? values.map(i => ({ ...i, value: parseInt(i.value) })) : values;
@@ -63,21 +71,37 @@ export const Dropdown: FC<IDropdownProps> = ({
   const selectedMode = mode === 'single' ? undefined : mode;
 
   if (dataSourceType === 'referenceList') {
-    return (
-      <RefListDropDown.Dto
-        onChange={onChange}
-        listName={referenceListName}
-        listNamespace={referenceListNamespace}
-        disabled={disabled}
-        value={value}
-        bordered={!hideBorder}
-        defaultValue={defaultValue}
-        mode={selectedMode}
-        filters={ignoredValues}
-        includeFilters={false}
-        placeholder={placeholder}
-      />
-    );
+    return useRawValues
+      ? (
+        <RefListDropDown.Raw
+          onChange={onChange}
+          listName={referenceListName}
+          listNamespace={referenceListNamespace}
+          disabled={disabled}
+          value={value}
+          bordered={!hideBorder}
+          defaultValue={defaultValue}
+          mode={selectedMode}
+          filters={ignoredValues}
+          includeFilters={false}
+          placeholder={placeholder}
+        />
+      )
+      : (
+        <RefListDropDown.Dto
+          onChange={onChange}
+          listName={referenceListName}
+          listNamespace={referenceListNamespace}
+          disabled={disabled}
+          value={value}
+          bordered={!hideBorder}
+          defaultValue={defaultValue}
+          mode={selectedMode}
+          filters={ignoredValues}
+          includeFilters={false}
+          placeholder={placeholder}
+        />
+      );
   }
 
   const options = getOptions() || [];

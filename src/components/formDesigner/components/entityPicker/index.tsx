@@ -40,14 +40,6 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
-  linkToModelMetadata: (model, metadata): IEntityPickerComponentProps => {
-    return {
-      ...model,
-      label: metadata.label,
-      description: metadata.description,
-      // todo: add support of default picker configuration or unlink component from the `entity reference` data type
-    };
-  },
 };
 
 export default EntityPickerComponent;

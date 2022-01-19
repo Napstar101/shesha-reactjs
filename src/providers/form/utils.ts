@@ -16,6 +16,7 @@ import { IToolboxComponent, IToolboxComponentGroup, IToolboxComponents } from '.
 import Schema, { Rules, ValidateSource } from 'async-validator';
 import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
 import { formGet, formGetByPath } from '../../apis/form';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -453,3 +454,19 @@ export const validateConfigurableComponentSettings = (markup: FormMarkup, values
 
   return validator.validate(values);
 };
+
+export function listComponentToModelMetadata<TModel extends IConfigurableFormComponent>(component: IToolboxComponent<TModel>, model: TModel, metadata: IPropertyMetadata): TModel {
+  let mappedModel = model;
+
+  // map standard properties
+  if (metadata.label)
+    mappedModel.label = metadata.label;
+  if (metadata.description)
+    mappedModel.description = metadata.description;
+
+  // map component-specific properties
+  if (component.linkToModelMetadata)
+    mappedModel = component.linkToModelMetadata(model, metadata);
+ 
+  return mappedModel;
+}
