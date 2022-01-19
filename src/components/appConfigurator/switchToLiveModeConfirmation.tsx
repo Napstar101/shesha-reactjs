@@ -12,14 +12,12 @@ export const SwitchToLiveModeConfirmation: FC<IProps> = () => {
   } = useAppConfigurator();
   return (
     <Modal
-      //title=""
+      title="Launch Live Mode"
       visible={closeEditModeConfirmationVisible}
       onOk={() => switchApplicationMode('live')}
       onCancel={() => toggleCloseEditModeConfirmation(false)}
     >
-      <div>
-        <h2>Close Edit Mode?</h2>
-      </div>
+      <p>Would you like to leave 'Edit Mode' and launch 'Live Mode'?</p>
     </Modal>
   );
 };
