@@ -164,7 +164,6 @@
     "es"
   ],
   "dependencies": {
-    "@shesha/reactjs": "^0.4.11",
     "ace-builds": "^1.4.13",
     "invert-color": "^2.0.0",
     "js-encoding-utils": "^0.6.2",
