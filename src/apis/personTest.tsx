@@ -5,10 +5,8 @@ import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, Use
 
 import * as RestfulShesha from '../utils/fetchers';
 export const SPEC_VERSION = 'v1';
-export interface PersonDto {
+export interface PersonGuidDynamicDto {
   id?: string;
-  firstName?: string | null;
-  lastName?: string | null;
 }
 
 export interface ValidationErrorInfo {
@@ -23,13 +21,13 @@ export interface ErrorInfo {
   validationErrors?: ValidationErrorInfo[] | null;
 }
 
-export interface PersonDtoAjaxResponse {
+export interface PersonGuidDynamicDtoAjaxResponse {
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
-  result?: PersonDto;
+  result?: PersonGuidDynamicDto;
 }
 
 export interface AjaxResponseBase {
@@ -40,23 +38,18 @@ export interface AjaxResponseBase {
   __abp?: boolean;
 }
 
-export interface PersonGuidDynamicDto {
-  id?: string;
+export interface PersonGuidDynamicDtoPagedResultDto {
+  items?: PersonGuidDynamicDto[] | null;
+  totalCount?: number;
 }
 
-export interface PersonGuidDynamicDtoAjaxResponse {
+export interface PersonGuidDynamicDtoPagedResultDtoAjaxResponse {
   targetUrl?: string | null;
   success?: boolean;
   error?: ErrorInfo;
   unAuthorizedRequest?: boolean;
   __abp?: boolean;
-  result?: PersonGuidDynamicDto;
-}
-
-export interface PersonDynamicDto {
-  id?: string;
-  firstName?: string | null;
-  lastName?: string | null;
+  result?: PersonGuidDynamicDtoPagedResultDto;
 }
 
 export interface PersonTestGetQueryParams {
@@ -64,115 +57,196 @@ export interface PersonTestGetQueryParams {
 }
 
 export type PersonTestGetProps = Omit<
-  GetProps<PersonDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>,
+  GetProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>,
   'path'
 >;
 
 export const PersonTestGet = (props: PersonTestGetProps) => (
-  <Get<PersonDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>
+  <Get<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>
     path={`/api/services/Shesha/PersonTest/Get`}
     {...props}
   />
 );
 
 export type UsePersonTestGetProps = Omit<
-  UseGetProps<PersonDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>,
+  UseGetProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>,
   'path'
 >;
 
 export const usePersonTestGet = (props: UsePersonTestGetProps) =>
-  useGet<PersonDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>(
+  useGet<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>(
     `/api/services/Shesha/PersonTest/Get`,
     props
   );
 
 export type personTestGetProps = Omit<
-  RestfulShesha.GetProps<PersonDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>,
+  RestfulShesha.GetProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>,
   'queryParams'
 >;
 export const personTestGet = (queryParams: PersonTestGetQueryParams, props: personTestGetProps) =>
-  RestfulShesha.get<PersonDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>(
+  RestfulShesha.get<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, PersonTestGetQueryParams, void>(
     `/api/services/Shesha/PersonTest/Get`,
     queryParams,
     props
   );
 
-export type PersonTestUpdateOpenDynamicDtoProps = Omit<
+export type PersonTestUpdateProps = Omit<
   MutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>,
   'path' | 'verb'
 >;
 
-export const PersonTestUpdateOpenDynamicDto = (props: PersonTestUpdateOpenDynamicDtoProps) => (
+export const PersonTestUpdate = (props: PersonTestUpdateProps) => (
   <Mutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>
-    verb="POST"
-    path={`/api/services/Shesha/PersonTest/UpdateOpenDynamicDto`}
+    verb="PUT"
+    path={`/api/services/Shesha/PersonTest/Update`}
     {...props}
   />
 );
 
-export type UsePersonTestUpdateOpenDynamicDtoProps = Omit<
+export type UsePersonTestUpdateProps = Omit<
   UseMutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>,
   'path' | 'verb'
 >;
 
-export const usePersonTestUpdateOpenDynamicDto = (props: UsePersonTestUpdateOpenDynamicDtoProps) =>
+export const usePersonTestUpdate = (props: UsePersonTestUpdateProps) =>
   useMutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>(
-    'POST',
-    `/api/services/Shesha/PersonTest/UpdateOpenDynamicDto`,
+    'PUT',
+    `/api/services/Shesha/PersonTest/Update`,
     props
   );
 
-export type personTestUpdateOpenDynamicDtoProps = Omit<
+export type personTestUpdateProps = Omit<
   RestfulShesha.MutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>,
   'data'
 >;
-export const personTestUpdateOpenDynamicDto = (
-  data: PersonGuidDynamicDto,
-  props: personTestUpdateOpenDynamicDtoProps
-) =>
+export const personTestUpdate = (data: PersonGuidDynamicDto, props: personTestUpdateProps) =>
   RestfulShesha.mutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>(
-    'POST',
-    `/api/services/Shesha/PersonTest/UpdateOpenDynamicDto`,
+    'PUT',
+    `/api/services/Shesha/PersonTest/Update`,
     data,
     props
   );
 
-export type PersonTestUpdateClosedDynamicDtoProps = Omit<
-  MutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonDynamicDto, void>,
-  'path' | 'verb'
+export interface PersonTestGetAllQueryParams {
+  sorting?: string | null;
+  skipCount?: number;
+  maxResultCount?: number;
+}
+
+export type PersonTestGetAllProps = Omit<
+  GetProps<PersonGuidDynamicDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonTestGetAllQueryParams, void>,
+  'path'
 >;
 
-export const PersonTestUpdateClosedDynamicDto = (props: PersonTestUpdateClosedDynamicDtoProps) => (
-  <Mutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonDynamicDto, void>
-    verb="POST"
-    path={`/api/services/Shesha/PersonTest/UpdateClosedDynamicDto`}
+export const PersonTestGetAll = (props: PersonTestGetAllProps) => (
+  <Get<PersonGuidDynamicDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonTestGetAllQueryParams, void>
+    path={`/api/services/Shesha/PersonTest/GetAll`}
     {...props}
   />
 );
 
-export type UsePersonTestUpdateClosedDynamicDtoProps = Omit<
-  UseMutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonDynamicDto, void>,
-  'path' | 'verb'
+export type UsePersonTestGetAllProps = Omit<
+  UseGetProps<PersonGuidDynamicDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonTestGetAllQueryParams, void>,
+  'path'
 >;
 
-export const usePersonTestUpdateClosedDynamicDto = (props: UsePersonTestUpdateClosedDynamicDtoProps) =>
-  useMutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonDynamicDto, void>(
-    'POST',
-    `/api/services/Shesha/PersonTest/UpdateClosedDynamicDto`,
+export const usePersonTestGetAll = (props: UsePersonTestGetAllProps) =>
+  useGet<PersonGuidDynamicDtoPagedResultDtoAjaxResponse, AjaxResponseBase, PersonTestGetAllQueryParams, void>(
+    `/api/services/Shesha/PersonTest/GetAll`,
     props
   );
 
-export type personTestUpdateClosedDynamicDtoProps = Omit<
-  RestfulShesha.MutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonDynamicDto, void>,
+export type personTestGetAllProps = Omit<
+  RestfulShesha.GetProps<
+    PersonGuidDynamicDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    PersonTestGetAllQueryParams,
+    void
+  >,
+  'queryParams'
+>;
+export const personTestGetAll = (queryParams: PersonTestGetAllQueryParams, props: personTestGetAllProps) =>
+  RestfulShesha.get<
+    PersonGuidDynamicDtoPagedResultDtoAjaxResponse,
+    AjaxResponseBase,
+    PersonTestGetAllQueryParams,
+    void
+  >(`/api/services/Shesha/PersonTest/GetAll`, queryParams, props);
+
+export type PersonTestCreateProps = Omit<
+  MutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>,
+  'path' | 'verb'
+>;
+
+export const PersonTestCreate = (props: PersonTestCreateProps) => (
+  <Mutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>
+    verb="POST"
+    path={`/api/services/Shesha/PersonTest/Create`}
+    {...props}
+  />
+);
+
+export type UsePersonTestCreateProps = Omit<
+  UseMutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>,
+  'path' | 'verb'
+>;
+
+export const usePersonTestCreate = (props: UsePersonTestCreateProps) =>
+  useMutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>(
+    'POST',
+    `/api/services/Shesha/PersonTest/Create`,
+    props
+  );
+
+export type personTestCreateProps = Omit<
+  RestfulShesha.MutateProps<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>,
   'data'
 >;
-export const personTestUpdateClosedDynamicDto = (
-  data: PersonDynamicDto,
-  props: personTestUpdateClosedDynamicDtoProps
-) =>
-  RestfulShesha.mutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonDynamicDto, void>(
+export const personTestCreate = (data: PersonGuidDynamicDto, props: personTestCreateProps) =>
+  RestfulShesha.mutate<PersonGuidDynamicDtoAjaxResponse, AjaxResponseBase, void, PersonGuidDynamicDto, void>(
     'POST',
-    `/api/services/Shesha/PersonTest/UpdateClosedDynamicDto`,
+    `/api/services/Shesha/PersonTest/Create`,
     data,
+    props
+  );
+
+export interface PersonTestDeleteQueryParams {
+  id?: string;
+}
+
+export type PersonTestDeleteProps = Omit<
+  MutateProps<void, unknown, PersonTestDeleteQueryParams, void, void>,
+  'path' | 'verb'
+>;
+
+export const PersonTestDelete = (props: PersonTestDeleteProps) => (
+  <Mutate<void, unknown, PersonTestDeleteQueryParams, void, void>
+    verb="DELETE"
+    path={`/api/services/Shesha/PersonTest/Delete`}
+    {...props}
+  />
+);
+
+export type UsePersonTestDeleteProps = Omit<
+  UseMutateProps<void, unknown, PersonTestDeleteQueryParams, void, void>,
+  'path' | 'verb'
+>;
+
+export const usePersonTestDelete = (props: UsePersonTestDeleteProps) =>
+  useMutate<void, unknown, PersonTestDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/Shesha/PersonTest/Delete`,
+    { ...props }
+  );
+
+export type personTestDeleteProps = Omit<
+  RestfulShesha.MutateProps<void, unknown, PersonTestDeleteQueryParams, void, void>,
+  'data'
+>;
+export const personTestDelete = (props: personTestDeleteProps) =>
+  RestfulShesha.mutate<void, unknown, PersonTestDeleteQueryParams, void, void>(
+    'DELETE',
+    `/api/services/Shesha/PersonTest/Delete`,
+    undefined,
     props
   );

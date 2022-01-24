@@ -4,8 +4,7 @@ import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericEditPage, IGenericEditPageProps } from '../..';
-//import { usePersonGet, usePersonUpdate } from '../../apis/person';
-import { usePersonTestGet, usePersonTestUpdateOpenDynamicDto } from '../../apis/personTest';
+import { usePersonTestGet, usePersonTestUpdate } from '../../apis/personTest';
 import { addStory } from '../../stories/utils';
 
 export default {
@@ -42,5 +41,5 @@ export const Base = addStory(Template, {
   id: 'B3B60F2E-5B88-4F44-B8EB-D3987A8483D9',
   formPath: '/persons/edit',
   fetcher: usePersonTestGet,
-  updater: usePersonTestUpdateOpenDynamicDto,
+  updater: usePersonTestUpdate,
 });

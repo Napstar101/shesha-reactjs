@@ -74,7 +74,8 @@ export const CodeEditor: FC<ICodeEditorProps> = (props) => {
                 tabSize: 2,
                 autoScrollEditorIntoView: true,
                 minLines: 3,
-                maxLines: 100
+                maxLines: 100,
+                readOnly: Boolean(props.disabled)
             }}
             editorProps={editorProps}
         />

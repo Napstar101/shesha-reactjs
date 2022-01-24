@@ -4,7 +4,6 @@ import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, IGenericDetailsPageProps } from '../..';
-//import { usePersonGet } from '../../apis/person';
 import { usePersonTestGet } from '../../apis/personTest';
 import { addStory } from '../../stories/utils';
 
