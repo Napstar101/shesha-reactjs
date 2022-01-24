@@ -11,6 +11,7 @@ next-example/.out-storybook/*
 .out-storybook/*
 next-examplec/.next
 .rpt2_cache
+package-lock.json
 
 # Ide
 .vscode/*

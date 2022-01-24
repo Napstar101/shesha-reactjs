@@ -55,7 +55,15 @@
 
       .layout-header-right {
         .actions {
-          margin-right: @padding-lg * 2;
+          margin-right: @padding-lg;
+          border-radius: 8px;
+          padding: 0px 10px 0px 10px;
+          color: @primary-color;
+
+          &:hover {
+            color: white;
+            background-color: @sha-primary-hover-color;
+          }
 
           .action-icon {
             margin-left: @padding-lg;
@@ -66,6 +74,20 @@
         .account {
           .ant-avatar {
             margin-left: @padding-lg;
+          }
+
+          .ant-dropdown-link {
+            margin-left: 15px;
+            color: black;
+
+            &:hover {
+              color: @primary-color;
+            }
+          }
+
+          .separator {
+            border-left: 2px solid rgba(189, 189, 189, 0.37);
+            margin-right: 5px;
           }
         }
       }

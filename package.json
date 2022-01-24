@@ -33,7 +33,6 @@
   "peerDependencies": {
     "@microsoft/signalr": "^5.0.3",
     "@use-it/interval": "^1.0.0",
-    "async-validator": "^3.5.2",
     "axios": "^0.21.1",
     "classnames": "^2.3.1",
     "file-saver": "^2.0.5",
@@ -86,7 +85,6 @@
     "@types/uuid": "^8.3.3",
     "@use-it/interval": "^1.0.0",
     "antd": "^4.15.5",
-    "async-validator": "^3.5.2",
     "axios": "^0.21.1",
     "babel-core": "6.26.3",
     "babel-loader": "^7.1.5",
@@ -164,8 +162,8 @@
     "es"
   ],
   "dependencies": {
-    "@shesha/reactjs": "^0.4.11",
     "ace-builds": "^1.4.13",
+    "async-validator": "^3.5.2",
     "invert-color": "^2.0.0",
     "js-encoding-utils": "^0.6.2",
     "less-combiner": "^0.1.2",

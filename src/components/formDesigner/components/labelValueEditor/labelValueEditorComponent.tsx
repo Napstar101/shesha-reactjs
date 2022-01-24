@@ -24,10 +24,10 @@ const LabelValueEditorComponent: IToolboxComponent<ILabelValueEditorProps> = {
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
-    
+
     return (
       <ConfigurableFormItem model={model}>
-        <LabelValueEditor {...customProps}></LabelValueEditor>
+        <LabelValueEditor {...customProps} />
       </ConfigurableFormItem>
     );
   },

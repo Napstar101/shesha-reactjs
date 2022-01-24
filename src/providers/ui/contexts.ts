@@ -24,6 +24,7 @@ export interface IUiStateContext
   readonly accountFormCols?: ColProps;
   readonly isRoleAppointmentVisible?: boolean;
   readonly isPersonPickerVisible?: boolean;
+  readonly useColonByDefault?: boolean;
 }
 
 export interface IUiActionsContext
@@ -37,6 +38,7 @@ export interface IUiActionsContext
 
 export const UI_CONTEXT_INITIAL_STATE: IUiStateContext = {
   size: 'default',
+  useColonByDefault: false,
   formItemLayout: {
     labelCol: {
       xs: { span: 24 },

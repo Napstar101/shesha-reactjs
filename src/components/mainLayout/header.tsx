@@ -69,8 +69,8 @@ const LayoutHeader: FC<ILayoutHeaderProps> = ({ collapsed, onSearch }) => {
             </div>
           </ProtectedContent>
         </div>
-
         <div className="account">
+          <span className="separator"></span>
           <Dropdown overlay={menu} trigger={['click']}>
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
               {loginInfo?.fullName} <DownOutlined />

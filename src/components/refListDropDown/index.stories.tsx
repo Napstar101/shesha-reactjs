@@ -30,13 +30,13 @@ export default {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 interface IStoryArgs extends IRefListDropDownProps {
-  /** 
-   * Test Value, is used only by this story for the `Set Test Value Button` 
-   * */
+  /**
+   * Test Value, is used only by this story for the `Set Test Value Button`
+   */
   testValue?: any;
-  /** 
+  /**
    * Initial Value, is used only by this story
-   * */
+   */
   initialValue?: any;
 }
 
@@ -100,7 +100,6 @@ const BaseTemplate: FC<ITemplateProps> = props => {
             <Button onClick={() => form?.submit()} type="primary">
               Submit
             </Button>
-
           </Form>
         </div>
 
@@ -117,12 +116,10 @@ const BaseTemplate: FC<ITemplateProps> = props => {
 //#region DTO
 
 const DtoTemplate: Story<IStoryArgs> = args => {
-  const { testValue, initialValue, ...refListProps} = args;
+  const { testValue, initialValue, ...refListProps } = args;
   return (
     <BaseTemplate {...args}>
-      <RefListDropDown.Dto
-        {...refListProps}
-      />
+      <RefListDropDown.Dto {...refListProps} />
     </BaseTemplate>
   );
 };
@@ -131,16 +128,16 @@ const DtoTemplate: Story<IStoryArgs> = args => {
 export const SingleDto = addStory(DtoTemplate, {
   listNamespace: 'Shesha.Core',
   listName: 'PersonTitles',
-})
+});
 
 export const SingleDtoWithInitialValue = addStory(DtoTemplate, {
   listNamespace: 'Shesha.Core',
   listName: 'PersonTitles',
-  initialValue: { 
-    "itemValue": 2,
-    "item": "Mrs" 
-  }
-})
+  initialValue: {
+    itemValue: 2,
+    item: 'Mrs',
+  },
+});
 
 export const MultipleDto = addStory(DtoTemplate, {
   listNamespace: 'Shesha.Core',
@@ -148,42 +145,40 @@ export const MultipleDto = addStory(DtoTemplate, {
   mode: 'multiple',
   testValue: [
     {
-      "itemValue": 2,
-      "item": "Mrs"
+      itemValue: 2,
+      item: 'Mrs',
     },
     {
-      "itemValue": 5,
-      "item": "Prof"
-    }
-  ]
-})
+      itemValue: 5,
+      item: 'Prof',
+    },
+  ],
+});
 export const MultipleDtoWithInitialValue = addStory(DtoTemplate, {
   listNamespace: 'Shesha.Core',
   listName: 'PersonTitles',
   mode: 'multiple',
   initialValue: [
     {
-      "itemValue": 2,
-      "item": "Mrs"
+      itemValue: 2,
+      item: 'Mrs',
     },
     {
-      "itemValue": 5,
-      "item": "Prof"
-    }
-  ]
-})
+      itemValue: 5,
+      item: 'Prof',
+    },
+  ],
+});
 
 //#endregion
 
 //#region Raw
 
 const RawTemplate: Story<IStoryArgs> = args => {
-  const { testValue, initialValue, ...refListProps} = args;
+  const { testValue, initialValue, ...refListProps } = args;
   return (
     <BaseTemplate {...args}>
-      <RefListDropDown.Raw
-        {...refListProps}
-      />
+      <RefListDropDown.Raw {...refListProps} />
     </BaseTemplate>
   );
 };
@@ -191,25 +186,25 @@ const RawTemplate: Story<IStoryArgs> = args => {
 export const SingleRaw = addStory(RawTemplate, {
   listNamespace: 'Shesha.Core',
   listName: 'TypeOfAccount',
-})
+});
 
 export const SingleRawWithInitialValue = addStory(RawTemplate, {
   listNamespace: 'Shesha.Core',
   listName: 'TypeOfAccount',
-  initialValue: 1
-})
+  initialValue: 1,
+});
 
 export const MultipleRaw = addStory(RawTemplate, {
   listNamespace: 'Shesha.Core',
   listName: 'TypeOfAccount',
   mode: 'multiple',
-  testValue: [0, 1]
-})
+  testValue: [0, 1],
+});
 export const MultipleRawWithInitialValue = addStory(RawTemplate, {
   listNamespace: 'Shesha.Core',
   listName: 'TypeOfAccount',
   mode: 'multiple',
-  initialValue: [0, 1]
-})
+  initialValue: [0, 1],
+});
 
 //#endregion
