@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, ReactNode } from 'react';
+import React, { useState, useEffect, useMemo, ReactNode, Key } from 'react';
 import { Select } from 'antd';
 import { AjaxResponseBase, AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
 import { useGet } from 'restful-react';
@@ -10,10 +10,16 @@ import { IGuidNullableEntityWithDisplayNameDto } from '../..';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
-export interface ISelectOption<TValue = any> { // todo: make generic
+export interface ISelectOption<TValue = any> {
+  // todo: make generic
   value: string | number;
   label: string | React.ReactNode;
   data: TValue;
+}
+
+interface IQueryParams {
+  // tslint:disable-next-line:typedef-whitespace
+  [prop: string]: Key;
 }
 
 export type CustomLabeledValue<TValue = any> = LabeledValue & { data: TValue };
@@ -102,16 +108,18 @@ export interface IAutocompleteProps<TValue = any> {
   mode?: 'multiple' | 'tags';
 
   allowClear?: boolean;
+
+  queryParams?: IQueryParams;
 }
 
-export interface UrlFetcherQueryParams {
+export interface IUrlFetcherQueryParams {
   term?: string | null;
   selectedValue?: string | null;
 }
 
 const getQueryString = (url: string) => {
   const idx = url?.indexOf('?') || -1;
-  if (idx == -1) return {};
+  if (idx === -1) return {};
 
   const queryString = url.substr(idx);
   return qs.parse(queryString, { ignoreQueryPrefix: true });
@@ -126,7 +134,8 @@ const trimQueryString = (url: string): string => {
 /**
  * A component for working with dynamic autocomplete
  */
- 
+
+// tslint:disable-next-line:whitespace
 export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   const {
     value,
@@ -143,13 +152,14 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
     size,
     mode,
     notFoundContent,
+    queryParams: incomingQueryParams,
     getOptionFromFetchedItem,
     getLabeledValue,
   } = props;
 
   const entityFetcher = useAutocompleteList({ lazy: true });
 
-  const urlFetcher = useGet<any, AjaxResponseBase, UrlFetcherQueryParams, void>(
+  const urlFetcher = useGet<any, AjaxResponseBase, IUrlFetcherQueryParams, void>(
     decodeURI(trimQueryString(dataSourceUrl)) || '',
     {
       lazy: true,
@@ -160,21 +170,25 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
 
   const [autocompleteText, setAutocompleteText] = useState(null);
 
+  const additionalQueryParams = incomingQueryParams || {};
+
   const doFetchItems = (term: string) => {
-    const selectedValue = typeof (value) === 'string'
-      ? value
-      /*: isStringArray(value)
+    const selectedValue =
+      typeof value === 'string'
+        ? value
+        : /*: isStringArray(value)
         ? value*/
-      : undefined;
+          undefined;
 
     // if value is specified but displayText is not specified - fetch text from the server
     if (dataSourceType === 'entitiesList') {
       entityFetcher.refetch({
         queryParams: {
-          term: term,
-          typeShortAlias: typeShortAlias,
-          allowInherited: allowInherited,
-          selectedValue: selectedValue, // This worked if value was a string, but now it's either an object or a list of object. 17.11.2021 Ivan: But it doesn't mean that we can skip loose string values
+          term,
+          typeShortAlias,
+          allowInherited,
+          selectedValue, // This worked if value was a string, but now it's either an object or a list of object. 17.11.2021 Ivan: But it doesn't mean that we can skip loose string values
+          ...additionalQueryParams,
         },
       });
     }
@@ -182,12 +196,13 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
     if (dataSourceType === 'url' && dataSourceUrl) {
       const queryParams = {
         ...getQueryString(dataSourceUrl),
-        term: term,
-        selectedValue: selectedValue,
+        term,
+        selectedValue,
+        ...additionalQueryParams,
       };
 
       urlFetcher.refetch({
-        queryParams: queryParams,
+        queryParams,
       });
     }
   };
@@ -209,60 +224,57 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   };
 
   const debouncedFetchItems = useDebouncedCallback<(value: string) => void>(
-    value => {
-      doFetchItems(value);
+    localValue => {
+      doFetchItems(localValue);
     },
     // delay in ms
     200
   );
 
-  const wrapValue = (value: TValue | TValue[]): CustomLabeledValue<TValue> | CustomLabeledValue<TValue>[] => {
-    if (!Boolean(value))
-      return undefined;
+  const wrapValue = (localValue: TValue | TValue[]): CustomLabeledValue<TValue> | CustomLabeledValue<TValue>[] => {
+    if (!Boolean(localValue)) return undefined;
     if (mode === 'multiple' || mode === 'tags') {
-      return Array.isArray(value)
-        ? (value as TValue[]).map<CustomLabeledValue<TValue>>(o => {
-          return getLabeledValue(o, options);
-        })
-        : [getLabeledValue(value as TValue, options)];
-    } else
-      return getLabeledValue(value as TValue, options);
-  }
+      return Array.isArray(localValue)
+        ? (localValue as TValue[]).map<CustomLabeledValue<TValue>>(o => {
+            return getLabeledValue(o, options);
+          })
+        : [getLabeledValue(localValue as TValue, options)];
+    } else return getLabeledValue(localValue as TValue, options);
+  };
 
   const options = useMemo<ISelectOption<TValue>[]>(() => {
     const fetchedData = getFetchedItems() || [];
 
     const fetchedItems = fetchedData.map<ISelectOption<TValue>>(item => {
-
       const option = Boolean(getOptionFromFetchedItem)
-        ? getOptionFromFetchedItem(item) as ISelectOption<TValue>
-        : item as ISelectOption<TValue>;
+        ? (getOptionFromFetchedItem(item) as ISelectOption<TValue>)
+        : (item as ISelectOption<TValue>);
 
       return option;
     });
 
     const selectedItem = wrapValue(value);
-    // Remove items which are already exist in the fetched items. 
+    // Remove items which are already exist in the fetched items.
     // Note: we shouldn't process full list and make it unique because by this way we'll hide duplicates received from the back-end
     const selectedItems = selectedItem
-      ? (Array.isArray(selectedItem) ? selectedItem : [selectedItem])
-        .filter(i => fetchedItems.findIndex(fi => fi.value === i.value) === -1)
+      ? (Array.isArray(selectedItem) ? selectedItem : [selectedItem]).filter(
+          i => fetchedItems.findIndex(fi => fi.value === i.value) === -1
+        )
       : [];
 
     const result = [...fetchedItems, ...selectedItems];
     return result;
   }, [value, autocompleteText, entityFetcher || urlFetcher]);
 
-  const handleSearch = (value: string) => {
-    setAutocompleteText(value);
-    if (value) {
-      debouncedFetchItems(value);
+  const handleSearch = (localValue: string) => {
+    setAutocompleteText(localValue);
+    if (localValue) {
+      debouncedFetchItems(localValue);
     }
   };
 
   const handleChange = (_value: CustomLabeledValue<TValue>, option: any) => {
-    if (!Boolean(onChange))
-      return;
+    if (!Boolean(onChange)) return;
     const selectedValue = Boolean(option)
       ? Array.isArray(option)
         ? (option as ISelectOption<TValue>[]).map(o => o.data)
@@ -271,8 +283,7 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
 
     if (mode === 'multiple' || mode === 'tags') {
       onChange(Array.isArray(selectedValue) ? selectedValue : [selectedValue]);
-    } else
-      onChange(selectedValue);
+    } else onChange(selectedValue);
   };
 
   return (
@@ -280,7 +291,6 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
       showSearch
       labelInValue={true}
       notFoundContent={notFoundContent}
-
       defaultActiveFirstOption={false}
       showArrow={false}
       filterOption={false}
@@ -297,8 +307,8 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
       size={size}
       mode={value ? mode : undefined} // When mode is multiple and value is null, the control shows an empty tag
     >
-      {options?.map(({ value, label, data }) => (
-        <Select.Option value={value} key={value} data={data}>
+      {options?.map(({ value: localValue, label, data }) => (
+        <Select.Option value={localValue} key={localValue} data={data}>
           {label}
         </Select.Option>
       ))}
@@ -316,26 +326,25 @@ export const EntityDtoAutocomplete = (props: IAutocompleteProps<IDtoType>) => {
       data: {
         id: item['value'],
         displayText: item['displayText'],
-      }
+      },
     };
-  }
+  };
 
-  const labeledValueGetter = (itemValue: IGuidNullableEntityWithDisplayNameDto, _options: ISelectOption<IDtoType>[]) => {
+  const labeledValueGetter = (
+    itemValue: IGuidNullableEntityWithDisplayNameDto,
+    _options: ISelectOption<IDtoType>[]
+  ) => {
     return {
       value: itemValue.id,
       label: itemValue.displayText,
-      data: itemValue
-    }
-  }
+      data: itemValue,
+    };
+  };
 
   return (
-    <Autocomplete
-      getOptionFromFetchedItem={getDtoFromFetchedItem}
-      getLabeledValue={labeledValueGetter}
-      {...props}
-    ></Autocomplete>
+    <Autocomplete getOptionFromFetchedItem={getDtoFromFetchedItem} getLabeledValue={labeledValueGetter} {...props} />
   );
-}
+};
 
 export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
   const getDtoFromFetchedItem = (item): ISelectOption<string> => {
@@ -344,35 +353,34 @@ export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
       label: item['displayText'],
       data: item['value'],
     };
-  }
+  };
 
   const labeledValueGetter = (itemValue: string, options: ISelectOption<string>[]) => {
-    if (!Boolean(itemValue))
-      return null;
+    if (!Boolean(itemValue)) return null;
     const item = options?.find(i => i.value === itemValue);
     return {
       value: itemValue,
       label: item?.label ?? 'unknown',
       data: itemValue,
-    }
-  }
+    };
+  };
 
   return (
     <Autocomplete<string>
       getOptionFromFetchedItem={getDtoFromFetchedItem}
       getLabeledValue={labeledValueGetter}
       {...props}
-    ></Autocomplete>
+    />
   );
-}
+};
 
 type InternalAutocompleteType = typeof Autocomplete;
-interface InternalAutocompleteInterface extends InternalAutocompleteType {
+interface IInternalAutocompleteInterface extends InternalAutocompleteType {
   Raw: typeof RawAutocomplete;
   EntityDto: typeof EntityDtoAutocomplete;
 }
 
-const AutocompleteInterface = Autocomplete as InternalAutocompleteInterface;
+const AutocompleteInterface = Autocomplete as IInternalAutocompleteInterface;
 AutocompleteInterface.Raw = RawAutocomplete;
 AutocompleteInterface.EntityDto = EntityDtoAutocomplete;
 

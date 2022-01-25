@@ -172,6 +172,18 @@
       "settingsValidationErrors": []
     },
     {
+      "id": "b395c0e9-dbc1-44f1-8fef-c18a49442871",
+      "type": "labelValueEditor",
+      "name": "queryParams",
+      "parentId": "root",
+      "label": "Query Param",
+      "labelTitle": "Param",
+      "labelName": "param",
+      "valueTitle": "Value",
+      "valueName": "value",
+      "ignorePrefixesOnNewItems": true
+    },
+    {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
       "type": "sectionSeparator",
       "name": "separator2",

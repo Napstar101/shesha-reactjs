@@ -1,4 +1,4 @@
-import React/*, { useState } */from 'react';
+import React /*, { useState } */ from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { MetadataProvider, IMetadataProviderProps, useMetadata } from './';
@@ -34,7 +34,7 @@ const MetadataConsumer = () => {
     );
   };
   */
-  
+
   const onSelect = (data: string) => {
     console.log('onSelect', data);
   };
@@ -45,18 +45,16 @@ const MetadataConsumer = () => {
       style={{ width: 200 }}
       onSelect={onSelect}
       //onSearch={onSearch}
-      filterOption={(inputValue, option) =>
-        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-      }
+      filterOption={(inputValue, option) => option?.value?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
       placeholder="input here"
-    ></AutoComplete>
+    />
   );
-}
+};
 
 // Reuse that template for creating different stories
 export const Basic = Template.bind({
   //containerType: 'Shesha.Core.Person'
 });
 Basic.args = {
-  containerType: 'Shesha.Core.Person'
+  containerType: 'Shesha.Core.Person',
 };
