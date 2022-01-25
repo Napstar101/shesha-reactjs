@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Form, Modal } from 'antd';
 import { ConfigurableForm } from '../../components';
 import formSettingsJson from './formSettings.json';
 import { FormMarkup } from '../../providers/form/models';
 import { useForm } from '../../providers/form';
-import React from 'react';
+
 
 export interface IFormSettingsEditorProps {
   isVisible: boolean;
@@ -39,7 +39,7 @@ export const FormSettingsEditor: FC<IFormSettingsEditorProps> = ({ isVisible, cl
         onFinish={onSave}
         markup={formSettingsJson as FormMarkup}
         initialValues={formSettings}
-      ></ConfigurableForm>
+      />
     </Modal>
   );
 };

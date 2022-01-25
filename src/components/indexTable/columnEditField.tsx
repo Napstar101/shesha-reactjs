@@ -76,11 +76,11 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
   };
 
   const renderDateInput = () => {
-    const onChange = (_dateEvent: any, dateString: string | string[]) => {
+    const onChange = (_, dateString: string | string[]) => {
       handleChange(name, dateString);
     };
 
-    const placeholder = `Select ${caption}`;
+    const localPlaceholder = `Select ${caption}`;
 
     return (
       <DatePicker
@@ -88,7 +88,7 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
         onChange={onChange}
         value={getMoment(stateValue)}
         format={dateFormat}
-        placeholder={placeholder}
+        placeholder={localPlaceholder}
       />
     );
   };
@@ -102,32 +102,30 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
 
   // {['refList', 'multiValueRefList'].includes(dataType) && renderRenderReflistDropdown()}
   const renderRenderReflistDropdown = () => {
-    const placeholder = `Select ${caption}`;
+    const localPlaceholder = `Select ${caption}`;
 
     const onChange = (value: any) => {
       handleChange(name, value);
     };
 
     const getMultiValueRefListValues = () =>
-      (stateValue as [])
-        ?.map(item => (typeof item === 'object' ? (item as IReferenceListItemValueDto)?.itemValue : item))
-        ?.filter(Boolean);
+      typeof stateValue === 'string' ? null : (stateValue as IReferenceListItemValueDto[]);
 
     const getReferenceListItemValue = () =>
-      typeof stateValue === 'string' ? stateValue : (stateValue as IReferenceListItemValueDto)?.itemValue;
+      typeof stateValue === 'string' ? null : (stateValue as IReferenceListItemValueDto);
 
-    const val = dataType === 'multiValueRefList' ? getMultiValueRefListValues() : getReferenceListItemValue();
+    const val = dataType !== 'multiValueRefList' ? getMultiValueRefListValues() : getReferenceListItemValue();
 
     return (
-      <RefListDropDown.Raw
+      <RefListDropDown.Dto
         listName={referenceListName}
         listNamespace={referenceListNamespace}
         size="small"
-        mode={dataType === 'refList' ? null : 'multiple'}
-        placeholder={placeholder}
+        // mode={dataType === 'refList' ? null : 'multiple'}
+        placeholder={localPlaceholder}
         style={{ width: '100%' }}
         onChange={onChange}
-        value={val as any}
+        value={val}
       />
     );
   };
@@ -138,9 +136,9 @@ export const ColumnEditField: FC<IColumnEditFieldProps> = props => {
       typeof stateValue === 'object' ? (stateValue as IGuidNullableEntityWithDisplayNameDto)?.displayText : stateValue;
 
     const onChange = (_: number | number[], option: any) => {
-      const { children, value } = option as IRefListDropDownOption;
+      const { children, value: localValue } = option as IRefListDropDownOption;
 
-      handleChange(name, { value, displayText: children });
+      handleChange(name, { value: localValue, displayText: children });
     };
 
     return (

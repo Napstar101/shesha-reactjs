@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ChildDataTable, { IndexTableFull } from './';
@@ -6,7 +6,6 @@ import DataTableProvider from '../../providers/dataTable';
 import { SearchOutlined } from '@ant-design/icons';
 import { IShaDataTableProps, ShaApplicationProvider } from '../..';
 import AuthContainer from '../authedContainer';
-import { useRef } from 'react';
 
 export default {
   title: 'Components/IndexTableFull',
@@ -15,8 +14,7 @@ export default {
 } as Meta;
 
 const tableProps: IShaDataTableProps = {
-  id: 'Applications_Admin_DG_Final_Index',
-  // id: 'Persons_Index',
+  id: 'Persons_Index',
   header: 'List of People',
   crud: {
     update: true,
@@ -35,7 +33,7 @@ const tableProps: IShaDataTableProps = {
   },
   onExportError: () => {
     console.log('Components/IndexTableFull export error');
-  }
+  },
 };
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
@@ -43,7 +41,7 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 // Create a master template for mapping args to render the Button component
 const Template: Story<IShaDataTableProps> = args => {
   const tableRef = useRef();
-  
+
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout>

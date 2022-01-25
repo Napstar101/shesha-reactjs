@@ -9,16 +9,26 @@ import {
   DroppableProvided,
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
-import { ILabelValueEditorPropsBase } from './models';
-
-import { IItemProps } from './models';
+import { ILabelValueEditorPropsBase, IItemProps } from './models';
 import { Table, Popconfirm, Button, Form, Input } from 'antd';
 import { DeleteOutlined, MenuOutlined, PlusOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid/non-secure';
 
-export interface IProps extends ILabelValueEditorPropsBase {
+export interface ILabelValueEditorProps extends ILabelValueEditorPropsBase {
+  /**
+   * Selected value
+   */
   value?: object;
+
+  /**
+   * On change event handler
+   */
   onChange?: any;
+
+  /**
+   * If true, when a new row has been added, both the name of the key and value will not be prefixed with 'new '
+   */
+  ignorePrefixesOnNewItems?: boolean;
 }
 
 const EditableContext = React.createContext(null);
@@ -121,7 +131,15 @@ const DraggableBodyRowInner = ({ items, className, style, ...restProps }) => {
   );
 };
 
-export const LabelValueEditor: FC<IProps> = ({ value, onChange, labelTitle, labelName, valueTitle, valueName }) => {
+export const LabelValueEditor: FC<ILabelValueEditorProps> = ({
+  value,
+  onChange,
+  labelTitle,
+  labelName,
+  valueTitle,
+  valueName,
+  ignorePrefixesOnNewItems = false,
+}) => {
   const items = (value as IItemProps[]) || [];
 
   const DragHandle = props => <MenuOutlined style={{ color: '#999' }} {...props} />;
@@ -134,8 +152,8 @@ export const LabelValueEditor: FC<IProps> = ({ value, onChange, labelTitle, labe
   const handleAddRow = () => {
     const newRow = {
       id: nanoid(),
-      [labelName]: `new ${labelTitle}`,
-      [valueName]: `new ${valueTitle}`,
+      [labelName]: ignorePrefixesOnNewItems ? labelTitle : `new ${labelTitle}`,
+      [valueName]: ignorePrefixesOnNewItems ? valueTitle : `new ${valueTitle}`,
     };
     const newRows = [...items, newRow];
     onChange(newRows);
@@ -213,7 +231,7 @@ export const LabelValueEditor: FC<IProps> = ({ value, onChange, labelTitle, labe
       return;
     }
 
-    if (destination.droppableId == source.droppableId && source.index == destination.index) return;
+    if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
     const reorder = (list: IItemProps[], startIndex: number, endIndex: number): IItemProps[] => {
       const result = [...list];
@@ -224,7 +242,7 @@ export const LabelValueEditor: FC<IProps> = ({ value, onChange, labelTitle, labe
     };
 
     if (source.droppableId === destination.droppableId) {
-      let newTabs = reorder(items, source.index, destination.index);
+      const newTabs = reorder(items, source.index, destination.index);
 
       onChange(newTabs);
     }
@@ -246,12 +264,7 @@ export const LabelValueEditor: FC<IProps> = ({ value, onChange, labelTitle, labe
                 components={{
                   body: {
                     row: ({ className, style, ...restProps }) => (
-                      <DraggableBodyRowInner
-                        items={items}
-                        className={className}
-                        style={style}
-                        {...restProps}
-                      ></DraggableBodyRowInner>
+                      <DraggableBodyRowInner items={items} className={className} style={style} {...restProps} />
                     ),
                     cell: EditableCell,
                   },

@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CalendarOutlined } from '@ant-design/icons';
@@ -6,7 +6,6 @@ import { DatePicker } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import moment, { Moment, isMoment } from 'moment';
-import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { HiddenFormItem } from '../../../hiddenFormItem';
 import { useForm } from '../../../../providers';
@@ -24,9 +23,10 @@ const DATE_TIME_FORMATS = {
 const { RangePicker } = DatePicker;
 
 type RangeType = 'start' | 'end';
-type RangeInfo = {
+
+interface IRangeInfo {
   range: RangeType;
-};
+}
 
 type RangeValue = [moment.Moment, moment.Moment];
 
@@ -47,7 +47,11 @@ export interface IDateFieldProps extends IConfigurableFormComponent {
   weekFormat?: string;
   range?: boolean;
   picker?: 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year';
+  disablePastDates?: boolean;
   onChange?: TimePickerChangeEvent | RangePickerChangeEvent;
+  disabledDateMode?: 'none' | 'functionTemplate' | 'customFunction';
+  disabledDateTemplate?: string;
+  disabledDateFunc?: string;
 }
 
 const getMoment = (value: any, dateFormat: string): Moment => {
@@ -122,6 +126,9 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     onChange,
     picker = 'date',
     defaultValue,
+    disabledDateMode,
+    disabledDateTemplate,
+    disabledDateFunc,
     ...rest
   } = props;
   const { form } = useForm();
@@ -156,8 +163,8 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
       ? defaultValue?.map(v => moment(new Date(v), pickerFormat))
       : [null, null];
 
-  const handleDatePickerChange = (value: any | null, dateString: string) => {
-    const newValue = isMoment(value) ? value.format() : value;
+  const handleDatePickerChange = (localValue: any | null, dateString: string) => {
+    const newValue = isMoment(localValue) ? localValue.format() : localValue;
 
     (onChange as TimePickerChangeEvent)(newValue, dateString);
   };
@@ -172,7 +179,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     (onChange as RangePickerChangeEvent)(dates, formatString);
   };
 
-  const onCalendarChange = (values: any[], _formatString: [string, string], info: RangeInfo) => {
+  const onCalendarChange = (values: any[], _formatString: [string, string], info: IRangeInfo) => {
     if (info?.range === 'end' && form) {
       form.setFieldsValue({
         [`${name}Start`]: values[0]?.toISOString(),
@@ -181,9 +188,21 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     }
   };
 
+  function disabledDate(current) {
+    if (disabledDateMode === 'none') return false;
+
+    const disabledTimeExpression = disabledDateMode === 'functionTemplate' ? disabledDateTemplate : disabledDateFunc;
+
+    // tslint:disable-next-line:function-constructor
+    const disabledFunc = new Function('current', 'moment', disabledTimeExpression);
+
+    return disabledFunc(current, moment);
+  }
+
   if (range) {
     return (
       <RangePicker
+        disabledDate={disabledDate}
         onCalendarChange={onCalendarChange}
         onChange={handleRangePicker}
         format={pickerFormat}
@@ -198,6 +217,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
   return (
     <DatePicker
       value={formattedValue}
+      disabledDate={disabledDate}
       onChange={handleDatePickerChange}
       disabled={disabled}
       bordered={!hideBorder}

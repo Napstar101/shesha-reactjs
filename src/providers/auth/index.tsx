@@ -64,6 +64,10 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
 }) => {
   const { router, nextRoute } = useShaRouting();
 
+  // const { pathname } = useRouter();
+
+  const pathname = router?.pathname;
+
   const [state, dispatch] = useReducer(authReducer, AUTH_CONTEXT_INITIAL_STATE);
   const setters = getFlagSetters(dispatch);
 
@@ -86,12 +90,10 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
           router?.push(URL_CHANGE_PASSWORD);
         } else {
           const returnUrl = router?.query?.returnUrl as string;
-          if (router?.route === URL_LOGIN_PAGE) {
+          if (pathname?.startsWith(URL_LOGIN_PAGE)) {
             router?.push(returnUrl ?? URL_HOME_PAGE);
           } else if (returnUrl) {
             router?.push(returnUrl);
-          } else {
-            router?.push(URL_HOME_PAGE);
           }
         }
       }

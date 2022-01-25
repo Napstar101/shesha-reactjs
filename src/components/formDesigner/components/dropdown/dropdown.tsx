@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup } from '../../../../providers/form/models';
 import { DownSquareOutlined } from '@ant-design/icons';
@@ -6,7 +6,6 @@ import { Select } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import { IDropdownProps, ILabelValue } from './models';
 import settingsFormJson from './settingsForm.json';
-import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import RefListDropDown from '../../../refListDropDown';
 import { DataTypes } from '../../../../interfaces/dataTypes';

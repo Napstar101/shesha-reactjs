@@ -1,4 +1,4 @@
-import React, { FC, useEffect, ComponentType } from 'react';
+import React, { FC, useEffect, ComponentType, Fragment } from 'react';
 import { useAuth, useShaRouting } from '../providers';
 import { IdleTimerRenderer, OverlayLoader } from '../components';
 import { redirectRoute } from '../utils/auth';
@@ -12,7 +12,7 @@ export const ComponentWithAuth: FC<IComponentWithAuthProps> = props => {
   const { landingPage, unauthorizedRedirectUrl } = props;
   const { isCheckingAuth, loginInfo, checkAuth, getAccessToken } = useAuth();
 
-  const { router } = useShaRouting();
+  const { goingToRoute, router } = useShaRouting();
 
   useEffect(() => {
     const token = getAccessToken();
@@ -21,7 +21,7 @@ export const ComponentWithAuth: FC<IComponentWithAuthProps> = props => {
       if (token) {
         checkAuth();
       } else {
-        router?.push(redirectRoute(router?.asPath, landingPage, unauthorizedRedirectUrl));
+        goingToRoute(redirectRoute(router?.asPath, landingPage, unauthorizedRedirectUrl));
       }
     }
   }, [isCheckingAuth]);
@@ -29,7 +29,7 @@ export const ComponentWithAuth: FC<IComponentWithAuthProps> = props => {
   return isCheckingAuth || !loginInfo ? (
     <OverlayLoader loading={true} loadingText="Initializing..." />
   ) : (
-    <IdleTimerRenderer>{props.children(router?.query)}</IdleTimerRenderer>
+    <Fragment>{props.children(router?.query)}</Fragment>
   );
 };
 
@@ -45,7 +45,11 @@ export const withAuth = <P extends object>(
 
   return (
     <ComponentWithAuth landingPage={landingPage} unauthorizedRedirectUrl={unauthorizedRedirectUrl}>
-      {query => <Component {..._props} id={query?.id} />}
+      {query => (
+        <IdleTimerRenderer>
+          <Component {..._props} id={query?.id} />
+        </IdleTimerRenderer>
+      )}
     </ComponentWithAuth>
   );
 };

@@ -217,7 +217,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           Cell: props => {
             const allRenderers = [...(customTypeRenders || []), ...renderers];
 
-            const _data = newOrEditableRowDataRef?.current?.data || {};
+            const localData = newOrEditableRowDataRef?.current?.data || {};
 
             if (
               props?.row?.original?.Id === newOrEditableRowData?.id &&
@@ -230,7 +230,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
                 name: columnItem.id,
                 caption: columnItem.caption,
                 onChange: handleGenericChange,
-                value: _data[columnItem?.id],
+                value: localData[columnItem?.id],
                 referenceListName: columnItem?.referenceListName,
                 referenceListNamespace: columnItem?.referenceListNamespace,
                 entityReferenceTypeShortAlias: columnItem?.entityReferenceTypeShortAlias,
@@ -296,13 +296,13 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         return show;
       })
       ?.reverse()
-      ?.forEach(data => {
+      ?.forEach(localData => {
         // @ts-ignore
         const clickHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, props: any) => {
           event.preventDefault();
           const currentId = props?.row?.original?.Id;
 
-          if (data?.type === 'update') {
+          if (localData?.type === 'update') {
             const callback = () =>
               setCrudRowData({
                 id: currentId,
@@ -318,20 +318,20 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
             }
           }
 
-          if (data?.type === 'delete') {
+          if (localData?.type === 'delete') {
             deleteItem(currentId);
           }
 
-          if (data?.type === 'create') {
+          if (localData?.type === 'create') {
             createOrUpdateItem();
           }
 
-          if (data?.type === 'cancel') {
+          if (localData?.type === 'cancel') {
             confirmAndProceed('Please note that you will lose data you have not yet saved', cancelCreateOrEditRowData);
           }
 
           // The user wants to view the details using the modal
-          if (data?.type === 'read' && !data?.onClick) {
+          if (localData?.type === 'read' && !localData?.onClick) {
             setCrudRowData({
               id: currentId,
               mode: 'read',
@@ -339,8 +339,8 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
             });
           }
 
-          if (data?.onClick) {
-            const result = data.onClick(currentId, table, props?.row?.original);
+          if (localData?.onClick) {
+            const result = localData.onClick(currentId, table, props?.row?.original);
 
             if (typeof result === 'string') router?.push(result);
           }
@@ -361,7 +361,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           Cell: props => {
             // Do not show the save or cancel button for rows which are not currently the ones being edited
             if (
-              (data?.type === 'create' || data?.type === 'cancel') &&
+              (localData?.type === 'create' || localData?.type === 'cancel') &&
               props?.row?.original?.Id !== newOrEditableRowData?.id
             ) {
               return null;
@@ -369,7 +369,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
             return (
               <a className="sha-link" onClick={e => clickHandler(e, props)}>
-                {getDefaultActionColumns(data)}
+                {getDefaultActionColumns(localData)}
               </a>
             );
           },
@@ -446,7 +446,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       updateLocalTableData();
     } else {
       let mutateHttp = updateItemHttp;
-      let payload = newOrEditableRowData?.data;
+      const payload = newOrEditableRowData?.data;
       payload[crudParentEntityKey] = { id: parentEntityId };
 
       if (newOrEditableRowData?.mode === 'create') {
@@ -586,15 +586,15 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
           {memoizedColumns.map(
             ({ id, caption, dataType, referenceListName, referenceListNamespace, entityReferenceTypeShortAlias }) => {
               const editProps: IColumnEditFieldProps = {
-                id: id,
-                dataType: dataType,
+                id,
+                dataType,
                 name: id,
-                caption: caption,
+                caption,
                 onChange: handleGenericChange,
                 value: selectedObject && selectedObject[id],
-                referenceListName: referenceListName,
-                referenceListNamespace: referenceListNamespace,
-                entityReferenceTypeShortAlias: entityReferenceTypeShortAlias,
+                referenceListName,
+                referenceListNamespace,
+                entityReferenceTypeShortAlias,
               };
 
               if (customTypeEditors?.length) {

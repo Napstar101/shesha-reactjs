@@ -42,7 +42,7 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
     setIsInProgressFlag,
     exportToExcel,
     newOrEditableRowData,
-    setCrudRowData
+    setCrudRowData,
   } = useDataTableStore();
 
   const toggleFieldPropertiesSidebar = () =>
@@ -84,7 +84,7 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
             icon: <DownloadOutlined />,
             onClick: () => setCrudRowData(),
             disabled: !!newOrEditableRowData,
-            hide: !crud || (typeof crud !== 'boolean' && !(crud as ICrudState)?.create ) || !!newOrEditableRowData
+            hide: !crud || (typeof crud !== 'boolean' && !(crud as ICrudState)?.create) || !!newOrEditableRowData,
           },
         ]}
         elementsRight={toolbarExtra}
@@ -96,7 +96,7 @@ export const IndexTableFull: FC<IIndexTableFullProps> = ({
           open: isSelectingColumns || isFiltering,
           onOpen: toggleFieldPropertiesSidebar,
           onClose: toggleFieldPropertiesSidebar,
-          title: 'Table Columns',
+          title: 'Filters And Table Columns',
           content: renderSidebarContent,
         }}
         allowFullCollapse
