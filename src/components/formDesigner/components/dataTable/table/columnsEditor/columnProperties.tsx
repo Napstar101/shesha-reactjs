@@ -7,8 +7,8 @@ import { FormMarkup } from '../../../../../../providers/form/models';
 import { useDebouncedCallback } from 'use-debounce';
 import { ConfigurableFormInstance } from '../../../../../../providers/form/contexts';
 import React from 'react';
-import { IPropertyMetadata } from '../../../../../../providers/metadata/models';
 import { IDataColumnsProps } from '../../../../../../providers/datatableColumnsConfigurator/models';
+import { IPropertyMetadata } from '../../../../../../interfaces/metadata';
 
 export interface IProps {}
 

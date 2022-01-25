@@ -7,7 +7,6 @@ import {
   IMetadataDispatcherStateContext,
   IMetadataDispatcherActionsContext,
   IGetMetadataPayload,
-  IModelMetadata,
   IRegisterProviderPayload,
 } from './contexts';
 import {
@@ -16,8 +15,9 @@ import {
 } from './actions';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { metadataGetProperties } from '../../apis/metadata';
-import { IModelsDictionary, IPropertyMetadata, IProvidersDictionary } from './models';
+import { IModelsDictionary, IProvidersDictionary } from './models';
 import { useSheshaApplication } from '../../providers';
+import { IModelMetadata, IPropertyMetadata } from '../../interfaces/metadata';
 
 export interface IMetadataDispatcherProviderProps {
 }
@@ -61,6 +61,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
 
             //#region data type
             dataType: p.dataType,
+            dataFormat: p.dataFormat,
             entityType: p.entityType,
             referenceListName: p.referenceListName,
             referenceListNamespace: p.referenceListNamespace,
@@ -72,7 +73,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
             maxLength: p.maxLength,
             min: p.min,
             max: p.max,
-            isEmail: p.isEmail
+            //isEmail: p.isEmail
             //#endregion
           }));
           const meta: IModelMetadata = {

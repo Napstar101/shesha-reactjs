@@ -16,6 +16,7 @@ import {
   IFormActionsContext,
   IFormSettings,
   DEFAULT_FORM_SETTINGS,
+  IAddDataPropertyPayload,
 } from './contexts';
 import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
@@ -46,6 +47,7 @@ import {
   addDataSourceAction,
   removeDataSourceAction,
   setActiveDataSourceAction,
+  dataPropertyAddAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { FormMode } from './models';
@@ -239,6 +241,10 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   }, [isFetchingFormInfo, fetchingFormInfoResponse, fetchingFormInfoError, markup]);
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
+
+  const addDataProperty = (payload: IAddDataPropertyPayload) => {
+    dispatch(dataPropertyAddAction(payload));
+  }
 
   const addComponent = (payload: IComponentAddPayload) => {
     dispatch(componentAddAction(payload));
@@ -444,6 +450,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   const configurableFormActions: IFormActionsContext = {
     ...getFlagSetters(dispatch),
+    addDataProperty,
     addComponent,
     deleteComponent,
     getComponentModel,

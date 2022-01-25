@@ -51,16 +51,14 @@ export const metadataCodeCompleter =
         prefix: string,
         callback: Ace.CompleterCallback
     ): void => {
-        const shaMetadata = editor["shaMetadata"];
+        const shaMetadata = editor["shaMetadata"] as ICodeTreeLevel;
         if (!shaMetadata)
             return;
-
-        const shaTestData = editor["shaTestData"] as ICodeTreeLevel;
 
         if (prefix && prefix.endsWith('.')) {
             const parts = prefix.split('.');
 
-            let currentLevel: ICodeTreeLevel = shaTestData;
+            let currentLevel: ICodeTreeLevel = shaMetadata;
 
             let currentItem: ICodeTreeItem = null;
             do {
@@ -82,7 +80,7 @@ export const metadataCodeCompleter =
                 callback(null, completions);
             }
         } else {
-            const completions = treeLevel2Completions(shaTestData);
+            const completions = treeLevel2Completions(shaMetadata);
             //console.log(completions);
             callback(null, completions);
         }

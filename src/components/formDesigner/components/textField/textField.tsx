@@ -7,6 +7,7 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
 
 type TextType = 'text' | 'password';
 export interface ITextFieldProps extends IConfigurableFormComponent {
@@ -17,6 +18,7 @@ export interface ITextFieldProps extends IConfigurableFormComponent {
   initialValue?: string;
   passEmptyStringByDefault?: boolean;
   textType?: TextType;
+  maxLength?: number;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -34,6 +36,11 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
+  dataTypeSupported: ({ dataType, dataFormat }) => dataType === DataTypes.string && 
+    (dataFormat === StringFormats.singleline 
+      || dataFormat === StringFormats.emailAddress 
+      || dataFormat === StringFormats.phoneNumber 
+      || dataFormat === StringFormats.password),
   factory: (model: ITextFieldProps) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,
@@ -41,6 +48,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       suffix: model.suffix,
       disabled: model.disabled,
       bordered: !model.hideBorder,
+      maxLength: model.maxLength,
     };
 
     const InputComponentType = renderInput(model.textType);
@@ -61,7 +69,14 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       textType: 'text',
       ...model
     }
-  )
+  ),
+  linkToModelMetadata: (model, metadata): ITextFieldProps => {
+    return {
+      ...model,
+      maxLength: metadata.maxLength,
+      textType: metadata.dataFormat === StringFormats.password ? 'password' : 'text',
+    };
+  },
 };
 
 export default TextField;

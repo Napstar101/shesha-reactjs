@@ -1,13 +1,6 @@
 import { createContext } from 'react';
+import { IModelMetadata } from '../../interfaces/metadata';
 import { IMetadataContext } from '../metadata/contexts';
-import { IPropertyMetadata } from './models';
-
-export interface IModelMetadata {
-  type: string;
-  name?: string;
-  description?: string;
-  properties: IPropertyMetadata[];
-}
 
 export interface IMetadataDispatcherStateContext {
   activeProvider?: string;

@@ -7,6 +7,7 @@ import { INumberFieldProps } from './models';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -14,6 +15,7 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   type: 'numberField',
   name: 'Number field',
   icon: <NumberOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.number,
   factory: (model: INumberFieldProps) => {
     return (
       <ConfigurableFormItem model={model}>
@@ -28,6 +30,16 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  linkToModelMetadata: (model, metadata): INumberFieldProps => {
+    return {
+      ...model,
+      label: metadata.label,
+      description: metadata.description,
+      min: metadata.min,
+      max: metadata.max,
+      // todo: add decimal points and format
+    };
+  },
 };
 
 export default NumberField;
