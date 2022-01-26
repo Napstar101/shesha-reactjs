@@ -12,8 +12,13 @@
 
     button {
       &.extra-btn {
-        padding-left: @padding-lg;
         margin-right: @padding-lg;
+
+        &:hover {
+          border-radius: 5px;
+          color: @primary-color;
+          background-color: @sha-primary-hover-color;
+        }
 
         &.export {
           margin-right: @padding-lg * 2;
