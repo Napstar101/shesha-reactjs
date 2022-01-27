@@ -7,7 +7,7 @@ import { GenericDetailsPage, GenericIndexPage } from '../..';
 import { IGenericIndexPageProps } from '../crudViews/indexPage';
 
 export default {
-  title: 'Components/TestReactTable',
+  title: 'Components/MainLayout',
   component: GenericDetailsPage,
 } as Meta;
 
