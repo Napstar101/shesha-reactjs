@@ -15,6 +15,7 @@ import {
   ISetSelectedComponentPayload,
   IComponentUpdateSettingsValidationPayload,
   IAddDataPropertyPayload,
+  ISetEnabledComponentsPayload,
 } from './contexts';
 import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure } from './models';
 import { FormActionEnums } from './actions';
@@ -26,7 +27,12 @@ import { IDataSource } from '../formDesigner/models';
 import { nanoid } from 'nanoid/non-secure';
 import { IPropertyMetadata } from '../../interfaces/metadata';
 
-const addComponentToFlatStructure = (structure: IFlatComponentsStructure, formComponent: IConfigurableFormComponent, containerId: string, index: number): IFlatComponentsStructure => {
+const addComponentToFlatStructure = (
+  structure: IFlatComponentsStructure,
+  formComponent: IConfigurableFormComponent,
+  containerId: string,
+  index: number
+): IFlatComponentsStructure => {
   const allComponents = { ...structure.allComponents, [formComponent.id]: formComponent };
 
   const currentLevel = containerId;
@@ -39,17 +45,21 @@ const addComponentToFlatStructure = (structure: IFlatComponentsStructure, formCo
 
   return {
     allComponents,
-    componentRelations
+    componentRelations,
   };
-}
+};
 
-const createComponentForProperty = (components: IToolboxComponentGroup[], propertyMetadata: IPropertyMetadata): IConfigurableFormComponent => {
+const createComponentForProperty = (
+  components: IToolboxComponentGroup[],
+  propertyMetadata: IPropertyMetadata
+): IConfigurableFormComponent => {
   const toolboxComponent = findToolboxComponent(
-    components, 
-    c => Boolean(c.dataTypeSupported) && c.dataTypeSupported({ dataType: propertyMetadata.dataType, dataFormat: propertyMetadata.dataFormat })
+    components,
+    c =>
+      Boolean(c.dataTypeSupported) &&
+      c.dataTypeSupported({ dataType: propertyMetadata.dataType, dataFormat: propertyMetadata.dataFormat })
   );
-  if (!Boolean(toolboxComponent))
-    return null;
+  if (!Boolean(toolboxComponent)) return null;
 
   // find appropriate toolbox component
   // create instance of the component
@@ -67,22 +77,25 @@ const createComponentForProperty = (components: IToolboxComponentGroup[], proper
     customVisibility: null,
     visibilityFunc: _data => true,
   };
-  if (toolboxComponent.initModel)
-    componentModel = toolboxComponent.initModel(componentModel);
+  if (toolboxComponent.initModel) componentModel = toolboxComponent.initModel(componentModel);
 
   componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
 
   return componentModel;
-}
+};
 
 const reducer = handleActions<IFormStateContext, any>(
   {
-    [FormActionEnums.DataPropertyAdd]: (state: IFormStateContext, action: ReduxActions.Action<IAddDataPropertyPayload>) => {
-      const { payload: { propertyMetadata, index, containerId } } = action;
+    [FormActionEnums.DataPropertyAdd]: (
+      state: IFormStateContext,
+      action: ReduxActions.Action<IAddDataPropertyPayload>
+    ) => {
+      const {
+        payload: { propertyMetadata, index, containerId },
+      } = action;
 
       const formComponent = createComponentForProperty(state.toolboxComponentGroups, propertyMetadata);
-      if (!Boolean(formComponent))
-        return state;
+      if (!Boolean(formComponent)) return state;
 
       formComponent.parentId = containerId; // set parent
       const newStructure = addComponentToFlatStructure(state, formComponent, containerId, index);
@@ -122,8 +135,7 @@ const reducer = handleActions<IFormStateContext, any>(
         customVisibility: null,
         visibilityFunc: _data => true,
       };
-      if (toolboxComponent.initModel)
-        formComponent = toolboxComponent.initModel(formComponent);
+      if (toolboxComponent.initModel) formComponent = toolboxComponent.initModel(formComponent);
 
       const newStructure = addComponentToFlatStructure(state, formComponent, containerId, index);
 
@@ -275,6 +287,18 @@ const reducer = handleActions<IFormStateContext, any>(
       return {
         ...state,
         visibleComponentIds: payload.componentIds,
+      };
+    },
+
+    [FormActionEnums.SetEnabledComponents]: (
+      state: IFormStateContext,
+      action: ReduxActions.Action<ISetEnabledComponentsPayload>
+    ) => {
+      const { payload } = action;
+
+      return {
+        ...state,
+        enabledComponentIds: payload.componentIds,
       };
     },
 

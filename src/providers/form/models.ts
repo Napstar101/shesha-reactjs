@@ -79,11 +79,17 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   /** Custom visibility code */
   customVisibility?: string;
 
+  /** Custom visibility code */
+  customEnabled?: string;
+
   /** Default value of the field */
   defaultValue?: any;
 
   //#region runtime properties
   visibilityFunc?: (data: any) => boolean;
+
+  //#region runtime properties
+  enabledFunc?: (data: any) => boolean;
   /**/
   settingsValidationErrors?: IAsyncValidationError[];
   //#endregion
@@ -106,6 +112,7 @@ export interface IFlatComponentsStructure {
   allComponents: IComponentsDictionary;
   componentRelations: IComponentRelations;
   visibleComponentIds?: string[];
+  enabledComponentIds?: string[];
 }
 
 export interface IFormProps extends IFlatComponentsStructure {

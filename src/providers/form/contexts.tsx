@@ -125,6 +125,10 @@ export interface ISetVisibleComponentsPayload {
   componentIds: string[];
 }
 
+export interface ISetEnabledComponentsPayload {
+  componentIds: string[];
+}
+
 export interface ISetFormDataPayload {
   /** form field values */
   values: any;
@@ -215,6 +219,7 @@ export const FORM_CONTEXT_INITIAL_STATE: IFormStateContext = {
   components: [],
   allComponents: {},
   visibleComponentIds: [],
+  enabledComponentIds: [],
   componentRelations: { [ROOT_COMPONENT_KEY]: [] },
   formMode: 'designer',
   isDragging: false,

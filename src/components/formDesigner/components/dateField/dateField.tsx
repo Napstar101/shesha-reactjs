@@ -136,9 +136,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
   const getFormat = () => {
     switch (picker) {
       case 'date':
-        return showTime
-          ? `${dateFormat} ${timeFormat}`
-          : dateFormat;
+        return showTime ? `${dateFormat} ${timeFormat}` : dateFormat;
       case 'year':
         return yearFormat;
       case 'month':

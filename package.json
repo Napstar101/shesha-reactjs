@@ -1,5 +1,6 @@
 {
   "name": "@shesha/reactjs",
+  "version": "0.4.50-beta",
   "description": "The reactjs frontend application and ui for the shesha framework.",
   "author": "Boxfusion",
   "license": "GPL-3.0",

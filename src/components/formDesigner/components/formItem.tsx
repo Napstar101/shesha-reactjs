@@ -33,10 +33,22 @@ const ConfigurableFormItem: FC<IConfigurableFormItemProps> = ({
   labelCol,
   wrapperCol,
 }) => {
-  const { formMode, visibleComponentIds } = useForm();
+  const { formMode, visibleComponentIds, enabledComponentIds } = useForm();
 
   const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
   const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+
+  const disabledByCondition = enabledComponentIds && !enabledComponentIds.includes(model.id);
+  const disabled = formMode !== 'designer' && (Boolean(model.disabled) || disabledByCondition);
+
+  const childrenWithProps = React.Children.map(children, child => {
+    // Checking isValidElement is the safe way and avoids a typescript
+    // error too.
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { disabled });
+    }
+    return child;
+  });
 
   return (
     <Form.Item
@@ -54,7 +66,7 @@ const ConfigurableFormItem: FC<IConfigurableFormItemProps> = ({
       labelCol={labelCol}
       wrapperCol={wrapperCol}
     >
-      {children}
+      {disabled ? childrenWithProps : children}
     </Form.Item>
   );
 };

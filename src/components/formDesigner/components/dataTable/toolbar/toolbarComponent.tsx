@@ -24,14 +24,7 @@ const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
     };
   },
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
-    return (
-      <ToolbarSettings
-        model={model}
-        onSave={onSave}
-        onCancel={onCancel}
-        onValuesChange={onValuesChange}
-      />
-    );
+    return <ToolbarSettings model={model} onSave={onSave} onCancel={onCancel} onValuesChange={onValuesChange} />;
   },
 };
 
@@ -57,7 +50,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
 
           case 'separator':
             return <div key={index} className="sha-toolbar-separator"></div>;
-            break;
+
           default:
             return null;
         }

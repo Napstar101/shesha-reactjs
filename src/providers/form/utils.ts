@@ -38,6 +38,7 @@ export const componentsTreeToFlatStructure = (
       ...component,
       parentId,
       visibilityFunc: getCustomVisibilityFunc(component),
+      enabledFunc: getCustomEnabledFunc(component),
     };
 
     const level = result.componentRelations[parentId] || [];
@@ -153,6 +154,10 @@ export const loadFormByPath = (path: string) => {
 
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
   if (customVisibility) {
+    // console.log('customVisibility : name, customVisibility', name, customVisibility);
+  }
+
+  if (customVisibility) {
     try {
       const customVisibilityExecutor = customVisibility ? new Function('value, data', customVisibility) : null;
 
@@ -174,6 +179,34 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
     } catch (e) {
       return () => {
         console.warn(`Incorrect syntax of the 'Custom Visibility', field name: ${name}, error: ${e}`);
+      };
+    }
+  } else return () => true;
+};
+
+export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormComponent) => {
+  if (customEnabled) {
+    try {
+      const customEnabledExecutor = customEnabled ? new Function('value, data', customEnabled) : null;
+
+      const getIsEnabled = function(data = {}) {
+        if (customEnabledExecutor) {
+          try {
+            return customEnabledExecutor(name ? data[name] : undefined, data);
+          } catch (e) {
+            console.error(`Custom Enabled of field ${name} throws exception: ${e}`);
+            return true;
+          }
+        }
+
+        return true;
+        //return !(component.contextData && component.contextData.isEmpty && component.contextData.readOnly && component.hideWhenEmpty);
+      };
+
+      return getIsEnabled;
+    } catch (e) {
+      return () => {
+        console.warn(`Incorrect syntax of the 'Custom Enabled', field name: ${name}, error: ${e}`);
       };
     }
   } else return () => true;
@@ -223,6 +256,22 @@ export const getVisibleComponentIds = (components: IComponentsDictionary, values
     if (isVisible) visibleComponents.push(key);
   }
   return visibleComponents;
+};
+
+/**
+ * Return ids of visible components according to the custom enabled
+ */
+export const getEnabledComponentIds = (components: IComponentsDictionary, values: any): string[] => {
+  let enabledComponents: string[] = [];
+  for (let key in components) {
+    const component = components[key] as IConfigurableFormComponent;
+    if (!component || component.disabled) continue;
+
+    const isEnabled = component.enabledFunc === null || component.enabledFunc(values);
+
+    if (isEnabled) enabledComponents.push(key);
+  }
+  return enabledComponents;
 };
 
 /**
@@ -396,7 +445,7 @@ export const findToolboxComponent = (
 */
 export const findToolboxComponent = (
   availableComponents: IToolboxComponentGroup[],
-  predicate: (component: IToolboxComponent) => boolean,
+  predicate: (component: IToolboxComponent) => boolean
 ): IToolboxComponent => {
   if (availableComponents) {
     for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
@@ -455,18 +504,19 @@ export const validateConfigurableComponentSettings = (markup: FormMarkup, values
   return validator.validate(values);
 };
 
-export function listComponentToModelMetadata<TModel extends IConfigurableFormComponent>(component: IToolboxComponent<TModel>, model: TModel, metadata: IPropertyMetadata): TModel {
+export function listComponentToModelMetadata<TModel extends IConfigurableFormComponent>(
+  component: IToolboxComponent<TModel>,
+  model: TModel,
+  metadata: IPropertyMetadata
+): TModel {
   let mappedModel = model;
 
   // map standard properties
-  if (metadata.label)
-    mappedModel.label = metadata.label;
-  if (metadata.description)
-    mappedModel.description = metadata.description;
+  if (metadata.label) mappedModel.label = metadata.label;
+  if (metadata.description) mappedModel.description = metadata.description;
 
   // map component-specific properties
-  if (component.linkToModelMetadata)
-    mappedModel = component.linkToModelMetadata(model, metadata);
- 
+  if (component.linkToModelMetadata) mappedModel = component.linkToModelMetadata(model, metadata);
+
   return mappedModel;
 }
