@@ -1,0 +1,141 @@
+{
+  "components": [
+    {
+      "id": "aYeIfcjqrSZpmuKd6Fijn",
+      "type": "textField",
+      "name": "className",
+      "label": "Name",
+      "labelAlign": "right",
+      "hidden": false,
+      "customVisibility": null,
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "description": null,
+      "maxLength": null,
+      "parentId": "root",
+      "validate": {
+        "required": true
+      },
+      "settingsValidationErrors": [],
+      "textType": "text"
+    },
+    {
+      "id": "0XFvEV-W_E2LzxEHjLiGm",
+      "type": "textField",
+      "name": "namespace",
+      "label": "Name Space",
+      "labelAlign": "right",
+      "hidden": false,
+      "customVisibility": null,
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "description": null,
+      "maxLength": null,
+      "parentId": "root",
+      "validate": {
+        "required": true
+      },
+      "settingsValidationErrors": [],
+      "textType": "text"
+    },
+    {
+      "id": "l-9eRC4GuiPRx5qE1Mwrb",
+      "type": "container",
+      "name": "container1",
+      "label": "Container1",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": true,
+      "customVisibility": null,
+      "direction": "vertical",
+      "justifyContent": "left",
+      "settingsValidationErrors": [],
+      "components": [
+        {
+          "textType": "text",
+          "id": "Et3mXGSFcguEx-LcJOMtu",
+          "type": "textField",
+          "name": "typeShortAlias",
+          "label": "Type Short Alias",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
+        },
+        {
+          "textType": "text",
+          "id": "v6t36_JyRvu48U-5Fd_7i",
+          "type": "textField",
+          "name": "tableName",
+          "label": "Table Name",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
+        },
+        {
+          "textType": "text",
+          "id": "90iN1bbgFBVW5wzQfEoRh",
+          "type": "textField",
+          "name": "discriminatorValue",
+          "label": "Discriminator Value",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
+        },
+        {
+          "textType": "text",
+          "id": "-X1emhZPx1rM7w22GOcCp",
+          "type": "textField",
+          "name": "friendlyName",
+          "label": "Friendly Name",
+          "labelAlign": "right",
+          "parentId": "l-9eRC4GuiPRx5qE1Mwrb",
+          "hidden": false,
+          "customVisibility": null,
+          "description": null,
+          "validate": {},
+          "settingsValidationErrors": [],
+          "maxLength": null
+        }
+      ]
+    },
+    {
+      "id": "dIECbRhuwwxW23ZZEC5Kr",
+      "type": "section",
+      "name": "properties",
+      "label": "Section1",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "settingsValidationErrors": []
+    }
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": {
+      "span": 5
+    },
+    "wrapperCol": {
+      "span": 13
+    },
+    "modelType": "Shesha.Framework.EntityConfig"
+  }
+}

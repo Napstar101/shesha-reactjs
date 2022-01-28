@@ -6,6 +6,7 @@ import React from 'react';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface ISwitchProps extends IConfigurableFormComponent {}
 
@@ -15,6 +16,7 @@ const SwitchComponent: IToolboxComponent<ISwitchProps> = {
   type: 'switch',
   name: 'Switch',
   icon: <SwitcherOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.boolean,
   factory: (model: ISwitchProps) => {
     return (
       <ConfigurableFormItem model={model}>

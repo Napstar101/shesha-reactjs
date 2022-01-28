@@ -16,6 +16,7 @@ import { IToolboxComponent, IToolboxComponentGroup, IToolboxComponents } from '.
 import Schema, { Rules, ValidateSource } from 'async-validator';
 import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
 import { formGet, formGetByPath } from '../../apis/form';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -158,7 +159,7 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
       const getIsVisible = function(data = {}) {
         if (customVisibilityExecutor) {
           try {
-            return customVisibilityExecutor(data[name], data);
+            return customVisibilityExecutor(name ? data[name] : undefined, data);
           } catch (e) {
             console.warn(`Custom Visibility of field ${name} throws exception: ${e}`);
             return true;
@@ -213,7 +214,6 @@ export const getVisibilityFunc2 = (expression, name) => {
  * Return ids of visible components according to the custom visibility
  */
 export const getVisibleComponentIds = (components: IComponentsDictionary, values: any): string[] => {
-  //@ts-ignore
   let visibleComponents: string[] = [];
   for (let key in components) {
     const component = components[key] as IConfigurableFormComponent;
@@ -222,7 +222,6 @@ export const getVisibleComponentIds = (components: IComponentsDictionary, values
     const isVisible = component.visibilityFunc == null || component.visibilityFunc(values);
     if (isVisible) visibleComponents.push(key);
   }
-
   return visibleComponents;
 };
 
@@ -378,7 +377,7 @@ export const toolbarGroupsToComponents = (availableComponents: IToolboxComponent
   }
   return allComponents;
 };
-
+/*
 export const findToolboxComponent = (
   availableComponents: IToolboxComponentGroup[],
   type: string
@@ -388,6 +387,22 @@ export const findToolboxComponent = (
       const group = availableComponents[gIdx];
       for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
         if (group.components[cIdx].type === type) return group.components[cIdx];
+      }
+    }
+  }
+
+  return null;
+};
+*/
+export const findToolboxComponent = (
+  availableComponents: IToolboxComponentGroup[],
+  predicate: (component: IToolboxComponent) => boolean,
+): IToolboxComponent => {
+  if (availableComponents) {
+    for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
+      const group = availableComponents[gIdx];
+      for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
+        if (predicate(group.components[cIdx])) return group.components[cIdx];
       }
     }
   }
@@ -439,3 +454,19 @@ export const validateConfigurableComponentSettings = (markup: FormMarkup, values
 
   return validator.validate(values);
 };
+
+export function listComponentToModelMetadata<TModel extends IConfigurableFormComponent>(component: IToolboxComponent<TModel>, model: TModel, metadata: IPropertyMetadata): TModel {
+  let mappedModel = model;
+
+  // map standard properties
+  if (metadata.label)
+    mappedModel.label = metadata.label;
+  if (metadata.description)
+    mappedModel.description = metadata.description;
+
+  // map component-specific properties
+  if (component.linkToModelMetadata)
+    mappedModel = component.linkToModelMetadata(model, metadata);
+ 
+  return mappedModel;
+}

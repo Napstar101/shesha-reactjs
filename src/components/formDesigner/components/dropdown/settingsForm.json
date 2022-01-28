@@ -9,7 +9,7 @@
     },
     {
       "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
-      "type": "propertyAutocomplete",
+      "type": "textField",
       "name": "name",
       "parentId": "root",
       "label": "Name",
@@ -46,25 +46,32 @@
       "dataSourceType": "values"
     },
     {
-      "id": "fbdb6bb1-5994-4205-86b4-236ca61ae53e",
-      "type": "numberField",
-      "name": "defaultValue",
-      "parentId": "root",
-      "label": "Default tValue"
-    },
-    {
-      "id": "fbdb6bb1-5994-4205-86b4-236ca61ae54e",
+      "textType": "text",
+      "id": "VSSp87LcgvY8-B6nQN93T",
       "type": "textField",
       "name": "placeholder",
+      "label": "Placeholder",
+      "labelAlign": "right",
       "parentId": "root",
-      "label": "Placeholder"
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
-      "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-      "type": "textField",
+      "id": "vdHXORT_t16LbITksJNtm",
+      "type": "textArea",
       "name": "description",
+      "label": "Description",
+      "labelAlign": "right",
       "parentId": "root",
-      "label": "Description"
+      "hidden": false,
+      "customVisibility": null,
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
@@ -153,31 +160,60 @@
       "dataSourceType": "values"
     },
     {
-      "id": "99bb19ad-1587-4f75-b738-ea6a075672b0",
-      "type": "textField",
-      "name": "referenceListNamespace",
+      "id": "ELxx5jarWvInJXJF5xHN2",
+      "type": "container",
+      "name": "container1",
+      "label": "Container1",
+      "labelAlign": "right",
       "parentId": "root",
-      "label": "ReferenceList Namespace",
-      "customVisibility": "return data.dataSourceType === 'referenceList'"
-    },
-    {
-      "id": "bd7a7eaa-021f-4f62-ac33-2aba0299d237",
-      "type": "textField",
-      "name": "referenceListName",
-      "parentId": "root",
-      "label": "ReferenceList Name",
-      "customVisibility": "return data.dataSourceType === 'referenceList'"
-    },
-    {
-      "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc5",
-      "type": "textArea",
-      "name": "ignoredValues",
-      "parentId": "root",
-      "label": "Ignored Values",
-      "autoSize": false,
-      "showCount": false,
-      "allowClear": true,
-      "description": "Pass an integer array of values you want to ignore like so: [1, 2, 3]. Each represents ReferenceList.ItemValue"
+      "hidden": false,
+      "customVisibility": "return data.dataSourceType === 'referenceList'",
+      "direction": "vertical",
+      "justifyContent": "left",
+      "settingsValidationErrors": [],
+      "components": [
+        {
+          "id": "99bb19ad-1587-4f75-b738-ea6a075672b0",
+          "type": "textField",
+          "name": "referenceListNamespace",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "label": "ReferenceList Namespace",
+          "customVisibility": "",
+          "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
+          "id": "bd7a7eaa-021f-4f62-ac33-2aba0299d237",
+          "type": "textField",
+          "name": "referenceListName",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "label": "ReferenceList Name",
+          "customVisibility": "return data.dataSourceType === 'referenceList'"
+        },
+        {
+          "id": "9JXKnC0XHz9xIvoxfQ-AK",
+          "type": "checkbox",
+          "name": "useRawValues",
+          "label": "Use raw values",
+          "labelAlign": "right",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "hidden": false,
+          "customVisibility": null,
+          "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
+          "id": "03959ffd-cadb-496c-bf6d-b742f7f6edc5",
+          "type": "textArea",
+          "name": "ignoredValues",
+          "parentId": "ELxx5jarWvInJXJF5xHN2",
+          "label": "Ignored Values",
+          "autoSize": false,
+          "showCount": false,
+          "allowClear": true,
+          "description": "Pass an integer array of values you want to ignore like so: [1, 2, 3]. Each represents ReferenceList.ItemValue"
+        }
+      ]
     },
     {
       "id": "eeea4825-2659-4d17-9c44-066b4636d4d7",
@@ -206,6 +242,15 @@
       "valueTitle": "Value",
       "valueName": "value",
       "customVisibility": "return data.dataSourceType === 'values'"
+    },
+    {
+      "id": "fbdb6bb1-5994-4205-86b4-236ca61ae53e",
+      "type": "numberField",
+      "name": "defaultValue",
+      "parentId": "root",
+      "label": "Default Value",
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",

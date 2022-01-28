@@ -104,10 +104,7 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
             type = 'time';
             break;
 
-          case DataTypes.int32:
-          case DataTypes.int64:
-          case DataTypes.float:
-          case DataTypes.double:
+          case DataTypes.number:
             type = 'number';
             break;
 
@@ -118,7 +115,7 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
             break;
 
           case 'refList':
-          case DataTypes.refListValue:
+          case DataTypes.referenceListItem:
             type = 'refList';
             defaultPreferWidgets = ['refListDropdown'];
             break;

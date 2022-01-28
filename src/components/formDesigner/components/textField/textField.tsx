@@ -9,6 +9,7 @@ import React, { MutableRefObject } from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { customEventHandler } from '../utils';
 import { AuthorizationSettingsDto } from '../../../../apis/authorizationSettings';
+import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
 
 type TextType = 'text' | 'password';
 export interface ITextFieldProps extends IConfigurableFormComponent {
@@ -19,6 +20,7 @@ export interface ITextFieldProps extends IConfigurableFormComponent {
   initialValue?: string;
   passEmptyStringByDefault?: boolean;
   textType?: TextType;
+  maxLength?: number;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -36,6 +38,11 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
+  dataTypeSupported: ({ dataType, dataFormat }) => dataType === DataTypes.string && 
+    (dataFormat === StringFormats.singleline 
+      || dataFormat === StringFormats.emailAddress 
+      || dataFormat === StringFormats.phoneNumber 
+      || dataFormat === StringFormats.password),
   factory: (
     model: ITextFieldProps,
     _c: MutableRefObject<any>,
@@ -48,6 +55,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       suffix: model.suffix,
       disabled: model.disabled,
       bordered: !model.hideBorder,
+      maxLength: model.maxLength,
     };
 
     const InputComponentType = renderInput(model.textType);
@@ -60,6 +68,19 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  initModel: model => (
+    { 
+      textType: 'text',
+      ...model
+    }
+  ),
+  linkToModelMetadata: (model, metadata): ITextFieldProps => {
+    return {
+      ...model,
+      maxLength: metadata.maxLength,
+      textType: metadata.dataFormat === StringFormats.password ? 'password' : 'text',
+    };
+  },
 };
 
 export default TextField;

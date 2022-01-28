@@ -7,16 +7,28 @@ import {
   SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
 } from './contexts';
 import { RestfulProvider } from 'restful-react';
-import AuthProvider from '../auth';
-import AuthorizationSettingsProvider from '../authorizationSettings';
 import IRequestHeaders from '../../interfaces/requestHeaders';
 import { setBackendUrlAction, setHeadersAction } from './actions';
-import ShaRoutingProvider from '../shaRouting';
 import { Router } from 'next/router';
+
+import AuthProvider from '../auth';
+import AuthorizationSettingsProvider from '../authorizationSettings';
+import ShaRoutingProvider from '../shaRouting';
 import { AppConfiguratorProvider } from '../appConfigurator';
 import { DynamicModalProvider } from '../dynamicModal';
 import { UiProvider } from '../ui';
 import { MetadataDispatcherProvider } from '..';
+
+/*
+import { 
+  AppConfiguratorProvider,
+  DynamicModalProvider,
+  UiProvider,
+  MetadataDispatcherProvider,
+  ShaRoutingProvider,
+  AuthProvider,
+  AuthorizationSettingsProvider } from '..';
+*/
 
 export interface IShaApplicationProviderProps {
   backendUrl: string;
@@ -27,7 +39,7 @@ export interface IShaApplicationProviderProps {
   whitelistUrls?: string[];
 }
 
-const SheshaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>> = ({
+const ShaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>> = ({
   children,
   backendUrl,
   applicationName,
@@ -99,4 +111,4 @@ function useSheshaApplication() {
   return context;
 }
 
-export { SheshaApplicationProvider as ShaApplicationProvider, useSheshaApplication };
+export { ShaApplicationProvider, useSheshaApplication };

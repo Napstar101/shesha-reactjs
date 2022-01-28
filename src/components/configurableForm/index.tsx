@@ -4,13 +4,13 @@ import { IConfigurableFormProps } from './models';
 import { FormProvider } from '../../providers/form';
 import ConfigurableComponent from '../appConfigurator/configurableComponent';
 import EditViewMsg from '../appConfigurator/editViewMsg';
-import { useShaRouting } from '../../providers/shaRouting';
+import { useShaRouting } from '../../providers';
 
 export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
   const { id, markup, mode, path, actions, sections, context, formRef, ...restProps } = props;
 
   const handleEditMode = Boolean(id) || Boolean(path);
-  const { router } = useShaRouting();
+  const { router } = useShaRouting(false);
 
   // const 
 

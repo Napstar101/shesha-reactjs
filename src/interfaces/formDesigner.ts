@@ -3,6 +3,7 @@ import { IConfigurableFormComponent, IFormComponentContainer, FormMarkup } from 
 import { FormInstance } from 'antd';
 import { InternalNamePath } from 'rc-field-form/lib/interface';
 import { AuthorizationSettingsDto } from '../apis/authorizationSettings';
+import { IPropertyMetadata } from './metadata';
 
 export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
   model: TModel;
@@ -47,7 +48,7 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
   /**
    * Link component to a model metadata
    */
-  linkToModelMetadata?: (model: T, metadata: any) => T;
+  linkToModelMetadata?: (model: T, metadata: IPropertyMetadata) => T;
   /**
    * Returns nested component containers. Is used in the complex components like tabs, panels etc.
    */
@@ -68,6 +69,11 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
    * Settings validator
    */
   validateSettings?: (model: T) => Promise<any>;
+
+  /**
+   * Return true to indicate that the data type is supported by the component
+   */
+  dataTypeSupported?: (dataTypeInfo: { dataType: string; dataFormat?: string }) => boolean;
 }
 
 export interface IToolboxComponentGroup {
