@@ -1,14 +1,13 @@
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CodeOutlined } from '@ant-design/icons';
-import { FormInstance, Input } from 'antd';
+import { Input } from 'antd';
 import { InputProps } from 'antd/lib/input';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import React, { MutableRefObject } from 'react';
+import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { customEventHandler } from '../utils';
-import { AuthorizationSettingsDto } from '../../../../apis/authorizationSettings';
 import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
 
 type TextType = 'text' | 'password';
@@ -43,12 +42,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       || dataFormat === StringFormats.emailAddress 
       || dataFormat === StringFormats.phoneNumber 
       || dataFormat === StringFormats.password),
-  factory: (
-    model: ITextFieldProps,
-    _c: MutableRefObject<any>,
-    form: FormInstance,
-    settings: AuthorizationSettingsDto
-  ) => {
+  factory: (model: ITextFieldProps, _c, form, settings) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,
       prefix: model.prefix,
