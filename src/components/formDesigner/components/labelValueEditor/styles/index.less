@@ -1,6 +1,6 @@
 .sha-labelvalueeditor {
   .ant-table-cell {
-    padding:4px;
+    padding: 4px;
   }
   .editable-row {
     .editable-cell {
@@ -21,6 +21,15 @@
     }
   }
   .sha-labelvalueeditor-buttons {
-    margin-top: '10px';
+    margin-top: 14px;
+
+    button {
+      &:hover {
+        border-radius: 5px;
+        color: @primary-color;
+        background-color: @sha-primary-hover-color;
+        border-color: unset;
+      }
+    }
   }
 }

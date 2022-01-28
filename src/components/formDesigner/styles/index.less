@@ -39,6 +39,11 @@
     .ant-collapse-item {
       .ant-collapse-header {
         padding: 4px 8px;
+
+        &:hover {
+          color: @primary-color;
+          background-color: @sha-primary-hover-color;
+        }
       }
     }
     .sha-component-search {
@@ -65,7 +70,14 @@
       border: 1px solid #ddd;
 
       .anticon {
-        margin-right: 5px;
+        // margin-right: 5px;
+        margin: 5px 10px 5px 10px;
+      }
+
+      &:hover {
+        border-radius: 5px;
+        color: @primary-color;
+        background-color: @sha-primary-hover-color;
       }
     }
   }
@@ -90,6 +102,16 @@
   .sha-designer-header {
     display: flex;
     justify-content: space-between;
+
+    .sha-designer-header-right {
+      .ant-btn-link {
+        &:hover {
+          border-radius: 5px;
+          color: @primary-color;
+          background-color: @sha-primary-hover-color;
+        }
+      }
+    }
   }
 
   .sha-form-designer {
@@ -103,6 +125,7 @@
         margin: 0;
         text-align: center;
         color: darkgray;
+        padding: 10px;
       }
     }
   }
