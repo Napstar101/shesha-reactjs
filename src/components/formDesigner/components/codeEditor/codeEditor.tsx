@@ -1,85 +1,115 @@
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { FC } from 'react';
 import { IConfigurableFormComponent } from '../../../../interfaces';
 import { useMetadata } from '../../../../providers';
-import { CodeEditor as BaseCodeEditor } from "../../../..";
+import { CodeEditor as BaseCodeEditor, Show } from '../../../..';
 import { ICodeTreeLevel } from '../../../codeEditor/codeCompleter';
 import { IPropertyMetadata } from '../../../../interfaces/metadata';
+import { Alert, Button, Modal } from 'antd';
+import { CodeOutlined } from '@ant-design/icons';
+import { IAceOptions } from 'react-ace';
 
 export interface ICodeEditorProps extends IConfigurableFormComponent {
-    placeholder?: string;
-    value?: string;
-    onChange?: (value: string) => void;
+  placeholder?: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  mode?: 'inline' | 'dialog';
+  setOptions?: IAceOptions;
 }
 
-export const CodeEditor: FC<ICodeEditorProps> = (props) => {
-    const onChange = (value) => {
-        if (props.onChange)
-            props.onChange(value);
-    }
-    const meta = useMetadata(false);
+export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', ...props }) => {
+  const [showDialog, setShowDialog] = useState(false);
 
-    //const { editorProps = {}, ...restProps } = props;
+  const onChange = value => {
+    if (props.onChange) props.onChange(value);
+  };
+  const meta = useMetadata(false);
 
-    const metaItems = useMemo<ICodeTreeLevel>(() => {
-        if (!Boolean(meta?.metadata))
-            return null;
+  const metaItems = useMemo<ICodeTreeLevel>(() => {
+    if (!Boolean(meta?.metadata)) return null;
 
-        const propsToLevel = (properties: IPropertyMetadata[]): ICodeTreeLevel => {
-            const result: ICodeTreeLevel = {};
-            properties.forEach(p => {
-                result[p.path] = {
-                    value: p.path,
-                    caption: p.label,
-                    loaded: true,
-                }
-            });
-            return result;
-        }
-
-        const metaTree: ICodeTreeLevel = {
-            data: {
-                value: 'data',
-                caption: meta.metadata.name,
-                loaded: true,
-                childs: propsToLevel(meta.metadata.properties),
-            }
+    const propsToLevel = (properties: IPropertyMetadata[]): ICodeTreeLevel => {
+      const result: ICodeTreeLevel = {};
+      properties.forEach(p => {
+        result[p.path] = {
+          value: p.path,
+          caption: p.label,
+          loaded: true,
         };
-        return metaTree;
-    }, [meta]);
-
-    const editorProps = {
-        shaMetadata: metaItems,
+      });
+      return result;
     };
 
-    return (
-        <BaseCodeEditor
-            name={props.id}
-            placeholder={props.placeholder}
-            mode="javascript"
-            theme="monokai"
+    const metaTree: ICodeTreeLevel = {
+      data: {
+        value: 'data',
+        caption: meta.metadata.name,
+        loaded: true,
+        childs: propsToLevel(meta.metadata.properties),
+      },
+    };
+    return metaTree;
+  }, [meta]);
 
-            //onLoad={onLoad}
-            onChange={onChange}
-            fontSize={14}
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={props.value}
-            setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
-                enableSnippets: false,
-                showLineNumbers: true,
-                tabSize: 2,
-                autoScrollEditorIntoView: true,
-                minLines: 3,
-                maxLines: 100,
-                readOnly: Boolean(props.disabled)
-            }}
-            editorProps={editorProps}
-        />
-    );
-}
+  const editorProps = {
+    shaMetadata: metaItems,
+  };
+
+  const openEditorDialog = () => setShowDialog(true);
+
+  const closeEditorDialog = () => setShowDialog(false);
+
+  const aceOptions = props?.setOptions || {};
+
+  const renderCodeEditor = () => (
+    <BaseCodeEditor
+      name={props.id}
+      style={{ width: 'unset' }}
+      placeholder={props.placeholder}
+      mode="typescript"
+      theme="monokai"
+      onChange={onChange}
+      fontSize={14}
+      showPrintMargin={true}
+      showGutter={true}
+      highlightActiveLine={true}
+      value={props.value}
+      setOptions={{
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        enableSnippets: false,
+        showLineNumbers: true,
+        tabSize: 2,
+        autoScrollEditorIntoView: true,
+        minLines: 3,
+        maxLines: 100,
+        readOnly: Boolean(props.disabled),
+        ...aceOptions,
+      }}
+      editorProps={editorProps}
+    />
+  );
+
+  return (
+    <Fragment>
+      <Show when={mode === 'inline'}>{renderCodeEditor()}</Show>
+
+      <Show when={mode === 'dialog'}>
+        <Button icon={<CodeOutlined />} onClick={openEditorDialog} size="small">
+          Launch Code Editor
+        </Button>
+      </Show>
+
+      <Modal visible={showDialog} onCancel={closeEditorDialog} onOk={closeEditorDialog} width={650} title={props.label}>
+        <Show when={!!props?.description}>
+          <Alert message={props?.description} />
+          <br />
+        </Show>
+
+        {renderCodeEditor()}
+      </Modal>
+    </Fragment>
+  );
+};
 
 export default CodeEditor;
