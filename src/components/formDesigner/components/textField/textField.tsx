@@ -1,12 +1,14 @@
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CodeOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
+import { FormInstance, Input } from 'antd';
 import { InputProps } from 'antd/lib/input';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { customEventHandler } from '../utils';
+import { AuthorizationSettingsDto } from '../../../../apis/authorizationSettings';
 
 type TextType = 'text' | 'password';
 export interface ITextFieldProps extends IConfigurableFormComponent {
@@ -34,7 +36,12 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
-  factory: (model: ITextFieldProps) => {
+  factory: (
+    model: ITextFieldProps,
+    _c: MutableRefObject<any>,
+    form: FormInstance,
+    settings: AuthorizationSettingsDto
+  ) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,
       prefix: model.prefix,
@@ -46,11 +53,8 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
     const InputComponentType = renderInput(model.textType);
 
     return (
-      <ConfigurableFormItem
-        model={model}
-        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
-      >
-        <InputComponentType {...inputProps} />
+      <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
+        <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} />
       </ConfigurableFormItem>
     );
   },
