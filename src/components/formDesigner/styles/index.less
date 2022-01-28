@@ -156,7 +156,7 @@
       border: @red-3 1px solid;
       border-radius: 4px;
 
-      .sha-component-invisible-indicator {
+      .sha-component-indicator {
         display: none;
       }
 
@@ -183,14 +183,18 @@
       cursor: grab;
     }
 
-    .sha-component-invisible-indicator {
-      display: inline-flex;
+    .sha-component-indicator {
+      display: inline-block;
       align-items: center;
       color: darkgray;
       left: 15px;
       height: 100%;
       position: absolute;
       z-index: 1000;
+
+      .anticon {
+        margin-right: @padding-md;
+      }
     }
 
     .sha-component-controls {

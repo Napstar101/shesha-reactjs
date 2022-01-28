@@ -14,6 +14,7 @@ import {
   ISetSelectedComponentPayload,
   IComponentUpdateSettingsValidationPayload,
   IAddDataPropertyPayload,
+  ISetEnabledComponentsPayload,
 } from './contexts';
 import { IFormProps, IFlatComponentsStructure, FormMode } from './models';
 
@@ -42,6 +43,7 @@ export enum FormActionEnums {
   StartDragging = 'START_DRAGGING',
   EndDragging = 'END_DRAGGING',
   SetVisibleComponents = 'SET_VISIBLE_COMPONENTS',
+  SetEnabledComponents = 'SET_ENABLED_COMPONENTS',
   UpdateChildComponents = 'UPDATE_CHILD_COMPONENTS',
   SetFormData = 'SET_FORM_DATA',
   SetValidationErrors = 'SET_VALIDATION_ERRORS',
@@ -103,6 +105,11 @@ export const setVisibleComponentsAction = createAction<ISetVisibleComponentsPayl
   p => p
 );
 
+export const setEnabledComponentsAction = createAction<ISetEnabledComponentsPayload, ISetEnabledComponentsPayload>(
+  FormActionEnums.SetEnabledComponents,
+  p => p
+);
+
 export const setFormDataAction = createAction<ISetFormDataPayload, ISetFormDataPayload>(
   FormActionEnums.SetFormData,
   p => p
@@ -135,19 +142,10 @@ export const updateFormSettingsAction = createAction<IFormSettings, IFormSetting
 
 /* NEW_ACTION_GOES_HERE */
 
-//#region 
-export const addDataSourceAction = createAction<IDataSource, IDataSource>(
-  FormActionEnums.AddDataSource,
-  p => p
-);
+//#region
+export const addDataSourceAction = createAction<IDataSource, IDataSource>(FormActionEnums.AddDataSource, p => p);
 
-export const removeDataSourceAction = createAction<string, string>(
-  FormActionEnums.RemoveDataSource,
-  p => p
-);
+export const removeDataSourceAction = createAction<string, string>(FormActionEnums.RemoveDataSource, p => p);
 
-export const setActiveDataSourceAction = createAction<string, string>(
-  FormActionEnums.SetActiveDataSource,
-  p => p
-);
+export const setActiveDataSourceAction = createAction<string, string>(FormActionEnums.SetActiveDataSource, p => p);
 //#endregion
