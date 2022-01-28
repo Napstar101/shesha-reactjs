@@ -7,6 +7,7 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { customEventHandler } from '../utils';
 import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
 
 type TextType = 'text' | 'password';
@@ -41,7 +42,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       || dataFormat === StringFormats.emailAddress 
       || dataFormat === StringFormats.phoneNumber 
       || dataFormat === StringFormats.password),
-  factory: (model: ITextFieldProps) => {
+  factory: (model: ITextFieldProps, _c, form, settings) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,
       prefix: model.prefix,
@@ -54,11 +55,8 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
     const InputComponentType = renderInput(model.textType);
 
     return (
-      <ConfigurableFormItem
-        model={model}
-        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
-      >
-        <InputComponentType {...inputProps} />
+      <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
+        <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} />
       </ConfigurableFormItem>
     );
   },

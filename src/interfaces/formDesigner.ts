@@ -2,6 +2,7 @@ import { ReactNode, MutableRefObject } from 'react';
 import { IConfigurableFormComponent, IFormComponentContainer, FormMarkup } from '../providers/form/models';
 import { FormInstance } from 'antd';
 import { InternalNamePath } from 'rc-field-form/lib/interface';
+import { AuthorizationSettingsDto } from '../apis/authorizationSettings';
 import { IPropertyMetadata } from './metadata';
 
 export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
@@ -37,7 +38,8 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
   factory: (
     model: T,
     componentRef: MutableRefObject<any>,
-    form: FormInstance<any>
+    form: FormInstance<any>,
+    settings: AuthorizationSettingsDto
   ) => ReactNode;
   /**
    * Fills the component properties with some default values. Fired when the user drops a component to the form

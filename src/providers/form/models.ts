@@ -92,6 +92,15 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   enabledFunc?: (data: any) => boolean;
   /**/
   settingsValidationErrors?: IAsyncValidationError[];
+
+  /** Custom onBlur handler */
+  onBlurCustom?: string;
+
+  /** Custom onChange handler */
+  onChangeCustom?: string;
+
+  /** Custom onFocus handler */
+  onFocusCustom?: string;
   //#endregion
 }
 
