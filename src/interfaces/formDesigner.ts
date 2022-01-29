@@ -2,6 +2,8 @@ import { ReactNode, MutableRefObject } from 'react';
 import { IConfigurableFormComponent, IFormComponentContainer, FormMarkup } from '../providers/form/models';
 import { FormInstance } from 'antd';
 import { InternalNamePath } from 'rc-field-form/lib/interface';
+import { AuthorizationSettingsDto } from '../apis/authorizationSettings';
+import { IPropertyMetadata } from './metadata';
 
 export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
   model: TModel;
@@ -36,7 +38,8 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
   factory: (
     model: T,
     componentRef: MutableRefObject<any>,
-    form: FormInstance<any>
+    form: FormInstance<any>,
+    settings: AuthorizationSettingsDto
   ) => ReactNode;
   /**
    * Fills the component properties with some default values. Fired when the user drops a component to the form
@@ -45,7 +48,7 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
   /**
    * Link component to a model metadata
    */
-  linkToModelMetadata?: (model: T, metadata: any) => T;
+  linkToModelMetadata?: (model: T, metadata: IPropertyMetadata) => T;
   /**
    * Returns nested component containers. Is used in the complex components like tabs, panels etc.
    */
@@ -66,6 +69,11 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
    * Settings validator
    */
   validateSettings?: (model: T) => Promise<any>;
+
+  /**
+   * Return true to indicate that the data type is supported by the component
+   */
+  dataTypeSupported?: (dataTypeInfo: { dataType: string; dataFormat?: string }) => boolean;
 }
 
 export interface IToolboxComponentGroup {

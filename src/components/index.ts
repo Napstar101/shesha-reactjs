@@ -110,6 +110,7 @@ export { default as ConfigurableForm } from './configurableForm';
 export { IConfigurableFormRendererProps, IConfigurableFormProps } from './configurableForm/models';
 export { default as Show, IShowProps } from './show';
 export { default as CodeEditor } from './codeEditor';
+export { default as ModelConfigurator } from './modelConfigurator';
 
 export {
   //default as GenericRefListDropDown,

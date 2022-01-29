@@ -6,6 +6,7 @@ import { useForm } from '../../providers/form';
 import { IConfigurableFormRendererProps } from './models';
 import { useMutate } from 'restful-react';
 import { ValidateErrorEntity } from '../../interfaces';
+import { addFormFieldsList } from '../../utils/form';
 
 export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ children, form, ...props }) => {
   const { 
@@ -48,19 +49,21 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
   });
 
   const onFinish = () => {
+    const postData = addFormFieldsList({ ...formData }, form);
+
     if (formSettings.postUrl) {
       setValidationErrors(null);
-      doSubmit(formData)
+      doSubmit(postData)
         .then(() => {
           // note: we pass merged values
-          if (props.onFinish) props.onFinish(formData);
+          if (props.onFinish) props.onFinish(postData);
         })
         .catch(e => {
           setValidationErrors(e?.data?.error || e);
           console.log(e);
         }); // todo: test and show server-side validation
     } // note: we pass merged values
-    else if (props.onFinish) props.onFinish(formData);
+    else if (props.onFinish) props.onFinish(postData);
   };
 
   const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
@@ -80,10 +83,12 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
     <Spin spinning={submitting}>
       <Form
         form={form}
+        size={props.size}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         onValuesChange={onValuesChangeInternal}
         onFieldsChange={onFieldsChange}
+        fields={props.fields}
         initialValues={props.initialValues}
         className={`sha-form sha-form-${formMode} ${isDragging ? 'sha-dragging' : ''}`}
         {...mergedProps}

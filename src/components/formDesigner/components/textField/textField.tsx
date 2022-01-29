@@ -1,4 +1,4 @@
-import { IReadOnly, IToolboxComponent } from '../../../../interfaces';
+import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { CodeOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
@@ -8,8 +8,8 @@ import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
-import Show from '../../../show';
-import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
+import { customEventHandler } from '../utils';
+import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
 
 type TextType = 'text' | 'password';
 
@@ -21,6 +21,7 @@ export interface ITextFieldProps extends IConfigurableFormComponent {
   initialValue?: string;
   passEmptyStringByDefault?: boolean;
   textType?: TextType;
+  maxLength?: number;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -38,13 +39,19 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
-  factory: (model: ITextFieldProps) => {
+  dataTypeSupported: ({ dataType, dataFormat }) => dataType === DataTypes.string && 
+    (dataFormat === StringFormats.singleline 
+      || dataFormat === StringFormats.emailAddress 
+      || dataFormat === StringFormats.phoneNumber 
+      || dataFormat === StringFormats.password),
+  factory: (model: ITextFieldProps, _c, form, settings) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,
       prefix: model.prefix,
       suffix: model.suffix,
       disabled: model.disabled,
       bordered: !model.hideBorder,
+      maxLength: model.maxLength,
     };
 
     const InputComponentType = renderInput(model.textType);
@@ -67,12 +74,25 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
           <InputComponentType {...inputProps} />
         </Show> */}
 
-        <InputComponentType {...inputProps} />
+        <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} />
       </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  initModel: model => (
+    { 
+      textType: 'text',
+      ...model
+    }
+  ),
+  linkToModelMetadata: (model, metadata): ITextFieldProps => {
+    return {
+      ...model,
+      maxLength: metadata.maxLength,
+      textType: metadata.dataFormat === StringFormats.password ? 'password' : 'text',
+    };
+  },
 };
 
 export default TextField;

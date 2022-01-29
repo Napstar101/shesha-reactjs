@@ -1,12 +1,11 @@
 @import '../../../../node_modules/antd/lib/style/themes/default.less';
 
 .sha-form-designer {
-
   &.sha-dragging {
     .sha-form {
       .sha-component-drag-handle {
-         visibility: hidden;
-       }
+        visibility: hidden;
+      }
     }
   }
 
@@ -37,6 +36,20 @@
     }
   }
   .sha-designer-toolbox {
+    .ant-collapse-item {
+      .ant-collapse-header {
+        padding: 4px 8px;
+
+        &:hover {
+          color: @primary-color;
+          background-color: @sha-primary-hover-color;
+        }
+      }
+    }
+    .sha-component-search {
+      margin-bottom: 4px;
+    }
+
     .sha-toolbox-panel {
       &.active {
         // border: #61affe 1px dashed;
@@ -57,7 +70,14 @@
       border: 1px solid #ddd;
 
       .anticon {
-        margin-right: 5px;
+        // margin-right: 5px;
+        margin: 5px 10px 5px 10px;
+      }
+
+      &:hover {
+        border-radius: 5px;
+        color: @primary-color;
+        background-color: @sha-primary-hover-color;
       }
     }
   }
@@ -82,6 +102,16 @@
   .sha-designer-header {
     display: flex;
     justify-content: space-between;
+
+    .sha-designer-header-right {
+      .ant-btn-link {
+        &:hover {
+          border-radius: 5px;
+          color: @primary-color;
+          background-color: @sha-primary-hover-color;
+        }
+      }
+    }
   }
 
   .sha-form-designer {
@@ -95,6 +125,7 @@
         margin: 0;
         text-align: center;
         color: darkgray;
+        padding: 10px;
       }
     }
   }
@@ -125,7 +156,7 @@
       border: @red-3 1px solid;
       border-radius: 4px;
 
-      .sha-component-invisible-indicator {
+      .sha-component-indicator {
         display: none;
       }
 
@@ -152,14 +183,18 @@
       cursor: grab;
     }
 
-    .sha-component-invisible-indicator {
-      display: inline-flex;
+    .sha-component-indicator {
+      display: inline-block;
       align-items: center;
       color: darkgray;
       left: 15px;
       height: 100%;
       position: absolute;
       z-index: 1000;
+
+      .anticon {
+        margin-right: @padding-md;
+      }
     }
 
     .sha-component-controls {

@@ -22,6 +22,7 @@ export const alertSettingsForm = new DesignerToolbarSettings()
     hidden: false,
     customVisibility: null,
     label: 'Type',
+    useRawValues: false,
     dataSourceType: 'values',
     values: [
       { id: '17a865b3-8e28-41de-ab40-1fc49a56b31d', label: 'Success', value: 'success' },

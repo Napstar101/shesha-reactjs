@@ -30,28 +30,28 @@ const ShaRoutingProvider: FC<PropsWithChildren<any>> = ({ children, router }) =>
   );
 };
 
-function useShaRoutingState() {
+function useShaRoutingState(require: boolean = true) {
   const context = useContext(ShaRoutingStateContext);
 
-  if (context === undefined) {
+  if (require && context === undefined) {
     throw new Error('useShaRoutingState must be used within a ShaRoutingProvider');
   }
 
   return context;
 }
 
-function useShaRoutingActions() {
+function useShaRoutingActions(require: boolean = true) {
   const context = useContext(ShaRoutingActionsContext);
 
-  if (context === undefined) {
+  if (require && context === undefined) {
     throw new Error('useShaRoutingActions must be used within a ShaRoutingProvider');
   }
 
   return context;
 }
 
-function useShaRouting() {
-  return { ...useShaRoutingState(), ...useShaRoutingActions() };
+function useShaRouting(require: boolean = true) {
+  return { ...useShaRoutingState(require), ...useShaRoutingActions(require) };
 }
 
 export default ShaRoutingProvider;

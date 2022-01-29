@@ -1,12 +1,5 @@
 import { createContext } from 'react';
-import { IPropertyMetadata } from './models';
-
-export interface IModelMetadata {
-  type: string;
-  name?: string;
-  description?: string;
-  properties: IPropertyMetadata[];
-}
+import { IModelMetadata } from '../../interfaces/metadata';
 
 export interface IMetadataStateContext {
   id: string;

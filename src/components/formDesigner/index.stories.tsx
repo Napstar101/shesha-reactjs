@@ -10,7 +10,7 @@ import {
 } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button, Select } from 'antd';
-import { formGetByPath, formUpdateMarkup, formTestDelayGet, formTestDelayPost } from '../../apis/form';
+import { formGetByPath, formUpdateMarkup } from '../../apis/form';
 import allFormsJson from './allForms.json';
 import { LabeledValue } from 'antd/lib/select';
 import { addStory } from '../../stories/utils';
@@ -173,10 +173,29 @@ export const FormSettings = addStory(DesignerTemplate, {
   formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\formSettings.json',
 });
 
-export const SimplePropsProps = addStory(DesignerTemplate, {
+export const PersonEdit = addStory(DesignerTemplate, {
   formPath: '/persons/edit',
 });
 
+export const PersonDetails = addStory(DesignerTemplate, {
+  formPath: '/persons/details',
+});
+
+export const ModelItemProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\itemSettings.json',
+});
+
+export const ModelGroupProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\groupSettings.json',
+});
+
+export const PropertyProps = addStory(DesignerTemplate, {
+  formId: '97a5ba27-a3a4-4651-92b1-07bfe1debb2c'
+});
+
+export const ModelProps = addStory(DesignerTemplate, {
+  formId: 'd76d4fd7-b5e7-4fea-9c15-a34a63371430'
+});
 
 interface FormInfo {
   name: string;

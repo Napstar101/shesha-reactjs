@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form } from 'antd';
 import { ConfigurableForm } from '../../components';
 import { IConfigurableFormComponent, FormMarkup } from '../../providers/form/models';
-import { IPropertyMetadata } from '../../providers/metadata/models';
 import { IToolboxComponent } from '../../interfaces';
+import { ConfigurableFormInstance } from '../../providers/form/contexts';
+import { IPropertyMetadata } from '../../interfaces/metadata';
+import { listComponentToModelMetadata } from '../../providers/form/utils';
 
 export interface IProps<TModel extends IConfigurableFormComponent> {
   model: TModel;
@@ -22,7 +24,8 @@ function Settings<TModel extends IConfigurableFormComponent>({
   toolboxComponent,
 }: IProps<TModel>) {
   const [form] = Form.useForm();
-
+  const formRef = useRef<ConfigurableFormInstance>(null);
+  
   useEffect(() => {
     form.resetFields();
   });
@@ -31,7 +34,7 @@ function Settings<TModel extends IConfigurableFormComponent>({
     const currentModel = form.getFieldsValue() as TModel;
 
     const wrapper = toolboxComponent.linkToModelMetadata
-      ? m => toolboxComponent.linkToModelMetadata(m, metadata)
+      ? m => listComponentToModelMetadata(toolboxComponent, m, metadata)
       : m => m;
 
     const newModel: TModel = wrapper({
@@ -41,10 +44,13 @@ function Settings<TModel extends IConfigurableFormComponent>({
     });
 
     form.setFieldsValue(newModel);
+    if (onValuesChange)
+      onValuesChange(newModel, newModel);
   }
 
   return (
     <ConfigurableForm
+      formRef={formRef}
       layout="vertical"
       labelCol={{ span: 24 }}
       wrapperCol={{ span: 24 }}

@@ -53,7 +53,7 @@
     },
     {
       "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-      "type": "textField",
+      "type": "textArea",
       "name": "description",
       "parentId": "root",
       "label": "Description"

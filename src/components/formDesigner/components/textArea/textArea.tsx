@@ -10,6 +10,8 @@ import { validateConfigurableComponentSettings } from '../../../../providers/for
 import { useForm } from '../../../../providers';
 import Show from '../../../show';
 import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
+import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
+import { customEventHandler } from '../utils';
 
 export interface ITextAreaProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -28,7 +30,9 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   type: 'textArea',
   name: 'Text Area',
   icon: <FontColorsOutlined />,
-  factory: (model: ITextAreaProps) => {
+  dataTypeSupported: ({ dataType, dataFormat }) =>
+    dataType === DataTypes.string && dataFormat === StringFormats.multiline,
+  factory: (model: ITextAreaProps, _c, form, settings) => {
     const textAreaProps: TextAreaProps = {
       placeholder: model.placeholder,
       disabled: model.disabled,
@@ -53,6 +57,8 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
         <Show when={!isReadOnly}>
           <Input.TextArea rows={2} {...textAreaProps} />
         </Show>
+
+        <Input.TextArea rows={2} {...textAreaProps} {...customEventHandler(model, form, settings)} />
       </ConfigurableFormItem>
     );
   },
@@ -69,6 +75,12 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  linkToModelMetadata: (model, metadata): ITextAreaProps => {
+    return {
+      ...model,
+      maxLength: metadata.maxLength,
+    };
+  },
 };
 
 export default TextField;

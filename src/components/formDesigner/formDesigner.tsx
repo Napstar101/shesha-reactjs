@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { SidebarContainer } from '../../components';
-import { Row, Col } from 'antd';
+import { Row, Col, Divider } from 'antd';
 import { FormDto } from '../../apis/form';
 import Toolbox from './toolbox';
 import FormDesignerToolbar from './formDesignerToolbar';
@@ -16,7 +16,7 @@ export interface IFormDesignerProps {
   model?: FormDto;
 }
 
-export const FormDesigner: FC<IFormDesignerProps> = ({ }) => {
+export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
   const [widgetsOpen, setWidgetOpen] = useState(true);
   const [fieldPropertiesOpen, setFieldPropertiesOpen] = useState(true);
 
@@ -32,10 +32,7 @@ export const FormDesigner: FC<IFormDesignerProps> = ({ }) => {
       <ConditionalWrap
         condition={Boolean(formSettings.modelType)}
         wrap={content => (
-          <MetadataProvider
-            id='designer'
-            modelType={formSettings.modelType}
-          >
+          <MetadataProvider id="designer" modelType={formSettings.modelType}>
             {content}
           </MetadataProvider>
         )}
@@ -68,8 +65,9 @@ export const FormDesigner: FC<IFormDesignerProps> = ({ }) => {
             {isDebug && (
               <>
                 <Row>
+                  <Divider />
                   <Col span={24}>
-                    <pre>{JSON.stringify(formValues)}</pre>
+                    <pre>{JSON.stringify(formValues, null, 2)}</pre>
                   </Col>
                 </Row>
               </>
