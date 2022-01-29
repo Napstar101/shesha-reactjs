@@ -170,7 +170,8 @@ export const CodeEditorProps = addStory(DesignerTemplate, {
 });
 
 export const FormSettings = addStory(DesignerTemplate, {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\formSettings.json',
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\formSettings.json',
 });
 
 export const PersonEdit = addStory(DesignerTemplate, {
@@ -182,19 +183,21 @@ export const PersonDetails = addStory(DesignerTemplate, {
 });
 
 export const ModelItemProps = addStory(DesignerTemplate, {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\itemSettings.json',
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\itemSettings.json',
 });
 
 export const ModelGroupProps = addStory(DesignerTemplate, {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\groupSettings.json',
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\groupSettings.json',
 });
 
 export const PropertyProps = addStory(DesignerTemplate, {
-  formId: '97a5ba27-a3a4-4651-92b1-07bfe1debb2c'
+  formId: '97a5ba27-a3a4-4651-92b1-07bfe1debb2c',
 });
 
 export const ModelProps = addStory(DesignerTemplate, {
-  formId: 'd76d4fd7-b5e7-4fea-9c15-a34a63371430'
+  formId: 'd76d4fd7-b5e7-4fea-9c15-a34a63371430',
 });
 
 interface FormInfo {
