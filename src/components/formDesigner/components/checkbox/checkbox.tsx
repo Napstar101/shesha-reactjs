@@ -6,10 +6,10 @@ import { Checkbox } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
-import { IReadOnly } from '../../../..';
+
 import { DataTypes } from '../../../../interfaces/dataTypes';
 
-export interface ICheckboxProps extends IConfigurableFormComponent, IReadOnly {}
+export interface ICheckboxProps extends IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -19,7 +19,6 @@ const CheckboxComponent: IToolboxComponent<ICheckboxProps> = {
   icon: <CheckSquareOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.boolean,
   factory: (model: ICheckboxProps) => {
-
     // const isReadOnly = model?.readOnly || formMode === 'readonly';
 
     return (
