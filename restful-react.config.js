@@ -1,11 +1,13 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const camelcase = require('camelcase');
 
 // const STORYBOOK_BASE_URL = 'https://testpdkznotpbe.azurewebsites.net';
-const STORYBOOK_BASE_URL = 'http://localhost:21021';
+const STORYBOOK_BASE_URL = 'https://kznotp-bursarymanagement-api-test.azurewebsites.net';
 // const STORYBOOK_BASE_URL = process.env.STORYBOOK_BASE_URL;
 const ROOT_PATH = './src/apis';
 
 const API_LIST = [
+  'Form',
   /*
   //'Applications',
   'Area',
@@ -15,7 +17,6 @@ const API_LIST = [
   'CheckListItem',
   'ConfigurableComponent',
   //'DataTable',
-  'Form',
   'Note',
   'Person',
   'ReferenceList',
@@ -26,10 +27,10 @@ const API_LIST = [
   'User',
   'Metadata',
   */
-  'EntityConfig',
-  'EntityProperty',
-  'ModelConfigurations',
-  'PersonTest',
+  // 'EntityConfig',
+  // 'EntityProperty',
+  // 'ModelConfigurations',
+  // 'PersonTest',
 ];
 
 const defaultConfiguration = {

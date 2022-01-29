@@ -23,7 +23,7 @@ const configurableFormProps: IConfigurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IConfigurableFormProps> = (props) => {
+const Template: Story<IConfigurableFormProps> = ({ path, mode }) => {
   const [form] = Form.useForm();
 
   const onFinish = (data: any) => {
@@ -34,42 +34,42 @@ const Template: Story<IConfigurableFormProps> = (props) => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer>
-        
-          <Row>
-            <Col span={24}>
-              <ConfigurableForm
-                mode="edit"
-                path={props.path}
-                onFinish={onFinish}
-                form={form}
-                sections={{
-                  middleSection: () => (
-                    <StoredFilesProvider ownerId="0bfb4b64-3e83-4765-802d-7f98601c2453" ownerType="BursMan.PaymentPack">
-                      <StoredFilesRenderer isDragger={false} />
-                    </StoredFilesProvider>
-                  ),
-                }}
-                initialValues={{
-                  scheduleDateStart: '2021-10-30T00:40:40.317Z',
-                  scheduleDateEnd: '2021-09-12T00:40:40.317Z',
-                  scheduleDate: ['2021-10-30T00:40:40.317Z', '2021-09-12T00:40:40.317Z'],
-                  gender: [{ itemValue: 1 }],
-                  numOfStudents: 23232,
-                  numOfTeachers: 131,
-                  numOfClasses: 75,
-                  numOfOfficers: 16,
-                  numOfRepeatingStudents: 37,
-                  numOfNewStudents: 200,
-                  numOfMatricStudents: 102,
-                }}
-              />
+        <Row>
+          <Col span={24}>
+            <ConfigurableForm
+              mode={mode}
+              path={path}
+              onFinish={onFinish}
+              form={form}
+              sections={{
+                middleSection: () => (
+                  <StoredFilesProvider ownerId="0bfb4b64-3e83-4765-802d-7f98601c2453" ownerType="BursMan.PaymentPack">
+                    <StoredFilesRenderer isDragger={false} />
+                  </StoredFilesProvider>
+                ),
+              }}
+              initialValues={{
+                firstName: 'Some',
+                lastName: 'One',
+                scheduleDateStart: '2021-10-30T00:40:40.317Z',
+                scheduleDateEnd: '2021-09-12T00:40:40.317Z',
+                scheduleDate: ['2021-10-30T00:40:40.317Z', '2021-09-12T00:40:40.317Z'],
+                gender: [{ itemValue: 1 }],
+                numOfStudents: 23232,
+                numOfTeachers: 131,
+                numOfClasses: 75,
+                numOfOfficers: 16,
+                numOfRepeatingStudents: 37,
+                numOfNewStudents: 200,
+                numOfMatricStudents: 102,
+              }}
+            />
 
-              <Button onClick={() => form?.submit()} type="primary">
-                Submit
-              </Button>
-            </Col>
-          </Row>
-        
+            <Button onClick={() => form?.submit()} type="primary">
+              Submit
+            </Button>
+          </Col>
+        </Row>
       </AuthContainer>
     </ShaApplicationProvider>
   );
@@ -77,7 +77,13 @@ const Template: Story<IConfigurableFormProps> = (props) => {
 
 export const Basic = addStory(Template, {
   ...configurableFormProps,
-  path: '/settings/forms/playground'
+  path: '/settings/forms/playground',
+});
+
+export const ReadOnly = addStory(Template, {
+  ...configurableFormProps,
+  path: '/settings/forms/playground',
+  mode: 'readonly',
 });
 
 export const IndexPage = IndexPageTemplate.bind({});

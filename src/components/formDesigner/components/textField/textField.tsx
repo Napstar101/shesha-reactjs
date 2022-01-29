@@ -10,6 +10,8 @@ import { validateConfigurableComponentSettings } from '../../../../providers/for
 import { useForm } from '../../../../providers';
 import { customEventHandler } from '../utils';
 import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
+import Show from '../../../show';
 
 type TextType = 'text' | 'password';
 
@@ -39,11 +41,12 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   type: 'textField',
   name: 'Text field',
   icon: <CodeOutlined />,
-  dataTypeSupported: ({ dataType, dataFormat }) => dataType === DataTypes.string && 
-    (dataFormat === StringFormats.singleline 
-      || dataFormat === StringFormats.emailAddress 
-      || dataFormat === StringFormats.phoneNumber 
-      || dataFormat === StringFormats.password),
+  dataTypeSupported: ({ dataType, dataFormat }) =>
+    dataType === DataTypes.string &&
+    (dataFormat === StringFormats.singleline ||
+      dataFormat === StringFormats.emailAddress ||
+      dataFormat === StringFormats.phoneNumber ||
+      dataFormat === StringFormats.password),
   factory: (model: ITextFieldProps, _c, form, settings) => {
     const inputProps: InputProps = {
       placeholder: model.placeholder,
@@ -60,32 +63,26 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
 
     const isReadOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
 
-    const value = formData && formData[model.name];
+    // const value = formData && formData[model.name];
 
-    console.log('TextField value: ', value);
+    console.log('TextField isReadOnly: ', isReadOnly);
 
     return (
       <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
-        {/* <Show when={isReadOnly}>
-          <ReadOnlyDisplayFormItem>{value}</ReadOnlyDisplayFormItem>
-        </Show>
-
-        <Show when={!isReadOnly}>
-          <InputComponentType {...inputProps} />
-        </Show> */}
-
-        <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} />
+        {isReadOnly ? (
+          <ReadOnlyDisplayFormItem />
+        ) : (
+          <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} />
+        )}
       </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
-  initModel: model => (
-    { 
-      textType: 'text',
-      ...model
-    }
-  ),
+  initModel: model => ({
+    textType: 'text',
+    ...model,
+  }),
   linkToModelMetadata: (model, metadata): ITextFieldProps => {
     return {
       ...model,

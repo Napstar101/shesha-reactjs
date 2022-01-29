@@ -267,7 +267,7 @@ export const getEnabledComponentIds = (components: IComponentsDictionary, values
     const component = components[key] as IConfigurableFormComponent;
     if (!component || component.disabled) continue;
 
-    const isEnabled = component.enabledFunc === null || component.enabledFunc(values);
+    const isEnabled = component?.enabledFunc === null || component?.enabledFunc(values);
 
     if (isEnabled) enabledComponents.push(key);
   }
