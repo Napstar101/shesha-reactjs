@@ -59,6 +59,19 @@
       "settingsValidationErrors": []
     },
     {
+      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
+      "type": "codeEditor",
+      "name": "customEnabled",
+      "label": "Custom Enabled",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customEnabled": null,
+      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
       "id": "vdHXORT_t16LbITksJNtm",
       "type": "textArea",
       "name": "description",
@@ -135,9 +148,7 @@
         }
       ],
       "dataSourceType": "values",
-      "defaultValue": [
-        "single"
-      ]
+      "defaultValue": ["single"]
     },
     {
       "id": "bf5660d5-cae0-4df9-99f2-cbaf941ae7c7",
