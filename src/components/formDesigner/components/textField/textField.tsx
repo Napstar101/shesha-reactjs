@@ -11,7 +11,6 @@ import { useForm } from '../../../../providers';
 import { customEventHandler } from '../utils';
 import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
 import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
-import Show from '../../../show';
 
 type TextType = 'text' | 'password';
 
@@ -59,13 +58,9 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
 
     const InputComponentType = renderInput(model.textType);
 
-    const { formMode, formData } = useForm();
+    const { formMode } = useForm();
 
     const isReadOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
-
-    // const value = formData && formData[model.name];
-
-    console.log('TextField isReadOnly: ', isReadOnly);
 
     return (
       <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>

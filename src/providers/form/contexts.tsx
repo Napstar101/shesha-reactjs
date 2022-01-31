@@ -60,7 +60,7 @@ export interface IFormSettings {
   colon: boolean;
   labelCol: ILayoutProps;
   wrapperCol: ILayoutProps;
-  enableModeToggler?: boolean;
+  showModeToggler?: boolean;
 }
 
 export interface IFormDesignerStateContext extends StateWithHistory<IFormStateContext> {}

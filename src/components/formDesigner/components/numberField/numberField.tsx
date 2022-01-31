@@ -8,6 +8,8 @@ import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import { useForm } from '../../../../providers';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -17,14 +19,17 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   icon: <NumberOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.number,
   factory: (model: INumberFieldProps) => {
+    const { formMode } = useForm();
+
+    const isReadOnly = model?.readOnly || formMode === 'readonly';
+
     return (
       <ConfigurableFormItem model={model}>
-        <InputNumber
-          disabled={model.disabled}
-          bordered={!model.hideBorder}
-          min={model?.min}
-          max={model?.max}
-        />
+        {isReadOnly ? (
+          <ReadOnlyDisplayFormItem />
+        ) : (
+          <InputNumber disabled={model.disabled} bordered={!model.hideBorder} min={model?.min} max={model?.max} />
+        )}
       </ConfigurableFormItem>
     );
   },

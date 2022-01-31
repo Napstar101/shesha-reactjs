@@ -8,6 +8,7 @@ import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 export interface ISwitchProps extends IConfigurableFormComponent {}
 
@@ -25,7 +26,7 @@ const SwitchComponent: IToolboxComponent<ISwitchProps> = {
 
     return (
       <ConfigurableFormItem model={model}>
-        <Switch defaultChecked disabled={model.disabled || isReadOnly} />
+        {isReadOnly ? <ReadOnlyDisplayFormItem type="switch" /> : <Switch defaultChecked />}
       </ConfigurableFormItem>
     );
   },

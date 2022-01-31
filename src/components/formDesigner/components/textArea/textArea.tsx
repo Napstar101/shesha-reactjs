@@ -8,7 +8,6 @@ import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
-import Show from '../../../show';
 import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
 import { customEventHandler } from '../utils';
@@ -43,20 +42,17 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
       bordered: !model.hideBorder,
     };
 
-    const { formMode, formData } = useForm();
+    const { formMode } = useForm();
 
     const isReadOnly = model?.readOnly || formMode === 'readonly';
 
-    // const value = formData[model.name];
-
     return (
       <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
-        <Show when={isReadOnly}>
+        {isReadOnly ? (
           <ReadOnlyDisplayFormItem />
-        </Show>
-        <Show when={!isReadOnly}>
+        ) : (
           <Input.TextArea rows={2} {...textAreaProps} {...customEventHandler(model, form, settings)} />
-        </Show>
+        )}
       </ConfigurableFormItem>
     );
   },

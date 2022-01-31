@@ -9,6 +9,7 @@ import settingsFormJson from './settingsForm.json';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import RefListDropDown from '../../../refListDropDown';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import { useForm } from '../../../..';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -37,9 +38,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   linkToModelMetadata: (model, metadata): IDropdownProps => {
     return {
       ...model,
-      dataSourceType: metadata.dataType === DataTypes.referenceListItem
-          ? 'referenceList'
-          : 'values',
+      dataSourceType: metadata.dataType === DataTypes.referenceListItem ? 'referenceList' : 'values',
       referenceListNamespace: metadata.referenceListNamespace,
       referenceListName: metadata.referenceListName,
       mode: 'single',
@@ -62,45 +61,49 @@ export const Dropdown: FC<IDropdownProps> = ({
   ignoredValues = [],
   placeholder,
   useRawValues,
+  readOnly,
 }) => {
+  const { formMode } = useForm();
   const getOptions = (): ILabelValue[] => {
-    return value && typeof value === 'number' ? values.map(i => ({ ...i, value: parseInt(i.value) })) : values;
+    return value && typeof value === 'number' ? values?.map(i => ({ ...i, value: parseInt(i.value) })) : values;
   };
 
   const selectedMode = mode === 'single' ? undefined : mode;
 
+  const isReadOnly = formMode === 'readonly' || readOnly;
+
   if (dataSourceType === 'referenceList') {
-    return useRawValues
-      ? (
-        <RefListDropDown.Raw
-          onChange={onChange}
-          listName={referenceListName}
-          listNamespace={referenceListNamespace}
-          disabled={disabled}
-          value={value}
-          bordered={!hideBorder}
-          defaultValue={defaultValue}
-          mode={selectedMode}
-          filters={ignoredValues}
-          includeFilters={false}
-          placeholder={placeholder}
-        />
-      )
-      : (
-        <RefListDropDown.Dto
-          onChange={onChange}
-          listName={referenceListName}
-          listNamespace={referenceListNamespace}
-          disabled={disabled}
-          value={value}
-          bordered={!hideBorder}
-          defaultValue={defaultValue}
-          mode={selectedMode}
-          filters={ignoredValues}
-          includeFilters={false}
-          placeholder={placeholder}
-        />
-      );
+    return useRawValues ? (
+      <RefListDropDown.Raw
+        onChange={onChange}
+        listName={referenceListName}
+        listNamespace={referenceListNamespace}
+        disabled={disabled}
+        value={value}
+        bordered={!hideBorder}
+        defaultValue={defaultValue}
+        mode={selectedMode}
+        filters={ignoredValues}
+        includeFilters={false}
+        placeholder={placeholder}
+        readOnly={isReadOnly}
+      />
+    ) : (
+      <RefListDropDown.Dto
+        onChange={onChange}
+        listName={referenceListName}
+        listNamespace={referenceListNamespace}
+        disabled={disabled}
+        value={value}
+        bordered={!hideBorder}
+        defaultValue={defaultValue}
+        mode={selectedMode}
+        filters={ignoredValues}
+        includeFilters={false}
+        placeholder={placeholder}
+        readOnly={isReadOnly}
+      />
+    );
   }
 
   const options = getOptions() || [];
