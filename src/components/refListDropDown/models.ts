@@ -1,20 +1,21 @@
+import { IReadOnly } from './../../interfaces/readOnly';
 import { LabeledValue, SelectProps } from 'antd/lib/select';
 import { Key } from 'react';
 import { ReferenceListItemDto } from '../../apis/referenceList';
 
 export interface IGenericRefListDropDownProps<TValue = any> extends IRefListDropDownProps<TValue> {
   /**
- * Get CustomLabeledValue from value
- */
-   getLabeledValue: (value: TValue, options: ISelectOption<TValue>[]) => CustomLabeledValue<TValue>;
+   * Get CustomLabeledValue from value
+   */
+  getLabeledValue: (value: TValue, options: ISelectOption<TValue>[]) => CustomLabeledValue<TValue>;
 
-   /**
-    * Get option from an item fetched from the back-end
-    */
-   getOptionFromFetchedItem: (fetchedItem: ReferenceListItemDto) => ISelectOption<TValue>;
+  /**
+   * Get option from an item fetched from the back-end
+   */
+  getOptionFromFetchedItem: (fetchedItem: ReferenceListItemDto) => ISelectOption<TValue>;
 }
 
-export interface IRefListDropDownProps<TValue = any> extends Omit<SelectProps<any>, "onChange"> {
+export interface IRefListDropDownProps<TValue = any> extends Omit<SelectProps<any>, 'onChange'>, IReadOnly {
   /**
    * Reference list name
    */
@@ -41,7 +42,8 @@ export interface IRefListDropDownOption {
   value?: Key;
 }
 
-export interface ISelectOption<TValue = any> { // todo: make generic
+export interface ISelectOption<TValue = any> {
+  // todo: make generic
   value: string | number;
   label: string | React.ReactNode;
   data: TValue;

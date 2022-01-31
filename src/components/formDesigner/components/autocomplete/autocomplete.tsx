@@ -39,7 +39,7 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.entityReference,
   factory: (model: IAutocompleteProps) => {
     const { queryParams } = model;
-    const { formData } = useForm();
+    const { formData, formMode } = useForm();
     const dataSourceUrl = model.dataSourceUrl
       ? replaceTags(model.dataSourceUrl, { data: formData })
       : model.dataSourceUrl;
@@ -72,6 +72,7 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       dataSourceType: model.dataSourceType,
       mode: model?.mode,
       queryParams: getQueryParams(),
+      readOnly: model?.readOnly || formMode === 'readonly',
     };
 
     // todo: implement other types of datasources!
@@ -96,13 +97,12 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
     return customProps;
   },
   linkToModelMetadata: (model, metadata): IAutocompleteProps => {
-    
     return {
       ...model,
       useRawValues: true,
       dataSourceType: 'entitiesList',
       entityTypeShortAlias: metadata.entityType,
-      mode: undefined,      
+      mode: undefined,
     };
   },
 };

@@ -7,7 +7,7 @@ import { FormMode, Store, IConfigurableFormBaseProps, IFormActions, IFormSection
 import { ValidateErrorEntity } from '../../interfaces';
 //import { SizeType } from 'antd/lib/config-provider/SizeContext';
 
-type  BaseFormProps = Pick<FormProps, 'size'> ;
+type BaseFormProps = Pick<FormProps, 'size'>;
 
 export interface IConfigurableFormRendererProps<Values = any, FieldData = any> extends BaseFormProps {
   labelCol?: ColProps;
@@ -25,6 +25,7 @@ export interface IConfigurableFormRendererProps<Values = any, FieldData = any> e
   actions?: IFormActions;
   sections?: IFormSections;
   context?: any; // todo: make generic
+
   //onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
 }
 

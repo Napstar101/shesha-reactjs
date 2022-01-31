@@ -51,6 +51,9 @@ module.exports = {
             javascriptEnabled: true,
             strictMath: false,
             noIeCompat: true,
+            modifyVars: {
+              'form-item-margin-bottom': '8px',
+            },
           },
         },
       ],

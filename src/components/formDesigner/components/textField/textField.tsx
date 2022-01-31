@@ -59,13 +59,9 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
 
     const InputComponentType = renderInput(model.textType);
 
-    const { formMode, formData } = useForm();
+    const { formMode } = useForm();
 
     const isReadOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
-
-    // const value = formData && formData[model.name];
-
-    console.log('TextField isReadOnly: ', isReadOnly);
 
     return (
       <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>

@@ -9,6 +9,7 @@ import ErrorBoundary from '../../errorBoundary/errorBoundary';
 import DragHandle from './dragHandle';
 import ValidationIcon from './validationIcon';
 import { Show } from '../../show';
+import classNames from 'classnames';
 
 export interface IConfigurableFormComponentProps {
   id: string;
@@ -43,12 +44,13 @@ const ConfigurableFormComponent: FC<IConfigurableFormComponentProps> = ({ id /*,
   const invalidConfiguration =
     componentModel.settingsValidationErrors && componentModel.settingsValidationErrors.length > 0;
 
-  let classes = ['sha-component'];
-  if (selectedComponentId === id) classes.push('selected');
-  if (invalidConfiguration) classes.push('has-config-errors');
-
   return (
-    <div className={classes.reduce((a, c) => a + ' ' + c)}>
+    <div
+      className={classNames('sha-component', {
+        selected: selectedComponentId === id,
+        'has-config-errors': invalidConfiguration,
+      })}
+    >
       <span className="sha-component-indicator">
         <Show when={componentModel.hidden || hiddenByCondition}>
           <Tooltip title="This component is hidden by condition. It's now showing because we're in a designer mode">

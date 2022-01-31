@@ -3,9 +3,12 @@ import { Select } from 'antd';
 import { ReferenceListItemDto, useReferenceListGetItems } from '../../apis/referenceList';
 import { getCachedItems, saveListItems } from './utils';
 import { CustomLabeledValue, IGenericRefListDropDownProps, ISelectOption } from './models';
+import ReadOnlyDisplayFormItem from '../readOnlyDisplayFormItem';
 
 // tslint:disable-next-line:whitespace
-export const GenericRefListDropDown = <TValue,>(props: IGenericRefListDropDownProps<TValue>) => {
+export const GenericRefListDropDown = <TValue,>(
+  props: IGenericRefListDropDownProps<TValue> & { readOnly: boolean }
+) => {
   const {
     listName,
     listNamespace,
@@ -19,6 +22,7 @@ export const GenericRefListDropDown = <TValue,>(props: IGenericRefListDropDownPr
     onChange,
     getLabeledValue,
     getOptionFromFetchedItem,
+    readOnly,
     ...rest
   } = props;
 
@@ -108,6 +112,15 @@ export const GenericRefListDropDown = <TValue,>(props: IGenericRefListDropDownPr
       onChange(Array.isArray(selectedValue) ? selectedValue : [selectedValue]);
     } else onChange(selectedValue);
   };
+
+  if (readOnly) {
+    return (
+      <ReadOnlyDisplayFormItem
+        value={wrapValue(value)}
+        type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
+      />
+    );
+  }
 
   return (
     <Select<CustomLabeledValue<TValue> | CustomLabeledValue<TValue>[]>

@@ -6,8 +6,9 @@ import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { useDebouncedCallback } from 'use-debounce';
 import qs from 'qs';
 import { LabeledValue } from 'antd/lib/select';
-import { IGuidNullableEntityWithDisplayNameDto, IReadOnly } from '../..';
+import { IGuidNullableEntityWithDisplayNameDto } from '../..';
 import { ReadOnlyDisplayFormItem } from './../readOnlyDisplayFormItem';
+import { IReadOnly } from '../../interfaces/readOnly';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
@@ -146,7 +147,7 @@ const trimQueryString = (url: string): string => {
  * A component for working with dynamic autocomplete
  */
 
-export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
+export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   const {
     value,
     defaultValue,
@@ -312,8 +313,17 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
     } else {
       displayValue = (wrappedValue as any)?.label;
     }
+  }
 
-    return <ReadOnlyDisplayFormItem>{displayValue}</ReadOnlyDisplayFormItem>;
+  const autocompleteValue = wrapValue(value);
+
+  if (readOnly || disabled) {
+    return (
+      <ReadOnlyDisplayFormItem
+        value={autocompleteValue}
+        type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
+      />
+    );
   }
 
   return (
@@ -325,7 +335,7 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
       showArrow={false}
       filterOption={false}
       onSearch={handleSearch}
-      value={wrapValue(value)}
+      value={autocompleteValue}
       defaultValue={wrapValue(defaultValue)}
       onChange={handleChange}
       allowClear={true}
@@ -346,7 +356,7 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
   );
 };
 
-type IDtoType = IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[];
+export type IDtoType = IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[];
 
 export const EntityDtoAutocomplete = (props: IAutocompleteProps<IDtoType>) => {
   const getDtoFromFetchedItem = (item): ISelectOption<IDtoType> => {

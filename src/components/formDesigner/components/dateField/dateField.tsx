@@ -10,6 +10,7 @@ import { validateConfigurableComponentSettings } from '../../../../providers/for
 import { HiddenFormItem } from '../../../hiddenFormItem';
 import { useForm } from '../../../../providers';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 const DATE_TIME_FORMATS = {
   time: 'HH:mm',
@@ -129,9 +130,12 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     disabledDateMode,
     disabledDateTemplate,
     disabledDateFunc,
+    readOnly,
     ...rest
   } = props;
-  const { form } = useForm();
+  const { form, formMode } = useForm();
+
+  const isReadOnly = readOnly || formMode === 'readonly';
 
   const getFormat = () => {
     switch (picker) {
@@ -195,6 +199,12 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     const disabledFunc = new Function('current', 'moment', disabledTimeExpression);
 
     return disabledFunc(current, moment);
+  }
+
+  console.log('DatePicker name, formattedValue:  ', name, formattedValue);
+
+  if (isReadOnly) {
+    return <ReadOnlyDisplayFormItem value={formattedValue?.toISOString()} type="datetime" />;
   }
 
   if (range) {

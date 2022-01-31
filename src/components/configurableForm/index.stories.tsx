@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ConfigurableForm from '.';
@@ -9,6 +9,9 @@ import AuthContainer from '../authedContainer';
 import { IndexPageTemplate } from './stories/indexPage';
 import StoredFilesRenderer from '../storedFilesRenderer';
 import { addStory } from '../../stories/utils';
+import dualModeForm from './dualModeForm.json';
+import { FormMode } from '../../providers/form/models';
+import { ConfigurableFormInstance } from '../../providers/form/contexts';
 // import { useApplicationsApplyForMembership } from '../../apis/applications';
 
 export default {
@@ -23,7 +26,7 @@ const configurableFormProps: IConfigurableFormProps = {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Storybook
 
 // Create a master template for mapping args to render the Button component
-const Template: Story<IConfigurableFormProps> = ({ path, mode }) => {
+const BasicTemplate: Story<IConfigurableFormProps> = ({ path, mode }) => {
   const [form] = Form.useForm();
 
   const onFinish = (data: any) => {
@@ -74,14 +77,90 @@ const Template: Story<IConfigurableFormProps> = ({ path, mode }) => {
     </ShaApplicationProvider>
   );
 };
+// Create a master template for mapping args to render the Button component
+const DualModeForm: Story<IConfigurableFormProps> = ({ path, mode = 'readonly' }) => {
+  const formRef = useRef<ConfigurableFormInstance>();
+  const [form] = Form.useForm();
 
-export const Basic = addStory(Template, {
+  const onFinish = (data: any) => {
+    console.log('onFinish data: ', data);
+    console.log('onFinish data: ', JSON.stringify(data, null, 2));
+  };
+
+  const switchToReadOnlyMode = () => formRef?.current?.setFormMode('readonly');
+
+  return (
+    <ShaApplicationProvider backendUrl={backendUrl}>
+      <AuthContainer>
+        <Row>
+          <Col span={24}>
+            <ConfigurableForm
+              mode={mode}
+              formRef={formRef}
+              path={path}
+              onFinish={onFinish}
+              form={form}
+              initialValues={{
+                firstName: 'Some',
+                lastName: 'Name',
+                applicationStatus: [
+                  {
+                    item: 'Draft',
+                    itemValue: 1,
+                  },
+                  {
+                    item: 'Awaiting Bursary Commitee',
+                    itemValue: 4,
+                  },
+                ],
+                area: {
+                  id: '20ed061b-8140-44af-af63-a3483afc0565',
+                  displayText: 'Durban',
+                },
+                areas: [
+                  {
+                    id: '05c6ef7c-043f-4f34-b071-c5868b5f5e88',
+                    displayText: 'Amajuba',
+                  },
+                ],
+                gender: [
+                  {
+                    item: 'Male',
+                    itemValue: 1,
+                  },
+                  {
+                    item: 'Female',
+                    itemValue: 2,
+                  },
+                ],
+                age: 20,
+                startDate: '2022-01-12T19:02:13+02:00',
+                endDate: '2022-02-02T19:02:15+02:00',
+                optIn: true,
+                alerts: false,
+                // marketingEmails: false,
+                message:
+                  "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
+              }}
+            />
+
+            <Button onClick={switchToReadOnlyMode} type="primary">
+              Submit
+            </Button>
+          </Col>
+        </Row>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  );
+};
+
+export const Basic = addStory(BasicTemplate, {
   ...configurableFormProps,
   path: '/settings/forms/playground',
 });
 
-export const ReadOnly = addStory(Template, {
-  ...configurableFormProps,
+export const ReadOnly = addStory(DualModeForm, {
+  // ...configurableFormProps,
   path: '/settings/forms/playground',
   mode: 'readonly',
 });
@@ -92,7 +171,7 @@ IndexPage.args = {
   formPath: '/indexTable',
 };
 
-export const PersonEditTest = addStory(Template, {
+export const PersonEditTest = addStory(BasicTemplate, {
   ...configurableFormProps,
   path: '/persons/edit',
 });
