@@ -16,8 +16,10 @@ import {
   IFormActionsContext,
   IFormSettings,
   DEFAULT_FORM_SETTINGS,
+  IAddDataPropertyPayload,
+  ISetEnabledComponentsPayload,
 } from './contexts';
-import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections } from './models';
+import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections, FormMode } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   componentAddAction,
@@ -42,13 +44,13 @@ import {
   changeMarkupAction,
   registerComponentActionsAction,
   updateFormSettingsAction,
-
   addDataSourceAction,
   removeDataSourceAction,
   setActiveDataSourceAction,
+  dataPropertyAddAction,
+  setEnabledComponentsAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
-import { FormMode } from './models';
 import { useFormGet, useFormGetByPath, useFormUpdateMarkup, FormUpdateMarkupInput } from '../../apis/form';
 import {
   componentsTreeToFlatStructure,
@@ -58,6 +60,7 @@ import {
   toolbarGroupsToComponents,
   getComponentsAndSettings,
   convertSectionsToList,
+  getEnabledComponentIds,
 } from './utils';
 import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
@@ -78,7 +81,7 @@ export interface IFormProviderProps {
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
   toolboxComponentGroups?: IToolboxComponentGroup[];
-  onValuesChange?: (changedValues: any, values: any/*Values*/) => void;
+  onValuesChange?: (changedValues: any, values: any /*Values*/) => void;
 }
 
 const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
@@ -212,6 +215,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
             const parsedForm = parseForm(fetchedForm.markup);
 
             const flatComponents = componentsTreeToFlatStructure(toolboxComponents, parsedForm.components);
+
             const formContent: IFormProps = {
               // todo: use partial for loading
               id: fetchedForm.id,
@@ -239,6 +243,10 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   }, [isFetchingFormInfo, fetchingFormInfoResponse, fetchingFormInfoError, markup]);
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
+
+  const addDataProperty = (payload: IAddDataPropertyPayload) => {
+    dispatch(dataPropertyAddAction(payload));
+  };
 
   const addComponent = (payload: IComponentAddPayload) => {
     dispatch(componentAddAction(payload));
@@ -285,7 +293,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   });
 
   const saveForm = (): Promise<void> => {
-    if (!state.present.id) return new Promise(() => { });
+    if (!state.present.id) return new Promise(() => {});
 
     dispatch(saveRequestAction());
 
@@ -332,6 +340,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     dispatch(endDraggingAction());
   };
 
+  //#region Set visible components
   const setVisibleComponents = (payload: ISetVisibleComponentsPayload) => {
     dispatch(setVisibleComponentsAction(payload));
   };
@@ -348,17 +357,45 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     // delay in ms
     200
   );
+  //#endregion
+
+  //#region Set enabled components
+  const setEnabledComponents = (payload: ISetEnabledComponentsPayload) => {
+    dispatch(setEnabledComponentsAction(payload));
+  };
+
+  const updateEnabledComponents = (context: IFormStateContext) => {
+    const enabledComponents = getEnabledComponentIds(context.allComponents, context.formData);
+
+    setEnabledComponents({ componentIds: enabledComponents });
+  };
+
+  const debouncedUpdateEnabledComponents = useDebouncedCallback<(context: IFormStateContext) => void>(
+    context => {
+      updateEnabledComponents(context);
+    },
+    // delay in ms
+    200
+  );
+  //#endregion
 
   const setFormData = (payload: ISetFormDataPayload) => {
     dispatch((dispatch, getState) => {
       dispatch(setFormDataAction(payload));
+      const newState = getState().present;
 
       // Update visible components. Note: debounced version is used to improve performance and prevent unneeded re-rendering
-      const newState = getState().present;
+
       if (!newState.visibleComponentIds || newState.visibleComponentIds.length == 0) {
         updateVisibleComponents(newState);
       } else {
         debouncedUpdateVisibleComponents(newState);
+      }
+      // Update enabled components. Note: debounced version is used to improve performance and prevent unneeded re-rendering
+      if (!newState.enabledComponentIds || newState.enabledComponentIds.length == 0) {
+        updateEnabledComponents(newState);
+      } else {
+        debouncedUpdateEnabledComponents(newState);
       }
     });
   };
@@ -426,24 +463,25 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   //#region move to designer
   const addDataSource = (dataSource: IDataSource) => {
     dispatch(addDataSourceAction(dataSource));
-  }
+  };
   const removeDataSource = (id: string) => {
     dispatch(removeDataSourceAction(id));
-  }
+  };
 
   const setActiveDataSource = (id: string) => {
     dispatch(setActiveDataSourceAction(id));
-  }
+  };
 
   const getActiveDataSource = () => {
     return state.present.activeDataSourceId
       ? state.present.dataSources.find(ds => ds.id === state.present.activeDataSourceId)
       : null;
-  }
+  };
   //#endregion
 
   const configurableFormActions: IFormActionsContext = {
     ...getFlagSetters(dispatch),
+    addDataProperty,
     addComponent,
     deleteComponent,
     getComponentModel,

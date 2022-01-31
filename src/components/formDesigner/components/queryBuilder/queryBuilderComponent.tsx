@@ -7,6 +7,7 @@ import QueryBuilderField from './queryBuilderField';
 import { useQueryBuilder } from '../../../../providers';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+//import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface IQueryBuilderProps extends IConfigurableFormComponent {
   jsonExpanded?: boolean;
@@ -18,6 +19,7 @@ const QueryBuilderComponent: IToolboxComponent<IQueryBuilderProps> = {
   type: 'queryBuilder',
   name: 'Query Builder',
   icon: <FilterOutlined />,
+  //dataTypes: [DataTypes.string],
   factory: (model: IQueryBuilderProps) => {
     const queryBuilder = useQueryBuilder(false);
     const fields = queryBuilder?.fields || [];

@@ -35,6 +35,13 @@ const ColapsiblePanelComponent: IToolboxComponent<ICollapsiblePanelProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  initModel: model => {
+    const customProps: ICollapsiblePanelProps = {
+      ...model,
+      expandIconPosition: 'right',
+    };
+    return customProps;
+  },
 };
 
 export default ColapsiblePanelComponent;

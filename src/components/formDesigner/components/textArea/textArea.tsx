@@ -7,6 +7,10 @@ import { TextAreaProps } from 'antd/lib/input';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useForm } from '../../../../providers';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
+import { DataTypes, StringFormats } from '../../../../interfaces/dataTypes';
+import { customEventHandler } from '../utils';
 
 export interface ITextAreaProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -25,7 +29,9 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   type: 'textArea',
   name: 'Text Area',
   icon: <FontColorsOutlined />,
-  factory: (model: ITextAreaProps) => {
+  dataTypeSupported: ({ dataType, dataFormat }) =>
+    dataType === DataTypes.string && dataFormat === StringFormats.multiline,
+  factory: (model: ITextAreaProps, _c, form, settings) => {
     const textAreaProps: TextAreaProps = {
       placeholder: model.placeholder,
       disabled: model.disabled,
@@ -36,12 +42,17 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
       bordered: !model.hideBorder,
     };
 
+    const { formMode } = useForm();
+
+    const isReadOnly = model?.readOnly || formMode === 'readonly';
+
     return (
-      <ConfigurableFormItem
-        model={model}
-        initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}
-      >
-        <Input.TextArea rows={2} {...textAreaProps} />
+      <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
+        {isReadOnly ? (
+          <ReadOnlyDisplayFormItem />
+        ) : (
+          <Input.TextArea rows={2} {...textAreaProps} {...customEventHandler(model, form, settings)} />
+        )}
       </ConfigurableFormItem>
     );
   },
@@ -58,6 +69,12 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  linkToModelMetadata: (model, metadata): ITextAreaProps => {
+    return {
+      ...model,
+      maxLength: metadata.maxLength,
+    };
+  },
 };
 
 export default TextField;

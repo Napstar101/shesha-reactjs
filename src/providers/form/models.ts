@@ -79,14 +79,31 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   /** Custom visibility code */
   customVisibility?: string;
 
+  /** Custom visibility code */
+  customEnabled?: string;
+
   /** Default value of the field */
   defaultValue?: any;
 
   //#region runtime properties
   visibilityFunc?: (data: any) => boolean;
+
+  //#region runtime properties
+  enabledFunc?: (data: any) => boolean;
   /**/
   settingsValidationErrors?: IAsyncValidationError[];
+
+  /** Custom onBlur handler */
+  onBlurCustom?: string;
+
+  /** Custom onChange handler */
+  onChangeCustom?: string;
+
+  /** Custom onFocus handler */
+  onFocusCustom?: string;
   //#endregion
+
+  readOnly?: boolean;
 }
 
 export interface IComponentsContainer {
@@ -98,10 +115,15 @@ export interface IComponentsDictionary {
   [index: string]: IConfigurableFormComponent;
 }
 
+export interface IComponentRelations {
+  [index: string]: string[];
+}
+
 export interface IFlatComponentsStructure {
   allComponents: IComponentsDictionary;
-  componentRelations: { [index: string]: string[] };
+  componentRelations: IComponentRelations;
   visibleComponentIds?: string[];
+  enabledComponentIds?: string[];
 }
 
 export interface IFormProps extends IFlatComponentsStructure {

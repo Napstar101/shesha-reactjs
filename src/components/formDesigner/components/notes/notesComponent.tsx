@@ -29,9 +29,11 @@ const NotesComponent: IToolboxComponent<INotesProps> = {
     const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
     if (isHidden) return null;
 
+    const isReadOnly = model?.readOnly || formMode === 'readonly';
+
     return (
       <NotesProvider ownerId={ownerId} ownerType={model.ownerType}>
-        <NotesRenderer showCommentBox={model.disabled !== true} />
+        <NotesRenderer showCommentBox={model.disabled !== true && !isReadOnly} />
       </NotesProvider>
     );
   },

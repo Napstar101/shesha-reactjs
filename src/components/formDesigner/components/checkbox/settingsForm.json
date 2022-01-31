@@ -46,7 +46,7 @@
     },
     {
       "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-      "type": "textField",
+      "type": "textArea",
       "name": "description",
       "parentId": "root",
       "label": "Description"
@@ -57,6 +57,13 @@
       "name": "hidden",
       "parentId": "root",
       "label": "Hidden"
+    },
+    {
+      "id": "1ceb3851-f15e-437b-98b6-84d6a1fbf801",
+      "type": "checkbox",
+      "name": "readOnly",
+      "parentId": "root",
+      "label": "Read Only"
     },
     {
       "id": "f43abbca-082c-11ec-9a03-0242ac130003",

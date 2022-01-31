@@ -10,10 +10,11 @@ import {
 } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button, Select } from 'antd';
-import { formGetByPath, formUpdateMarkup, formTestDelayGet, formTestDelayPost } from '../../apis/form';
+import { formGetByPath, formTestDelayGet, formTestDelayPost, formUpdateMarkup } from '../../apis/form';
 import allFormsJson from './allForms.json';
 import { LabeledValue } from 'antd/lib/select';
 import { addStory } from '../../stories/utils';
+import { FormMode } from '../../providers/form/models';
 
 export default {
   title: 'Components/Temp/FormDesigner',
@@ -23,16 +24,17 @@ export default {
 export interface IFormDesignerStoryProps {
   formPath?: string;
   formId?: string;
+  mode?: FormMode;
 }
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
-const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
+const DesignerTemplate: Story<IFormDesignerStoryProps> = ({ formPath, formId, mode = 'designer' }) => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
       <MetadataDispatcherProvider>
-        <FormProvider path={args.formPath} id={args.formId} mode="designer">
+        <FormProvider path={formPath} id={formId} mode={mode}>
           <FormDesigner />
         </FormProvider>
       </MetadataDispatcherProvider>
@@ -40,11 +42,13 @@ const DesignerTemplate: Story<IFormDesignerStoryProps> = args => (
   </ShaApplicationProvider>
 );
 
+//#region TableContextProps
 export const TableContextProps = DesignerTemplate.bind({});
 
 TableContextProps.args = {
   formPath: '/settings/forms/playground',
 };
+//#endregion
 
 export const ColumnProps = addStory(DesignerTemplate, {
   //formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\shesha-reactjs\\src\\components\\formDesigner\\components\\dataTable\\table\\columnsEditor\\columnSettings.json'
@@ -170,13 +174,35 @@ export const CodeEditorProps = addStory(DesignerTemplate, {
 });
 
 export const FormSettings = addStory(DesignerTemplate, {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\formSettings.json',
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs_etalon\\src\\components\\formDesigner\\formSettings.json',
 });
 
-export const SimplePropsProps = addStory(DesignerTemplate, {
+export const PersonEdit = addStory(DesignerTemplate, {
   formPath: '/persons/edit',
 });
 
+export const PersonDetails = addStory(DesignerTemplate, {
+  formPath: '/persons/details',
+});
+
+export const ModelItemProps = addStory(DesignerTemplate, {
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\itemSettings.json',
+});
+
+export const ModelGroupProps = addStory(DesignerTemplate, {
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\metadata\\shesha-reactjs\\src\\components\\modelConfigurator\\propertiesEditor\\groupSettings.json',
+});
+
+export const PropertyProps = addStory(DesignerTemplate, {
+  formId: '97a5ba27-a3a4-4651-92b1-07bfe1debb2c',
+});
+
+export const ModelProps = addStory(DesignerTemplate, {
+  formId: 'd76d4fd7-b5e7-4fea-9c15-a34a63371430',
+});
 
 interface FormInfo {
   name: string;

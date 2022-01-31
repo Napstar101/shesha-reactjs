@@ -10,7 +10,7 @@ export interface ILayoutHeadingProps {
 
 export const LayoutHeading: FC<ILayoutHeadingProps> = ({ title, extra, style, className }) => (
   <div className={classNames('sha-layout-heading-content', className)} style={style}>
-    <h1 className="sha-layout-heading-title">{title}</h1>
+    <h2 className="sha-layout-heading-title">{title}</h2>
 
     <div>{typeof extra === 'function' ? extra() : extra}</div>
   </div>

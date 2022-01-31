@@ -6,6 +6,8 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useForm } from '../../../../providers';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface ICheckItem {
   id: string;
@@ -26,11 +28,17 @@ const TextField: IToolboxComponent<IRadioProps> = {
   type: 'radio',
   name: 'Radio',
   icon: <CheckCircleOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.array,
   factory: (model: IRadioProps) => {
     const { items = [] } = model;
+
+    const { formMode } = useForm();
+
+    const isReadOnly = model?.readOnly || formMode === 'readonly';
+
     return (
       <ConfigurableFormItem model={model}>
-        <Radio.Group>
+        <Radio.Group disabled={isReadOnly}>
           {items.map((checkItem, index) => (
             <Radio key={index} value={checkItem.value}>
               {checkItem.name}

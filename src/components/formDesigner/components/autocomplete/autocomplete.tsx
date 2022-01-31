@@ -7,6 +7,7 @@ import settingsFormJson from './settingsForm.json';
 import Autocomplete, { AutocompleteDataSourceType } from '../../../autocomplete';
 import { useForm } from '../../../../providers/form';
 import { evaluateValue, replaceTags, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 interface IQueryParamProp {
   id: string;
@@ -35,9 +36,10 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
   type: 'autocomplete',
   name: 'Autocomplete',
   icon: <FileSearchOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.entityReference,
   factory: (model: IAutocompleteProps) => {
     const { queryParams } = model;
-    const { formData } = useForm();
+    const { formData, formMode } = useForm();
     const dataSourceUrl = model.dataSourceUrl
       ? replaceTags(model.dataSourceUrl, { data: formData })
       : model.dataSourceUrl;
@@ -70,6 +72,7 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       dataSourceType: model.dataSourceType,
       mode: model?.mode,
       queryParams: getQueryParams(),
+      readOnly: model?.readOnly || formMode === 'readonly',
     };
 
     // todo: implement other types of datasources!
@@ -92,6 +95,15 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       useRawValues: false,
     };
     return customProps;
+  },
+  linkToModelMetadata: (model, metadata): IAutocompleteProps => {
+    return {
+      ...model,
+      useRawValues: true,
+      dataSourceType: 'entitiesList',
+      entityTypeShortAlias: metadata.entityType,
+      mode: undefined,
+    };
   },
 };
 

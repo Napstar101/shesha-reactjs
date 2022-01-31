@@ -7,6 +7,9 @@ import { INumberFieldProps } from './models';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
+import { useForm } from '../../../../providers';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -14,20 +17,34 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   type: 'numberField',
   name: 'Number field',
   icon: <NumberOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.number,
   factory: (model: INumberFieldProps) => {
+    const { formMode } = useForm();
+
+    const isReadOnly = model?.readOnly || formMode === 'readonly';
+
     return (
       <ConfigurableFormItem model={model}>
-        <InputNumber
-          disabled={model.disabled}
-          bordered={!model.hideBorder}
-          min={model?.min}
-          max={model?.max}
-        />
+        {isReadOnly ? (
+          <ReadOnlyDisplayFormItem />
+        ) : (
+          <InputNumber disabled={model.disabled} bordered={!model.hideBorder} min={model?.min} max={model?.max} />
+        )}
       </ConfigurableFormItem>
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  linkToModelMetadata: (model, metadata): INumberFieldProps => {
+    return {
+      ...model,
+      label: metadata.label,
+      description: metadata.description,
+      min: metadata.min,
+      max: metadata.max,
+      // todo: add decimal points and format
+    };
+  },
 };
 
 export default NumberField;

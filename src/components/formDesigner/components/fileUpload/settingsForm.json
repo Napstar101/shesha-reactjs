@@ -46,7 +46,7 @@
     },
     {
       "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-      "type": "textField",
+      "type": "textArea",
       "name": "description",
       "parentId": "root",
       "label": "Description"
@@ -89,6 +89,19 @@
       "hidden": false,
       "customVisibility": "return !data.disabled",
       "validate": {}
+    },
+    {
+      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
+      "type": "codeEditor",
+      "name": "customEnabled",
+      "label": "Custom Enabled",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customEnabled": null,
+      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "b0d75145-3f7c-424d-a1ac-c65990b4f749",

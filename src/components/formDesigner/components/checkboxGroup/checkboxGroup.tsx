@@ -6,6 +6,7 @@ import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 export interface ICheckItem {
   id: string;
@@ -23,12 +24,13 @@ const TextField: IToolboxComponent<ICheckboxGoupProps> = {
   type: 'checkboxGroup',
   name: 'Checkbox group',
   icon: <ProfileOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.array,
   factory: (model: ICheckboxGoupProps) => {
     const { items = [] } = model;
     const checkItems = items.map(item => ({ label: item.name, value: item.value }));
     return (
       <ConfigurableFormItem model={model}>
-        <Checkbox.Group options={checkItems}></Checkbox.Group>
+        <Checkbox.Group options={checkItems} />
       </ConfigurableFormItem>
     );
   },

@@ -73,7 +73,7 @@
     },
     {
       "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-      "type": "textField",
+      "type": "textArea",
       "name": "description",
       "parentId": "root",
       "label": "Description"
@@ -137,6 +137,65 @@
       "hidden": false,
       "customVisibility": null,
       "validate": {}
+    },
+    {
+      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
+      "type": "codeEditor",
+      "name": "customEnabled",
+      "label": "Custom Enabled",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customEnabled": null,
+      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "990f54ee-b754-479d-8e45-559efbd70c10",
+      "type": "sectionSeparator",
+      "name": "sectionEvent",
+      "parentId": "root",
+      "label": "Events"
+    },
+    {
+      "id": "3cef348b-6bba-4176-93f6-f3a8b21e33c9",
+      "type": "codeEditor",
+      "name": "onChangeCustom",
+      "label": "On Change",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom even handler.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "88c2d96c-b808-4316-8a36-701b09e5f6c7",
+      "type": "codeEditor",
+      "name": "onFocusCustom",
+      "label": "On Focus",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom even handler.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "4a2b7329-1a89-45d1-a5b0-f66db21744b0",
+      "type": "codeEditor",
+      "name": "onBlurCustom",
+      "label": "On Blur",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom even handler.",
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",

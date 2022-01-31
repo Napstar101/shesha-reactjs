@@ -33,10 +33,29 @@ const ConfigurableFormItem: FC<IConfigurableFormItemProps> = ({
   labelCol,
   wrapperCol,
 }) => {
-  const { formMode, visibleComponentIds } = useForm();
+  const { formMode, visibleComponentIds, enabledComponentIds, formData } = useForm();
 
   const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
+
   const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+
+  const disabledByCondition = enabledComponentIds && !enabledComponentIds.includes(model.id);
+
+  const disabled = formMode !== 'designer' && (Boolean(model.disabled) || disabledByCondition);
+
+  // TODO: Investigate why the value doesn't get sent into a component if it's passed via childrenWithProps function
+  const value = typeof formData === 'object' ? formData[model?.name] : undefined;
+
+  const isReadOnly = formMode === 'readonly';
+
+  const childrenWithProps = React.Children.map(children, child => {
+    // Checking isValidElement is the safe way and avoids a typescript
+    // error too.
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { disabled, isReadOnly, value });
+    }
+    return child;
+  });
 
   return (
     <Form.Item
@@ -54,7 +73,7 @@ const ConfigurableFormItem: FC<IConfigurableFormItemProps> = ({
       labelCol={labelCol}
       wrapperCol={wrapperCol}
     >
-      {children}
+      {disabled || isReadOnly ? childrenWithProps : children}
     </Form.Item>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, ReactNode, Key } from 'react';
-import { Select } from 'antd';
+import { Select, Tag } from 'antd';
 import { AjaxResponseBase, AutocompleteItemDto, useAutocompleteList } from '../../apis/autocomplete';
 import { useGet } from 'restful-react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
@@ -7,6 +7,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import qs from 'qs';
 import { LabeledValue } from 'antd/lib/select';
 import { IGuidNullableEntityWithDisplayNameDto } from '../..';
+import { ReadOnlyDisplayFormItem } from './../readOnlyDisplayFormItem';
+import { IReadOnly } from '../../interfaces/readOnly';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
@@ -24,7 +26,7 @@ interface IQueryParams {
 
 export type CustomLabeledValue<TValue = any> = LabeledValue & { data: TValue };
 
-export interface IAutocompleteProps<TValue = any> {
+export interface IAutocompleteProps<TValue = any> extends IReadOnly {
   /**
    * The value of the autocomplete
    *
@@ -109,6 +111,16 @@ export interface IAutocompleteProps<TValue = any> {
 
   allowClear?: boolean;
 
+  /**
+   * If true, the automplete will be in read-only mode. This is not the same sa disabled mode
+   */
+  readOnly?: boolean;
+
+  /**
+   *
+   */
+  readOnlyMultipleMode?: 'raw' | 'tags';
+
   queryParams?: IQueryParams;
 }
 
@@ -135,7 +147,6 @@ const trimQueryString = (url: string): string => {
  * A component for working with dynamic autocomplete
  */
 
-// tslint:disable-next-line:whitespace
 export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   const {
     value,
@@ -155,6 +166,8 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
     queryParams: incomingQueryParams,
     getOptionFromFetchedItem,
     getLabeledValue,
+    readOnly,
+    readOnlyMultipleMode = 'raw',
   } = props;
 
   const entityFetcher = useAutocompleteList({ lazy: true });
@@ -286,6 +299,33 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
     } else onChange(selectedValue);
   };
 
+  if (readOnly) {
+    const wrappedValue = wrapValue(value);
+
+    let displayValue: any;
+
+    if (Array.isArray(wrappedValue)) {
+      displayValue = wrappedValue?.map(({ label, value: keyId }: any) =>
+        readOnlyMultipleMode === 'raw' && typeof label === 'string' ? label : <Tag key={keyId}>{label}</Tag>
+      );
+
+      if (readOnlyMultipleMode === 'raw') displayValue = (displayValue as any[])?.join(', ');
+    } else {
+      displayValue = (wrappedValue as any)?.label;
+    }
+  }
+
+  const autocompleteValue = wrapValue(value);
+
+  if (readOnly || disabled) {
+    return (
+      <ReadOnlyDisplayFormItem
+        value={autocompleteValue}
+        type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
+      />
+    );
+  }
+
   return (
     <Select<CustomLabeledValue<TValue> | CustomLabeledValue<TValue>[]>
       showSearch
@@ -295,7 +335,7 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
       showArrow={false}
       filterOption={false}
       onSearch={handleSearch}
-      value={wrapValue(value)}
+      value={autocompleteValue}
       defaultValue={wrapValue(defaultValue)}
       onChange={handleChange}
       allowClear={true}
@@ -316,7 +356,7 @@ export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   );
 };
 
-type IDtoType = IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[];
+export type IDtoType = IGuidNullableEntityWithDisplayNameDto | IGuidNullableEntityWithDisplayNameDto[];
 
 export const EntityDtoAutocomplete = (props: IAutocompleteProps<IDtoType>) => {
   const getDtoFromFetchedItem = (item): ISelectOption<IDtoType> => {
@@ -358,12 +398,26 @@ export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
   const labeledValueGetter = (itemValue: string, options: ISelectOption<string>[]) => {
     if (!Boolean(itemValue)) return null;
     const item = options?.find(i => i.value === itemValue);
+
+    const val = {
+      value: itemValue,
+      label: item?.label ?? 'unknown',
+      data: itemValue,
+    };
+
+    console.log('RawAutocomplete val: ', val);
+
     return {
       value: itemValue,
       label: item?.label ?? 'unknown',
       data: itemValue,
     };
   };
+
+  // if (props.readOnly) {
+  //   const displayValue = typeof value === 'string' ? options?.
+  //   return <BasicDisplayFormItem>{props?.value}</BasicDisplayFormItem>
+  // }
 
   return (
     <Autocomplete<string>

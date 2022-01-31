@@ -16,6 +16,7 @@ import { IToolboxComponent, IToolboxComponentGroup, IToolboxComponents } from '.
 import Schema, { Rules, ValidateSource } from 'async-validator';
 import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
 import { formGet, formGetByPath } from '../../apis/form';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -37,6 +38,7 @@ export const componentsTreeToFlatStructure = (
       ...component,
       parentId,
       visibilityFunc: getCustomVisibilityFunc(component),
+      enabledFunc: getCustomEnabledFunc(component),
     };
 
     const level = result.componentRelations[parentId] || [];
@@ -152,13 +154,17 @@ export const loadFormByPath = (path: string) => {
 
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
   if (customVisibility) {
+    // console.log('customVisibility : name, customVisibility', name, customVisibility);
+  }
+
+  if (customVisibility) {
     try {
       const customVisibilityExecutor = customVisibility ? new Function('value, data', customVisibility) : null;
 
       const getIsVisible = function(data = {}) {
         if (customVisibilityExecutor) {
           try {
-            return customVisibilityExecutor(data[name], data);
+            return customVisibilityExecutor(name ? data[name] : undefined, data);
           } catch (e) {
             console.warn(`Custom Visibility of field ${name} throws exception: ${e}`);
             return true;
@@ -173,6 +179,34 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
     } catch (e) {
       return () => {
         console.warn(`Incorrect syntax of the 'Custom Visibility', field name: ${name}, error: ${e}`);
+      };
+    }
+  } else return () => true;
+};
+
+export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormComponent) => {
+  if (customEnabled) {
+    try {
+      const customEnabledExecutor = customEnabled ? new Function('value, data', customEnabled) : null;
+
+      const getIsEnabled = function(data = {}) {
+        if (customEnabledExecutor) {
+          try {
+            return customEnabledExecutor(name ? data[name] : undefined, data);
+          } catch (e) {
+            console.error(`Custom Enabled of field ${name} throws exception: ${e}`);
+            return true;
+          }
+        }
+
+        return true;
+        //return !(component.contextData && component.contextData.isEmpty && component.contextData.readOnly && component.hideWhenEmpty);
+      };
+
+      return getIsEnabled;
+    } catch (e) {
+      return () => {
+        console.warn(`Incorrect syntax of the 'Custom Enabled', field name: ${name}, error: ${e}`);
       };
     }
   } else return () => true;
@@ -213,7 +247,6 @@ export const getVisibilityFunc2 = (expression, name) => {
  * Return ids of visible components according to the custom visibility
  */
 export const getVisibleComponentIds = (components: IComponentsDictionary, values: any): string[] => {
-  //@ts-ignore
   let visibleComponents: string[] = [];
   for (let key in components) {
     const component = components[key] as IConfigurableFormComponent;
@@ -222,8 +255,23 @@ export const getVisibleComponentIds = (components: IComponentsDictionary, values
     const isVisible = component.visibilityFunc == null || component.visibilityFunc(values);
     if (isVisible) visibleComponents.push(key);
   }
-
   return visibleComponents;
+};
+
+/**
+ * Return ids of visible components according to the custom enabled
+ */
+export const getEnabledComponentIds = (components: IComponentsDictionary, values: any): string[] => {
+  let enabledComponents: string[] = [];
+  for (let key in components) {
+    const component = components[key] as IConfigurableFormComponent;
+    if (!component || component.disabled) continue;
+
+    const isEnabled = component?.enabledFunc === null || component?.enabledFunc(values);
+
+    if (isEnabled) enabledComponents.push(key);
+  }
+  return enabledComponents;
 };
 
 /**
@@ -378,7 +426,7 @@ export const toolbarGroupsToComponents = (availableComponents: IToolboxComponent
   }
   return allComponents;
 };
-
+/*
 export const findToolboxComponent = (
   availableComponents: IToolboxComponentGroup[],
   type: string
@@ -388,6 +436,22 @@ export const findToolboxComponent = (
       const group = availableComponents[gIdx];
       for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
         if (group.components[cIdx].type === type) return group.components[cIdx];
+      }
+    }
+  }
+
+  return null;
+};
+*/
+export const findToolboxComponent = (
+  availableComponents: IToolboxComponentGroup[],
+  predicate: (component: IToolboxComponent) => boolean
+): IToolboxComponent => {
+  if (availableComponents) {
+    for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
+      const group = availableComponents[gIdx];
+      for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
+        if (predicate(group.components[cIdx])) return group.components[cIdx];
       }
     }
   }
@@ -439,3 +503,20 @@ export const validateConfigurableComponentSettings = (markup: FormMarkup, values
 
   return validator.validate(values);
 };
+
+export function listComponentToModelMetadata<TModel extends IConfigurableFormComponent>(
+  component: IToolboxComponent<TModel>,
+  model: TModel,
+  metadata: IPropertyMetadata
+): TModel {
+  let mappedModel = model;
+
+  // map standard properties
+  if (metadata.label) mappedModel.label = metadata.label;
+  if (metadata.description) mappedModel.description = metadata.description;
+
+  // map component-specific properties
+  if (component.linkToModelMetadata) mappedModel = component.linkToModelMetadata(model, metadata);
+
+  return mappedModel;
+}

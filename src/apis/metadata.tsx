@@ -53,8 +53,8 @@ export interface PropertyMetadataDto {
   path?: string | null;
   label?: string | null;
   description?: string | null;
-  isEmail?: boolean;
   dataType?: string | null;
+  dataFormat?: string | null;
   entityType?: string | null;
   referenceListName?: string | null;
   referenceListNamespace?: string | null;
@@ -70,6 +70,53 @@ export interface PropertyMetadataDtoListAjaxResponse {
   __abp?: boolean;
   result?: PropertyMetadataDto[] | null;
 }
+
+export interface MetadataTypeAutocompleteQueryParams {
+  term?: string | null;
+  selectedValue?: string | null;
+}
+
+export type MetadataTypeAutocompleteProps = Omit<
+  GetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, MetadataTypeAutocompleteQueryParams, void>,
+  'path'
+>;
+
+export const MetadataTypeAutocomplete = (props: MetadataTypeAutocompleteProps) => (
+  <Get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, MetadataTypeAutocompleteQueryParams, void>
+    path={`/api/services/app/Metadata/TypeAutocomplete`}
+    {...props}
+  />
+);
+
+export type UseMetadataTypeAutocompleteProps = Omit<
+  UseGetProps<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, MetadataTypeAutocompleteQueryParams, void>,
+  'path'
+>;
+
+export const useMetadataTypeAutocomplete = (props: UseMetadataTypeAutocompleteProps) =>
+  useGet<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, MetadataTypeAutocompleteQueryParams, void>(
+    `/api/services/app/Metadata/TypeAutocomplete`,
+    props
+  );
+
+export type metadataTypeAutocompleteProps = Omit<
+  RestfulShesha.GetProps<
+    AutocompleteItemDtoListAjaxResponse,
+    AjaxResponseBase,
+    MetadataTypeAutocompleteQueryParams,
+    void
+  >,
+  'queryParams'
+>;
+export const metadataTypeAutocomplete = (
+  queryParams: MetadataTypeAutocompleteQueryParams,
+  props: metadataTypeAutocompleteProps
+) =>
+  RestfulShesha.get<AutocompleteItemDtoListAjaxResponse, AjaxResponseBase, MetadataTypeAutocompleteQueryParams, void>(
+    `/api/services/app/Metadata/TypeAutocomplete`,
+    queryParams,
+    props
+  );
 
 export interface MetadataEntityTypeAutocompleteQueryParams {
   term?: string | null;

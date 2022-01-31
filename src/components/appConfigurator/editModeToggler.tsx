@@ -1,9 +1,8 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { EditOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useAppConfigurator } from '../../providers';
 import SwitchToEditModeConfirmation from './switchToEditModeConfirmation';
 import SwitchToLiveModeConfirmation from './switchToLiveModeConfirmation';
-import React from 'react';
 
 export interface IAppEditModeTogglerProps {}
 

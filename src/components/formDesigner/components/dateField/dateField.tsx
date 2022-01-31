@@ -9,6 +9,8 @@ import moment, { Moment, isMoment } from 'moment';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { HiddenFormItem } from '../../../hiddenFormItem';
 import { useForm } from '../../../../providers';
+import { DataTypes } from '../../../../interfaces/dataTypes';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 const DATE_TIME_FORMATS = {
   time: 'HH:mm',
@@ -69,6 +71,7 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   type: 'dateField',
   name: 'Date field',
   icon: <CalendarOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.date || dataType === DataTypes.dateTime,
   factory: (model: IDateFieldProps) => {
     return (
       <Fragment>
@@ -90,10 +93,18 @@ const DateField: IToolboxComponent<IDateFieldProps> = {
   initModel: model => {
     const customModel: IDateFieldProps = {
       ...model,
+      picker: 'date',
+      showTime: false,
       dateFormat: DATE_TIME_FORMATS?.date,
       timeFormat: DATE_TIME_FORMATS.time,
     };
     return customModel;
+  },
+  linkToModelMetadata: (model, metadata): IDateFieldProps => {
+    return {
+      ...model,
+      showTime: metadata.dataType === DataTypes.dateTime,
+    };
   },
 };
 
@@ -119,14 +130,17 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     disabledDateMode,
     disabledDateTemplate,
     disabledDateFunc,
+    readOnly,
     ...rest
   } = props;
-  const { form } = useForm();
+  const { form, formMode } = useForm();
+
+  const isReadOnly = readOnly || formMode === 'readonly';
 
   const getFormat = () => {
     switch (picker) {
       case 'date':
-        return dateFormat;
+        return showTime ? `${dateFormat} ${timeFormat}` : dateFormat;
       case 'year':
         return yearFormat;
       case 'month':
@@ -187,6 +201,12 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     return disabledFunc(current, moment);
   }
 
+  console.log('DatePicker name, formattedValue:  ', name, formattedValue);
+
+  if (isReadOnly) {
+    return <ReadOnlyDisplayFormItem value={formattedValue?.toISOString()} type="datetime" />;
+  }
+
   if (range) {
     return (
       <RangePicker
@@ -214,9 +234,15 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
       showToday={showToday}
       showSecond={false}
       picker={picker}
+      format={pickerFormat}
       {...rest}
     />
   );
 };
 
 export default DateField;
+
+// const DatePickerReadOnlyRenderer = () => {
+
+//   return <div></div>
+// }

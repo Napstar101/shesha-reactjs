@@ -11,7 +11,7 @@ export interface IProps {
   justifyContent?: string;
 }
 const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'vertical', justifyContent }) => {
-  const { getChildComponents, updateChildComponents, addComponent, startDragging, endDragging } = useFormActions();
+  const { getChildComponents, updateChildComponents, addComponent, addDataProperty, startDragging, endDragging } = useFormActions();
   const { formMode } = useFormState();
   const isDesignerMode = formMode === 'designer';
 
@@ -28,7 +28,13 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
       const newDataItemIndex = newState.findIndex(item => item['type'] == TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
       if (newDataItemIndex > -1) {
         // dropped data item
-        console.log('dropped data item!');
+        const draggedItem = newState[newDataItemIndex];
+
+        addDataProperty({
+          propertyMetadata: draggedItem.metadata,
+          containerId: containerId,
+          index: newDataItemIndex,          
+        });        
       } else {
         const newComponentIndex = newState.findIndex(item => item['type'] == TOOLBOX_COMPONENT_DROPPABLE_KEY);
         if (newComponentIndex > -1) {

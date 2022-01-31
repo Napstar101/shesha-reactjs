@@ -1,11 +1,14 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const camelcase = require('camelcase');
 
-//const STORYBOOK_BASE_URL = 'https://testpdkznotpbe.azurewebsites.net';
-const STORYBOOK_BASE_URL = 'http://localhost:21021';
+// const STORYBOOK_BASE_URL = 'https://testpdkznotpbe.azurewebsites.net';
+const STORYBOOK_BASE_URL = 'https://kznotp-bursarymanagement-api-test.azurewebsites.net';
 // const STORYBOOK_BASE_URL = process.env.STORYBOOK_BASE_URL;
 const ROOT_PATH = './src/apis';
 
 const API_LIST = [
+  'Form',
+  /*
   //'Applications',
   'Area',
   'AuthorizationSettings',
@@ -14,7 +17,6 @@ const API_LIST = [
   'CheckListItem',
   'ConfigurableComponent',
   //'DataTable',
-  'Form',
   'Note',
   'Person',
   'ReferenceList',
@@ -24,61 +26,65 @@ const API_LIST = [
   'TokenAuth',
   'User',
   'Metadata',
+  */
+  // 'EntityConfig',
+  // 'EntityProperty',
+  // 'ModelConfigurations',
+  // 'PersonTest',
 ];
 
 const defaultConfiguration = {
-  customImport: `import * as RestfulShesha from "../utils/fetchers"`,
+  customImport: 'import * as RestfulShesha from "../utils/fetchers"',
   customGenerator: ({ componentName, verb, route, description, genericsTypes, paramsInPath, paramsTypes }) => {
     const propsType = type =>
-      `RestfulShesha.${type}Props<${genericsTypes}>${paramsInPath.length ? ` & {${paramsTypes}}` : ""}`;
+      `RestfulShesha.${type}Props<${genericsTypes}>${paramsInPath.length ? ` & {${paramsTypes}}` : ''}`;
 
     const funcName = camelcase(componentName);
-    const innerCallParamTypes = propsType(verb === "get" ? "Get" : "Mutate");
+    const innerCallParamTypes = propsType(verb === 'get' ? 'Get' : 'Mutate');
 
     const propTypesName = `${funcName}Props`;
 
-    const genericTypesArray = (genericsTypes || "").toString().split(',').map(p => p.trim());
-    if (verb === "get") {
+    const genericTypesArray = (genericsTypes || '')
+      .toString()
+      .split(',')
+      .map(p => p.trim());
+    if (verb === 'get') {
       const propsTypeDeclaration = `export type ${propTypesName} = Omit<
     ${innerCallParamTypes},
     'queryParams'
   >;`;
-      const qsType = genericTypesArray.length >= 3
-        ? genericTypesArray[2]
-        : null;
+      const qsType = genericTypesArray.length >= 3 ? genericTypesArray[2] : null;
       const hasQs = qsType !== 'void';
-      const qsParam = hasQs
-        ? `queryParams: ${qsType},`
-        : "";
+      const qsParam = hasQs ? `queryParams: ${qsType},` : '';
 
-        return `${propsTypeDeclaration}
+      return `${propsTypeDeclaration}
         ${description}export const ${funcName} = (${qsParam}
-          ${paramsInPath.length ? `{${paramsInPath.join(", ")}, ...props}` : "props"
-          }: ${propTypesName}) => RestfulShesha.get<${genericsTypes}>(\`${route}\`, ${hasQs ? "queryParams" : "undefined"}, props);\n\n`;
-
-    } else {
-      const propsTypeDeclaration = `export type ${propTypesName} = Omit<
+          ${
+            paramsInPath.length ? `{${paramsInPath.join(', ')}, ...props}` : 'props'
+          }: ${propTypesName}) => RestfulShesha.get<${genericsTypes}>(\`${route}\`, ${
+        hasQs ? 'queryParams' : 'undefined'
+      }, props);\n\n`;
+    }
+    const propsTypeDeclaration = `export type ${propTypesName} = Omit<
     ${innerCallParamTypes},
     'data'
   >;`;
-      const dataType = genericTypesArray.length >= 4
-        ? genericTypesArray[3]
-        : null;
-      dataType
-      const hasData = dataType !== 'void';
-      const dataParam = hasData
-        ? `data: ${dataType},`
-        : "";
+    const dataType = genericTypesArray.length >= 4 ? genericTypesArray[3] : null;
+    dataType;
+    const hasData = dataType !== 'void';
+    const dataParam = hasData ? `data: ${dataType},` : '';
 
-      return `${propsTypeDeclaration}
-      ${description}export const ${funcName} = (${dataParam}${paramsInPath.length ? `{${paramsInPath.join(", ")}, ...props}` : "props"
-        }: ${propTypesName}) => RestfulShesha.mutate<${genericsTypes}>("${verb.toUpperCase()}", \`${route}\`, ${hasData ? "data" : "undefined"}, props);\n\n`;
-    }
+    return `${propsTypeDeclaration}
+      ${description}export const ${funcName} = (${dataParam}${
+      paramsInPath.length ? `{${paramsInPath.join(', ')}, ...props}` : 'props'
+    }: ${propTypesName}) => RestfulShesha.mutate<${genericsTypes}>("${verb.toUpperCase()}", \`${route}\`, ${
+      hasData ? 'data' : 'undefined'
+    }, props);\n\n`;
   },
 };
 
 function generateFetcher() {
-  let apiObj = {};
+  const apiObj = {};
 
   API_LIST.forEach(key => {
     const camelCasedName = camelcase(key);

@@ -10,6 +10,7 @@ import moment, { Moment, isMoment } from 'moment';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
 import { HiddenFormItem } from '../../../hiddenFormItem';
+import { DataTypes } from '../../../../interfaces/dataTypes';
 
 type RangeType = 'start' | 'end';
 // tslint:disable-next-line:interface-over-type-literal
@@ -62,6 +63,7 @@ const TimeField: IToolboxComponent<ITimePickerProps> = {
   type: 'timePicker',
   name: 'Time Picker',
   icon: <ClockCircleOutlined />,
+  dataTypeSupported: ({ dataType }) => dataType === DataTypes.time,
   factory: (model: ITimePickerProps) => {
     return (
       <Fragment>

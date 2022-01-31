@@ -15,13 +15,13 @@ export default {
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 interface IStoryArgs extends IAutocompleteProps {
-  /** 
-   * Test Value, is used only by this story for the `Set Test Value Button` 
-   * */
+  /**
+   * Test Value, is used only by this story for the `Set Test Value Button`
+   */
   testValue?: any;
-  /** 
+  /**
    * Initial Value, is used only by this story
-   * */
+   */
   initialValue?: any;
 }
 
@@ -85,7 +85,6 @@ const BaseTemplate: FC<ITemplateProps> = props => {
             <Button onClick={() => form?.submit()} type="primary">
               Submit
             </Button>
-
           </Form>
         </div>
 
@@ -101,23 +100,19 @@ const BaseTemplate: FC<ITemplateProps> = props => {
 
 // Create a master template for mapping args to render the Button component
 const RawTemplate: Story<IStoryArgs> = args => {
-  const { testValue, initialValue, ...autocompleteProps} = args;
+  const { testValue, initialValue, ...autocompleteProps } = args;
   return (
     <BaseTemplate {...args}>
-      <Autocomplete.Raw
-        {...autocompleteProps}
-      />
+      <Autocomplete.Raw {...autocompleteProps} />
     </BaseTemplate>
   );
 };
 
 const EntityDtoTemplate: Story<IStoryArgs> = args => {
-  const { testValue, initialValue, ...autocompleteProps} = args;
+  const { testValue, initialValue, ...autocompleteProps } = args;
   return (
     <BaseTemplate {...args}>
-      <Autocomplete.EntityDto
-        {...autocompleteProps}
-      />
+      <Autocomplete.EntityDto {...autocompleteProps} />
     </BaseTemplate>
   );
 };
@@ -126,13 +121,13 @@ const singleEntityDtoBaseProps: IStoryArgs = {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   testValue: {
-    "id": "291B86BE-27F1-41A0-8BFD-F867A3B38E32",
-    "displayText": "Friday Green"
-  }
+    id: '291B86BE-27F1-41A0-8BFD-F867A3B38E32',
+    displayText: 'Friday Green',
+  },
 };
 //#region Single Entity DTO
 export const SingleEntityDto = addStory(EntityDtoTemplate, {
-  ...singleEntityDtoBaseProps
+  ...singleEntityDtoBaseProps,
 });
 //#endregion
 
@@ -140,9 +135,20 @@ export const SingleEntityDto = addStory(EntityDtoTemplate, {
 export const SingleEntityDtoWithInitialValue = addStory(EntityDtoTemplate, {
   ...singleEntityDtoBaseProps,
   initialValue: {
-    "id": "6FB28E47-591E-46ED-90B5-13A88C69C759",
-    "displayText": "Dimakatso Masetlane"
-  }
+    id: '6FB28E47-591E-46ED-90B5-13A88C69C759',
+    displayText: 'Dimakatso Masetlane',
+  },
+});
+//#endregion
+
+//#region Single Entity DTO with initial value
+export const SingleEntityDtoWithInitialValueReadOnly = addStory(EntityDtoTemplate, {
+  ...singleEntityDtoBaseProps,
+  readOnly: true,
+  initialValue: {
+    id: '6FB28E47-591E-46ED-90B5-13A88C69C759',
+    displayText: 'Dimakatso Masetlane',
+  },
 });
 //#endregion
 
@@ -150,19 +156,21 @@ const multipleEntityDtoBaseProps: IStoryArgs = {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   mode: 'multiple',
-  testValue: [{
-    "id": "7F3076A1-E766-41A4-A05B-90E70A01D8AE",
-    "displayText": "Cinisile Mathonsi"
-  },
-  {
-    "id": "291B86BE-27F1-41A0-8BFD-F867A3B38E32",
-    "displayText": "Friday Green"
-  }]
+  testValue: [
+    {
+      id: '7F3076A1-E766-41A4-A05B-90E70A01D8AE',
+      displayText: 'Cinisile Mathonsi',
+    },
+    {
+      id: '291B86BE-27F1-41A0-8BFD-F867A3B38E32',
+      displayText: 'Friday Green',
+    },
+  ],
 };
 
 //#region Multiple Entity DTO
 export const MultipleEntityDto = addStory(EntityDtoTemplate, {
-  ...multipleEntityDtoBaseProps
+  ...multipleEntityDtoBaseProps,
 });
 //#endregion
 
@@ -171,14 +179,31 @@ export const MultipleEntityDtoWithInitialValue = addStory(EntityDtoTemplate, {
   ...multipleEntityDtoBaseProps,
   initialValue: [
     {
-      "id": "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1",
-      "displayText": "DJ Khaled"
+      id: '42756BFC-0789-4AA3-91AC-68FEF3B8D5F1',
+      displayText: 'DJ Khaled',
     },
     {
-      "id": "8DA3928A-6E03-4260-8961-C3D0B5A33C42",
-      "displayText": "Jane Smith"
-    }
-  ]
+      id: '8DA3928A-6E03-4260-8961-C3D0B5A33C42',
+      displayText: 'Jane Smith',
+    },
+  ],
+});
+//#endregion
+
+//#region Multiple Entity with initial value DTO ReadOnly
+export const MultipleEntityDtoWithInitialValueReadOnly = addStory(EntityDtoTemplate, {
+  ...multipleEntityDtoBaseProps,
+  readOnly: true,
+  initialValue: [
+    {
+      id: '42756BFC-0789-4AA3-91AC-68FEF3B8D5F1',
+      displayText: 'DJ Khaled',
+    },
+    {
+      id: '8DA3928A-6E03-4260-8961-C3D0B5A33C42',
+      displayText: 'Jane Smith',
+    },
+  ],
 });
 //#endregion
 
@@ -187,14 +212,16 @@ export const TagsEntityDto = addStory(EntityDtoTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   mode: 'tags',
-  testValue: [{
-    "id": "7F3076A1-E766-41A4-A05B-90E70A01D8AE",
-    "displayText": "Cinisile Mathonsi"
-  },
-  {
-    "id": "291B86BE-27F1-41A0-8BFD-F867A3B38E32",
-    "displayText": "Friday Green"
-  }]
+  testValue: [
+    {
+      id: '7F3076A1-E766-41A4-A05B-90E70A01D8AE',
+      displayText: 'Cinisile Mathonsi',
+    },
+    {
+      id: '291B86BE-27F1-41A0-8BFD-F867A3B38E32',
+      displayText: 'Friday Green',
+    },
+  ],
 });
 //#endregion
 
@@ -202,7 +229,7 @@ export const TagsEntityDto = addStory(EntityDtoTemplate, {
 export const SingleRaw = addStory(RawTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
-  testValue: "7F3076A1-E766-41A4-A05B-90E70A01D8AE",
+  testValue: '7F3076A1-E766-41A4-A05B-90E70A01D8AE',
 });
 //#endregion
 
@@ -210,8 +237,8 @@ export const SingleRaw = addStory(RawTemplate, {
 export const SingleRawWithInitialValue = addStory(RawTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
-  testValue: "7F3076A1-E766-41A4-A05B-90E70A01D8AE",
-  initialValue: "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1",
+  testValue: '7F3076A1-E766-41A4-A05B-90E70A01D8AE',
+  initialValue: '42756BFC-0789-4AA3-91AC-68FEF3B8D5F1',
 });
 //#endregion
 
@@ -220,16 +247,15 @@ export const MultipleRaw = addStory(RawTemplate, {
   dataSourceType: 'url',
   dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
   mode: 'multiple',
-  testValue: ["7F3076A1-E766-41A4-A05B-90E70A01D8AE", "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1"],
+  testValue: ['7F3076A1-E766-41A4-A05B-90E70A01D8AE', '42756BFC-0789-4AA3-91AC-68FEF3B8D5F1'],
 });
 //#endregion
 
 //#region Multiple Raw with initial value
-export const MultipleRawWithInitialValue = addStory(RawTemplate, 
-  {
-    dataSourceType: 'url',
-    dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
-    mode: 'multiple',
-    initialValue: ["7F3076A1-E766-41A4-A05B-90E70A01D8AE", "42756BFC-0789-4AA3-91AC-68FEF3B8D5F1"],
-  });
+export const MultipleRawWithInitialValue = addStory(RawTemplate, {
+  dataSourceType: 'url',
+  dataSourceUrl: '/api/v1/BursMan/ScheduleVisits/MembersAutocomplete',
+  mode: 'multiple',
+  initialValue: ['7F3076A1-E766-41A4-A05B-90E70A01D8AE', '42756BFC-0789-4AA3-91AC-68FEF3B8D5F1'],
+});
 //#endregion

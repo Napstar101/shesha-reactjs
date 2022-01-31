@@ -23,6 +23,7 @@ import { FormInstance } from 'antd';
 import { StateWithHistory } from 'redux-undo';
 import { FormLayout } from 'antd/lib/form/Form';
 import { IDataSource } from '../formDesigner/models';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 export type IFlagProgressFlags =
   | 'addComponent'
@@ -59,6 +60,7 @@ export interface IFormSettings {
   colon: boolean;
   labelCol: ILayoutProps;
   wrapperCol: ILayoutProps;
+  showModeToggler?: boolean;
 }
 
 export interface IFormDesignerStateContext extends StateWithHistory<IFormStateContext> {}
@@ -95,6 +97,12 @@ export interface IComponentAddPayload {
   containerId: string;
 }
 
+export interface IAddDataPropertyPayload {
+  propertyMetadata: IPropertyMetadata;
+  index: number;
+  containerId: string;
+}
+
 export interface IUpdateChildComponentsPayload {
   containerId: string;
   componentIds: string[];
@@ -115,6 +123,10 @@ export interface IComponentUpdateSettingsValidationPayload {
 }
 
 export interface ISetVisibleComponentsPayload {
+  componentIds: string[];
+}
+
+export interface ISetEnabledComponentsPayload {
   componentIds: string[];
 }
 
@@ -163,6 +175,7 @@ export interface IFormActionsContext
   setFormData: (payload: ISetFormDataPayload) => void;
   setValidationErrors: (payload: IFormValidationErrors) => void;
 
+  addDataProperty: (payload: IAddDataPropertyPayload) => void;
   addComponent: (payload: IComponentAddPayload) => void;
   updateChildComponents: (payload: IUpdateChildComponentsPayload) => void;
   setDebugMode: (isDebug: boolean) => void;
@@ -207,6 +220,7 @@ export const FORM_CONTEXT_INITIAL_STATE: IFormStateContext = {
   components: [],
   allComponents: {},
   visibleComponentIds: [],
+  enabledComponentIds: [],
   componentRelations: { [ROOT_COMPONENT_KEY]: [] },
   formMode: 'designer',
   isDragging: false,
