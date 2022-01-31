@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IReadOnly, IToolboxComponent } from '../../../../interfaces';
+import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { HomeOutlined } from '@ant-design/icons';
 import { InputProps } from 'antd/lib/input';
@@ -9,7 +9,7 @@ import { AutoCompletePlaces } from '../../../';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../..';
 
-export interface IAddressCompomentProps extends IConfigurableFormComponent, IReadOnly {
+export interface IAddressCompomentProps extends IConfigurableFormComponent {
   placeholder?: string;
   prefix?: string;
   suffix?: string;
@@ -38,7 +38,7 @@ const AddressCompoment: IToolboxComponent<IAddressCompomentProps> = {
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
 };
 
-interface IAutoCompletePlacesFieldProps extends IAddressCompomentProps, IReadOnly {
+interface IAutoCompletePlacesFieldProps extends IAddressCompomentProps {
   value?: any;
   onChange?: any;
 }
