@@ -37,6 +37,19 @@
           "settingsValidationErrors": []
         },
         {
+          "textType": "text",
+          "id": "Kowp4i0jPvHDdoTjxrxfz",
+          "type": "textField",
+          "name": "friend.fullName",
+          "label": "Friend's name",
+          "labelAlign": "right",
+          "parentId": "rqEyWa_qG99Qo53kIjCKb",
+          "hidden": false,
+          "customVisibility": null,
+          "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
           "id": "w6vyINZcXhbRzmBpfpRkn",
           "type": "dropdown",
           "name": "applicationStatus",
@@ -182,6 +195,21 @@
           "settingsValidationErrors": []
         },
         {
+          "id": "DrdlKN1Gymz_an6v5mFgx",
+          "type": "textArea",
+          "name": "message",
+          "label": "Message",
+          "labelAlign": "right",
+          "parentId": "rqEyWa_qG99Qo53kIjCKb",
+          "hidden": false,
+          "customVisibility": null,
+          "autoSize": false,
+          "showCount": false,
+          "allowClear": false,
+          "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
           "id": "gNhvOsPC-Qb4Y_H7gAs03",
           "type": "sectionSeparator",
           "name": "subscriptions",
@@ -226,7 +254,7 @@
     "wrapperCol": { "span": 13 },
     "displayName": "DEFAULT_FORM_SETTINGS",
     "__docgenInfo": { "description": "Default form settings", "displayName": "DEFAULT_FORM_SETTINGS", "props": {} },
-    "showModeToggler": true,
+    "showModeToggler": false,
     "_formFields": [
       "modelType",
       "postUrl",
