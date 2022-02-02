@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { IUpdateChildItemsPayload, IUpdateItemSettingsPayload } from './contexts';
+import { IAddItemPayload, IUpdateChildItemsPayload, IUpdateItemSettingsPayload } from './contexts';
 
 export enum ModelActionEnums {
   AddItem = 'ADD_ITEM',
@@ -10,7 +10,7 @@ export enum ModelActionEnums {
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
 
-export const addItemAction = createAction(ModelActionEnums.AddItem);
+export const addItemAction = createAction<IAddItemPayload, IAddItemPayload>(ModelActionEnums.AddItem, p => p);
 
 export const deleteItemAction = createAction<string, string>(ModelActionEnums.DeleteItem, p => p);
 

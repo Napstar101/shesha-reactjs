@@ -40,7 +40,7 @@ const onAddClick = () => {
       <TabPane tab="Designer" key="1">
         <div className="sha-action-buttons" style={{ marginBottom: '8px' }}>
           <Button onClick={onAddClick} type="primary">
-            Add New Property
+            Add Property
           </Button>
         </div>
         <div className="sha-sidebar-configurator">
