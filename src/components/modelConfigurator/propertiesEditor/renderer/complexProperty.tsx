@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button, Tooltip } from 'antd';
-import { DeleteFilled, QuestionCircleOutlined } from '@ant-design/icons';
+import { DeleteFilled, QuestionCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { usePropertiesEditor } from '../provider';
 import DragHandle from './dragHandle';
 import React from 'react';
@@ -14,7 +14,7 @@ export interface IProps extends IModelItem {
 }
 
 export const ComplexProperty: FC<IProps> = props => {
-  const { deleteItem, selectedItemId, selectedItemRef } = usePropertiesEditor();
+  const { deleteItem, addItem, selectedItemId, selectedItemRef } = usePropertiesEditor();
 
   const icon = getIconByDataType(props.dataType);
 
@@ -25,6 +25,10 @@ export const ComplexProperty: FC<IProps> = props => {
   let classes = ['sha-sidebar-item'];
   if (selectedItemId === props.id) {
     classes.push('selected');
+  }
+
+  const onAddChildClick = () => {
+    addItem(props.id);
   }
 
   return (
@@ -38,6 +42,8 @@ export const ComplexProperty: FC<IProps> = props => {
             <QuestionCircleOutlined className="sha-help-icon" />
           </Tooltip>
         )}
+        <Button icon={<PlusOutlined color="red" />} onClick={onAddChildClick} size="small">Add child</Button>
+
         <div className="sha-sidebar-item-controls">
           <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
         </div>

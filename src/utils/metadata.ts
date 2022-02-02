@@ -3,6 +3,8 @@ import { DataTypes } from "../interfaces/dataTypes";
 
 export const getIconByDataType = (dataType: string):IconType => {
     switch(dataType) {
+      case DataTypes.array: return 'OrderedListOutlined';
+      case DataTypes.object: return 'PartitionOutlined';
       case DataTypes.string: return 'FieldStringOutlined';
       case DataTypes.number: return 'FieldNumberOutlined';
       case DataTypes.entityReference: return 'PartitionOutlined';
