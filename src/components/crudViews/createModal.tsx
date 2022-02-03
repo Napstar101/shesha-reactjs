@@ -22,7 +22,7 @@ export interface IGenericCreateModalProps {
   /**
    * Whether the modal is visible
    */
-  visible: boolean;
+  visible?: boolean;
 
   /**
    * Path to the form to display on the modal
@@ -37,12 +37,12 @@ export interface IGenericCreateModalProps {
   /**
    * A callback to cancel the modal
    */
-  onCancel: (form: FormInstance) => void;
+  onCancel?: (form: FormInstance) => void;
 
   /**
    * A callback to for when the updating of an entity is successful
    */
-  onSuccess: (form: FormInstance, keepOpen?: boolean) => void;
+  onSuccess?: (form: FormInstance, keepOpen?: boolean) => void;
 
   /**
    * A function to prepare modal values
