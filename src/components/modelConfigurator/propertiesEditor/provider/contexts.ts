@@ -6,6 +6,11 @@ export interface IUpdateChildItemsPayload {
   childs: IModelItem[];
 }
 
+export interface IAddItemPayload {
+  parentId?: string;
+  item: IModelItem;
+}
+
 export interface IUpdateItemSettingsPayload {
   id: string;
   settings: IModelItem;
@@ -19,7 +24,7 @@ export interface IPropertiesEditorStateContext {
 }
 
 export interface IPropertiesEditorActionsContext {
-  addItem: () => Promise<IModelItem>;
+  addItem: (parentId?: string) => Promise<IModelItem>;
   deleteItem: (uid: string) => void;
   selectItem: (uid: string) => void;
   updateChildItems: (payload: IUpdateChildItemsPayload) => void;

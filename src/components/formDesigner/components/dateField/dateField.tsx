@@ -201,8 +201,6 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     return disabledFunc(current, moment);
   }
 
-  console.log('DatePicker name, formattedValue:  ', name, formattedValue);
-
   if (isReadOnly) {
     return <ReadOnlyDisplayFormItem value={formattedValue?.toISOString()} type="datetime" />;
   }

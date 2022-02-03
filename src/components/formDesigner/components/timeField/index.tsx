@@ -11,6 +11,7 @@ import { validateConfigurableComponentSettings } from '../../../../providers/for
 import { useForm } from '../../../../providers';
 import { HiddenFormItem } from '../../../hiddenFormItem';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 type RangeType = 'start' | 'end';
 // tslint:disable-next-line:interface-over-type-literal
@@ -98,10 +99,13 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
   defaultValue,
   placeholder,
   format = DATE_TIME_FORMAT,
+  readOnly,
   ...rest
 }) => {
-  const { form } = useForm();
+  const { form, formMode } = useForm();
   const evaluatedValue = getMoment(value, format);
+
+  const isReadOnly = readOnly || formMode === 'readonly';
 
   const getDefaultRangePickerValues = () =>
     Array.isArray(defaultValue) && defaultValue?.length === 2
@@ -126,6 +130,10 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
       });
     }
   };
+
+  if (isReadOnly) {
+    return <ReadOnlyDisplayFormItem value={evaluatedValue?.toISOString()} type="datetime" />;
+  }
 
   if (range) {
     return (

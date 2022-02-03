@@ -56,23 +56,14 @@ const PropertiesEditorProvider: FC<PropsWithChildren<IPropertiesEditorProviderPr
     });
   }
 
-  const addItem = () => {
+  const addItem = (parentId?: string) => {
     //return dispatchDeferred
     return new Promise<IModelItem>((resolve) => {
       const item: IModelItem = {
         id: nanoid(),
       };
-      dispatchAndFire(addItemAction(item));
+      dispatchAndFire(addItemAction({ parentId: parentId, item: item }));
       resolve(item);
-      /*
-      dispatch((dispatch, _getState) => {
-        const item: IModelItem = {
-          id: nanoid(),
-        };
-        dispatch(addItemAction(item));
-        resolve(item);
-      });
-      */
     });
   };
 

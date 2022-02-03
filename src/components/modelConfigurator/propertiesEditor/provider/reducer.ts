@@ -1,4 +1,5 @@
 import {
+  IAddItemPayload,
   IPropertiesEditorStateContext,
   IUpdateChildItemsPayload,
   IUpdateItemSettingsPayload,
@@ -9,6 +10,7 @@ import { handleActions } from 'redux-actions';
 import { getItemPositionById } from './utils';
 import { IModelItem } from '../../../../interfaces/modelConfigurator';
 import { ModelPropertyDto } from '../../../../apis/modelConfigurations';
+import { nanoid } from 'nanoid';
 
 const mapPropertyToModelItem = (property: ModelPropertyDto): IModelItem => {
   const result = {
@@ -28,25 +30,43 @@ const mapPropertyToModelItem = (property: ModelPropertyDto): IModelItem => {
   return result;  
 }
 
+const findItemById = (items: IModelItem[], id: string): IModelItem => {
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+
+    if (item.id === id)
+      return item;
+    if (item.properties && item.properties.length > 0) {
+      const nested = findItemById(item.properties, id);
+      if (nested)
+        return nested;
+    }
+  }
+
+  return null;
+}
+
 const modelReducer = handleActions<IPropertiesEditorStateContext, any>(
   {
     [ModelActionEnums.AddItem]: (
       state: IPropertiesEditorStateContext,
-      action: ReduxActions.Action<IModelItem>
+      action: ReduxActions.Action<IAddItemPayload | null>
     ) => {
       const { payload } = action
 
       const itemProps: IModelItem = {
         name: `New property`,
-        ...payload,
+        id: nanoid(),
       };
 
       const newItems = [...state.items];
 
-      const parent = null;
+      const parent = Boolean(payload.parentId)
+        ? findItemById(newItems, payload.parentId)
+        : null;
 
       if (parent) {
-        parent.childItems = [...parent.childItems, itemProps];
+        parent.properties = [...parent.properties, itemProps];
       } else newItems.push(itemProps);
 
       return {
@@ -75,7 +95,6 @@ const modelReducer = handleActions<IPropertiesEditorStateContext, any>(
       state: IPropertiesEditorStateContext,
       action: ReduxActions.Action<string>
     ) => {
-      // console.log('[ModelActionEnums.SelectItem]');
       const { payload } = action;
 
       return {
@@ -113,7 +132,6 @@ const modelReducer = handleActions<IPropertiesEditorStateContext, any>(
       state: IPropertiesEditorStateContext,
       action: ReduxActions.Action<IUpdateChildItemsPayload>
     ) => {
-      // console.log('[ModelActionEnums.UpdateChildItems]');
       const {
         payload: { index, childs: childIds },
       } = action;
@@ -152,6 +170,6 @@ function removeIdDeep(list: IModelItem[], idToRemove: string) {
   const filtered = list.filter(entry => entry.id !== idToRemove);
   return filtered.map(entry => {
     if (!entry.properties) return entry;
-    return { ...entry, childItems: removeIdDeep(entry.properties, idToRemove) };
+    return { ...entry, properties: removeIdDeep(entry.properties, idToRemove) };
   });
 }

@@ -36,6 +36,6 @@ export const EntityPropertyModel = addStory(Template, {
   id: '45AE2FE8-255B-462E-BDD8-FDA5C591AE08',
 });
 
-export const School = addStory(Template, {
-  id: 'AA6ADB56-668A-4D7B-917E-2FFB4ED36C2C',
+export const Holiday = addStory(Template, {
+  id: '3F0C6DF1-9135-4DC6-9905-E5D1EABB87A8',
 });
