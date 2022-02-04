@@ -47,27 +47,32 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       dataFormat === StringFormats.phoneNumber ||
       dataFormat === StringFormats.password),
   factory: (model: ITextFieldProps, _c, form, settings) => {
+    const { formMode, enabledComponentIds } = useForm();
+
+    const disabledByCondition = enabledComponentIds && !enabledComponentIds.includes(model.id);
+
+    const disabled = formMode !== 'designer' && (Boolean(model.disabled) || disabledByCondition);
+
+    const readOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
+
     const inputProps: InputProps = {
       placeholder: model.placeholder,
       prefix: model.prefix,
       suffix: model.suffix,
-      disabled: model.disabled,
       bordered: !model.hideBorder,
       maxLength: model.maxLength,
+      disabled,
+      readOnly,
     };
 
     const InputComponentType = renderInput(model.textType);
 
-    const { formMode } = useForm();
-
-    const isReadOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
-
     return (
       <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
-        {isReadOnly ? (
+        {readOnly ? (
           <ReadOnlyDisplayFormItem />
         ) : (
-          <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} />
+          <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} readOnly />
         )}
       </ConfigurableFormItem>
     );

@@ -132,7 +132,7 @@ export const TimePickerWrapper: FC<ITimePickerProps> = ({
   };
 
   if (isReadOnly) {
-    return <ReadOnlyDisplayFormItem value={evaluatedValue?.toISOString()} type="datetime" />;
+    return <ReadOnlyDisplayFormItem value={evaluatedValue?.toISOString()} type="time" />;
   }
 
   if (range) {

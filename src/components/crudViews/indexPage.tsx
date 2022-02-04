@@ -1,41 +1,13 @@
 import React, { FC, useState } from 'react';
-import { MainLayout, GenericCreateModal } from '../';
+import { MainLayout, GenericCreateModal, IGenericCreateModalProps } from '../';
 import { PlusOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
-import { IDataMutator } from './models';
 import IndexTableFull from '../indexTableFull';
 import { IToolbarItem } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
 import { useDataTableStore } from '../../providers';
 import { EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
-
-interface ICreateModalProps {
-  /**
-   * Title for the modal
-   */
-  title?: string;
-
-  /**
-   * A mutate function to update the entity
-   */
-  updater: (props: any) => IDataMutator;
-
-  /**
-   * A function to prepare modal values
-   */
-  prepareValues?: (values: any) => any;
-
-  /**
-   * The path for the form
-   */
-  formPath: string;
-
-  /**
-   * Allows you to capture the form and have the modal remain open
-   */
-  keepModalOpenAfterSave?: boolean;
-}
 
 export interface IGenericIndexPageProps {
   /**
@@ -61,7 +33,7 @@ export interface IGenericIndexPageProps {
   /**
    * The props for the modal used to add an entity
    */
-  createModalProps?: ICreateModalProps | null;
+  createModalProps?: IGenericCreateModalProps | null;
 
   /**
    * A callback for when the file export has succeeded

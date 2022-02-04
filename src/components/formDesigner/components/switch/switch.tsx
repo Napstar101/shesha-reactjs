@@ -26,7 +26,7 @@ const SwitchComponent: IToolboxComponent<ISwitchProps> = {
 
     return (
       <ConfigurableFormItem model={model}>
-        {isReadOnly ? <ReadOnlyDisplayFormItem type="switch" /> : <Switch defaultChecked />}
+        {isReadOnly ? <ReadOnlyDisplayFormItem type="switch" /> : <Switch />}
       </ConfigurableFormItem>
     );
   },

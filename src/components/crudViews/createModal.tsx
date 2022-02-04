@@ -6,6 +6,13 @@ import { useUi } from '../../providers';
 import { IDataMutator } from './models';
 import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 
+export enum OnSuccessActionType {
+  Return = 'RETURN',
+  AddMore = 'ADD_MORE',
+  GoToDetails = 'GO_TO_DETAILS',
+  GoToUrl = 'GO_TO_URL'
+}
+
 export interface IGenericCreateModalProps {
   /**
    * Modal title
@@ -15,7 +22,7 @@ export interface IGenericCreateModalProps {
   /**
    * Whether the modal is visible
    */
-  visible: boolean;
+  visible?: boolean;
 
   /**
    * Path to the form to display on the modal
@@ -30,12 +37,12 @@ export interface IGenericCreateModalProps {
   /**
    * A callback to cancel the modal
    */
-  onCancel: (form: FormInstance) => void;
+  onCancel?: (form: FormInstance) => void;
 
   /**
    * A callback to for when the updating of an entity is successful
    */
-  onSuccess: (form: FormInstance, keepOpen?: boolean) => void;
+  onSuccess?: (form: FormInstance, keepOpen?: boolean) => void;
 
   /**
    * A function to prepare modal values
@@ -43,14 +50,19 @@ export interface IGenericCreateModalProps {
   prepareValues?: (values: any) => any;
 
   /**
-   * A boolean value that allows multiple records to be save on form
+   * An enum that determines what happens after a user saves a form
    */
-  keepModalOpenAfterSave?: boolean;
+  OnSuccessAction?: OnSuccessActionType;
 
   /**
-   * Allows changing of caption of the Save/Submit in the modal
+   * Allows changing of the label of the Save/Submit in the modal
    */
-  saveCaption?: string | ReactNode;
+  submitButtonLabel?: string | ReactNode;
+
+  /**
+   * Allows changing of the label of the Cancel in the modal
+   */
+  cancelButtonLabel?: string | ReactNode;
 
   onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
 
@@ -73,8 +85,9 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
   title,
   formPath,
   prepareValues,
-  keepModalOpenAfterSave,
-  saveCaption = 'Save',
+  OnSuccessAction = OnSuccessActionType.Return,
+  submitButtonLabel = 'Submit',
+  cancelButtonLabel = 'Cancel',
   onFieldsChange,
   beforeSubmit,
   actions,
@@ -129,11 +142,13 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
       destroyOnClose={destroyOnClose}
       footer={
         <div>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button type="primary" onClick={onSubmit}>
-            {saveCaption}
+          <Button onClick={handleCancel}>
+            {cancelButtonLabel}
           </Button>
-          {keepModalOpenAfterSave && (
+          <Button type="primary" onClick={onSubmit}>
+            {submitButtonLabel}
+          </Button>
+          {OnSuccessAction == OnSuccessActionType.AddMore && (
             <Button type="primary" onClick={onSubmitKeepOpen}>
               Save And Capture Another
             </Button>
