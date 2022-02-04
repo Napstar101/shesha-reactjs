@@ -72,7 +72,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
         {readOnly ? (
           <ReadOnlyDisplayFormItem />
         ) : (
-          <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} readOnly />
+          <InputComponentType {...inputProps} {...customEventHandler(model, form, settings)} />
         )}
       </ConfigurableFormItem>
     );
