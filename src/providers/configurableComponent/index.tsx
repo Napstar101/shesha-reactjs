@@ -18,12 +18,11 @@ import {
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import {
-  useConfigurableComponentGet,
   /*useConfigurableComponentUpdate,*/ useConfigurableComponentUpdateSettings,
   ConfigurableComponentUpdateSettingsInput,
 } from '../../apis/configurableComponent';
 import { useReducer } from 'react';
-import { usePrevious } from 'react-use';
+import { useAppConfigurator } from '../appConfigurator';
 
 export interface IGenericConfigurableComponentProviderProps<TSettings extends any> {
   initialState: IConfigurableComponentStateContext<TSettings>;
@@ -40,45 +39,31 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
   id,
 }: PropsWithChildren<IGenericConfigurableComponentProviderProps<TSettings>>) => {
   const reducer = reducerFactory(initialState);
+  const { getSettings, invalidateSettings } = useAppConfigurator();
 
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     id,
   });
 
-  const { loading: isFetching, error: fetchingError, data: fetchingResponse, refetch } = useConfigurableComponentGet({
-    lazy: true,
-    id,
-  });
-
-  const previousId = usePrevious(id);
-
-  const doFetch = () => {
-    if (id && id !== previousId) {
-      dispatch(loadRequestAction({ id }));
-      refetch({});
-    }
-  };
-
   useEffect(() => {
     if (!Boolean(id)) return;
-
+    
     doFetch();
   }, [id]);
 
-  useEffect(() => {
-    if (!isFetching) {
-      if (fetchingResponse) {
+  const doFetch = () => {
+    dispatch(loadRequestAction({ id }));
+    getSettings(id)
+      .then((settings) => {
         dispatch(
-          loadSuccessAction({
-            ...fetchingResponse.result,
-            settings: fetchingResponse.result?.settings,
-          })
+          loadSuccessAction({...settings})
         );
-      }
-      if (fetchingError) dispatch(loadErrorAction({ error: fetchingError?.['message'] || 'Failed to load component' }));
-    }
-  }, [isFetching, fetchingError, fetchingResponse]);
+      })
+      .catch((error) => {
+        dispatch(loadErrorAction({ error: error?.['message'] || 'Failed to load component' }))
+      });
+  };
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
@@ -108,6 +93,7 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
 
     return saveFormHttp(dto, {})
       .then(_response => {
+        invalidateSettings(state.id);
         dispatch(saveSuccessAction({ settings: dto.settings }));
       })
       .catch(_error => {

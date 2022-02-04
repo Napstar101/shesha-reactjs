@@ -1,13 +1,15 @@
-import React, { FC, useReducer, useContext, PropsWithChildren, useEffect } from 'react';
+import React, { FC, useReducer, useContext, PropsWithChildren, useEffect, useRef } from 'react';
 import appConfiguratorReducer from './reducer';
 import { AppConfiguratorActionsContext, AppConfiguratorStateContext, APP_CONTEXT_INITIAL_STATE } from './contexts';
-import { ApplicationMode } from './models';
+import { ApplicationMode, IComponentSettings, IComponentSettingsDictionary } from './models';
 import {
   switchApplicationModeAction,
   toggleEditModeConfirmationAction,
   toggleCloseEditModeConfirmationAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
+import { configurableComponentGet } from '../../apis/configurableComponent';
+import { useSheshaApplication } from '../sheshaApplication';
 
 export interface IAppConfiguratorProviderProps {}
 
@@ -15,6 +17,10 @@ const AppConfiguratorProvider: FC<PropsWithChildren<IAppConfiguratorProviderProp
   const [state, dispatch] = useReducer(appConfiguratorReducer, {
     ...APP_CONTEXT_INITIAL_STATE,
   });
+
+  const settingsDictionary = useRef<IComponentSettingsDictionary>({});
+
+  const { backendUrl, httpHeaders } = useSheshaApplication();
 
   useEffect(() => {
     if (!document) return;
@@ -41,6 +47,43 @@ const AppConfiguratorProvider: FC<PropsWithChildren<IAppConfiguratorProviderProp
     dispatch(toggleCloseEditModeConfirmationAction(visible));
   };
 
+  const normalizeId = (id: string) => id.toLowerCase();
+
+  const getSettings = (id: string) => {
+    const loadedSettings = settingsDictionary.current[id];
+    if (loadedSettings)
+      return Promise.resolve(loadedSettings);
+
+    const result = new Promise<IComponentSettings>((resolve, reject) => {
+      configurableComponentGet({ id, base: backendUrl, headers: httpHeaders })
+      .then((response) => {
+        if (!response.success) {
+          reject(response.error);
+        }
+        
+        const settings: IComponentSettings = {
+          id: response.result.id,
+          name: response.result.name,
+          description: response.result.description,
+          settings: response.result.settings,
+        };
+
+        settingsDictionary.current[normalizeId(id)] = settings;
+        resolve(settings);
+      })
+      .catch(error => {
+        reject(error);
+      });
+    });
+
+    return result;
+  }
+
+  const invalidateSettings = (id: string) => {
+    const normalizedId = normalizeId(id);
+    delete settingsDictionary.current[normalizedId];
+  }
+
   return (
     <AppConfiguratorStateContext.Provider value={state}>
       <AppConfiguratorActionsContext.Provider
@@ -48,6 +91,8 @@ const AppConfiguratorProvider: FC<PropsWithChildren<IAppConfiguratorProviderProp
           switchApplicationMode,
           toggleEditModeConfirmation,
           toggleCloseEditModeConfirmation,
+          getSettings,
+          invalidateSettings,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

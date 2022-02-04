@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { ApplicationMode } from './models';
+import { ApplicationMode, IComponentSettings } from './models';
 
 export interface IAppStateContext {
   editModeConfirmationVisible: boolean;
@@ -11,6 +11,8 @@ export interface IAppActionsContext {
   switchApplicationMode: (mode: ApplicationMode) => void;
   toggleEditModeConfirmation: (visible: boolean) => void;
   toggleCloseEditModeConfirmation: (visible: boolean) => void;
+  getSettings: (id: string) => Promise<IComponentSettings>;
+  invalidateSettings: (id: string) => void;
 
   /* NEW_ACTION_ACTION_DECLARATIO_GOES_HERE */
 }

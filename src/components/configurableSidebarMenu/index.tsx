@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { ConfigurableComponent, ISettingsEditorProps } from '../configurableComponent';
 import { ErrorBoundary } from '../errorBoundary/errorBoundary';
 import { SidebarMenu } from '../sidebarMenu';
@@ -12,7 +12,7 @@ export interface ISideBarMenuProps {
 
 export interface IConfigurableSidebarMenuProps {
   theme?: MenuTheme;
-  defaultSettings: ISideBarMenuProps;
+  defaultSettings?: ISideBarMenuProps;
   id: string;
 }
 
@@ -26,11 +26,15 @@ export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = props 
       />
     );
   };
+  const memoizedDefaults = useMemo(() =>
+    props.defaultSettings ?? { items: [] }
+    , [props.defaultSettings]);
 
   return (
     <ErrorBoundary>
       <ConfigurableComponent<ISideBarMenuProps>
-        defaultSettings={props.defaultSettings}
+        defaultSettings={memoizedDefaults}
+
         settingsEditor={{
           render: editor,
         }}

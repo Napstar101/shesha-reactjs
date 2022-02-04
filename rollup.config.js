@@ -29,6 +29,8 @@ export default {
     },
   ],
   external: [
+    'react',
+    'react-dom',
     '@ant-design/icons',
     'component-classes',
     'antd',
