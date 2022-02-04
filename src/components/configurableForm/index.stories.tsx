@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import ConfigurableForm from '.';
@@ -9,10 +9,7 @@ import AuthContainer from '../authedContainer';
 import { IndexPageTemplate } from './stories/indexPage';
 import StoredFilesRenderer from '../storedFilesRenderer';
 import { addStory } from '../../stories/utils';
-import dualModeForm from './dualModeForm.json';
-import { FormMode } from '../../providers/form/models';
 import { ConfigurableFormInstance } from '../../providers/form/contexts';
-// import { useApplicationsApplyForMembership } from '../../apis/applications';
 
 export default {
   title: 'Components/ConfigurableForm',
@@ -87,7 +84,11 @@ const DualModeForm: Story<IConfigurableFormProps> = ({ path, mode = 'readonly' }
     console.log('onFinish data: ', JSON.stringify(data, null, 2));
   };
 
-  const switchToReadOnlyMode = () => formRef?.current?.setFormMode('readonly');
+  const switchToReadOnlyMode = () => {
+    form?.submit();
+
+    formRef?.current?.setFormMode('readonly');
+  };
 
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
@@ -99,6 +100,8 @@ const DualModeForm: Story<IConfigurableFormProps> = ({ path, mode = 'readonly' }
               formRef={formRef}
               path={path}
               onFinish={onFinish}
+              onFieldsChange={data => console.log('onFieldsChange data: ', data)}
+              onValuesChange={data => console.log('onValuesChange data: ', data)}
               form={form}
               initialValues={{
                 firstName: 'Some',
@@ -143,7 +146,7 @@ const DualModeForm: Story<IConfigurableFormProps> = ({ path, mode = 'readonly' }
                 endDate: '2022-02-02T19:02:15+02:00',
                 optIn: true,
                 alerts: false,
-                // marketingEmails: false,
+                marketingEmails: true,
                 message:
                   "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
               }}

@@ -1,12 +1,12 @@
 import React, { FC, ReactNode } from 'react';
 import { EditOutlined } from '@ant-design/icons';
 import { Show } from '../show';
-import { BasicDisplayFormItem } from '../basicDisplayFormItem';
 import { useForm } from '../../providers';
-import moment from 'moment';
 import { IDtoType, ISelectOption } from '../autocomplete';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { Switch, Tag } from 'antd';
+import { getMoment } from '../../utils/date';
+import moment from 'moment';
 
 type AutocompleteType = ISelectOption<IDtoType>;
 
@@ -18,6 +18,8 @@ export interface IReadOnlyDisplayFormItemProps {
   dateFormat?: string;
   timeFormat?: string;
   disabled?: boolean;
+  checked?: boolean;
+  defaultChecked?: boolean;
 }
 
 export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
@@ -28,8 +30,14 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   dropdownDisplayMode = 'raw',
   render,
   disabled,
+  checked,
+  defaultChecked,
 }) => {
-  const { formSettings, setFormMode } = useForm();
+  if (type === 'switch') {
+    console.log('ReadOnlyDisplayFormItem type, checkbox, defaultChecked: ', type, checked, defaultChecked);
+  }
+
+  const { formSettings, setFormMode, formMode } = useForm();
 
   const setFormModeToEdit = () => setFormMode('edit');
 
@@ -69,13 +77,15 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
           return moment(value).format(type === 'datetime' ? dateFormat : timeFormat);
         }
 
-        throw new Error(`Invalid data type passed. Expected string but found: ${typeof value}`);
+        return getMoment(value, type === 'datetime' ? dateFormat : timeFormat)?.toISOString() || '';
+
+        // throw new Error(`Invalid data type passed. Expected string but found: ${typeof value}`);
       }
       case 'checkbox': {
-        return <Checkbox checked={Boolean(value)} disabled />;
+        return <Checkbox checked={checked} defaultChecked={defaultChecked} disabled />;
       }
       case 'switch': {
-        return <Switch checked={Boolean(value)} disabled />;
+        return <Switch checked={checked} defaultChecked={defaultChecked} disabled />;
       }
 
       default:
@@ -86,13 +96,13 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   };
 
   return (
-    <BasicDisplayFormItem className="read-only-display-form-item">
+    <span className="read-only-display-form-item">
       {renderValue()}
 
-      <Show when={formSettings?.showModeToggler && !disabled}>
+      <Show when={formSettings?.showModeToggler && !disabled && formMode === 'readonly'}>
         <EditOutlined className="red-only-mode-toggler" onClick={setFormModeToEdit} />
       </Show>
-    </BasicDisplayFormItem>
+    </span>
   );
 };
 

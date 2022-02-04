@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { isMoment, Moment } from 'moment';
 import { getSafelyTrimmedString } from './index';
 
 /**
@@ -68,4 +68,14 @@ export const LongDob = (date: string) => {
 export const tolocalIsoDate = (dateIsoString: string) => {
   const tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
   return new Date(Date.parse(dateIsoString) - tzoffset).toISOString().slice(0, -1);
+};
+
+export const getMoment = (value: any, dateFormat: string): Moment => {
+  if (value === null || value === undefined) return undefined;
+
+  const values = [isMoment(value) ? value : null, moment(value as string, dateFormat), moment(value as string)];
+
+  const parsed = values.find(i => isMoment(i) && i.isValid());
+
+  return parsed;
 };

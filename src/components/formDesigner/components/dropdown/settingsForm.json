@@ -59,19 +59,6 @@
       "settingsValidationErrors": []
     },
     {
-      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
-      "type": "codeEditor",
-      "name": "customEnabled",
-      "label": "Custom Enabled",
-      "labelAlign": "right",
-      "parentId": "root",
-      "hidden": false,
-      "customEnabled": null,
-      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
-      "validate": {},
-      "settingsValidationErrors": []
-    },
-    {
       "id": "vdHXORT_t16LbITksJNtm",
       "type": "textArea",
       "name": "description",
@@ -106,6 +93,13 @@
       "name": "disabled",
       "parentId": "root",
       "label": "Disabled"
+    },
+    {
+      "id": "1ceb3851-f15e-437b-98b6-84d6a1fbf801",
+      "type": "checkbox",
+      "name": "readOnly",
+      "parentId": "root",
+      "label": "Read Only"
     },
     {
       "id": "c67b7404-d980-437a-a544-74e4e816f6cd",
@@ -294,6 +288,19 @@
       "hidden": false,
       "customVisibility": null,
       "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
+      "type": "codeEditor",
+      "name": "customEnabled",
+      "label": "Custom Enabled",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customEnabled": null,
+      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
       "validate": {},
       "settingsValidationErrors": []
     }
