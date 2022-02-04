@@ -5,12 +5,13 @@ import { CalendarOutlined } from '@ant-design/icons';
 import { DatePicker } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import moment, { Moment, isMoment } from 'moment';
+import moment, { isMoment } from 'moment';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { HiddenFormItem } from '../../../hiddenFormItem';
 import { useForm } from '../../../../providers';
 import { DataTypes } from '../../../../interfaces/dataTypes';
 import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
+import { getMoment } from '../../../../utils/date';
 
 const DATE_TIME_FORMATS = {
   time: 'HH:mm',
@@ -54,16 +55,6 @@ export interface IDateFieldProps extends IConfigurableFormComponent {
   disabledDateTemplate?: string;
   disabledDateFunc?: string;
 }
-
-const getMoment = (value: any, dateFormat: string): Moment => {
-  if (value === null || value === undefined) return undefined;
-
-  const values = [isMoment(value) ? value : null, moment(value as string, dateFormat), moment(value as string)];
-
-  const parsed = values.find(i => isMoment(i) && i.isValid());
-
-  return parsed;
-};
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -133,7 +124,11 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     readOnly,
     ...rest
   } = props;
-  const { form, formMode } = useForm();
+  const { form, formMode, enabledComponentIds } = useForm();
+
+  const disabledByCondition = enabledComponentIds && !enabledComponentIds.includes(rest.id);
+
+  const isDisabled = formMode !== 'designer' && (disabled || disabledByCondition);
 
   const isReadOnly = readOnly || formMode === 'readonly';
 
@@ -216,6 +211,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
         {...rest}
         picker={picker}
         showTime={showTime}
+        disabled={isDisabled}
       />
     );
   }
@@ -224,8 +220,8 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     <DatePicker
       value={formattedValue}
       disabledDate={disabledDate}
+      disabled={isDisabled}
       onChange={handleDatePickerChange}
-      disabled={disabled}
       bordered={!hideBorder}
       showTime={showTime}
       showNow={showNow}
@@ -239,8 +235,3 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
 };
 
 export default DateField;
-
-// const DatePickerReadOnlyRenderer = () => {
-
-//   return <div></div>
-// }

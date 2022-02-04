@@ -10,6 +10,7 @@ import { validateConfigurableComponentSettings } from '../../../../providers/for
 import RefListDropDown from '../../../refListDropDown';
 import { DataTypes } from '../../../../interfaces/dataTypes';
 import { useForm } from '../../../..';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -107,6 +108,16 @@ export const Dropdown: FC<IDropdownProps> = ({
   }
 
   const options = getOptions() || [];
+
+  const selectedValue = options.length > 0 ? value || defaultValue : null;
+
+  const getSelectValue = () => {
+    return options?.find(({ value }) => value === selectedValue)?.label;
+  };
+
+  if (isReadOnly) {
+    return <ReadOnlyDisplayFormItem type="string" value={getSelectValue()} />;
+  }
 
   return (
     <Select

@@ -59,13 +59,6 @@
       "label": "Hidden"
     },
     {
-      "id": "1ceb3851-f15e-437b-98b6-84d6a1fbf801",
-      "type": "checkbox",
-      "name": "readOnly",
-      "parentId": "root",
-      "label": "Read Only"
-    },
-    {
       "id": "f43abbca-082c-11ec-9a03-0242ac130003",
       "type": "checkbox",
       "name": "defaultValue",
@@ -85,6 +78,13 @@
       "name": "disabled",
       "parentId": "root",
       "label": "Disabled"
+    },
+    {
+      "id": "1ceb3851-f15e-437b-98b6-84d6a1fbf801",
+      "type": "checkbox",
+      "name": "readOnly",
+      "parentId": "root",
+      "label": "Read Only"
     },
     {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
@@ -117,6 +117,19 @@
       "hidden": false,
       "customVisibility": null,
       "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
+      "type": "codeEditor",
+      "name": "customEnabled",
+      "label": "Custom Enabled",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customEnabled": null,
+      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
       "validate": {},
       "settingsValidationErrors": []
     }
