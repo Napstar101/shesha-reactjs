@@ -37,7 +37,6 @@ export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({
   __hideHeader = false,
 }) => {
   const sidebarDefaults = useSidebarMenuDefaults();
-  const sidebarDefaultItems = sidebarDefaults?.items || [];
 
   const [collapsed, setCollapsed] = useLocalStorage('SIDEBAR_COLLAPSE', true);
 
@@ -57,7 +56,7 @@ export const DefaultLayout: FC<PropsWithChildren<IDefaultLayoutProps>> = ({
         }}
         theme={theme}
       >
-        <ConfigurableSidebarMenu theme={theme} id={SIDEBAR_MENU_ID} defaultSettings={{ items: sidebarDefaultItems }} />
+        <ConfigurableSidebarMenu theme={theme} id={SIDEBAR_MENU_ID} defaultSettings={ sidebarDefaults } />
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background">
