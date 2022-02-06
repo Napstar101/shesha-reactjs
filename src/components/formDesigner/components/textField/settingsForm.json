@@ -222,6 +222,27 @@
       "validate": {}
     },
     {
+      "id": "9ee3a529-1f0c-4def-bd41-ee166a5dfcd7",
+      "type": "textField",
+      "name": "validate.message",
+      "parentId": "root",
+      "label": "Message",
+      "validate": {}
+    },
+    {
+      "id": "22725416-3a3c-412c-8461-4c8d55e5c073",
+      "type": "codeEditor",
+      "name": "validate.validator",
+      "parentId": "root",
+      "label": "Validator",
+      "validate": {},
+      "labelAlign": "right",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom validator logic for form.item rules. Params include (rules, value, callback). Returns a Promise",
+      "settingsValidationErrors": []
+    },
+    {
       "id": "41721f44-adbc-42fe-8c70-69b30e36f4ca",
       "type": "sectionSeparator",
       "name": "sectionVisibility",
