@@ -26,6 +26,8 @@ export interface IComponentValidationRules {
   maxValue?: number;
   minLength?: number;
   maxLength?: number;
+  message?: string;
+  validator?: string;
 }
 
 export type ConfigurableFormComponentTypes =
