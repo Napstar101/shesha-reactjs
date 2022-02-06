@@ -17,6 +17,7 @@ import Schema, { Rules, ValidateSource } from 'async-validator';
 import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
 import { formGet, formGetByPath } from '../../apis/form';
 import { IPropertyMetadata } from '../../interfaces/metadata';
+import { Rule } from 'antd/lib/form';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -291,7 +292,7 @@ export const getFieldNameFromExpression = (expression: string) => {
  */
 export const getValidationRules = (component: IConfigurableFormComponent) => {
   const { validate } = component;
-  let rules = [];
+  let rules: Rule[] = [];
 
   // todo: implement more generic way (e.g. using validation providers)
 
@@ -299,7 +300,7 @@ export const getValidationRules = (component: IConfigurableFormComponent) => {
     if (validate.required)
       rules.push({
         required: true,
-        message: 'This field is required',
+        message: validate?.message || 'This field is required',
       });
 
     if (validate.minValue)
@@ -324,6 +325,11 @@ export const getValidationRules = (component: IConfigurableFormComponent) => {
       rules.push({
         max: validate.maxLength,
         type: 'string',
+      });
+
+    if (validate.validator)
+      rules.push({
+        validator: (...r) => new Function('rule', 'value', 'callback', validate.validator)(...r),
       });
   }
 
@@ -493,7 +499,7 @@ export const getFormValidationRules = (markup: FormMarkup): Rules => {
 
   const rules: Rules = {};
   components.forEach(component => {
-    rules[component.name] = getValidationRules(component);
+    rules[component.name] = getValidationRules(component) as [];
   });
 
   return rules;
