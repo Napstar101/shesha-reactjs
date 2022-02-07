@@ -9,6 +9,14 @@
     }
   }
 
+  .sha-component-drag-handle {
+    top: 0px;
+    left: 0px;
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+
   .sidebar-container-main-area-body {
     .content-heading {
       .sha-designer-header {
@@ -141,6 +149,8 @@
     position: relative;
     margin: 4px;
     margin-left: 10px;
+    // padding: 4px;
+    // padding-left: 10px;
 
     .ant-alert.sha-designer-warning {
       margin-bottom: 0;
@@ -206,13 +216,15 @@
       min-height: 20px;
       z-index: 1000;
     }
+    
     &:not(:hover) {
       .sha-component-controls {
         display: none;
       }
+      
       .sha-component-drag-handle {
-        background-color: #fff;
-        visibility: hidden;
+        background-color: transparent;
+        border: none;
       }
     }
   }

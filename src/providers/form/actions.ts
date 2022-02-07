@@ -15,6 +15,7 @@ import {
   IComponentUpdateSettingsValidationPayload,
   IAddDataPropertyPayload,
   ISetEnabledComponentsPayload,
+  IComponentAddFromTemplatePayload,
 } from './contexts';
 import { IFormProps, IFlatComponentsStructure, FormMode } from './models';
 
@@ -28,6 +29,8 @@ export enum FormActionEnums {
   ComponentUpdate = 'COMPONENT_UPDATE',
   ComponentUpdateSettingsValidation = 'COMPONENT_UPDATE_SETTINGS_VALIDATION',
 
+  ComponentAddFromTemplate = 'COMPONENT_ADD_FROM_TEMPLATE',
+  
   SaveRequest = 'SAVE_REQUEST',
   SaveSuccess = 'SAVE_SUCCESS',
   SaveError = 'SAVE_ERROR',
@@ -65,6 +68,11 @@ export const dataPropertyAddAction = createAction<IAddDataPropertyPayload, IAddD
 
 export const componentAddAction = createAction<IComponentAddPayload, IComponentAddPayload>(
   FormActionEnums.ComponentAdd,
+  p => p
+);
+
+export const componentAddFromTemplateAction = createAction<IComponentAddFromTemplatePayload, IComponentAddFromTemplatePayload>(
+  FormActionEnums.ComponentAddFromTemplate,
   p => p
 );
 

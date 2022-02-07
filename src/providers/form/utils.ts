@@ -17,6 +17,8 @@ import Schema, { Rules, ValidateSource } from 'async-validator';
 import { DEFAULT_FORM_SETTINGS, IFormSettings } from './contexts';
 import { formGet, formGetByPath } from '../../apis/form';
 import { IPropertyMetadata } from '../../interfaces/metadata';
+import { nanoid } from 'nanoid';
+import { Rule } from 'antd/lib/form';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -131,25 +133,9 @@ export const componentsFlatStructureToTree = (
  */
 export const loadFormById = (id: string) => {
   return formGet({ id });
-  /*
-    if (id) {
-      dispatch(loadRequestAction({ id }));
-      fetcherById.refetch({});
-    } else if (path) {
-      dispatch(loadRequestAction({ path }));
-      fetcherByPath.refetch({ queryParams: { path: path } });  
-  */
 };
 export const loadFormByPath = (path: string) => {
   return formGetByPath({ path }, {});
-  /*
-    if (id) {
-      dispatch(loadRequestAction({ id }));
-      fetcherById.refetch({});
-    } else if (path) {
-      dispatch(loadRequestAction({ path }));
-      fetcherByPath.refetch({ queryParams: { path: path } });  
-  */
 };
 
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
@@ -291,7 +277,7 @@ export const getFieldNameFromExpression = (expression: string) => {
  */
 export const getValidationRules = (component: IConfigurableFormComponent) => {
   const { validate } = component;
-  let rules = [];
+  let rules: Rule[] = [];
 
   // todo: implement more generic way (e.g. using validation providers)
 
@@ -299,7 +285,7 @@ export const getValidationRules = (component: IConfigurableFormComponent) => {
     if (validate.required)
       rules.push({
         required: true,
-        message: 'This field is required',
+        message: validate?.message || 'This field is required',
       });
 
     if (validate.minValue)
@@ -324,6 +310,11 @@ export const getValidationRules = (component: IConfigurableFormComponent) => {
       rules.push({
         max: validate.maxLength,
         type: 'string',
+      });
+
+    if (validate.validator)
+      rules.push({
+        validator: (...r) => new Function('rule', 'value', 'callback', validate.validator)(...r),
       });
   }
 
@@ -493,7 +484,7 @@ export const getFormValidationRules = (markup: FormMarkup): Rules => {
 
   const rules: Rules = {};
   components.forEach(component => {
-    rules[component.name] = getValidationRules(component);
+    rules[component.name] = getValidationRules(component) as [];
   });
 
   return rules;
@@ -521,4 +512,63 @@ export function listComponentToModelMetadata<TModel extends IConfigurableFormCom
   if (component.linkToModelMetadata) mappedModel = component.linkToModelMetadata(model, metadata);
 
   return mappedModel;
+}
+
+const getContainerNames = (toolboxComponent: IToolboxComponent): string[] => {
+  const containers = [...(toolboxComponent.customContainerNames ?? [])];
+  if (!containers.includes('components'))
+    containers.push('components');
+  return containers;
+}
+
+export type ProcessingFunc = (child: IConfigurableFormComponent, parentId: string) => void;
+
+export const processRecursive = (componentsRegistration: IToolboxComponentGroup[], parentId: string, component: IConfigurableFormComponent, func: ProcessingFunc) => {
+  func(component, parentId);
+
+  const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
+  const containers = getContainerNames(toolboxComponent);
+
+  if (containers) {
+    containers.forEach(containerName => {
+      const containerComponents = component[containerName] as IConfigurableFormComponent[];
+      if (containerComponents){
+        containerComponents.forEach(child => {
+          func(child, component.id);
+          processRecursive(componentsRegistration, parentId, child, func);
+        });
+      }
+    });
+  }
+}
+
+/**
+ * Clone components and generate new ids for them
+ * @param componentsRegistration 
+ * @param components 
+ * @returns 
+ */
+export const cloneComponents = (componentsRegistration: IToolboxComponentGroup[], components: IConfigurableFormComponent[]): IConfigurableFormComponent[] => {
+  let result: IConfigurableFormComponent[] = [];
+
+  components.forEach(component => {
+    let clone = {...component, id: nanoid() };
+
+    result.push(clone);
+
+    const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
+    const containers = getContainerNames(toolboxComponent);
+  
+    if (containers) {
+      containers.forEach(containerName => {
+        const containerComponents = clone[containerName] as IConfigurableFormComponent[];
+        if (containerComponents){
+          const newChilds = cloneComponents(componentsRegistration, containerComponents);
+          clone[containerName] = newChilds;
+        }
+      });
+    }
+  });
+
+  return result;
 }

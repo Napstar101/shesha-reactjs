@@ -25,6 +25,7 @@ import TableViewSelector from '../../../components/formDesigner/components/dataT
 import QueryBuilderComponent from '../../../components/formDesigner/components/queryBuilder/queryBuilderComponent';
 import TableContext from '../../../components/formDesigner/components/dataTable/tableContext/tableContextComponent';
 import DataTable from '../../../components/formDesigner/components/dataTable/table/tableComponent';
+import TableTemplate from '../../../components/formDesigner/components/dataTable/table/tableTemplateComponent';
 import Pager from '../../../components/formDesigner/components/dataTable/pager/pagerComponent';
 import QuickSearch from '../../../components/formDesigner/components/dataTable/quickSearch/quickSearchComponent';
 import AdvancedFilterButton from '../../../components/formDesigner/components/dataTable/advancedFilterButton/advancedFilterButtonComponent';
@@ -93,6 +94,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
     name: 'Datatable',
     components: [
+      TableTemplate,
       AdvancedFilterButton,
       DataTable,
       Pager,
@@ -105,12 +107,6 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
     ],
   },
 ];
-
-/*
-export const ToolboxComponents: IToolboxComponentBase[] = ComponentGroups.reduce(function(a, b) {
-  return a.concat(b.components);
-}, []);
-*/
 
 export default ToolboxComponents;
 

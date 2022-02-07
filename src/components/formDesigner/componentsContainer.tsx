@@ -40,6 +40,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
         if (newComponentIndex > -1) {
           // add new component
           const toolboxComponent = newState[newComponentIndex];
+          
           addComponent({
             containerId: containerId,
             componentType: toolboxComponent.id.toString(),

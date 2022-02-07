@@ -18,6 +18,7 @@ import {
   DEFAULT_FORM_SETTINGS,
   IAddDataPropertyPayload,
   ISetEnabledComponentsPayload,
+  IComponentAddFromTemplatePayload,
 } from './contexts';
 import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections, FormMode } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
@@ -49,6 +50,7 @@ import {
   setActiveDataSourceAction,
   dataPropertyAddAction,
   setEnabledComponentsAction,
+  componentAddFromTemplateAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { useFormGet, useFormGetByPath, useFormUpdateMarkup, FormUpdateMarkupInput } from '../../apis/form';
@@ -66,7 +68,7 @@ import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
-import { IAsyncValidationError, IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
+import { IAsyncValidationError, IFormValidationErrors, IToolboxComponent, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { useMetadataDispatcher } from '../../providers';
 
@@ -252,6 +254,10 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     dispatch(componentAddAction(payload));
   };
 
+  const addComponentsFromTemplate = (payload: IComponentAddFromTemplatePayload) => {
+    dispatch(componentAddFromTemplateAction(payload));
+  }
+
   const deleteComponent = (payload: IComponentDeletePayload) => {
     dispatch(componentDeleteAction(payload));
   };
@@ -264,7 +270,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     dispatch(componentUpdateAction(payload));
 
     const component = getComponentModel(payload.componentId);
-    const toolboxComponent = getToolboxComponent(component.type);
+    const toolboxComponent = getToolboxComponent(component.type) as IToolboxComponent;
     if (toolboxComponent.validateSettings) {
       toolboxComponent
         .validateSettings(payload.settings)
@@ -483,6 +489,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     ...getFlagSetters(dispatch),
     addDataProperty,
     addComponent,
+    addComponentsFromTemplate,
     deleteComponent,
     getComponentModel,
     updateComponent,

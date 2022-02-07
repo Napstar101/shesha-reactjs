@@ -62,7 +62,15 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
   const isDesignMode = formMode === 'designer';
 
   if (isDesignMode && !tableConfigId && !entityType)
-    return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
+    return (
+      <Alert 
+        className="sha-designer-warning" 
+        message="Table is not configured"
+        description="Select entity type on the settings panel"
+        type="warning" 
+        showIcon
+      />
+    )
 
   const tableProps: IShaDataTableProps = {
     id: tableConfigId,
