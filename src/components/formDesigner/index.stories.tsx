@@ -204,6 +204,10 @@ export const ModelProps = addStory(DesignerTemplate, {
   formId: 'd76d4fd7-b5e7-4fea-9c15-a34a63371430',
 });
 
+export const Empty = addStory(DesignerTemplate, {
+  formPath: 'empty',
+});
+
 interface FormInfo {
   name: string;
   path: string;

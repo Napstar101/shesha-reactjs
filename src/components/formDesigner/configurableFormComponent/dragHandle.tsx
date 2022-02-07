@@ -18,6 +18,9 @@ export const DragHandle: FC<IDragHandleProps> = props => {
     const tooltip = (
         <div>
             <div>
+                <strong>Id:</strong> {componentModel.id}
+            </div>
+            <div>
                 <strong>Type:</strong> {componentModel.type}
             </div>
             {Boolean(componentModel.name) && (
@@ -34,7 +37,7 @@ export const DragHandle: FC<IDragHandleProps> = props => {
 
     return (
         <Tooltip title={tooltip} placement="right">
-            <div className="sha-component-drag-handle" style={{ border: '1px solid #ddd' }} onClick={onClick}></div>
+            <div className="sha-component-drag-handle" onClick={onClick}></div>
         </Tooltip>
     );
 };

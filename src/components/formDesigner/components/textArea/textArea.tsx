@@ -31,7 +31,7 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
   icon: <FontColorsOutlined />,
   dataTypeSupported: ({ dataType, dataFormat }) =>
     dataType === DataTypes.string && dataFormat === StringFormats.multiline,
-  factory: (model: ITextAreaProps, _c, form, settings) => {
+  factory: (model: ITextAreaProps, _c, form) => {
     const textAreaProps: TextAreaProps = {
       placeholder: model.placeholder,
       disabled: model.disabled,
@@ -51,7 +51,7 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
         {isReadOnly ? (
           <ReadOnlyDisplayFormItem />
         ) : (
-          <Input.TextArea rows={2} {...textAreaProps} {...customEventHandler(model, form, settings)} />
+          <Input.TextArea rows={2} {...textAreaProps} {...customEventHandler(model, form)} />
         )}
       </ConfigurableFormItem>
     );

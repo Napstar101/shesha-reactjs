@@ -33,16 +33,13 @@
     },
     {
       "id": "5d4d56fb-d7f8-4835-a529-c4fa93f3596d",
-      "type": "propertyAutocomplete",
+      "type": "textField",
       "name": "name",
       "label": "Title",
       "labelAlign": "right",
       "parentId": "root",
       "hidden": false,
       "customVisibility": null,
-      "autoSize": false,
-      "showCount": false,
-      "allowClear": false,
       "validate": {
         "required": true
       }
