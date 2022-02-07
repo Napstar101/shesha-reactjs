@@ -21,7 +21,7 @@ import {
 import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure, IComponentRelations } from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import { camelize, cloneComponents, convertActions, findToolboxComponent, listComponentToModelMetadata, processRecursive } from './utils';
+import { camelize, cloneComponents, convertActions, findToolboxComponent, getCustomEnabledFunc, getCustomVisibilityFunc, listComponentToModelMetadata, processRecursive } from './utils';
 import undoable, { includeAction } from 'redux-undo';
 import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
@@ -157,8 +157,10 @@ const reducer = handleActions<IFormStateContext, any>(
           hidden: false,
           customVisibility: null,
           visibilityFunc: _data => true,
+          enabledFunc: _data => true,
         };
         if (toolboxComponent.initModel) formComponent = toolboxComponent.initModel(formComponent);
+
         newComponents.push(formComponent);
       }
 
@@ -209,6 +211,8 @@ const reducer = handleActions<IFormStateContext, any>(
 
       const component = state.allComponents[payload.componentId];
       const newComponent = { ...component, ...payload.settings } as IConfigurableFormComponent;
+      newComponent.visibilityFunc = getCustomVisibilityFunc(newComponent);
+      newComponent.enabledFunc = getCustomEnabledFunc(newComponent);
 
       const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, c => c.type === component.type);
 

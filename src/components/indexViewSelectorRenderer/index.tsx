@@ -57,7 +57,7 @@ export const IndexViewSelectorRenderer: FC<IIndexViewSelectorRendererProps> = ({
           ) : (
             header
           )}
-          <DownOutlined style={{ marginLeft: '5px' }} />
+          { filters.length > 0 && <DownOutlined style={{ marginLeft: '5px' }} /> }
         </h2>
       </Dropdown>
     </div>

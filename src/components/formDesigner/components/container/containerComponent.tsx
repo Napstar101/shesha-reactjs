@@ -22,6 +22,7 @@ export type JustifyContent =
 export interface IContainerComponentProps extends IConfigurableFormComponent {
   justifyContent?: JustifyContent;
   direction: ContainerDirection;
+  className?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -42,6 +43,7 @@ const ContainerComponent: IToolboxComponent<IContainerComponentProps> = {
         containerId={model.id}
         direction={model.direction}
         justifyContent={model.direction === 'horizontal' ? model?.justifyContent : null}
+        className={model.className}
       />
     );
   },

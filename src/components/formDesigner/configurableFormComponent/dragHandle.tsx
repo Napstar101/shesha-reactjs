@@ -10,16 +10,18 @@ interface IDragHandleProps {
 }
 
 export const DragHandle: FC<IDragHandleProps> = props => {
-    const { selectedComponentId, setSelectedComponent, getComponentModel } = useForm();
+    const { selectedComponentId, setSelectedComponent, getComponentModel, isDebug } = useForm();
 
     const metadata = useMetadata(false);
     const componentModel = getComponentModel(props.componentId);
 
     const tooltip = (
         <div>
-            <div>
-                <strong>Id:</strong> {componentModel.id}
-            </div>
+            {isDebug && (
+                <div>
+                    <strong>Id:</strong> {componentModel.id}
+                </div>
+            )}
             <div>
                 <strong>Type:</strong> {componentModel.type}
             </div>

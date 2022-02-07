@@ -254,7 +254,7 @@ export const getEnabledComponentIds = (components: IComponentsDictionary, values
     if (!component || component.disabled) continue;
 
     const isEnabled =
-      component?.enabledFunc === null ||
+      !Boolean(component?.enabledFunc) ||
       (typeof component?.enabledFunc === 'function' && component?.enabledFunc(values));
 
     if (isEnabled) enabledComponents.push(key);

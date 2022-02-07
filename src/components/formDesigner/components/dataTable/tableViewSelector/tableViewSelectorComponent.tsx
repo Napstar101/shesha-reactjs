@@ -3,8 +3,6 @@ import { IToolboxComponent } from '../../../../../interfaces';
 import { SelectOutlined } from '@ant-design/icons';
 import TableViewSelectorSettings from './tableViewSelectorSettingsPanel';
 import { ITableViewSelectorProps } from './models';
-import { Alert } from 'antd';
-import { useForm } from '../../../../../providers/form';
 import { IndexViewSelectorRenderer } from '../../../../../';
 import React from 'react';
 import { useDataTableStore } from '../../../../../providers';
@@ -32,27 +30,15 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
       />
     );
   },
-  // todo: implement custom validation  
 };
 
 export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, componentRef }) => {
-  const { formMode } = useForm();
-  const isDesignMode = formMode === 'designer';
   const { columns, getDataSourceType } = useDataTableStore();
   const dataSourceType = getDataSourceType();
   componentRef.current = {
     columns,
     dataSourceType
   };
-
-  if (filters.length === 0 && isDesignMode)
-    return (
-      <Alert
-        className="sha-designer-warning"
-        message="Filters are not defined. Press 'Customise Filters' button to add them"
-        type="warning"
-      />
-    );
 
   const {
     title,

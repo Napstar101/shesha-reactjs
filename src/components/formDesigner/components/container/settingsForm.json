@@ -110,6 +110,20 @@
       "validate": {}
     },
     {
+      "textType": "text",
+      "id": "jhbdWW6p65-RpmtpPhrNd",
+      "type": "textField",
+      "name": "className",
+      "label": "Custom CSS Class",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Custom CSS Class to add to this component",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
       "id": "bc67960e-77e3-40f2-89cc-f18f94678cce",
       "type": "sectionSeparator",
       "name": "separatorVisibility",

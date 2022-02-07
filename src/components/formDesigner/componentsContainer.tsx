@@ -9,8 +9,9 @@ export interface IProps {
   containerId: string;
   direction?: Direction;
   justifyContent?: string;
+  className?: string;
 }
-const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'vertical', justifyContent }) => {
+const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'vertical', justifyContent, className }) => {
   const { getChildComponents, updateChildComponents, addComponent, addDataProperty, startDragging, endDragging } = useFormActions();
   const { formMode } = useFormState();
   const isDesignerMode = formMode === 'designer';
@@ -74,7 +75,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
   if (direction === 'horizontal' && justifyContent) style['justifyContent'] = justifyContent;
 
   return (
-    <div className={`sha-components-container ${direction}`}>
+    <div className={`sha-components-container ${direction} ${className}`}>
       {isDesignerMode && (
         <>
           {components.length == 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
