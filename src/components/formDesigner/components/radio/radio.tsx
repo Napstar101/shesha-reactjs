@@ -8,6 +8,7 @@ import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { useForm } from '../../../../providers';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
 
 export interface ICheckItem {
   id: string;
@@ -36,15 +37,19 @@ const TextField: IToolboxComponent<IRadioProps> = {
 
     const isReadOnly = model?.readOnly || formMode === 'readonly';
 
+    const renderCheckGroup = () => (
+      <Radio.Group disabled={isReadOnly}>
+        {items.map((checkItem, index) => (
+          <Radio key={index} value={checkItem.value}>
+            {checkItem.name}
+          </Radio>
+        ))}
+      </Radio.Group>
+    );
+
     return (
       <ConfigurableFormItem model={model}>
-        <Radio.Group disabled={isReadOnly}>
-          {items.map((checkItem, index) => (
-            <Radio key={index} value={checkItem.value}>
-              {checkItem.name}
-            </Radio>
-          ))}
-        </Radio.Group>
+        {isReadOnly ? <ReadOnlyDisplayFormItem type="radiogroup" render={renderCheckGroup} /> : renderCheckGroup()}
       </ConfigurableFormItem>
     );
   },
