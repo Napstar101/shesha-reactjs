@@ -16,11 +16,12 @@ import {
   IComponentUpdateSettingsValidationPayload,
   IAddDataPropertyPayload,
   ISetEnabledComponentsPayload,
+  IHasComponentGroups,
 } from './contexts';
-import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure } from './models';
+import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure, IComponentRelations } from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import { camelize, convertActions, findToolboxComponent, listComponentToModelMetadata } from './utils';
+import { camelize, cloneComponents, convertActions, findToolboxComponent, listComponentToModelMetadata, processRecursive } from './utils';
 import undoable, { includeAction } from 'redux-undo';
 import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
@@ -28,20 +29,37 @@ import { nanoid } from 'nanoid/non-secure';
 import { IPropertyMetadata } from '../../interfaces/metadata';
 
 const addComponentToFlatStructure = (
-  structure: IFlatComponentsStructure,
-  formComponent: IConfigurableFormComponent,
+  structure: IFlatComponentsStructure & IHasComponentGroups,
+  formComponents: IConfigurableFormComponent[],
   containerId: string,
   index: number
 ): IFlatComponentsStructure => {
-  const allComponents = { ...structure.allComponents, [formComponent.id]: formComponent };
+  // build all components dictionary
+  const allComponents = { ...structure.allComponents };
+
+  let childRelations: IComponentRelations = {};
+
+  formComponents.forEach(component => {
+    processRecursive(structure.toolboxComponentGroups, containerId, component, (cmp, parentId) => {
+      allComponents[cmp.id] = cmp;
+      
+      if (parentId != containerId){
+        const relations = childRelations[parentId] ?? [];
+        childRelations[parentId] = [...relations, cmp.id];
+      }
+    });
+  });
 
   const currentLevel = containerId;
 
+  // add component(s) to the parent container
   const containerComponents = structure.componentRelations[currentLevel]
     ? [...structure.componentRelations[currentLevel]]
     : [];
-  containerComponents.splice(index, 0, formComponent.id);
-  const componentRelations = { ...structure.componentRelations, [currentLevel]: containerComponents };
+  formComponents.forEach(component => {
+    containerComponents.splice(index, 0, component.id);
+  });
+  const componentRelations = { ...structure.componentRelations, [currentLevel]: containerComponents, ...childRelations };
 
   return {
     allComponents,
@@ -98,7 +116,7 @@ const reducer = handleActions<IFormStateContext, any>(
       if (!Boolean(formComponent)) return state;
 
       formComponent.parentId = containerId; // set parent
-      const newStructure = addComponentToFlatStructure(state, formComponent, containerId, index);
+      const newStructure = addComponentToFlatStructure(state, [formComponent], containerId, index);
 
       return {
         ...state,
@@ -115,35 +133,42 @@ const reducer = handleActions<IFormStateContext, any>(
 
       // access to the list of toolbox  components
       const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, c => c.type === componentType);
+
       if (!toolboxComponent) return state;
 
-      // create new component
-      let count = 0;
-      for (let key in state.allComponents) {
-        if (state.allComponents[key].type == toolboxComponent.type) count++;
+      let newComponents: IConfigurableFormComponent[] = [];
+      if (toolboxComponent.isTemplate) {
+        newComponents = cloneComponents(state.toolboxComponentGroups, toolboxComponent.build());
+      } else {
+        // create new component
+        let count = 0;
+        for (let key in state.allComponents) {
+          if (state.allComponents[key].type == toolboxComponent.type) count++;
+        }
+        const componentName = `${toolboxComponent.name}${count + 1}`;
+
+        let formComponent: IConfigurableFormComponent = {
+          id: nanoid(),
+          type: toolboxComponent.type,
+          name: camelize(componentName),
+          label: componentName,
+          labelAlign: 'right',
+          parentId: containerId,
+          hidden: false,
+          customVisibility: null,
+          visibilityFunc: _data => true,
+        };
+        if (toolboxComponent.initModel) formComponent = toolboxComponent.initModel(formComponent);
+        newComponents.push(formComponent);
       }
-      const componentName = `${toolboxComponent.name}${count + 1}`;
 
-      let formComponent: IConfigurableFormComponent = {
-        id: nanoid(),
-        type: toolboxComponent.type,
-        name: camelize(componentName),
-        label: componentName,
-        labelAlign: 'right',
-        parentId: containerId,
-        hidden: false,
-        customVisibility: null,
-        visibilityFunc: _data => true,
-      };
-      if (toolboxComponent.initModel) formComponent = toolboxComponent.initModel(formComponent);
-
-      const newStructure = addComponentToFlatStructure(state, formComponent, containerId, index);
+      const newStructure = addComponentToFlatStructure(state, newComponents, containerId, index);
 
       return {
         ...state,
         allComponents: newStructure.allComponents,
         componentRelations: newStructure.componentRelations,
-        selectedComponentId: formComponent.id,
+        selectedComponentId: (newComponents[0]?.id),
       };
     },
 

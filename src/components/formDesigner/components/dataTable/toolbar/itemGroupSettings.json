@@ -1,14 +1,16 @@
 [
   {
     "id": "f061d971-8b38-4b82-b192-563259afc159",
-      "type": "propertyAutocomplete",
-      "name": "name",
+    "type": "textField",
+    "name": "name",
     "label": "Group Name",
     "labelAlign": "right",
     "parentId": "root",
     "hidden": false,
     "customVisibility": null,
-    "validate": { "required": true }
+    "validate": {
+      "required": true
+    }
   },
   {
     "id": "ceb5404b-4162-47c4-aa54-f43b86cf702d",

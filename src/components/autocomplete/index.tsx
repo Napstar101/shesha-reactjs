@@ -399,14 +399,6 @@ export const RawAutocomplete = (props: IAutocompleteProps<string>) => {
     if (!Boolean(itemValue)) return null;
     const item = options?.find(i => i.value === itemValue);
 
-    const val = {
-      value: itemValue,
-      label: item?.label ?? 'unknown',
-      data: itemValue,
-    };
-
-    console.log('RawAutocomplete val: ', val);
-
     return {
       value: itemValue,
       label: item?.label ?? 'unknown',

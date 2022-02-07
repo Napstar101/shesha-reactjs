@@ -65,8 +65,13 @@ export interface IFormSettings {
 
 export interface IFormDesignerStateContext extends StateWithHistory<IFormStateContext> {}
 
+export interface IHasComponentGroups {
+  toolboxComponentGroups: IToolboxComponentGroup[];
+}
+
 export interface IFormStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags>,
+    IHasComponentGroups,
     IFormProps {
   id?: string;
   path?: string;
@@ -85,16 +90,21 @@ export interface IFormStateContext
   selectedComponentId?: string; // todo: move to the designer level
   selectedComponentRef?: MutableRefObject<any>;
   isDragging: boolean;
-  toolboxComponentGroups: IToolboxComponentGroup[];
 
   dataSources: IDataSource[]; // todo: move to the designer level
   activeDataSourceId: string; // todo: move to the designer level
 }
 
-export interface IComponentAddPayload {
-  componentType: string;
+export interface AddComonentPayloadBase {
   index: number;
   containerId: string;
+}
+
+export interface IComponentAddPayload extends AddComonentPayloadBase {
+  componentType: string;
+}
+
+export interface IComponentAddFromTemplatePayload extends AddComonentPayloadBase {
 }
 
 export interface IAddDataPropertyPayload {
@@ -177,6 +187,7 @@ export interface IFormActionsContext
 
   addDataProperty: (payload: IAddDataPropertyPayload) => void;
   addComponent: (payload: IComponentAddPayload) => void;
+  addComponentsFromTemplate: (payload: IComponentAddFromTemplatePayload) => void;
   updateChildComponents: (payload: IUpdateChildComponentsPayload) => void;
   setDebugMode: (isDebug: boolean) => void;
   startDragging: () => void;
