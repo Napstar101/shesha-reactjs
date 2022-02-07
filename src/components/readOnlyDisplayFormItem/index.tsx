@@ -13,7 +13,16 @@ type AutocompleteType = ISelectOption<IDtoType>;
 export interface IReadOnlyDisplayFormItemProps {
   value?: any;
   render?: () => ReactNode | ReactNode;
-  type?: 'string' | 'number' | 'dropdown' | 'dropdownMultiple' | 'time' | 'datetime' | 'checkbox' | 'switch';
+  type?:
+    | 'string'
+    | 'number'
+    | 'dropdown'
+    | 'dropdownMultiple'
+    | 'time'
+    | 'datetime'
+    | 'checkbox'
+    | 'switch'
+    | 'radiogroup';
   dropdownDisplayMode?: 'raw' | 'tags';
   dateFormat?: string;
   timeFormat?: string;
