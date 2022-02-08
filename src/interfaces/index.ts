@@ -23,6 +23,7 @@ export { IFlagsSetters } from './flagsSetters';
 export { IPasswordValidation } from './passwordValidation';
 export { IAnyObject } from './anyObject';
 export { IToolbarItem } from './toolbar';
+export { IMultiPurposePickerProps } from './multipurposepicker';
 export { DesignerToolbarSettings } from './toolbarSettings';
 export { IShaDataTableProps } from '../components/indexTable/interfaces';
 export { IChildTableProps } from '../components/childTable';
