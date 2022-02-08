@@ -39,22 +39,25 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
   id,
 }: PropsWithChildren<IGenericConfigurableComponentProviderProps<TSettings>>) => {
   const reducer = reducerFactory(initialState);
-  const { getSettings, invalidateSettings } = useAppConfigurator();
+  const { fetchSettings, getSettings, invalidateSettings } = useAppConfigurator();
+
+  const settings = getSettings(id);
 
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     id,
+    settings: settings as TSettings,
   });
 
   useEffect(() => {
-    if (!Boolean(id)) return;
+    if (!Boolean(id) || Boolean(state.settings)) return;
     
     doFetch();
   }, [id]);
 
   const doFetch = () => {
     dispatch(loadRequestAction({ id }));
-    getSettings(id)
+    fetchSettings(id)
       .then((settings) => {
         dispatch(
           loadSuccessAction({...settings})

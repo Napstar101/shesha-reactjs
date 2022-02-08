@@ -8,5 +8,5 @@ export interface IComponentSettings {
     id?: string;
     name?: string;
     description?: string;
-    settings: string;
+    settings: object;
 }
