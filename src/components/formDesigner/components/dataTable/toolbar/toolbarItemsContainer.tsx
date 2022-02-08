@@ -8,6 +8,7 @@ import React from 'react';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];
+  id?: string;
   items: ToolbarItemProps[];
 }
 
@@ -31,7 +32,8 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
 
     if (listChanged) {
       const newChilds = newState.map<ToolbarItemProps>(item => item as ToolbarItemProps);
-      updateChildItems({ index: props.index, childs: newChilds });
+      
+      updateChildItems({ index: props.index, id: props.id, childs: newChilds });
     }
     return;
   };

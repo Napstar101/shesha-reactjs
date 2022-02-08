@@ -5,6 +5,7 @@ import { IButtonGroup } from '../../../../../providers/toolbarConfigurator/model
 import { useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
 import ToolbarItemsContainer from './toolbarItemsContainer';
 import DragHandle from './dragHandle';
+import ShaIcon, { IconType } from '../../../../shaIcon';
 
 export interface IProps extends IButtonGroup {
   index: number[];
@@ -24,13 +25,16 @@ export const ToolbarItemsGroup: FC<IProps> = props => {
     <div className={classes.reduce((a, c) => a + ' ' + c)}>
       <div className="sha-toolbar-group-header">
         <DragHandle id={props.id}></DragHandle>
-        <strong>{props.name}</strong>
+        { props.icon && <ShaIcon iconName={props.icon as IconType}/> }
+        <span className="sha-toolbar-item-name">
+          {props.name}
+        </span>
         <div className="sha-toolbar-item-controls">
           <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
         </div>
       </div>
       <div className="sha-toolbar-group-container">
-        <ToolbarItemsContainer index={props.index} items={props.childItems || []}></ToolbarItemsContainer>
+        <ToolbarItemsContainer index={props.index} items={props.childItems || []} id={props.id}></ToolbarItemsContainer>
       </div>
     </div>
   );

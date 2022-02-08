@@ -34,6 +34,7 @@ const AdvancedFilterButtonComponent: IToolboxComponent<IPagerComponentProps> = {
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
+  isHidden: true // note: to be removed, now is used only for backward compatibility
 };
 
 export const AdvancedFilterButton: FC<IPagerComponentProps> = ({ }) => {
