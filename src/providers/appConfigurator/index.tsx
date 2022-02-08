@@ -51,7 +51,7 @@ const AppConfiguratorProvider: FC<PropsWithChildren<IAppConfiguratorProviderProp
 
   const getSettings = (id: string) => {
     const loadedSettings = settingsDictionary.current[normalizeId(id)];
-    return loadedSettings?.settings;
+    return loadedSettings;
   }
 
   const fetchSettings = (id: string) => {
