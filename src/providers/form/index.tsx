@@ -20,7 +20,15 @@ import {
   ISetEnabledComponentsPayload,
   IComponentAddFromTemplatePayload,
 } from './contexts';
-import { IFormProps, IFormActions, FormMarkup, FormMarkupWithSettings, IFormSections, FormMode } from './models';
+import {
+  IFormProps,
+  IFormActions,
+  FormMarkup,
+  FormMarkupWithSettings,
+  IFormSections,
+  FormMode,
+  ViewType,
+} from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {
   componentAddAction,
@@ -68,7 +76,12 @@ import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
-import { IAsyncValidationError, IFormValidationErrors, IToolboxComponent, IToolboxComponentGroup } from '../../interfaces';
+import {
+  IAsyncValidationError,
+  IFormValidationErrors,
+  IToolboxComponent,
+  IToolboxComponentGroup,
+} from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { useMetadataDispatcher } from '../../providers';
 
@@ -80,6 +93,7 @@ export interface IFormProviderProps {
   form?: FormInstance<any>;
   actions?: IFormActions;
   sections?: IFormSections;
+  viewType?: ViewType;
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
   toolboxComponentGroups?: IToolboxComponentGroup[];
@@ -115,14 +129,14 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   const initial: IFormStateContext = {
     ...FORM_CONTEXT_INITIAL_STATE,
-    id: id,
-    path: path,
+    id,
+    path,
     formMode: mode,
     components: formComponents || [],
     form,
     actions: convertActions(null, actions),
     sections: convertSectionsToList(null, sections),
-    context: context,
+    context,
     toolboxComponentGroups: actualComponentGroups,
     ...flatComponents,
   };
@@ -256,7 +270,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   const addComponentsFromTemplate = (payload: IComponentAddFromTemplatePayload) => {
     dispatch(componentAddFromTemplateAction(payload));
-  }
+  };
 
   const deleteComponent = (payload: IComponentDeletePayload) => {
     dispatch(componentDeleteAction(payload));

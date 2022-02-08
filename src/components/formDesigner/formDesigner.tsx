@@ -57,6 +57,7 @@ export const FormDesigner: FC<IFormDesignerProps> = ({}) => {
           header={() => <FormDesignerToolbar />}
         >
           <FormDesignerHeader />
+
           <ConfigurableFormRenderer
             onValuesChange={(_changedValues, allvalues) => {
               setFormValues(allvalues);

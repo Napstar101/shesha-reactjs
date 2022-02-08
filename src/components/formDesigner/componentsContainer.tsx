@@ -11,10 +11,31 @@ export interface IProps {
   justifyContent?: string;
   className?: string;
 }
-const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'vertical', justifyContent, className }) => {
-  const { getChildComponents, updateChildComponents, addComponent, addDataProperty, startDragging, endDragging } = useFormActions();
+const ComponentsContainer: FC<IProps> = ({
+  containerId,
+  children,
+  direction = 'vertical',
+  justifyContent,
+  className,
+}) => {
+  const {
+    getChildComponents,
+    updateChildComponents,
+    addComponent,
+    addDataProperty,
+    startDragging,
+    endDragging,
+  } = useFormActions();
   const { formMode } = useFormState();
   const isDesignerMode = formMode === 'designer';
+
+  console.log('ComponentsContainer props: ', {
+    containerId,
+    children,
+    direction,
+    justifyContent,
+    className,
+  });
 
   const components = getChildComponents(containerId);
 
@@ -34,14 +55,14 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
         addDataProperty({
           propertyMetadata: draggedItem.metadata,
           containerId: containerId,
-          index: newDataItemIndex,          
-        });        
+          index: newDataItemIndex,
+        });
       } else {
         const newComponentIndex = newState.findIndex(item => item['type'] == TOOLBOX_COMPONENT_DROPPABLE_KEY);
         if (newComponentIndex > -1) {
           // add new component
           const toolboxComponent = newState[newComponentIndex];
-          
+
           addComponent({
             containerId: containerId,
             componentType: toolboxComponent.id.toString(),
@@ -76,9 +97,10 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
 
   return (
     <div className={`sha-components-container ${direction} ${className}`}>
-      {isDesignerMode && (
+      {isDesignerMode ? (
         <>
           {components.length == 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
+
           <ReactSortable
             disabled={!isDesignerMode}
             onStart={onDragStart}
@@ -101,7 +123,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
             direction={direction}
             className={`sha-components-container-inner`}
             style={style}
-          /* note: may be used form horizontal containers like toolbar or action buttons
+            /* note: may be used form horizontal containers like toolbar or action buttons
       direction={(evt: SortableEvent, _target: HTMLElement, _dragEl: HTMLElement) => {
         const insideColumn = evt.target.className.includes('sha-designer-column');
         return insideColumn
@@ -113,8 +135,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
             {renderComponents()}
           </ReactSortable>
         </>
-      )}
-      {!isDesignerMode && (
+      ) : (
         <div className="sha-components-container-inner" style={style}>
           {renderComponents()}
         </div>

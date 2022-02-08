@@ -14,18 +14,19 @@ import { formGetByPath, formTestDelayGet, formTestDelayPost, formUpdateMarkup } 
 import allFormsJson from './allForms.json';
 import { LabeledValue } from 'antd/lib/select';
 import { addStory } from '../../stories/utils';
-import { FormMode } from '../../providers/form/models';
-
-export default {
-  title: 'Components/Temp/FormDesigner',
-  component: FormDesigner,
-} as Meta;
+import { FormMode, ViewType } from '../../providers/form/models';
 
 export interface IFormDesignerStoryProps {
   formPath?: string;
   formId?: string;
   mode?: FormMode;
+  modelType?: ViewType;
 }
+
+export default {
+  title: 'Components/Temp/FormDesigner',
+  component: FormDesigner,
+} as Meta<IFormDesignerStoryProps>;
 
 const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
@@ -255,3 +256,35 @@ const BrowserTemplate: Story = () => (
 );
 
 export const Browser = addStory(BrowserTemplate, null);
+
+//#region Views
+export const TableView = DesignerTemplate.bind({});
+
+TableView.args = {
+  formPath: '/view/forms/table',
+  modelType: 'table',
+  // vi
+};
+
+export const DetailsView = DesignerTemplate.bind({});
+
+DetailsView.args = {
+  formPath: '/view/forms/details',
+  modelType: 'details',
+};
+
+export const FormComponentView = DesignerTemplate.bind({});
+
+FormComponentView.args = {
+  formPath: '/view/forms/form',
+  modelType: 'form',
+};
+
+export const BlankView = DesignerTemplate.bind({});
+
+BlankView.args = {
+  formPath: '/view/forms/blank',
+  modelType: 'blank',
+};
+
+//#endregion

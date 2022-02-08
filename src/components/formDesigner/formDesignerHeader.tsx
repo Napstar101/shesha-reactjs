@@ -19,7 +19,7 @@ export const FormDesignerHeader: FC<IFormHeaderProps> = () => {
     <div className="content-heading">
       <div className="sha-designer-header">
         <div className="sha-designer-header-left">
-          <h3 className="heading">Form: {name}</h3>
+          <h3 className="heading">View: {name}</h3>
         </div>
         <div className="sha-designer-header-right">
           <Button icon={<SettingOutlined />} type="link" onClick={onSettingsClick}>

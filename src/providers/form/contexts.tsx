@@ -18,6 +18,7 @@ import {
   FormAction,
   FormSection,
   IFormSection,
+  ViewType,
 } from './models';
 import { FormInstance } from 'antd';
 import { StateWithHistory } from 'redux-undo';
@@ -76,6 +77,7 @@ export interface IFormStateContext
   id?: string;
   path?: string;
   formMode: FormMode;
+  viewType?: ViewType;
   isDebug: boolean;
   form?: FormInstance<any>;
   actions: IFormAction[];
@@ -104,8 +106,7 @@ export interface IComponentAddPayload extends AddComonentPayloadBase {
   componentType: string;
 }
 
-export interface IComponentAddFromTemplatePayload extends AddComonentPayloadBase {
-}
+export interface IComponentAddFromTemplatePayload extends AddComonentPayloadBase {}
 
 export interface IAddDataPropertyPayload {
   propertyMetadata: IPropertyMetadata;

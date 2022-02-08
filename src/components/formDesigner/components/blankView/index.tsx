@@ -1,12 +1,12 @@
+import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { GroupOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import { CollapsiblePanel } from '../../../../';
+import { CollapsiblePanel } from '../../../..';
 import ComponentsContainer from '../../componentsContainer';
 import { ExpandIconPosition } from 'antd/lib/collapse/Collapse';
 import { useForm } from '../../../../providers/form';
-import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
 export interface ICollapsiblePanelProps extends IConfigurableFormComponent {
@@ -15,9 +15,9 @@ export interface ICollapsiblePanelProps extends IConfigurableFormComponent {
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const ColapsiblePanelComponent: IToolboxComponent<ICollapsiblePanelProps> = {
-  type: 'collapsiblePanel',
-  name: 'Collapsible Panel',
+const DetailsViewComponent: IToolboxComponent<ICollapsiblePanelProps> = {
+  type: 'blankView',
+  name: 'Blank View',
   icon: <GroupOutlined />,
   factory: (model: ICollapsiblePanelProps) => {
     const { formMode, visibleComponentIds } = useForm();
@@ -30,7 +30,7 @@ const ColapsiblePanelComponent: IToolboxComponent<ICollapsiblePanelProps> = {
 
     return (
       <CollapsiblePanel header={label} expandIconPosition={expandIconPosition}>
-        <ComponentsContainer containerId={model.id}></ComponentsContainer>
+        <ComponentsContainer containerId={model.id} />
       </CollapsiblePanel>
     );
   },
@@ -45,4 +45,4 @@ const ColapsiblePanelComponent: IToolboxComponent<ICollapsiblePanelProps> = {
   },
 };
 
-export default ColapsiblePanelComponent;
+export default DetailsViewComponent;
