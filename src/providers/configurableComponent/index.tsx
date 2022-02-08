@@ -41,12 +41,12 @@ const GenericConfigurableComponentProvider = <TSettings extends any>({
   const reducer = reducerFactory(initialState);
   const { fetchSettings, getSettings, invalidateSettings } = useAppConfigurator();
 
-  const settings = getSettings(id);
+  const initialSettings = getSettings(id)?.settings as TSettings;
 
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     id,
-    settings: settings as TSettings,
+    settings: initialSettings,
   });
 
   useEffect(() => {
