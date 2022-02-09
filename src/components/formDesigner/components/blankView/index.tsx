@@ -1,27 +1,22 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { GroupOutlined } from '@ant-design/icons';
+import { BorderOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import { CollapsiblePanel } from '../../../..';
 import ComponentsContainer from '../../componentsContainer';
-import { ExpandIconPosition } from 'antd/lib/collapse/Collapse';
 import { useForm } from '../../../../providers/form';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
-export interface ICollapsiblePanelProps extends IConfigurableFormComponent {
-  expandIconPosition?: ExpandIconPosition;
-}
+export interface IBlankViewProps extends IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const DetailsViewComponent: IToolboxComponent<ICollapsiblePanelProps> = {
+const BlankViewComponent: IToolboxComponent<IBlankViewProps> = {
   type: 'blankView',
   name: 'Blank View',
-  icon: <GroupOutlined />,
-  factory: (model: ICollapsiblePanelProps) => {
+  icon: <BorderOutlined />,
+  factory: (model: IBlankViewProps) => {
     const { formMode, visibleComponentIds } = useForm();
-    const { label, expandIconPosition } = model;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
 
@@ -29,20 +24,19 @@ const DetailsViewComponent: IToolboxComponent<ICollapsiblePanelProps> = {
     if (isHidden) return null;
 
     return (
-      <CollapsiblePanel header={label} expandIconPosition={expandIconPosition}>
+      <Fragment>
         <ComponentsContainer containerId={model.id} />
-      </CollapsiblePanel>
+      </Fragment>
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
   initModel: model => {
-    const customProps: ICollapsiblePanelProps = {
+    const customProps: IBlankViewProps = {
       ...model,
-      expandIconPosition: 'right',
     };
     return customProps;
   },
 };
 
-export default DetailsViewComponent;
+export default BlankViewComponent;

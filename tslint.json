@@ -19,6 +19,11 @@
       true,
       "always-prefix"
     ],
+    "jsx-self-close": true,
+    "prefer-const": true,
+    "no-duplicate-imports": true,
+    "object-literal-shorthand": true,
+    "no-empty": false,
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "max-line-length": false,

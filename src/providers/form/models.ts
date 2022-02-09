@@ -137,6 +137,7 @@ export interface IFormProps extends IFlatComponentsStructure {
   description?: string;
   components: IConfigurableFormComponent[];
   formSettings: IFormSettings;
+  type: ViewType;
 }
 
 export declare type StoreValue = any;

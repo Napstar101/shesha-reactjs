@@ -77,7 +77,7 @@ export interface IFormStateContext
   id?: string;
   path?: string;
   formMode: FormMode;
-  viewType?: ViewType;
+  type?: ViewType;
   isDebug: boolean;
   form?: FormInstance<any>;
   actions: IFormAction[];

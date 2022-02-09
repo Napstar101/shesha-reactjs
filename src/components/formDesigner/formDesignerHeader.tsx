@@ -1,9 +1,8 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useForm } from '../../providers/form';
 import { SettingOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { FormSettingsEditor } from './formSettingsEditor';
-import React from 'react';
 
 export interface IFormHeaderProps {}
 

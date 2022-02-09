@@ -93,7 +93,6 @@ export interface IFormProviderProps {
   form?: FormInstance<any>;
   actions?: IFormActions;
   sections?: IFormSections;
-  viewType?: ViewType;
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
   toolboxComponentGroups?: IToolboxComponentGroup[];
@@ -218,6 +217,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
         */
 
       const flatComponents = componentsTreeToFlatStructure(toolboxComponents, formProps.components);
+
       dispatch(changeMarkupAction(flatComponents));
       /*
       const flatComponents = componentsTreeToFlatStructure(markup);
@@ -240,8 +240,10 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
               description: fetchedForm.description,
               components: parsedForm.components,
               formSettings: parsedForm.formSettings,
+              type: fetchedForm.type as ViewType,
               ...flatComponents,
             };
+
             // parse json content
             dispatch((dispatch, _getState) => {
               dispatch(loadSuccessAction(formContent));

@@ -47,14 +47,14 @@ const ColumnsComponent: IToolboxComponent<IColumnsComponentProps> = {
               push={col.push}
               className="sha-designer-column"
             >
-              <ComponentsContainer containerId={col.id}></ComponentsContainer>
+              <ComponentsContainer containerId={col.id} />
             </Col>
           ))}
       </Row>
     );
   },
   initModel: model => {
-    let tabsModel: IColumnsComponentProps = {
+    const tabsModel: IColumnsComponentProps = {
       ...model,
       name: 'custom Name',
       columns: [

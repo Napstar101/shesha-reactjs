@@ -65,7 +65,7 @@ const ActionsTemplate: Story<IActionsTemplateProps> = props => {
   return (
     <ShaApplicationProvider backendUrl={backendUrl}>
       <AuthContainer layout={true}>
-        <ActionsTemplateContent {...props}></ActionsTemplateContent>
+        <ActionsTemplateContent {...props} />
       </AuthContainer>
     </ShaApplicationProvider>
   );
@@ -79,11 +79,11 @@ const ActionsTemplateContent: FC<IActionsTemplateProps> = props => {
   const onLoadClick = () => {
     formGetByPath({ path: props.formPath }, { base: backendUrl, headers: httpHeaders })
       .then(response => {
-        console.log({ msg: 'loaded', response: response });
+        console.log({ msg: 'loaded', response });
         setForm(response.result);
       })
       .catch(error => {
-        console.log({ msg: 'failed to load', error: error });
+        console.log({ msg: 'failed to load', error });
       });
   };
 
@@ -95,7 +95,7 @@ const ActionsTemplateContent: FC<IActionsTemplateProps> = props => {
 
     formUpdateMarkup(form, { id: form.id, base: backendUrl, headers: httpHeaders })
       .then(response => {
-        console.log({ msg: 'form saved', response: response });
+        console.log({ msg: 'form saved', response });
       })
       .catch(err => {
         console.log({ msg: 'form save failed', error: err });
@@ -105,17 +105,17 @@ const ActionsTemplateContent: FC<IActionsTemplateProps> = props => {
   const onPostClick = () => {
     formTestDelayPost({ queryParams: { delayMs: 200 }, base: backendUrl, headers: httpHeaders })
       .then(response => {
-        console.log({ msg: 'post success', response: response });
+        console.log({ msg: 'post success', response });
       })
       .catch(error => {
-        console.log({ msg: 'post failed', error: error });
+        console.log({ msg: 'post failed', error });
       });
   };
 
   const onGetClick = () => {
     formTestDelayGet({ delayMs: 500 }, { base: backendUrl, headers: httpHeaders })
       .then(response => {
-        console.log({ msg: 'get success', response: response });
+        console.log({ msg: 'get success', response });
       })
       .catch(err => {
         console.log({ msg: 'get failed', error: err });
@@ -231,7 +231,7 @@ export const FormsEditor: FC = () => {
           options={options}
           labelInValue={true}
           onChange={value => setCurrentForm(value.value)}
-        ></Select>
+        />
       </div>
       <div>
         Designer {currentForm}
@@ -250,7 +250,7 @@ export const FormsEditor: FC = () => {
 const BrowserTemplate: Story = () => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
-      <FormsEditor></FormsEditor>
+      <FormsEditor />
     </AuthContainer>
   </ShaApplicationProvider>
 );

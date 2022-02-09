@@ -4,7 +4,6 @@ import DateField from '../../../components/formDesigner/components/dateField/dat
 import Tabs from '../../../components/formDesigner/components/tabs/tabs';
 import Columns from '../../../components/formDesigner/components/columns/columns';
 import SectionSeprator from '../../../components/formDesigner/components/sectionSeprator/sectionSeprator';
-
 import TextArea from '../../../components/formDesigner/components/textArea/textArea';
 import Autocomplete from '../../../components/formDesigner/components/autocomplete/autocomplete';
 import Dropdown from '../../../components/formDesigner/components/dropdown/dropdown';
@@ -45,10 +44,15 @@ import Statistic from '../../../components/formDesigner/components/statistic';
 import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
 import CodeEditor from '../../../components/formDesigner/components/codeEditor';
 import EditableTagGroup from '../../../components/formDesigner/components/editableTagGroup';
+import DetailsView from '../../../components/formDesigner/components/detailsView';
+import BlankView from '../../../components/formDesigner/components/blankView';
+import TableView from '../../../components/formDesigner/components/tableView';
+import FormView from '../../../components/formDesigner/components/formView';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
     name: 'Basic',
+    visible: true,
     components: [
       Autocomplete,
       Button,
@@ -67,14 +71,17 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   },
   {
     name: 'Static',
+    visible: true,
     components: [Alert, ValidationErrors, DisplayFormItem, Section],
   },
   {
     name: 'Layout',
+    visible: true,
     components: [CollapsiblePanel, Columns, ContainerComponent, SectionSeprator, Tabs],
   },
   {
     name: 'Custom',
+    visible: true,
     components: [
       Address,
       AttachmentsEditor,
@@ -93,6 +100,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   },
   {
     name: 'Datatable',
+    visible: true,
     components: [
       TableTemplate,
       AdvancedFilterButton,
@@ -106,6 +114,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       Toolbar,
     ],
   },
+  { visible: false, name: 'Views', components: [DetailsView, BlankView, TableView, FormView] },
 ];
 
 export default ToolboxComponents;

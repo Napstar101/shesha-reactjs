@@ -1,7 +1,7 @@
 import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { GroupOutlined } from '@ant-design/icons';
+import { FormOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
 import { CollapsiblePanel } from '../../../..';
 import ComponentsContainer from '../../componentsContainer';
@@ -18,7 +18,7 @@ const settingsForm = settingsFormJson as FormMarkup;
 const DetailsViewComponent: IToolboxComponent<ICollapsiblePanelProps> = {
   type: 'formView',
   name: 'Form View',
-  icon: <GroupOutlined />,
+  icon: <FormOutlined />,
   factory: (model: ICollapsiblePanelProps) => {
     const { formMode, visibleComponentIds } = useForm();
     const { label, expandIconPosition } = model;

@@ -30,7 +30,7 @@ const ColapsiblePanelComponent: IToolboxComponent<ICollapsiblePanelProps> = {
 
     return (
       <CollapsiblePanel header={label} expandIconPosition={expandIconPosition}>
-        <ComponentsContainer containerId={model.id}></ComponentsContainer>
+        <ComponentsContainer containerId={model.id} />
       </CollapsiblePanel>
     );
   },

@@ -9,15 +9,7 @@ import { ValidateErrorEntity } from '../../interfaces';
 import { addFormFieldsList } from '../../utils/form';
 
 export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ children, form, ...props }) => {
-  const { 
-    setFormData, 
-    formData, 
-    allComponents,
-    formMode, 
-    isDragging, 
-    formSettings,
-    setValidationErrors,
-   } = useForm();
+  const { setFormData, formData, allComponents, formMode, isDragging, formSettings, setValidationErrors } = useForm();
 
   const onFieldsChange = (changedFields: any[], allFields: any[]) => {
     if (props.onFieldsChange) props.onFieldsChange(changedFields, allFields);
@@ -26,11 +18,10 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
   };
 
   const onValuesChangeInternal = (changedValues: any, values: any) => {
-    if (props.onValuesChange) 
-      props.onValuesChange(changedValues, values);
+    if (props.onValuesChange) props.onValuesChange(changedValues, values);
 
     // recalculate components visibility
-    setFormData({ values: values, mergeValues: true });
+    setFormData({ values, mergeValues: true });
 
     // update validation rules
   };
@@ -68,9 +59,8 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
 
   const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
     setValidationErrors(null);
-    if (props.onFinishFailed)
-      props.onFinishFailed(errorInfo)
-  }
+    if (props.onFinishFailed) props.onFinishFailed(errorInfo);
+  };
 
   const mergedProps = {
     layout: props.layout ?? formSettings.layout,
@@ -93,7 +83,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
         className={`sha-form sha-form-${formMode} ${isDragging ? 'sha-dragging' : ''}`}
         {...mergedProps}
       >
-        <ComponentsContainer containerId={ROOT_COMPONENT_KEY}></ComponentsContainer>
+        <ComponentsContainer containerId={ROOT_COMPONENT_KEY} />
         {children}
       </Form>
     </Spin>

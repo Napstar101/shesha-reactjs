@@ -12,7 +12,7 @@ const DataSourceItem: FC<IProps> = ({ item /*, index*/ }) => {
   const icon = getIconByDataType(item.dataType);
   const ComponentContent = () => (
     <div>
-      {icon && <ShaIcon iconName={icon}></ShaIcon>}
+      {icon && <ShaIcon iconName={icon} />}
       <span>{item.label}</span>
     </div>
   );

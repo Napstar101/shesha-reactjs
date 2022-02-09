@@ -10,9 +10,7 @@ import SearchBox from './toolboxSearchBox';
 
 const { Panel } = Collapse;
 
-export interface IToolboxDataSourcesProps {
-
-}
+export interface IToolboxDataSourcesProps {}
 
 export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
   const [openedKeys, setOpenedKeys] = useLocalStorage('shaDesigner.toolbox.datasources.openedKeys', ['']);
@@ -21,41 +19,39 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
   const currentMeta = useMetadata(false);
   const currentDataSource: IDataSource = Boolean(currentMeta?.metadata?.properties)
     ? {
-      id: currentMeta.id,
-      name: currentMeta.metadata?.name,
-      containerType: currentMeta.metadata?.type,
-      items: currentMeta.metadata?.properties
-    }
+        id: currentMeta.id,
+        name: currentMeta.metadata?.name,
+        containerType: currentMeta.metadata?.type,
+        items: currentMeta.metadata?.properties,
+      }
     : null;
 
   const { dataSources: formDs, activeDataSourceId } = useForm();
 
   const allDataSources = useMemo<IDataSource[]>(() => {
     const dataSources = [...formDs];
-    if (currentDataSource)
-      dataSources.push(currentDataSource);
+    if (currentDataSource) dataSources.push(currentDataSource);
 
     return dataSources;
   }, [formDs, currentDataSource]);
 
   const filteredGroups = useMemo<IDataSource[]>(() => {
-    if (!Boolean(searchText))
-      return [...allDataSources];
+    if (!Boolean(searchText)) return [...allDataSources];
 
     const result: IDataSource[] = [];
 
     const loweredSearchText = searchText.toLowerCase();
 
-    allDataSources.forEach((ds) => {
-      const filteredItems = ds.items.filter(c => c.path.toLowerCase().includes(loweredSearchText) || c.label?.toLowerCase().includes(loweredSearchText))
-      if (filteredItems.length > 0)
-        result.push({ ...ds, items: filteredItems });
+    allDataSources.forEach(ds => {
+      const filteredItems = ds.items.filter(
+        c => c.path.toLowerCase().includes(loweredSearchText) || c.label?.toLowerCase().includes(loweredSearchText)
+      );
+      if (filteredItems.length > 0) result.push({ ...ds, items: filteredItems });
     });
     return result;
   }, [allDataSources, searchText]);
 
-  if (allDataSources.length === 0)
-    return null;
+  if (allDataSources.length === 0) return null;
 
   const onCollapseChange = (key: string | string[]) => {
     setOpenedKeys(Array.isArray(key) ? key : [key]);
@@ -63,10 +59,8 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
   let idx = 0;
   return (
     <>
-      <div className='sidebar-subheader'>
-        Data
-      </div>
-      <SearchBox value={searchText} onChange={setSearchText} placeholder='Search data properties' />
+      <div className="sidebar-subheader">Data</div>
+      <SearchBox value={searchText} onChange={setSearchText} placeholder="Search data properties" />
       {filteredGroups.length > 0 && (
         <Collapse activeKey={openedKeys} onChange={onCollapseChange}>
           {filteredGroups.map((ds, dsIndex) => {
@@ -81,14 +75,15 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
               };
             });
 
-            let classes = ['sha-toolbox-panel'];
+            const classes = ['sha-toolbox-panel'];
+
             if (ds.id === activeDataSourceId) classes.push('active');
 
             return visibleItems.length === 0 ? null : (
               <Panel header={ds.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
                 <ReactSortable
                   list={sortableItems}
-                  setList={() => { }}
+                  setList={() => {}}
                   group={{
                     name: 'shared',
                     pull: 'clone',
@@ -100,13 +95,7 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
                 >
                   {visibleItems.map((item, itemIndex) => {
                     idx++;
-                    return (
-                      <DataSourceItem
-                        key={`Group${dsIndex}:DsItem${itemIndex}`}
-                        item={item}
-                        index={idx}
-                      ></DataSourceItem>
-                    );
+                    return <DataSourceItem key={`Group${dsIndex}:DsItem${itemIndex}`} item={item} index={idx} />;
                   })}
                 </ReactSortable>
               </Panel>
@@ -114,11 +103,9 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
           })}
         </Collapse>
       )}
-      {filteredGroups.length === 0 && (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Properties not found" />
-      )}
+      {filteredGroups.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Properties not found" />}
     </>
   );
-}
+};
 
 export default ToolboxDataSources;

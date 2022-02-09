@@ -18,10 +18,25 @@ import {
   ISetEnabledComponentsPayload,
   IHasComponentGroups,
 } from './contexts';
-import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure, IComponentRelations } from './models';
+import {
+  IConfigurableFormComponent,
+  IFormProps,
+  FormMode,
+  IFlatComponentsStructure,
+  IComponentRelations,
+} from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import { camelize, cloneComponents, convertActions, findToolboxComponent, getCustomEnabledFunc, getCustomVisibilityFunc, listComponentToModelMetadata, processRecursive } from './utils';
+import {
+  camelize,
+  cloneComponents,
+  convertActions,
+  findToolboxComponent,
+  getCustomEnabledFunc,
+  getCustomVisibilityFunc,
+  listComponentToModelMetadata,
+  processRecursive,
+} from './utils';
 import undoable, { includeAction } from 'redux-undo';
 import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
@@ -42,8 +57,8 @@ const addComponentToFlatStructure = (
   formComponents.forEach(component => {
     processRecursive(structure.toolboxComponentGroups, containerId, component, (cmp, parentId) => {
       allComponents[cmp.id] = cmp;
-      
-      if (parentId != containerId){
+
+      if (parentId != containerId) {
         const relations = childRelations[parentId] ?? [];
         childRelations[parentId] = [...relations, cmp.id];
       }
@@ -59,7 +74,11 @@ const addComponentToFlatStructure = (
   formComponents.forEach(component => {
     containerComponents.splice(index, 0, component.id);
   });
-  const componentRelations = { ...structure.componentRelations, [currentLevel]: containerComponents, ...childRelations };
+  const componentRelations = {
+    ...structure.componentRelations,
+    [currentLevel]: containerComponents,
+    ...childRelations,
+  };
 
   return {
     allComponents,
@@ -170,7 +189,7 @@ const reducer = handleActions<IFormStateContext, any>(
         ...state,
         allComponents: newStructure.allComponents,
         componentRelations: newStructure.componentRelations,
-        selectedComponentId: (newComponents[0]?.id),
+        selectedComponentId: newComponents[0]?.id,
       };
     },
 
@@ -247,7 +266,7 @@ const reducer = handleActions<IFormStateContext, any>(
       return {
         ...state,
         allComponents: newComponents,
-        componentRelations: componentRelations,
+        componentRelations,
       };
     },
 
@@ -273,6 +292,7 @@ const reducer = handleActions<IFormStateContext, any>(
         allComponents: payload.allComponents,
         componentRelations: payload.componentRelations,
         formSettings: payload.formSettings,
+        type: payload.type,
       };
     },
 

@@ -1,45 +1,44 @@
 import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { GroupOutlined } from '@ant-design/icons';
+import { ProfileOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import { CollapsiblePanel } from '../../../..';
+import { Page } from '../../../..';
 import ComponentsContainer from '../../componentsContainer';
-import { ExpandIconPosition } from 'antd/lib/collapse/Collapse';
 import { useForm } from '../../../../providers/form';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import ConditionalWrap from '../../../conditionalWrapper';
 
-export interface ICollapsiblePanelProps extends IConfigurableFormComponent {
-  expandIconPosition?: ExpandIconPosition;
-}
+export interface IDetailsViewProps extends IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const DetailsViewComponent: IToolboxComponent<ICollapsiblePanelProps> = {
+const DetailsViewComponent: IToolboxComponent<IDetailsViewProps> = {
   type: 'detailsView',
   name: 'Details View',
-  icon: <GroupOutlined />,
-  factory: (model: ICollapsiblePanelProps) => {
+  icon: <ProfileOutlined />,
+  factory: (model: IDetailsViewProps) => {
     const { formMode, visibleComponentIds } = useForm();
-    const { label, expandIconPosition } = model;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
 
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+    const isDesignerMode = formMode === 'designer';
+
+    const isHidden = !isDesignerMode && (model.hidden || hiddenByCondition);
+
     if (isHidden) return null;
 
     return (
-      <CollapsiblePanel header={label} expandIconPosition={expandIconPosition}>
+      <ConditionalWrap condition={!isDesignerMode} wrap={children => <Page>{children}</Page>}>
         <ComponentsContainer containerId={model.id} />
-      </CollapsiblePanel>
+      </ConditionalWrap>
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
   initModel: model => {
-    const customProps: ICollapsiblePanelProps = {
+    const customProps: IDetailsViewProps = {
       ...model,
-      expandIconPosition: 'right',
     };
     return customProps;
   },

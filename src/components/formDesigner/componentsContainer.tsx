@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { CSSProperties, FC } from 'react';
 import ConfigurableFormComponent from './configurableFormComponent';
-import { useFormActions, useFormState } from '../../providers/form';
+import { useForm } from '../../providers/form';
 import { TOOLBOX_COMPONENT_DROPPABLE_KEY, TOOLBOX_DATA_ITEM_DROPPABLE_KEY } from '../../providers/form/models';
 import { ItemInterface, ReactSortable } from 'react-sortablejs';
 
 export type Direction = 'horizontal' | 'vertical';
+
 export interface IProps {
   containerId: string;
   direction?: Direction;
@@ -25,17 +26,14 @@ const ComponentsContainer: FC<IProps> = ({
     addDataProperty,
     startDragging,
     endDragging,
-  } = useFormActions();
-  const { formMode } = useFormState();
+    formMode,
+    type,
+  } = useForm();
+
   const isDesignerMode = formMode === 'designer';
 
-  console.log('ComponentsContainer props: ', {
-    containerId,
-    children,
-    direction,
-    justifyContent,
-    className,
-  });
+  const isViewTemplateComponent =
+    type === 'dashboard' || type === 'details' || type === 'masterDetails' || type === 'table' || type === 'menu';
 
   const components = getChildComponents(containerId);
 
@@ -43,35 +41,58 @@ const ComponentsContainer: FC<IProps> = ({
     id: c.id,
   }));
 
+  console.log('ComponentsContainer props: ', {
+    containerId,
+    children,
+    direction,
+    justifyContent,
+    className,
+    type,
+    isViewTemplateComponent,
+    componentsCount: components?.length,
+    componentsMapped,
+  });
+
   const onSetList = (newState: ItemInterface[], _sortable, _store) => {
     const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     if (listChanged) {
-      const newDataItemIndex = newState.findIndex(item => item['type'] == TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
+      const newDataItemIndex = newState.findIndex(item => item['type'] === TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
       if (newDataItemIndex > -1) {
         // dropped data item
         const draggedItem = newState[newDataItemIndex];
 
         addDataProperty({
           propertyMetadata: draggedItem.metadata,
-          containerId: containerId,
+          containerId,
           index: newDataItemIndex,
         });
       } else {
-        const newComponentIndex = newState.findIndex(item => item['type'] == TOOLBOX_COMPONENT_DROPPABLE_KEY);
+        const newComponentIndex = newState.findIndex(item => item['type'] === TOOLBOX_COMPONENT_DROPPABLE_KEY);
         if (newComponentIndex > -1) {
           // add new component
           const toolboxComponent = newState[newComponentIndex];
 
+          console.log(
+            '"toolboxComponent.id.toString(), containerId" :>> ',
+            // toolboxComponent.id.toString(),
+            toolboxComponent,
+            containerId
+          );
+
+          if (isViewTemplateComponent && containerId === 'root') {
+            return;
+          }
+
           addComponent({
-            containerId: containerId,
+            containerId,
             componentType: toolboxComponent.id.toString(),
             index: newComponentIndex,
           });
         } else {
           // reorder existing components
           const newIds = newState.map<string>(item => item.id.toString());
-          updateChildComponents({ containerId: containerId, componentIds: newIds });
+          updateChildComponents({ containerId, componentIds: newIds });
         }
       }
     }
@@ -87,21 +108,21 @@ const ComponentsContainer: FC<IProps> = ({
   };
 
   const renderComponents = () => {
-    return components.map((c, index) => (
-      <ConfigurableFormComponent id={c.id} index={index} key={c.id}></ConfigurableFormComponent>
-    ));
+    return components.map((c, index) => <ConfigurableFormComponent id={c.id} index={index} key={c.id} />);
   };
 
-  let style = {};
+  const style: CSSProperties = {};
+
   if (direction === 'horizontal' && justifyContent) style['justifyContent'] = justifyContent;
 
   return (
     <div className={`sha-components-container ${direction} ${className}`}>
       {isDesignerMode ? (
         <>
-          {components.length == 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
+          {components.length === 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
 
           <ReactSortable
+            // disabled
             disabled={!isDesignerMode}
             onStart={onDragStart}
             onEnd={onDragEnd}
