@@ -53,6 +53,7 @@ export const ColumnProperties: FC<IProps> = () => {
         description: metadata.description,
       };
       form.setFieldsValue(newValues);
+      debouncedSave(newValues);
     }
 
     return (

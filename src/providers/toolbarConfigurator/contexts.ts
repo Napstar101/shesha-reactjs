@@ -3,6 +3,7 @@ import { ToolbarItemProps } from './models';
 
 export interface IUpdateChildItemsPayload {
   index: number[];
+  id?: string;
   childs: ToolbarItemProps[];
 }
 

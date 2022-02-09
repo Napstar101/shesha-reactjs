@@ -47,11 +47,11 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
 
   return entityType
     ? <MetadataProvider
-        id={props.id}
-        modelType={entityType}
-      >
-        {table}
-      </MetadataProvider>
+      id={props.id}
+      modelType={entityType}
+    >
+      {table}
+    </MetadataProvider>
     : table;
 };
 
@@ -63,11 +63,11 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
 
   if (isDesignMode && !tableConfigId && !entityType)
     return (
-      <Alert 
-        className="sha-designer-warning" 
+      <Alert
+        className="sha-designer-warning"
         message="Table is not configured"
         description="Select entity type on the settings panel"
-        type="warning" 
+        type="warning"
         showIcon
       />
     )
@@ -104,18 +104,28 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
 
 const TableContextAccessor: FC<ITableContextComponentProps> = ({ id, tableConfigId }) => {
   const { registerActions } = useForm();
-  const { refreshTable, exportToExcel, tableConfigLoaded } = useDataTableStore();
+  const { refreshTable, exportToExcel, tableConfigLoaded, setIsInProgressFlag } = useDataTableStore();
   const { selectedRow } = useDataTableSelection();
 
   const deleteRow = () => {
     console.log(`deleteRow ${selectedRow.id}`);
   };
 
+  const toggleColumnsSelector = () => {
+    setIsInProgressFlag({ isSelectingColumns: true, isFiltering: false });
+  }
+
+  const toggleAdvancedFilter = () => {
+    setIsInProgressFlag({ isFiltering: true, isSelectingColumns: false });
+  }
+
   // register available actions, refresh on every table configuration loading or change of the table Id
   useEffect(
     () =>
       registerActions(id, {
         refresh: refreshTable,
+        toggleColumnsSelector: toggleColumnsSelector,
+        toggleAdvancedFilter: toggleAdvancedFilter,
         exportToExcel,
         deleteRow: deleteRow,
       }),

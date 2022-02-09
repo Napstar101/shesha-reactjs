@@ -34,7 +34,7 @@ const reducerFactory = <TSettings extends any>(
       ) => {
         const { payload } = action;
 
-        const settings = payload?.settings ? (JSON.parse(payload.settings) as TSettings) : null;
+        const settings = payload?.settings as TSettings;
 
         const typedPayload = { ...payload, settings: settings };
 

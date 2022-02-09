@@ -9,6 +9,8 @@ import { useForm, isInDesignerMode } from '../../../../../providers/form';
 import { getVisibilityFunc2 } from '../../../../../providers/form/utils';
 import { useDataTableSelection } from '../../../../../providers/dataTableSelection';
 import { ToolbarButton } from './toolbarButton';
+import { ShaIcon } from '../../../..';
+import { IconType } from '../../../../shaIcon';
 
 const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
   type: 'toolbar',
@@ -34,13 +36,16 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
   const isDesignMode = formMode === 'designer';
 
   const renderItem = (item: ToolbarItemProps, index: number) => {
+    if (!isInDesignerMode()){
+      const visibilityFunc = getVisibilityFunc2(item.customVisibility, item.name);
+      const isVisible = visibilityFunc({}, { selectedRow: selectedRow });
+      if (!isVisible)
+        return null;
+    }
+
     switch (item.itemType) {
       case 'item':
         const itemProps = item as IToolbarButton;
-
-        const visibilityFunc = getVisibilityFunc2(itemProps.visibility, item.name);
-        // todo: pass data and context
-        if (!visibilityFunc({}, { selectedRow: selectedRow }) && !isInDesignerMode()) return null;
 
         switch (itemProps.itemSubType) {
           case 'button':
@@ -59,7 +64,12 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
         const menu = (
           <Menu>
             {group.childItems.map((childItem, idx) => (
-              <Menu.Item key={idx} title={childItem.tooltip}>
+              <Menu.Item 
+                key={idx} 
+                title={childItem.tooltip} 
+                danger={childItem.danger}
+                icon={childItem.icon ? <ShaIcon iconName={childItem.icon as IconType} /> : undefined}
+              >
                 {childItem.name}
               </Menu.Item>
             ))}
@@ -67,7 +77,11 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
         );
         return (
           <Dropdown key={index} overlay={menu}>
-            <Button title={item.tooltip}>
+            <Button 
+              title={item.tooltip} 
+              type={item.buttonType}
+              icon={item.icon ? <ShaIcon iconName={item.icon as IconType} /> : undefined}
+            >
               {item.name} <DownOutlined />
             </Button>
           </Dropdown>

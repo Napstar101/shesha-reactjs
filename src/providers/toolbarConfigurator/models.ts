@@ -12,7 +12,13 @@ export interface IToolbarItemBase {
   name: string;
   tooltip?: string;
   sortOrder: number;
+  danger?: boolean;
   itemType: ToolbarItemType;
+  icon?: string;
+  buttonType?: ButtonType;
+
+  customVisibility?: string;
+  permissions?: string;
 }
 
 export interface IToolbarButton extends IToolbarItemBase {
@@ -22,12 +28,6 @@ export interface IToolbarButton extends IToolbarItemBase {
   modalFormId?: string;
   modalTitle?: string;
   formAction?: string;
-
-  icon?: string;
-  buttonType?: ButtonType;
-  danger?: boolean;
-  visibility?: string;
-  permissions?: string;
 }
 
 export interface IButtonGroup extends IToolbarItemBase {

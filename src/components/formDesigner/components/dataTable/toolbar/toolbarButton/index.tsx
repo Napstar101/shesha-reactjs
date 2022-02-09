@@ -40,6 +40,8 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
               ? evaluateString(props.targetUrl, { selectedRow: props.selectedRow })
               : props.targetUrl;
 
+          console.log(`navigate to '${preparedUrl}'`);
+
           router?.push(preparedUrl);
         } else console.warn('tagret Url is not specified');
         break;

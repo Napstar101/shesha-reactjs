@@ -50,10 +50,15 @@ const AppConfiguratorProvider: FC<PropsWithChildren<IAppConfiguratorProviderProp
   const normalizeId = (id: string) => id.toLowerCase();
 
   const getSettings = (id: string) => {
-    const loadedSettings = settingsDictionary.current[id];
+    const loadedSettings = settingsDictionary.current[normalizeId(id)];
+    return loadedSettings;
+  }
+
+  const fetchSettings = (id: string) => {
+    const loadedSettings = getSettings(id);
     if (loadedSettings)
       return Promise.resolve(loadedSettings);
-
+    
     const result = new Promise<IComponentSettings>((resolve, reject) => {
       configurableComponentGet({ id, base: backendUrl, headers: httpHeaders })
       .then((response) => {
@@ -65,7 +70,7 @@ const AppConfiguratorProvider: FC<PropsWithChildren<IAppConfiguratorProviderProp
           id: response.result.id,
           name: response.result.name,
           description: response.result.description,
-          settings: response.result.settings,
+          settings: response.result.settings ? JSON.parse(response.result.settings) : null,
         };
 
         settingsDictionary.current[normalizeId(id)] = settings;
@@ -91,6 +96,7 @@ const AppConfiguratorProvider: FC<PropsWithChildren<IAppConfiguratorProviderProp
           switchApplicationMode,
           toggleEditModeConfirmation,
           toggleCloseEditModeConfirmation,
+          fetchSettings,
           getSettings,
           invalidateSettings,
           /* NEW_ACTION_GOES_HERE */
