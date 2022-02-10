@@ -124,11 +124,9 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     readOnly,
     ...rest
   } = props;
-  const { form, formMode, enabledComponentIds } = useForm();
-
-  const disabledByCondition = !rest.isDynamic && enabledComponentIds && !enabledComponentIds.includes(rest.id);
-
-  const isDisabled = formMode !== 'designer' && (disabled || disabledByCondition);
+  const { form, formMode, isComponentDisabled } = useForm();
+  
+  const isDisabled = isComponentDisabled(rest);
 
   const isReadOnly = readOnly || formMode === 'readonly';
 

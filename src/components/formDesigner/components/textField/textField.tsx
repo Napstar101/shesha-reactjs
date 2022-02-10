@@ -47,12 +47,10 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
       dataFormat === StringFormats.phoneNumber ||
       dataFormat === StringFormats.password),
   factory: (model: ITextFieldProps, _c, form) => {
-    const { formMode, enabledComponentIds } = useForm();
+    const { formMode, isComponentDisabled } = useForm();
 
-    const disabledByCondition = !model.isDynamic && enabledComponentIds && !enabledComponentIds.includes(model.id);
-
-    const disabled = formMode !== 'designer' && (Boolean(model.disabled) || disabledByCondition);
-
+    const disabled = isComponentDisabled(model);
+    
     const readOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
 
     const inputProps: InputProps = {

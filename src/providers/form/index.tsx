@@ -68,7 +68,7 @@ import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
-import { IAsyncValidationError, IFormValidationErrors, IToolboxComponent, IToolboxComponentGroup } from '../../interfaces';
+import { IAsyncValidationError, IConfigurableFormComponent, IFormValidationErrors, IToolboxComponent, IToolboxComponentGroup } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { useMetadataDispatcher } from '../../providers';
 
@@ -265,6 +265,18 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   const getComponentModel = id => {
     return state.present.allComponents[id];
   };
+
+  const isComponentDisabled = (model: Pick<IConfigurableFormComponent, 'id' | 'isDynamic' | 'disabled'>): boolean => {
+    const disabledByCondition = (model.isDynamic !== true) && state.present.enabledComponentIds && !state.present.enabledComponentIds.includes(model.id);
+
+    return state.present.formMode !== 'designer' && (model.disabled || disabledByCondition);
+  }
+
+  const isComponentHidden = (model: Pick<IConfigurableFormComponent, 'id' | 'isDynamic' | 'hidden'>): boolean => {
+    const hiddenByCondition = (model.isDynamic !== true) && state.present.visibleComponentIds && !state.present.visibleComponentIds.includes(model.id);
+
+    return state.present.formMode !== 'designer' && (model.hidden || hiddenByCondition);
+  }
 
   const updateComponent = (payload: IComponentUpdatePayload) => {
     dispatch(componentUpdateAction(payload));
@@ -492,6 +504,8 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     addComponentsFromTemplate,
     deleteComponent,
     getComponentModel,
+    isComponentDisabled,
+    isComponentHidden,
     updateComponent,
     loadForm,
     saveForm,

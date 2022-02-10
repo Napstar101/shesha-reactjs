@@ -32,15 +32,12 @@ const TabsComponent: IToolboxComponent<ITabsComponentProps> = {
   name: 'Tabs',
   icon: <FolderOutlined />,
   factory: model => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
 
     const size = 'small';
     const { tabs, defaultActiveKey, tabType = 'card' } = model as ITabsComponentProps;
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     const actionKey = defaultActiveKey || (tabs?.length && tabs[0]?.key);
 

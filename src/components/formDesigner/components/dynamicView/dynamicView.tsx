@@ -13,7 +13,7 @@ export interface DynamicViewProps extends IConfigurableFormComponent {
 export const DynamicView: FC<DynamicViewProps> = (model) => {
     const currentMeta = useMetadata(false)?.metadata;
 
-    const { allComponents, toolboxComponentGroups, visibleComponentIds, formMode } = useForm();
+    const { allComponents, toolboxComponentGroups, isComponentHidden } = useForm();
 
     const staticComponents = useMemo<IConfigurableFormComponent[]>(() => {
         const result: IConfigurableFormComponent[] = [];
@@ -45,10 +45,7 @@ export const DynamicView: FC<DynamicViewProps> = (model) => {
         return components;
     }, [propsToRender]);
 
-    const hiddenByCondition = (model.isDynamic !== true) && visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden)
-        return null;
+    if (isComponentHidden(model)) return null;
 
     return (
         <DynamicContainer components={dynamicComponents}></DynamicContainer>

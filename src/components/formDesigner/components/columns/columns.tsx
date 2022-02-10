@@ -28,12 +28,10 @@ const ColumnsComponent: IToolboxComponent<IColumnsComponentProps> = {
   name: 'Columns',
   icon: <SplitCellsOutlined />,
   factory: model => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
     const { columns, gutterX = 0, gutterY = 0 } = model as IColumnsComponentProps;
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     return (
       <Row gutter={[gutterX, gutterY]}>

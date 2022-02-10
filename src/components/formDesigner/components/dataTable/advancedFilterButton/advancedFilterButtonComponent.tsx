@@ -18,11 +18,9 @@ const AdvancedFilterButtonComponent: IToolboxComponent<IPagerComponentProps> = {
   name: 'Table Advanced Filter Button',
   icon: <FilterOutlined />,
   factory: (model: IPagerComponentProps) => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     return <AdvancedFilterButton {...model}></AdvancedFilterButton>;
   },
