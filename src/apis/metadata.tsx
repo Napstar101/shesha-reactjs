@@ -60,6 +60,10 @@ export interface PropertyMetadataDto {
   referenceListNamespace?: string | null;
   orderIndex?: number;
   groupName?: string | null;
+  /**
+   * If true, indicates that current property is a framework-related (e.g. Abp.Domain.Entities.ISoftDelete.IsDeleted, Abp.Domain.Entities.Auditing.IHasModificationTime.LastModificationTime)
+   */
+  isFrameworkRelated?: boolean;
 }
 
 export interface PropertyMetadataDtoListAjaxResponse {

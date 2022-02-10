@@ -4,6 +4,7 @@ export interface IPropertyMetadata {
   description?: string;
 
   isVisible: boolean;
+  isFrameworkRelated: boolean;
   readonly?: boolean;
   orderIndex?: number;
   groupName?: string;

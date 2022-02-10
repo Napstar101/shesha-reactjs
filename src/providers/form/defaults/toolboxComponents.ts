@@ -45,6 +45,7 @@ import Statistic from '../../../components/formDesigner/components/statistic';
 import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
 import CodeEditor from '../../../components/formDesigner/components/codeEditor';
 import EditableTagGroup from '../../../components/formDesigner/components/editableTagGroup';
+import DynamicView from '../../../components/formDesigner/components/dynamicView';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -89,6 +90,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       PropertyAutocomplete,
       CodeEditor,
       EditableTagGroup,
+      DynamicView,
     ],
   },
   {
@@ -98,7 +100,6 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       AdvancedFilterButton,
       DataTable,
       Pager,
-      //QueryBuilderComponent,
       QuickSearch,
       SelectColumnsButton,
       TableContext,

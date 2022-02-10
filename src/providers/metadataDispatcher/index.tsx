@@ -55,6 +55,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
             description: p.description,
 
             isVisible: p.isVisible,
+            isFrameworkRelated: p.isFrameworkRelated,
             readonly: p.readonly,
             orderIndex: p.orderIndex,
             groupName: p.groupName,

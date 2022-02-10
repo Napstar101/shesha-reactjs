@@ -10,6 +10,10 @@ export interface ISideBarMenuProps {
   items: ISidebarMenuItem[];
 }
 
+const EmptySidebarProps: ISideBarMenuProps = {
+  items: [],
+}
+
 export interface IConfigurableSidebarMenuProps {
   theme?: MenuTheme;
   defaultSettings?: ISideBarMenuProps;
@@ -20,7 +24,7 @@ export const ConfigurableSidebarMenu: FC<IConfigurableSidebarMenuProps> = props 
   const editor = (editorProps: ISettingsEditorProps<ISideBarMenuProps>) => {
     return (
       <ComponentSettingsModal
-        settings={editorProps.settings}
+        settings={editorProps.settings ?? EmptySidebarProps}
         onSave={editorProps.onSave}
         onCancel={editorProps.onCancel}
       />

@@ -200,8 +200,8 @@ export const PropertyProps = addStory(DesignerTemplate, {
   formId: '97a5ba27-a3a4-4651-92b1-07bfe1debb2c',
 });
 
-export const ModelProps = addStory(DesignerTemplate, {
-  formId: 'd76d4fd7-b5e7-4fea-9c15-a34a63371430',
+export const DynamicViewProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\etalon\\shesha-reactjs\\src\\components\\formDesigner\\components\\dynamicView\\settingsForm.json'
 });
 
 export const Empty = addStory(DesignerTemplate, {
