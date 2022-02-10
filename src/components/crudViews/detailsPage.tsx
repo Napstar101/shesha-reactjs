@@ -118,6 +118,7 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
   const filters = props?.formFilters || DEFAULT_FILTERS;
 
   const model = (filterGenericModelData(serverData?.result, filters) as any) || {};
+  const initialValues = (filterGenericModelData(props?.formValues, filters) as any) || model;
 
   const { formItemLayout } = useUi();
 
@@ -164,7 +165,7 @@ const GenericDetailsPage = forwardRef<CommonCrudHandles, IGenericDetailsPageProp
               form={form}
               path={props?.formPath || router?.pathname}
               markup={props?.markup}
-              initialValues={props?.formValues || model}
+              initialValues={initialValues}
               actions={props?.formActions}
               sections={props?.formSections}
               onValuesChange={props?.onFormValuesChange}
