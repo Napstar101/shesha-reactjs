@@ -70,7 +70,7 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
       {filteredGroups.length > 0 && (
         <Collapse activeKey={openedKeys} onChange={onCollapseChange}>
           {filteredGroups.map((ds, dsIndex) => {
-            const visibleItems = ds.items.filter(c => c.isVisible === true);
+            const visibleItems = ds.items.filter(c => c.isVisible === true && !c.isFrameworkRelated);
 
             const sortableItems = visibleItems.map<ItemInterface>(dsItem => {
               return {
