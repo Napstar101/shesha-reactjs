@@ -126,7 +126,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
   } = props;
   const { form, formMode, enabledComponentIds } = useForm();
 
-  const disabledByCondition = enabledComponentIds && !enabledComponentIds.includes(rest.id);
+  const disabledByCondition = !rest.isDynamic && enabledComponentIds && !enabledComponentIds.includes(rest.id);
 
   const isDisabled = formMode !== 'designer' && (disabled || disabledByCondition);
 

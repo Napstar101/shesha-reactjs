@@ -21,12 +21,11 @@ import {
 import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure, IComponentRelations } from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import { camelize, cloneComponents, convertActions, findToolboxComponent, getCustomEnabledFunc, getCustomVisibilityFunc, listComponentToModelMetadata, processRecursive } from './utils';
+import { camelize, cloneComponents, convertActions, createComponentModelForDataProperty, findToolboxComponent, getCustomEnabledFunc, getCustomVisibilityFunc, processRecursive } from './utils';
 import undoable, { includeAction } from 'redux-undo';
-import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
+import { IFormValidationErrors } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { nanoid } from 'nanoid/non-secure';
-import { IPropertyMetadata } from '../../interfaces/metadata';
 
 const addComponentToFlatStructure = (
   structure: IFlatComponentsStructure & IHasComponentGroups,
@@ -67,41 +66,6 @@ const addComponentToFlatStructure = (
   };
 };
 
-const createComponentForProperty = (
-  components: IToolboxComponentGroup[],
-  propertyMetadata: IPropertyMetadata
-): IConfigurableFormComponent => {
-  const toolboxComponent = findToolboxComponent(
-    components,
-    c =>
-      Boolean(c.dataTypeSupported) &&
-      c.dataTypeSupported({ dataType: propertyMetadata.dataType, dataFormat: propertyMetadata.dataFormat })
-  );
-  if (!Boolean(toolboxComponent)) return null;
-
-  // find appropriate toolbox component
-  // create instance of the component
-  // init default values for the component
-  // init component according to the metadata
-
-  let componentModel: IConfigurableFormComponent = {
-    id: nanoid(),
-    type: toolboxComponent.type,
-    name: camelize(propertyMetadata.path),
-    label: propertyMetadata.label,
-    labelAlign: 'right',
-    //parentId: containerId,
-    hidden: false,
-    customVisibility: null,
-    visibilityFunc: _data => true,
-  };
-  if (toolboxComponent.initModel) componentModel = toolboxComponent.initModel(componentModel);
-
-  componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
-
-  return componentModel;
-};
-
 const reducer = handleActions<IFormStateContext, any>(
   {
     [FormActionEnums.DataPropertyAdd]: (
@@ -112,7 +76,7 @@ const reducer = handleActions<IFormStateContext, any>(
         payload: { propertyMetadata, index, containerId },
       } = action;
 
-      const formComponent = createComponentForProperty(state.toolboxComponentGroups, propertyMetadata);
+      const formComponent = createComponentModelForDataProperty(state.toolboxComponentGroups, propertyMetadata);
       if (!Boolean(formComponent)) return state;
 
       formComponent.parentId = containerId; // set parent
@@ -158,6 +122,7 @@ const reducer = handleActions<IFormStateContext, any>(
           customVisibility: null,
           visibilityFunc: _data => true,
           enabledFunc: _data => true,
+          isDynamic: false,
         };
         if (toolboxComponent.initModel) formComponent = toolboxComponent.initModel(formComponent);
 
@@ -236,7 +201,7 @@ const reducer = handleActions<IFormStateContext, any>(
 
         // create or update new containers
         newContainers.forEach(c => {
-          const existingContainer = newComponents[c.id] || { name: '', type: '' };
+          const existingContainer = newComponents[c.id] || { name: '', type: '', isDynamic: false };
           newComponents[c.id] = { ...existingContainer, ...c };
         });
 

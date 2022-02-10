@@ -419,23 +419,7 @@ export const toolbarGroupsToComponents = (availableComponents: IToolboxComponent
   }
   return allComponents;
 };
-/*
-export const findToolboxComponent = (
-  availableComponents: IToolboxComponentGroup[],
-  type: string
-): IToolboxComponent => {
-  if (availableComponents) {
-    for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
-      const group = availableComponents[gIdx];
-      for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
-        if (group.components[cIdx].type === type) return group.components[cIdx];
-      }
-    }
-  }
 
-  return null;
-};
-*/
 export const findToolboxComponent = (
   availableComponents: IToolboxComponentGroup[],
   predicate: (component: IToolboxComponent) => boolean
@@ -572,3 +556,39 @@ export const cloneComponents = (componentsRegistration: IToolboxComponentGroup[]
 
   return result;
 }
+
+export const createComponentModelForDataProperty = (
+  components: IToolboxComponentGroup[],
+  propertyMetadata: IPropertyMetadata
+): IConfigurableFormComponent => {
+  const toolboxComponent = findToolboxComponent(
+    components,
+    c =>
+      Boolean(c.dataTypeSupported) &&
+      c.dataTypeSupported({ dataType: propertyMetadata.dataType, dataFormat: propertyMetadata.dataFormat })
+  );
+  if (!Boolean(toolboxComponent)) return null;
+
+  // find appropriate toolbox component
+  // create instance of the component
+  // init default values for the component
+  // init component according to the metadata
+
+  let componentModel: IConfigurableFormComponent = {
+    id: nanoid(),
+    type: toolboxComponent.type,
+    name: camelize(propertyMetadata.path),
+    label: propertyMetadata.label,
+    labelAlign: 'right',
+    //parentId: containerId,
+    hidden: false,
+    customVisibility: null,
+    visibilityFunc: _data => true,
+    isDynamic: false,
+  };
+  if (toolboxComponent.initModel) componentModel = toolboxComponent.initModel(componentModel);
+
+  componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
+
+  return componentModel;
+};

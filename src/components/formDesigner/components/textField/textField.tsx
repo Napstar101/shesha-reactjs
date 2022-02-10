@@ -49,7 +49,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
   factory: (model: ITextFieldProps, _c, form) => {
     const { formMode, enabledComponentIds } = useForm();
 
-    const disabledByCondition = enabledComponentIds && !enabledComponentIds.includes(model.id);
+    const disabledByCondition = !model.isDynamic && enabledComponentIds && !enabledComponentIds.includes(model.id);
 
     const disabled = formMode !== 'designer' && (Boolean(model.disabled) || disabledByCondition);
 

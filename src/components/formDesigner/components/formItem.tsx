@@ -34,7 +34,7 @@ const ConfigurableFormItem: FC<IConfigurableFormItemProps> = ({
 }) => {
   const { formMode, visibleComponentIds } = useForm();
 
-  const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
+  const hiddenByCondition = (model.isDynamic !== true) && visibleComponentIds && !visibleComponentIds.includes(model.id);
 
   const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
 

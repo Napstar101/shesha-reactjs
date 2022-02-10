@@ -106,6 +106,9 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
   //#endregion
 
   readOnly?: boolean;
+
+  /** If true, indicates that component is rendered dynamically and some of rules (e.g. visibility) shouldn't be applied to this component */
+  isDynamic?: boolean;
 }
 
 export interface IComponentsContainer {

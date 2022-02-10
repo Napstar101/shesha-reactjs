@@ -2,30 +2,18 @@ import React, { FC, useMemo } from 'react';
 import { IConfigurableFormComponent } from '../../../../interfaces/formDesigner';
 import { IPropertyMetadata } from '../../../../interfaces/metadata';
 import { useForm } from '../../../../providers/form';
-import { camelize } from '../../../../providers/form/utils';
+import { camelize, createComponentModelForDataProperty } from '../../../../providers/form/utils';
 import { useMetadata } from '../../../../providers/metadata';
+import DynamicContainer from './dynamicContainer';
 
-export interface DynamicViewProps {
+export interface DynamicViewProps extends IConfigurableFormComponent {
 
 }
 
-export const DynamicView: FC<DynamicViewProps> = () => {
-    /*
-    1. get metadata
-    2. if metadata is not available - return null
-    3. get all existing form fields
-    4. filter out all fields that are already added to the form manually   
-    5. decide how to sort properties
-    6. how to render two dynamic view components?
-    7. add a flag to mark framework properties (id, CreationTime etc...)
-    */
-    /*
-    filter components which are not linked to the model
-    */
-
+export const DynamicView: FC<DynamicViewProps> = (model) => {
     const currentMeta = useMetadata(false)?.metadata;
 
-    const { allComponents } = useForm();
+    const { allComponents, toolboxComponentGroups, visibleComponentIds, formMode } = useForm();
 
     const staticComponents = useMemo<IConfigurableFormComponent[]>(() => {
         const result: IConfigurableFormComponent[] = [];
@@ -47,46 +35,23 @@ export const DynamicView: FC<DynamicViewProps> = () => {
         return propertiesToMap;
     }, [staticComponents, currentMeta]);
 
-    return (
-        <div>
-            {false && (
-                <div>
-                    <h4>All Components ({staticComponents.length}):</h4>
-                    <ul>
-                        {staticComponents.map(component => (
-                            <li key={component.id}>
-                                {component.name}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+    const dynamicComponents = useMemo(() => {
+        const components = propsToRender.map(prop => {
+            const component = createComponentModelForDataProperty(toolboxComponentGroups, prop);
+            if (component)
+                component.isDynamic = true;
+            return component;
+        }).filter(c => Boolean(c));
+        return components;
+    }, [propsToRender]);
 
-            )}
-            <div>
-                <h4>Props to render (props: {propsToRender.length})</h4>
-                <ul>
-                    {propsToRender.map(prop => (
-                        <li key={prop.path}>
-                            {prop.path}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            {
-                false && Boolean(currentMeta) && (
-                    <div>
-                        <h4>Metadata available (props: {currentMeta.properties.length})</h4>
-                        <ul>
-                            {currentMeta.properties.map(prop => (
-                                <li key={prop.path}>
-                                    {prop.path}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )
-            }
-        </div>
+    const hiddenByCondition = (model.isDynamic !== true) && visibleComponentIds && !visibleComponentIds.includes(model.id);
+    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+    if (isHidden)
+        return null;
+
+    return (
+        <DynamicContainer components={dynamicComponents}></DynamicContainer>
     );
 }
 
