@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useState } from 'react';
+import { useShaRouting } from '../../providers/shaRouting';
 import { Button, Form, Modal, Spin } from 'antd';
 import { ValidationErrors, ConfigurableForm } from '../';
 import { FormInstance } from 'antd/lib/form';
@@ -64,6 +65,11 @@ export interface IGenericCreateModalProps {
    */
   cancelButtonLabel?: string | ReactNode;
 
+  /**
+   * The URL to navigate to after successfully submitting the form and the OnSuccessAction is set to "GoToUrl"
+   */
+  onSuccessUrl?: string;
+
   onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
 
   beforeSubmit?: (form: any) => boolean;
@@ -86,6 +92,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
   formPath,
   prepareValues,
   OnSuccessAction = OnSuccessActionType.Return,
+  onSuccessUrl,
   submitButtonLabel = 'Submit',
   cancelButtonLabel = 'Cancel',
   onFieldsChange,
@@ -101,15 +108,9 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
 
   const [form] = Form.useForm();
 
+  const { router } = useShaRouting();
+
   const onSubmit = () => {
-    setLocalKeepOpen(false);
-
-    form.submit();
-  };
-
-  const onSubmitKeepOpen = () => {
-    setLocalKeepOpen(true);
-
     form.submit();
   };
 
@@ -121,8 +122,39 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
       return;
     }
 
-    save(preparedValues).then(() => {
-      onSuccess(form, localKeepOpen);
+    save(preparedValues).then((result) => {
+
+      switch (OnSuccessAction) {
+
+        // Go to the details page of the entity you just created
+        case OnSuccessActionType.GoToDetails:
+          setLocalKeepOpen(false);
+          onSuccess(form, localKeepOpen);
+          console.log(JSON.stringify(result));
+          router?.push(onSuccessUrl + '/' + result.id);
+          break;
+
+        // Go to a specific url on success if the OnSuccessActionType is GoToUrl
+        case OnSuccessActionType.GoToUrl:
+          setLocalKeepOpen(false);
+          onSuccess(form, localKeepOpen);
+          router?.push(onSuccessUrl);
+          break;
+
+        // Keep the form open and keep adding more items
+        case OnSuccessActionType.AddMore:
+          setLocalKeepOpen(true);
+          onSuccess(form, localKeepOpen);
+          break;
+
+        // By default close the form and go back to the page that called the form
+        default:
+          setLocalKeepOpen(false);
+          onSuccess(form, localKeepOpen);
+          break;
+      }
+
+
     });
   };
 
@@ -148,14 +180,8 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
           <Button type="primary" onClick={onSubmit}>
             {submitButtonLabel}
           </Button>
-          {OnSuccessAction == OnSuccessActionType.AddMore && (
-            <Button type="primary" onClick={onSubmitKeepOpen}>
-              Save And Capture Another
-            </Button>
-          )}
         </div>
-      }
-    >
+      }>
       <Spin spinning={loading} tip="Please wait...">
         <ValidationErrors error={error?.data} />
 

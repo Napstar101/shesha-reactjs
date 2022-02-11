@@ -8,6 +8,7 @@ import { IGenericIndexPageProps } from './indexPage';
 import { useAreaCreate } from '../../apis/area';
 import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
+import { OnSuccessActionType } from './createModal';
 
 export default {
   title: 'Components/CrudViews/IndexView',
@@ -30,12 +31,14 @@ const Template: Story<IGenericIndexPageProps> = () => {
         <>
           <GenericIndexPage
             title="All Areas"
-            tableConfigId="Users_Index"
+            tableConfigId="Areas_Index"
             createModalProps={{
-              updater: useAreaCreate,
-              formPath: '/areas/create',
-              // keepModalOpenAfterSave: true,
               title: 'Add new area',
+              formPath: '/areas/create',
+              updater: useAreaCreate,
+              OnSuccessAction: OnSuccessActionType.GoToUrl,
+              onSuccessUrl: '/settings',
+              submitButtonLabel: "Submit"
             }}
           />
         </>
