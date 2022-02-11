@@ -100,7 +100,7 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
             
             return visibleItems.length === 0 ? null : (
               <Panel header={ds.datasource.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
-                <DataSourceTree items={visibleItems} defaultExpandAll={(searchText ?? '') !== ''}></DataSourceTree>
+                <DataSourceTree items={visibleItems} searchText={searchText} defaultExpandAll={(searchText ?? '') !== ''}></DataSourceTree>
               </Panel>
             );
           })}

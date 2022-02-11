@@ -1,6 +1,6 @@
 import { Tree } from 'antd';
 import { DataNode } from 'antd/lib/tree';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState, useEffect } from 'react';
 import { ReactSortable } from 'react-sortablejs';
 import { IPropertyMetadata } from '../../../interfaces/metadata';
 import { TOOLBOX_DATA_ITEM_DROPPABLE_KEY } from '../../../providers/form/models';
@@ -10,6 +10,7 @@ import ShaIcon from '../../shaIcon';
 export interface IProps {
     items: IPropertyMetadata[];
     defaultExpandAll: boolean;
+    searchText?: string;
 }
 
 const getTreeData = (prop: IPropertyMetadata, onAddItem: (prop: IPropertyMetadata) => void): DataNodeWithMeta => {
@@ -36,19 +37,42 @@ interface NodesWithExpanded {
     expandedKeys: string[],
 }
 
-const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll }) => {
+const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll, searchText }) => {
     const [manuallyExpanded, setManuallyExpanded] = useState<string[]>(null);
     const treeData = useMemo<NodesWithExpanded>(() => {
         const expanded: string[] = [];
         const nodes = items.map(item => getTreeData(item, (item) => {
             expanded.push(item.path);
         }));
-        //setManuallyExpanded(null);
+
         return {
             nodes: nodes,
             expandedKeys: expanded,
         };
     }, [items]);
+
+    useEffect(() => {
+        if (defaultExpandAll)
+            setManuallyExpanded(null);
+    }, [defaultExpandAll]);
+
+    const getTitle = (prop: IPropertyMetadata) => {
+        const { label } = prop;
+        const index = label.toLowerCase().indexOf(searchText);
+        if (index === -1)
+            return <span>{label}</span>;
+
+        const beforeStr = label.substring(0, index);
+        const str = label.substring(index, index + searchText.length);
+        const afterStr = label.substring(index + searchText.length, label.length);
+        return (
+            <span>
+                {beforeStr}
+                <span className="site-tree-search-value">{str}</span>
+                {afterStr}
+            </span>
+        );
+    }
 
     const renderTitle = (node: DataNodeWithMeta): React.ReactNode => {
         const icon = getIconByDataType(node.meta.dataType);
@@ -75,7 +99,7 @@ const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll }) => {
             >
                 <div className='sha-toolbox-component'>
                     {icon && <ShaIcon iconName={icon}></ShaIcon>}
-                    <span className='sha-component-title'>{node.title}</span>
+                    <span className='sha-component-title'>{getTitle(node.meta)}</span>
                 </div>
             </ReactSortable>
         );
@@ -90,7 +114,7 @@ const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll }) => {
             className='sha-datasource-tree'
             showIcon
             treeData={treeData.nodes}
-            expandedKeys={ defaultExpandAll && !Boolean(manuallyExpanded) ? treeData.expandedKeys : manuallyExpanded }
+            expandedKeys={defaultExpandAll && !Boolean(manuallyExpanded) ? treeData.expandedKeys : manuallyExpanded}
             onExpand={onExpand}
             draggable={false}
             selectable={false}
