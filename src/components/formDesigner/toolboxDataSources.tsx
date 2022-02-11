@@ -5,11 +5,17 @@ import { useForm, useMetadata } from '../../providers';
 import { IDataSource } from '../../providers/formDesigner/models';
 import SearchBox from './toolboxSearchBox';
 import DataSourceTree from './dataSourceTree';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 const { Panel } = Collapse;
 
 export interface IToolboxDataSourcesProps {
 
+}
+
+interface FilteredDataSource {
+  datasource: IDataSource;
+  visibleItems: IPropertyMetadata[];
 }
 
 export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
@@ -36,22 +42,40 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
     return dataSources;
   }, [formDs, currentDataSource]);
 
-  const filteredGroups = useMemo<IDataSource[]>(() => {
-    if (!Boolean(searchText))
-      return [...allDataSources];
-
-    const result: IDataSource[] = [];
-
-    const loweredSearchText = searchText.toLowerCase();
-
-    allDataSources.forEach((ds) => {
-      const filteredItems = ds.items.filter(c => c.path.toLowerCase().includes(loweredSearchText) || c.label?.toLowerCase().includes(loweredSearchText))
-      if (filteredItems.length > 0)
-        result.push({ ...ds, items: filteredItems });
+  const getVisibleProperties = (items: IPropertyMetadata[], searchText: string): IPropertyMetadata[] => {
+    const result: IPropertyMetadata[] = [];
+    
+    items.forEach(item => {
+      if (!item.isFrameworkRelated && item.isVisible){
+        const childItems = getVisibleProperties(item.properties, searchText);
+        const matched = (searchText ?? '') == '' || item.path.toLowerCase().includes(searchText) || item.label?.toLowerCase().includes(searchText);
+        
+        if (matched || childItems.length > 0){
+          const filteredItem: IPropertyMetadata = { ...item, properties: childItems };
+          result.push(filteredItem)
+        }
+      }
     });
 
     return result;
+  }
+
+  const datasourcesWithVisible = useMemo<FilteredDataSource[]>(() => {
+    const dataSources = allDataSources.map<FilteredDataSource>((ds) => (
+      {
+        datasource: ds,
+        visibleItems: getVisibleProperties(ds.items, searchText),
+      }
+    ));
+    return dataSources;    
   }, [allDataSources, searchText]);
+
+  const itemContainsText = (item: IPropertyMetadata, loweredSearchText: string): boolean => {
+    if (item.path.toLowerCase().includes(loweredSearchText) || item.label?.toLowerCase().includes(loweredSearchText))
+      return true;
+
+    return (item.properties ?? []).some(child => itemContainsText(child, loweredSearchText))
+  }
 
   if (allDataSources.length === 0)
     return null;
@@ -65,23 +89,24 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
         Data
       </div>
       <SearchBox value={searchText} onChange={setSearchText} placeholder='Search data properties' />
-      {filteredGroups.length > 0 && (
+      
+      {datasourcesWithVisible.length > 0 && (
         <Collapse activeKey={openedKeys} onChange={onCollapseChange}>
-          {filteredGroups.map((ds, dsIndex) => {
-            const visibleItems = ds.items.filter(c => c.isVisible === true && !c.isFrameworkRelated);
+          {datasourcesWithVisible.map((ds, dsIndex) => {
+            const visibleItems = ds.visibleItems;
 
             let classes = ['sha-toolbox-panel'];
-            if (ds.id === activeDataSourceId) classes.push('active');
+            if (ds.datasource.id === activeDataSourceId) classes.push('active');
             
             return visibleItems.length === 0 ? null : (
-              <Panel header={ds.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
-                <DataSourceTree items={visibleItems}></DataSourceTree>
+              <Panel header={ds.datasource.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
+                <DataSourceTree items={visibleItems} defaultExpandAll={(searchText ?? '') !== ''}></DataSourceTree>
               </Panel>
             );
           })}
         </Collapse>
       )}
-      {filteredGroups.length === 0 && (
+      {datasourcesWithVisible.length === 0 && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Properties not found" />
       )}
     </>
