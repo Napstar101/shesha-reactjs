@@ -44,7 +44,9 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
 
   const getVisibleProperties = (items: IPropertyMetadata[], searchText: string): IPropertyMetadata[] => {
     const result: IPropertyMetadata[] = [];
-    
+    if (!items)
+      return result;
+      
     items.forEach(item => {
       if (!item.isFrameworkRelated && item.isVisible){
         const childItems = getVisibleProperties(item.properties, searchText);
