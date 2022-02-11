@@ -82,14 +82,14 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
 
   const { headers } = useAuth();
 
-  const fileFetcher = useStoredFileGet({ 
+  const fileFetcher = useStoredFileGet({
     lazy: true,
     requestOptions: {
       headers,
     },
   });
 
-  const propertyFetcher = useStoredFileGetEntityProperty({ 
+  const propertyFetcher = useStoredFileGetEntityProperty({
     lazy: true,
     requestOptions: {
       headers,
@@ -110,7 +110,7 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
   }, [uploadMode, ownerId, ownerType, propertyName, fileId]);
 
   useEffect(() => {
-    if (uploadMode === 'sync') {
+    if (uploadMode === 'sync' && value) {
       const fileInfo: IStoredFile = value
         ? {
             //id: value.uid,
@@ -232,7 +232,7 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
         dispatch(uploadFileSuccessAction({ ...responseFile }));
         if (callback) callback(responseFile);
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(e);
         dispatch(uploadFileErrorAction({ ...newFile, uid: '-1', status: 'error', error: 'uploading failed' }));
       });
