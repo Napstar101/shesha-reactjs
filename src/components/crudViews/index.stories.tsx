@@ -37,7 +37,7 @@ const Template: Story<IGenericIndexPageProps> = () => {
               formPath: '/areas/create',
               updater: useAreaCreate,
               OnSuccessAction: OnSuccessActionType.GoToUrl,
-              onSuccessUrl: "/users",
+              onSuccessUrl: '/settings',
               submitButtonLabel: "Submit"
             }}
           />
