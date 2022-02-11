@@ -269,7 +269,8 @@ TableView.args = {
 export const DetailsView = DesignerTemplate.bind({});
 
 DetailsView.args = {
-  formPath: '/view/forms/details',
+  // formPath: '/view/forms/details',
+  formPath: '/view/details/testing',
   modelType: 'details',
 };
 

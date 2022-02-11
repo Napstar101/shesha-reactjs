@@ -1,10 +1,9 @@
-import { FC, MutableRefObject, useEffect } from 'react';
+import React, { FC, MutableRefObject, useEffect } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
 import { SelectOutlined } from '@ant-design/icons';
 import TableViewSelectorSettings from './tableViewSelectorSettingsPanel';
 import { ITableViewSelectorProps } from './models';
 import { IndexViewSelectorRenderer } from '../../../../../';
-import React from 'react';
 import { useDataTableStore } from '../../../../../providers';
 
 const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
@@ -12,7 +11,7 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
   name: 'Table view selector',
   icon: <SelectOutlined />,
   factory: (model: ITableViewSelectorProps, componentRef: MutableRefObject<any>) => {
-    return <TableViewSelector componentRef={componentRef} {...model}></TableViewSelector>;
+    return <TableViewSelector componentRef={componentRef} {...model} />;
   },
   initModel: (model: ITableViewSelectorProps) => {
     return {
@@ -37,7 +36,7 @@ export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, compon
   const dataSourceType = getDataSourceType();
   componentRef.current = {
     columns,
-    dataSourceType
+    dataSourceType,
   };
 
   const {

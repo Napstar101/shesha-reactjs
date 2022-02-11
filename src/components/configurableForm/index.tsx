@@ -12,7 +12,7 @@ export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
   const handleEditMode = Boolean(id) || Boolean(path);
   const { router } = useShaRouting(false);
 
-  console.log('ConfigurableForm mode: ', mode);
+  // onSuccess siwtch to readonly mode
 
   return (
     <ConfigurableComponent

@@ -1,42 +1,45 @@
 import React, { Fragment } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { BorderOutlined } from '@ant-design/icons';
+import { BarChartOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
 import ComponentsContainer from '../../componentsContainer';
 import { useForm } from '../../../../providers/form';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 
-export interface IBlankViewProps extends IConfigurableFormComponent {}
+export interface IDashboardViewProps extends IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const BlankViewComponent: IToolboxComponent<IBlankViewProps> = {
-  type: 'blankView',
-  name: 'Blank View',
-  icon: <BorderOutlined />,
-  factory: (model: IBlankViewProps) => {
+const DashboardViewComponent: IToolboxComponent<IDashboardViewProps> = {
+  type: 'dashboardView',
+  name: 'Dashboard View',
+  icon: <BarChartOutlined />,
+  factory: (model: IDashboardViewProps) => {
     const { formMode, visibleComponentIds } = useForm();
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
 
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+    const isDesignerMode = formMode === 'designer';
+
+    const isHidden = !isDesignerMode && (model.hidden || hiddenByCondition);
+
     if (isHidden) return null;
 
     return (
-      <div>
+      <Fragment>
         <ComponentsContainer containerId={model.id} />
-      </div>
+      </Fragment>
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
   initModel: model => {
-    const customProps: IBlankViewProps = {
+    const customProps: IDashboardViewProps = {
       ...model,
     };
     return customProps;
   },
 };
 
-export default BlankViewComponent;
+export default DashboardViewComponent;

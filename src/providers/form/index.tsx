@@ -298,7 +298,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
           dispatch(
             componentUpdateSettingsValidationAction({
               componentId: payload.componentId,
-              validationErrors: validationErrors,
+              validationErrors,
             })
           );
         });
@@ -311,7 +311,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   // todo: review usage of useFormUpdateMarkup after
   const { mutate: saveFormHttp /*, loading: saveFormInProgress, error: saveFormError*/ } = useFormUpdateMarkup({
-    id: id,
+    id,
   });
 
   const saveForm = (): Promise<void> => {

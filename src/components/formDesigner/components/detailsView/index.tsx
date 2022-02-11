@@ -1,23 +1,25 @@
 import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { ProfileOutlined } from '@ant-design/icons';
+import { BarChartOutlined, DashboardFilled, ProfileOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
 import { Page } from '../../../..';
 import ComponentsContainer from '../../componentsContainer';
 import { useForm } from '../../../../providers/form';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
-import ConditionalWrap from '../../../conditionalWrapper';
+import DetailsViewSettings, { IDetailsPageSettingsProps } from './settings';
+import { IDetailsViewProps } from './models';
 
-export interface IDetailsViewProps extends IConfigurableFormComponent {}
+export interface IDetailsViewComponentProps extends IDetailsPageSettingsProps, IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const DetailsViewComponent: IToolboxComponent<IDetailsViewProps> = {
+const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
   type: 'detailsView',
   name: 'Details View',
   icon: <ProfileOutlined />,
-  factory: (model: IDetailsViewProps) => {
+  factory: (model: IDetailsViewComponentProps) => {
+    console.log('DetailsViewComponent model :>> ', model);
     const { formMode, visibleComponentIds } = useForm();
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
@@ -29,15 +31,41 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewProps> = {
     if (isHidden) return null;
 
     return (
-      <ConditionalWrap condition={!isDesignerMode} wrap={children => <Page>{children}</Page>}>
+      <Page
+        title="Some heading"
+        toolbarItems={[
+          { title: 'Some title', icon: <DashboardFilled /> },
+          { title: 'Another title', icon: <BarChartOutlined /> },
+        ]}
+        backUrl={'Some back url'}
+        headerTagList={[
+          { title: 'Some title', tag: 'Some tag' },
+          { title: 'Another title', tag: 'another tag' },
+        ]}
+      >
         <ComponentsContainer containerId={model.id} />
-      </ConditionalWrap>
+      </Page>
+    );
+    // return (
+    //   <ConditionalWrap condition={!isDesignerMode} wrap={children => <Page>{children}</Page>}>
+    //     <ComponentsContainer containerId={model.id} />
+    //   </ConditionalWrap>
+    // );
+  },
+  // settingsFormMarkup: settingsForm,
+  settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
+    return (
+      <DetailsViewSettings
+        model={(model as unknown) as IDetailsViewProps}
+        onSave={onSave as any}
+        onCancel={onCancel}
+        onValuesChange={onValuesChange as any}
+      />
     );
   },
-  settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
   initModel: model => {
-    const customProps: IDetailsViewProps = {
+    const customProps: IDetailsViewComponentProps = {
       ...model,
     };
     return customProps;

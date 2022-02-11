@@ -76,13 +76,13 @@ const ComponentsContainer: FC<IProps> = ({
           console.log(
             '"toolboxComponent.id.toString(), containerId" :>> ',
             // toolboxComponent.id.toString(),
-            toolboxComponent,
+            toolboxComponent.id.toString(),
             containerId
           );
 
-          if (isViewTemplateComponent && containerId === 'root') {
-            return;
-          }
+          // if (isViewTemplateComponent && containerId === 'root') {
+          //   return;
+          // }
 
           addComponent({
             containerId,

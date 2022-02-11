@@ -34,4 +34,5 @@ export interface IConfigurableFormProps<Values = any, FieldData = any>
     IConfigurableFormBaseProps {
   mode: FormMode;
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
+  switchToReadOnlyOnSuccess?: boolean;
 }

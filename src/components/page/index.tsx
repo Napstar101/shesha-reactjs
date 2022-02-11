@@ -1,13 +1,14 @@
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Space, Tag } from 'antd';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid/non-secure';
 import React, { FC, useEffect } from 'react';
-import { CancelButton, ShaSpin } from '..';
+import { CancelButton, ShaSpin, StatusLabel } from '..';
 import { useShaRouting, useSheshaApplication } from '../..';
 import { IToolbarItem } from '../../interfaces';
 import { IndexToolbar } from '../indexToolbar';
 import Show from '../show';
 import PageHeaderTag, { ITagProps } from './pageHeaderTag';
+import { useForm } from '../../providers';
 
 export interface IPageHeadProps {
   readonly title?: string;
@@ -21,6 +22,12 @@ export interface IBreadcrumbItem {
   link?: string;
 }
 
+export interface IStatus {
+  color?: string;
+  visible?: boolean;
+  text: string;
+}
+
 export interface IPageProps extends IPageHeadProps {
   toolbarItems?: IToolbarItem[];
   backUrl?: string;
@@ -29,6 +36,7 @@ export interface IPageProps extends IPageHeadProps {
   loading?: boolean;
   noPadding?: boolean;
   loadingText?: string;
+  status?: IStatus;
 }
 
 export const Page: FC<IPageProps> = ({
@@ -41,9 +49,11 @@ export const Page: FC<IPageProps> = ({
   breadcrumbItems,
   loadingText = 'Loading...',
   noPadding = false,
+  status,
 }) => {
   const { router } = useShaRouting();
   const { applicationName } = useSheshaApplication();
+  const { formMode } = useForm();
 
   useEffect(() => {
     document.title = `${applicationName} | ${title}`;
@@ -63,8 +73,16 @@ export const Page: FC<IPageProps> = ({
         <Show when={showHeading}>
           <div className="sha-page-heading">
             <div className="sha-page-heading-left">
-              <Show when={!!title?.trim()}>
-                <h1 className="sha-page-title">{title}</h1>
+              <Show when={!!title?.trim() || Boolean(status)}>
+                <h1 className="sha-page-title">
+                  <Space>
+                    {title}
+
+                    <Show when={Boolean(status) && (status?.visible || typeof status?.visible !== 'boolean')}>
+                      <Tag color={status?.color}>{status?.text}</Tag>
+                    </Show>
+                  </Space>
+                </h1>
               </Show>
             </div>
 
@@ -98,7 +116,14 @@ export const Page: FC<IPageProps> = ({
           </Breadcrumb>
         </Show>
 
-        <div className={classNames('sha-page-content', { 'no-padding': noPadding })}>{children}</div>
+        <div
+          className={classNames('sha-page-content', {
+            'no-padding': noPadding,
+            'is-designer-mode': formMode === 'designer',
+          })}
+        >
+          {children}
+        </div>
       </ShaSpin>
     </section>
   );

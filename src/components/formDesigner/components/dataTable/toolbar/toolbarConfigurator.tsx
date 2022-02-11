@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button } from 'antd';
+import { Alert, Button, Divider } from 'antd';
 import { SidebarContainer } from '../../../../../components';
 import { ToolbarItemProperties } from './toolbarItemProperties';
 import ToolbarItemsContainer from './toolbarItemsContainer';
@@ -11,9 +11,12 @@ export interface IToolbarConfiguratorProps {}
 export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = () => {
   const { items, addButton, addGroup } = useToolbarConfigurator();
 
+  console.log('ToolbarConfigurator items :>> ', items);
+
   return (
     <div className="sha-toolbar-configurator">
-      <h4>Here you can configure the toolbar by adjusting their settings and ordering.</h4>
+      <Alert message={<h4>Here you can configure the toolbar by adjusting their settings and ordering.</h4>} />
+      <br />
       <div className="sha-action-buttons">
         <Button onClick={addGroup} type="primary">
           Add Group

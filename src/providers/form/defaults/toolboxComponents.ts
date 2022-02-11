@@ -48,6 +48,9 @@ import DetailsView from '../../../components/formDesigner/components/detailsView
 import BlankView from '../../../components/formDesigner/components/blankView';
 import TableView from '../../../components/formDesigner/components/tableView';
 import FormView from '../../../components/formDesigner/components/formView';
+import DashboardView from '../../../components/formDesigner/components/dashboardView';
+import MasterDetailsView from '../../../components/formDesigner/components/masterDetailsView';
+import MenuView from '../../../components/formDesigner/components/menuView';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -114,7 +117,11 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       Toolbar,
     ],
   },
-  { visible: false, name: 'Views', components: [DetailsView, BlankView, TableView, FormView] },
+  {
+    visible: false,
+    name: 'Views',
+    components: [DetailsView, BlankView, TableView, FormView, DashboardView, MasterDetailsView, MenuView],
+  },
 ];
 
 export default ToolboxComponents;

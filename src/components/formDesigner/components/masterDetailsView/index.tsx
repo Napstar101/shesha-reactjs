@@ -1,42 +1,48 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { BorderOutlined } from '@ant-design/icons';
+import { ProfileOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
 import ComponentsContainer from '../../componentsContainer';
 import { useForm } from '../../../../providers/form';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { Page } from '../../..';
+import ConditionalWrap from '../../../conditionalWrapper';
 
-export interface IBlankViewProps extends IConfigurableFormComponent {}
+export interface IMasterDetailsViewProps extends IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const BlankViewComponent: IToolboxComponent<IBlankViewProps> = {
-  type: 'blankView',
-  name: 'Blank View',
-  icon: <BorderOutlined />,
-  factory: (model: IBlankViewProps) => {
-    const { formMode, visibleComponentIds } = useForm();
+const MasterDetailsViewComponent: IToolboxComponent<IMasterDetailsViewProps> = {
+  type: 'masterDetailsView',
+  name: 'Master Details View',
+  icon: <ProfileOutlined />,
+  factory: (model: IMasterDetailsViewProps) => {
+    const { formMode, visibleComponentIds } = useForm()
+    ;
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
 
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+    const isDesignerMode = formMode === 'designer';
+
+    const isHidden = !isDesignerMode && (model.hidden || hiddenByCondition);
+
     if (isHidden) return null;
 
     return (
-      <div>
+      <ConditionalWrap condition={!isDesignerMode} wrap={children => <Page>{children}</Page>}>
         <ComponentsContainer containerId={model.id} />
-      </div>
+      </ConditionalWrap>
     );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
   initModel: model => {
-    const customProps: IBlankViewProps = {
+    const customProps: IMasterDetailsViewProps = {
       ...model,
     };
     return customProps;
   },
 };
 
-export default BlankViewComponent;
+export default MasterDetailsViewComponent;

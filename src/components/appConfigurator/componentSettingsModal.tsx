@@ -33,7 +33,7 @@ export const ComponentSettingsModal = <TSettings extends any>({ title, markup, m
         onFinish={onSave}
         markup={markup}
         initialValues={model}
-      ></ConfigurableForm>
+      />
     </Modal>
   );
 };

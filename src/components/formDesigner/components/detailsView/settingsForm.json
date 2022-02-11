@@ -10,12 +10,26 @@
     {
       "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
       "type": "textField",
-      "name": "name",
+      "name": "title",
       "parentId": "root",
-      "label": "Name",
+      "label": "Title"
+    },
+    {
+      "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bb4",
+      "type": "textField",
+      "name": "path",
+      "parentId": "root",
+      "label": "Path",
       "validate": {
         "required": true
       }
+    },
+    {
+      "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bb5",
+      "type": "textField",
+      "name": "backUrl",
+      "parentId": "root",
+      "label": "Back Url"
     },
     {
       "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
@@ -25,52 +39,47 @@
       "label": "Label"
     },
     {
+      "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+      "type": "textField",
+      "name": "status",
+      "parentId": "root",
+      "label": "Status name property"
+    },
+    {
       "id": "57a40a33-7e08-4ce4-9f08-a34d24a83338",
       "type": "dropdown",
-      "name": "expandIconPosition",
+      "name": "status",
       "parentId": "root",
-      "label": "Expand Icon position",
+      "label": "Status color",
       "values": [
         {
-          "label": "left",
-          "value": "left",
-          "id": "f01e54aa-a1a4-4bd6-ba73-c395e48af8ce"
+          "id": "m8ftW2-rhDwiwPi92shLu",
+          "label": "Cancelled",
+          "value": "#f50"
         },
         {
-          "label": "right",
-          "value": "right",
-          "id": "b920ef96-ae27-4a01-bfad-b5b7d07218da"
+          "id": "VVJYg-lDKV8at0NPXXhdD",
+          "label": "New",
+          "value": "#2db7f5"
+        },
+        {
+          "id": "hIMuJBAr_VItu0baUFuPK",
+          "label": "Success",
+          "value": "#87d068"
+        },
+        {
+          "id": "ZNsHU7t77OD6Q6Xl8tIgF",
+          "label": "Active",
+          "value": "#108ee9"
+        },
+        {
+          "id": "AeAQg30fuaWLAJ6pcVFk-",
+          "label": "Rejected",
+          "value": "#55acee"
         }
       ],
       "dataSourceType": "values",
       "validate": {}
-    },
-    {
-      "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
-      "type": "checkbox",
-      "name": "hidden",
-      "parentId": "root",
-      "label": "Hidden"
-    },
-    {
-      "id": "bc67960e-77e3-40f2-89cc-f18f94678cce",
-      "type": "sectionSeparator",
-      "name": "separatorVisibility",
-      "parentId": "root",
-      "label": "Visibility"
-    },
-    {
-      "id": "d92ec2a2-93f4-431d-b143-e2fa2a720a4d",
-      "type": "codeEditor",
-      "name": "customVisibility",
-      "label": "Custom Visibility",
-      "labelAlign": "right",
-      "parentId": "root",
-      "hidden": false,
-      "customVisibility": null,
-      "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
-      "validate": {},
-      "settingsValidationErrors": []
     }
   ],
   "formSettings": {

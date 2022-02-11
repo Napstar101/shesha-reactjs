@@ -82,6 +82,7 @@ const DualModeForm: Story<IConfigurableFormProps> = ({ path, mode = 'readonly' }
   const onFinish = (data: any) => {
     console.log('onFinish data: ', data);
     console.log('onFinish data: ', JSON.stringify(data, null, 2));
+    formRef?.current?.setFormMode('readonly');
   };
 
   const switchToReadOnlyMode = () => {
@@ -96,7 +97,7 @@ const DualModeForm: Story<IConfigurableFormProps> = ({ path, mode = 'readonly' }
         <Row>
           <Col span={24}>
             <ConfigurableForm
-              mode={mode}
+              mode={'edit'}
               formRef={formRef}
               path={path}
               onFinish={onFinish}

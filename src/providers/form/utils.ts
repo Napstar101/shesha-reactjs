@@ -10,6 +10,7 @@ import {
   FormMarkupWithSettings,
   IFormSection,
   IFormSections,
+  ViewType,
 } from './models';
 import Mustache from 'mustache';
 import { IToolboxComponent, IToolboxComponentGroup, IToolboxComponents } from '../../interfaces';
@@ -516,14 +517,18 @@ export function listComponentToModelMetadata<TModel extends IConfigurableFormCom
 
 const getContainerNames = (toolboxComponent: IToolboxComponent): string[] => {
   const containers = [...(toolboxComponent.customContainerNames ?? [])];
-  if (!containers.includes('components'))
-    containers.push('components');
+  if (!containers.includes('components')) containers.push('components');
   return containers;
-}
+};
 
 export type ProcessingFunc = (child: IConfigurableFormComponent, parentId: string) => void;
 
-export const processRecursive = (componentsRegistration: IToolboxComponentGroup[], parentId: string, component: IConfigurableFormComponent, func: ProcessingFunc) => {
+export const processRecursive = (
+  componentsRegistration: IToolboxComponentGroup[],
+  parentId: string,
+  component: IConfigurableFormComponent,
+  func: ProcessingFunc
+) => {
   func(component, parentId);
 
   const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
@@ -532,7 +537,7 @@ export const processRecursive = (componentsRegistration: IToolboxComponentGroup[
   if (containers) {
     containers.forEach(containerName => {
       const containerComponents = component[containerName] as IConfigurableFormComponent[];
-      if (containerComponents){
+      if (containerComponents) {
         containerComponents.forEach(child => {
           func(child, component.id);
           processRecursive(componentsRegistration, parentId, child, func);
@@ -540,29 +545,32 @@ export const processRecursive = (componentsRegistration: IToolboxComponentGroup[
       }
     });
   }
-}
+};
 
 /**
  * Clone components and generate new ids for them
- * @param componentsRegistration 
- * @param components 
- * @returns 
+ * @param componentsRegistration
+ * @param components
+ * @returns
  */
-export const cloneComponents = (componentsRegistration: IToolboxComponentGroup[], components: IConfigurableFormComponent[]): IConfigurableFormComponent[] => {
+export const cloneComponents = (
+  componentsRegistration: IToolboxComponentGroup[],
+  components: IConfigurableFormComponent[]
+): IConfigurableFormComponent[] => {
   let result: IConfigurableFormComponent[] = [];
 
   components.forEach(component => {
-    let clone = {...component, id: nanoid() };
+    let clone = { ...component, id: nanoid() };
 
     result.push(clone);
 
     const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
     const containers = getContainerNames(toolboxComponent);
-  
+
     if (containers) {
       containers.forEach(containerName => {
         const containerComponents = clone[containerName] as IConfigurableFormComponent[];
-        if (containerComponents){
+        if (containerComponents) {
           const newChilds = cloneComponents(componentsRegistration, containerComponents);
           clone[containerName] = newChilds;
         }
@@ -571,4 +579,33 @@ export const cloneComponents = (componentsRegistration: IToolboxComponentGroup[]
   });
 
   return result;
-}
+};
+
+import blankViewMarkup from './defaults/markups/blankView.json';
+import dashboardViewMarkup from './defaults/markups/dashboardView.json';
+import detailsViewMarkup from './defaults/markups/detailsView.json';
+import formViewMarkup from './defaults/markups/formView.json';
+import masterDetailsViewMarkup from './defaults/markups/masterDetailsView.json';
+import menuViewMarkup from './defaults/markups/menuView.json';
+import tableViewMarkup from './defaults/markups/tableView.json';
+
+export const getDefaultFormMarkup = (type: ViewType = 'blank') => {
+  switch (type) {
+    case 'blank':
+      return blankViewMarkup;
+    case 'dashboard':
+      return dashboardViewMarkup;
+    case 'details':
+      return detailsViewMarkup;
+    case 'form':
+      return formViewMarkup;
+    case 'masterDetails':
+      return masterDetailsViewMarkup;
+    case 'menu':
+      return menuViewMarkup;
+    case 'table':
+      return tableViewMarkup;
+    default:
+      return blankViewMarkup;
+  }
+};
