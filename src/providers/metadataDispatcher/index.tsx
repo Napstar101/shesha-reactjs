@@ -14,7 +14,7 @@ import {
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import useThunkReducer from 'react-hook-thunk-reducer';
-import { metadataGetProperties } from '../../apis/metadata';
+import { metadataGetProperties, PropertyMetadataDto } from '../../apis/metadata';
 import { IModelsDictionary, IProvidersDictionary } from './models';
 import { useSheshaApplication } from '../../providers';
 import { IModelMetadata, IPropertyMetadata } from '../../interfaces/metadata';
@@ -37,6 +37,15 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
   const { backendUrl, httpHeaders } = useSheshaApplication();
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
+  const mapProperty = (property: PropertyMetadataDto, prefix: string = ''): IPropertyMetadata => {
+    return {
+      ...property, 
+      path: property.path, 
+      prefix: prefix,
+      properties: property.properties?.map(child => mapProperty(child, property.path)) 
+    };
+  }
+
   const getMetadata = (payload: IGetMetadataPayload) => {
     const { modelType } = payload;
     const loadedModel = models.current[payload.modelType];
@@ -49,40 +58,15 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
           if (!response.success) {
             reject(response.error);
           }
-          const properties = response.result.map<IPropertyMetadata>(p => ({
-            path: p.path,
-            label: p.label,
-            description: p.description,
+          
+          const properties = response.result.map<IPropertyMetadata>(p => mapProperty(p));
 
-            isVisible: p.isVisible,
-            isFrameworkRelated: p.isFrameworkRelated,
-            readonly: p.readonly,
-            orderIndex: p.orderIndex,
-            groupName: p.groupName,
-
-            //#region data type
-            dataType: p.dataType,
-            dataFormat: p.dataFormat,
-            entityType: p.entityType,
-            referenceListName: p.referenceListName,
-            referenceListNamespace: p.referenceListNamespace,
-            //#endregion
-
-            //#region validation
-            required: p.required,
-            minLength: p.minLength,
-            maxLength: p.maxLength,
-            min: p.min,
-            max: p.max,
-            //isEmail: p.isEmail
-            //#endregion
-          }));
           const meta: IModelMetadata = {
             type: payload.modelType,
             name: payload.modelType, // todo: fetch name from server
             properties
           };
-
+          
           models.current[payload.modelType] = meta;
           resolve(meta);
         })
