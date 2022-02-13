@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
-import { IToolboxComponent } from '../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
+import { IToolboxComponent } from '../../../../../interfaces';
+import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import ComponentsContainer from '../../componentsContainer';
-import { useForm } from '../../../../providers/form';
-import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import ComponentsContainer from '../../../componentsContainer';
+import { useForm } from '../../../../../providers/form';
+import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
 
 export interface IMenuViewProps extends IConfigurableFormComponent {}
 

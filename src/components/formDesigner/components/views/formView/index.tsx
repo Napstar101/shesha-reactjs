@@ -1,13 +1,13 @@
 import React from 'react';
-import { IToolboxComponent } from '../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
+import { IToolboxComponent } from '../../../../../interfaces';
+import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { FormOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import { CollapsiblePanel } from '../../../..';
-import ComponentsContainer from '../../componentsContainer';
+import { CollapsiblePanel } from '../../../../..';
+import ComponentsContainer from '../../../componentsContainer';
 import { ExpandIconPosition } from 'antd/lib/collapse/Collapse';
-import { useForm } from '../../../../providers/form';
-import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useForm } from '../../../../../providers/form';
+import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
 
 export interface ICollapsiblePanelProps extends IConfigurableFormComponent {
   expandIconPosition?: ExpandIconPosition;

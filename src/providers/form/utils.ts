@@ -20,12 +20,14 @@ import { formGet, formGetByPath } from '../../apis/form';
 import { IPropertyMetadata } from '../../interfaces/metadata';
 import { nanoid } from 'nanoid';
 import { Rule } from 'antd/lib/form';
+import nestedProperty from 'nested-property';
 
-/** Convert components tree to flat structure.
+/**
+ * Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
  *    allComponents - dictionary (key:value) of components. key - Id of the component, value - conponent settings
  *    componentRelations - dictionary of component relations. key - id of the container, value - ordered list of subcomponent ids
- * */
+ */
 export const componentsTreeToFlatStructure = (
   toolboxComponents: IToolboxComponents,
   components: IConfigurableFormComponent[]
@@ -336,6 +338,22 @@ const NESTED_ACCESSOR_REGEX = /((?<key>[\w]+)\.(?<accessor>[^\}]+))/;
 
 export const evaluateValue = (value: string, dictionary: any) => {
   return _evaluateValue(value, dictionary, true);
+};
+
+/**
+ * Evaluates an string expression and returns the evaluated value.
+ *
+ * Example: Given
+ *  let const person = { name: 'First', surname: 'Last' };
+ *  let expression = 'Full name is {{name}} {{surname}}';
+ *
+ * evaluateExpression(expression, person) will display 'Full name is First Last';
+ * @param expression the expression to evaluate
+ * @param data the data to use to evaluate the expression
+ * @returns
+ */
+export const evaluateExpression = (expression, data: any) => {
+  return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
 };
 
 export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) => {

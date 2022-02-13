@@ -356,6 +356,19 @@
           "hidden": false,
           "customVisibility": "return data.buttonAction === 'executeFormAction'",
           "validate": {}
+        },
+        {
+          "id": "4b5e5951-4998-4635-b1c8-0b6d3940c301",
+          "type": "codeEditor",
+          "name": "actionScript",
+          "label": "Action Script",
+          "labelAlign": "right",
+          "parentId": "root",
+          "hidden": false,
+          "customVisibility": "return data.buttonAction === 'executeScript'",
+          "description": "Enter custom code that will be executed when the button is clicked. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+          "validate": {},
+          "settingsValidationErrors": []
         }
       ]
     },
@@ -373,9 +386,22 @@
       "settingsValidationErrors": []
     },
     {
+      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
+      "type": "codeEditor",
+      "name": "customEnabled",
+      "label": "Custom Enabled",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customEnabled": null,
+      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
       "id": "26c68b22-3211-475d-91e1-0745a4447329",
-      "type": "textField",
-      "name": "permissions",
+      "type": "editableTagGroup",
+      "name": "requiredPermissions",
       "label": "Permissions",
       "labelAlign": "right",
       "parentId": "root",

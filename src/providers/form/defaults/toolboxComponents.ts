@@ -44,13 +44,13 @@ import Statistic from '../../../components/formDesigner/components/statistic';
 import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
 import CodeEditor from '../../../components/formDesigner/components/codeEditor';
 import EditableTagGroup from '../../../components/formDesigner/components/editableTagGroup';
-import DetailsView from '../../../components/formDesigner/components/detailsView';
-import BlankView from '../../../components/formDesigner/components/blankView';
-import TableView from '../../../components/formDesigner/components/tableView';
-import FormView from '../../../components/formDesigner/components/formView';
-import DashboardView from '../../../components/formDesigner/components/dashboardView';
-import MasterDetailsView from '../../../components/formDesigner/components/masterDetailsView';
-import MenuView from '../../../components/formDesigner/components/menuView';
+import DetailsView from '../../../components/formDesigner/components/views/detailsView';
+import BlankView from '../../../components/formDesigner/components/views/blankView';
+import TableView from '../../../components/formDesigner/components/views/tableView';
+import FormView from '../../../components/formDesigner/components/views/formView';
+import DashboardView from '../../../components/formDesigner/components/views/dashboardView';
+import MasterDetailsView from '../../../components/formDesigner/components/views/masterDetailsView';
+import MenuView from '../../../components/formDesigner/components/views/menuView';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {

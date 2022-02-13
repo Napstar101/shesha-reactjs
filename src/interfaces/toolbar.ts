@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
+import { IToolbarButton } from '../providers/toolbarConfigurator/models';
 
-export interface IToolbarItem {
+export interface IToolbarItem extends Omit<IToolbarButton, 'id' | 'icon'> {
   id?: string;
 
   className?: string;
 
   title: ReactNode;
 
-  icon?: ReactNode;
+  icon?: ReactNode | string;
 
   onClick?: (args: any) => void;
 

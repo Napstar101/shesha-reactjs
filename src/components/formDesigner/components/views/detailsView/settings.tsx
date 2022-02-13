@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Input, Select } from 'antd';
-import { SectionSeparator } from '../../..';
+import { SectionSeparator } from '../../../..';
 import { IDetailsViewProps } from './models';
-import { CodeEditor } from '../codeEditor/codeEditor';
+import { CodeEditor } from '../../codeEditor/codeEditor';
+import { ToolbarSettingsModal } from '../../dataTable/toolbar/toolbarSettingsModal';
 
 const OPTIONS = [
   {
@@ -40,13 +41,20 @@ export interface IDetailsPageSettingsProps {
 }
 
 function DetailsViewSettings({ onSave, model, onValuesChange }: IDetailsPageSettingsProps) {
+  const [toolbarModalVisible, setToolbarModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   return (
     <Form form={form} onFinish={onSave} layout="vertical" onValuesChange={onValuesChange}>
       <SectionSeparator sectionName={'Display'} />
 
-      <Form.Item name="title" label="Title" rules={[{ required: true }]} initialValue={model.title}>
+      <Form.Item
+        name="title"
+        label="Title"
+        rules={[{ required: true }]}
+        initialValue={model.title}
+        tooltip="This can be a literal string like below 'Details for {{data.companyName}}'"
+      >
         <Input />
       </Form.Item>
 
@@ -58,20 +66,10 @@ function DetailsViewSettings({ onSave, model, onValuesChange }: IDetailsPageSett
         <Input />
       </Form.Item>
 
-      <Form.Item name="statusName" label="Status name property" initialValue={model?.statusName}>
-        <Input />
-      </Form.Item>
+      <SectionSeparator sectionName="Status" />
 
-      <Form.Item name="status" label="Status name property" initialValue={model?.statusName}>
-        <CodeEditor
-          label="Custom code"
-          description="Something"
-          mode="dialog"
-          setOptions={{ minLines: 20, maxLines: 500, fixedWidthGutter: true }}
-          name={'custom'}
-          type={'sdfsdfsd'}
-          id={'dsdffd'}
-        />
+      <Form.Item name="statusName" label="Status name" initialValue={model?.statusName}>
+        <Input />
       </Form.Item>
 
       <Form.Item name="statusColor" label="Status color" initialValue={model?.statusColor}>
@@ -84,7 +82,7 @@ function DetailsViewSettings({ onSave, model, onValuesChange }: IDetailsPageSett
         </Select>
       </Form.Item>
 
-      <Form.Item name="custom" label="Status name property" initialValue={model?.statusName}>
+      <Form.Item name="statusCustomColor" label="Status color expression" initialValue={model?.statusName}>
         <CodeEditor
           label="Custom code"
           description="Something"
@@ -96,19 +94,19 @@ function DetailsViewSettings({ onSave, model, onValuesChange }: IDetailsPageSett
         />
       </Form.Item>
 
-      <Form.Item name="custom" label="Status name property" initialValue={model?.statusName}>
-        <CodeEditor
-          label="Custom code"
-          description="Something"
-          mode="dialog"
-          setOptions={{ minLines: 20, maxLines: 500, fixedWidthGutter: true }}
-          name={'custom'}
-          type={'sdfsdfsd'}
-          id={'dsdffd'}
+      <SectionSeparator sectionName="Toolbar" />
+
+      <Button onClick={() => setToolbarModalVisible(true)}>Configure Toolbar</Button>
+
+      <Form.Item name="toolbarItems" initialValue={model.toolbarItems}>
+        <ToolbarSettingsModal
+          visible={toolbarModalVisible}
+          allowAddGroups={false}
+          hideModal={() => {
+            setToolbarModalVisible(false);
+          }}
         />
       </Form.Item>
-
-      <Button>Configure Toolbar</Button>
     </Form>
   );
 }

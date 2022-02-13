@@ -1,16 +1,19 @@
 import React from 'react';
-import { IToolboxComponent } from '../../../../interfaces';
-import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { BarChartOutlined, DashboardFilled, ProfileOutlined } from '@ant-design/icons';
+import { IToolboxComponent } from '../../../../../interfaces';
+import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
+import { ProfileOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import { Page } from '../../../..';
-import ComponentsContainer from '../../componentsContainer';
-import { useForm } from '../../../../providers/form';
-import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { Page } from '../../../../..';
+import ComponentsContainer from '../../../componentsContainer';
+import { useForm } from '../../../../../providers/form';
+import { evaluateExpression, validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
 import DetailsViewSettings, { IDetailsPageSettingsProps } from './settings';
 import { IDetailsViewProps } from './models';
 
-export interface IDetailsViewComponentProps extends IDetailsPageSettingsProps, IConfigurableFormComponent {}
+export interface IDetailsViewComponentProps
+  extends IDetailsPageSettingsProps,
+    IDetailsViewProps,
+    IConfigurableFormComponent {}
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -20,7 +23,7 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
   icon: <ProfileOutlined />,
   factory: (model: IDetailsViewComponentProps) => {
     console.log('DetailsViewComponent model :>> ', model);
-    const { formMode, visibleComponentIds } = useForm();
+    const { formMode, visibleComponentIds, formData } = useForm();
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
 
@@ -30,14 +33,13 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
 
     if (isHidden) return null;
 
+    const evaluatedTitle = evaluateExpression(model?.title, formData);
+
     return (
       <Page
-        title="Some heading"
-        toolbarItems={[
-          { title: 'Some title', icon: <DashboardFilled /> },
-          { title: 'Another title', icon: <BarChartOutlined /> },
-        ]}
-        backUrl={'Some back url'}
+        title={evaluatedTitle}
+        toolbarItems={model?.toolbarItems}
+        backUrl={model?.backUrl}
         headerTagList={[
           { title: 'Some title', tag: 'Some tag' },
           { title: 'Another title', tag: 'another tag' },

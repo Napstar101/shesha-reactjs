@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useRef, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
 import { Empty, Form } from 'antd';
 import { ConfigurableForm } from '../../../../../components';
@@ -7,7 +7,6 @@ import itemGroupSettingsJson from './itemGroupSettings.json';
 import { FormMarkup } from '../../../../../providers/form/models';
 import { useDebouncedCallback } from 'use-debounce';
 import { ConfigurableFormInstance } from '../../../../../providers/form/contexts';
-import React from 'react';
 
 export interface IProps {}
 
@@ -33,7 +32,7 @@ export const ToolbarItemProperties: FC<IProps> = () => {
     if (formRef.current) {
       const values = form.getFieldsValue();
 
-      formRef.current.setFormData({ values: values, mergeValues: false });
+      formRef.current.setFormData({ values, mergeValues: false });
     }
   }, [selectedItemId]);
 
@@ -61,19 +60,19 @@ export const ToolbarItemProperties: FC<IProps> = () => {
         form={form}
         initialValues={componentModel}
         onValuesChange={debouncedSave}
-      ></ConfigurableForm>
+      />
     );
   };
 
   useEffect(() => {
-    const editor = getEditor();
-    setEditor(editor);
+    const localEditor = getEditor();
+    setEditor(localEditor);
   }, [selectedItemId]);
 
   if (!Boolean(selectedItemId)) {
     return (
       <div>
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Please select a component to begin editing"></Empty>
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Please select a component to begin editing" />
       </div>
     );
   }

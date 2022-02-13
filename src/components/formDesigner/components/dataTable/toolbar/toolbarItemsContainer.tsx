@@ -34,6 +34,7 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
 
       updateChildItems({ index: props.index, id: props.id, childs: newChilds });
     }
+
     return;
   };
 

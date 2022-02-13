@@ -9,9 +9,15 @@ export interface IToolbarSettingsModal {
   hideModal: () => void;
   value?: object;
   onChange?: any;
+  allowAddGroups?: boolean;
 }
 
-export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({ visible, onChange, hideModal }) => {
+export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({
+  visible,
+  onChange,
+  hideModal,
+  allowAddGroups,
+}) => {
   const { items } = useToolbarConfigurator();
 
   const onOkClick = () => {
@@ -21,7 +27,7 @@ export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({ visible, 
 
   return (
     <Modal width="60%" visible={visible} title="Configure Toolbar" okText="Save" onCancel={hideModal} onOk={onOkClick}>
-      <ToolbarConfigurator />
+      <ToolbarConfigurator allowAddGroups={allowAddGroups} />
     </Modal>
   );
 };
