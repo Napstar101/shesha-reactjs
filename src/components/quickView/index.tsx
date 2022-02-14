@@ -12,7 +12,7 @@ export interface IQuickViewProps {
     /**
      * The id or guid for the entity
      */
-    id: string;
+    // id: string;
 
     /**
      * Path to the form to display on the modal
@@ -22,7 +22,7 @@ export interface IQuickViewProps {
 
 const QuickView: FC<IQuickViewProps> = ({
     title,
-    id,
+    // id,
     formPath,
 }) => {
 

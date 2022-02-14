@@ -25,7 +25,7 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
                 <>
                     <QuickView
                         title={props.title}
-                        id={props.id}
+                        // id={props.id}
                         formPath={props.formPath} />
                 </>
             </AuthContainer>
@@ -35,7 +35,7 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
 
 const baseProps: IQuickViewProps = {
     title: "Hello",
-    id: "4575f878-8ff1-4d8f-8532-e35b62c4fe33",
+    // id: "4575f878-8ff1-4d8f-8532-e35b62c4fe33",
     formPath: "/members/details"
 };
 
