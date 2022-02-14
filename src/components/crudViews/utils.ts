@@ -23,7 +23,7 @@ export const filterGenericModelData = (model: GenericFormModelPayloadType, filte
     }
   }
 
-  if (typeof model === 'object' && Object.keys(model).length) {
+  if (model && typeof model === 'object' && Object.keys(model).length) {
     return handleGenericFiltering(model, filters);
   }
 

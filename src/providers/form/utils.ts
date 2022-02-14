@@ -19,6 +19,7 @@ import { formGet, formGetByPath } from '../../apis/form';
 import { IPropertyMetadata } from '../../interfaces/metadata';
 import { nanoid } from 'nanoid';
 import { Rule } from 'antd/lib/form';
+import { getFullPath } from '../../utils/metadata';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -574,10 +575,12 @@ export const createComponentModelForDataProperty = (
   // init default values for the component
   // init component according to the metadata
 
+  const fullName = getFullPath(propertyMetadata);
+
   let componentModel: IConfigurableFormComponent = {
     id: nanoid(),
     type: toolboxComponent.type,
-    name: camelize(propertyMetadata.path),
+    name: fullName,
     label: propertyMetadata.label,
     labelAlign: 'right',
     //parentId: containerId,

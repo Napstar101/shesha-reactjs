@@ -1,17 +1,21 @@
 import React, { FC, useMemo } from 'react';
-import DataSourceItem from './dataSourceItem';
 import { Collapse, Empty } from 'antd';
 import { useLocalStorage } from '../../hooks';
-import { ItemInterface, ReactSortable } from 'react-sortablejs';
 import { useForm, useMetadata } from '../../providers';
-import { TOOLBOX_DATA_ITEM_DROPPABLE_KEY } from '../../providers/form/models';
 import { IDataSource } from '../../providers/formDesigner/models';
 import SearchBox from './toolboxSearchBox';
+import DataSourceTree from './dataSourceTree';
+import { IPropertyMetadata } from '../../interfaces/metadata';
 
 const { Panel } = Collapse;
 
 export interface IToolboxDataSourcesProps {
 
+}
+
+interface FilteredDataSource {
+  datasource: IDataSource;
+  visibleItems: IPropertyMetadata[];
 }
 
 export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
@@ -38,21 +42,42 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
     return dataSources;
   }, [formDs, currentDataSource]);
 
-  const filteredGroups = useMemo<IDataSource[]>(() => {
-    if (!Boolean(searchText))
-      return [...allDataSources];
-
-    const result: IDataSource[] = [];
-
-    const loweredSearchText = searchText.toLowerCase();
-
-    allDataSources.forEach((ds) => {
-      const filteredItems = ds.items.filter(c => c.path.toLowerCase().includes(loweredSearchText) || c.label?.toLowerCase().includes(loweredSearchText))
-      if (filteredItems.length > 0)
-        result.push({ ...ds, items: filteredItems });
+  const getVisibleProperties = (items: IPropertyMetadata[], searchText: string): IPropertyMetadata[] => {
+    const result: IPropertyMetadata[] = [];
+    if (!items)
+      return result;
+      
+    items.forEach(item => {
+      if (!item.isFrameworkRelated && item.isVisible){
+        const childItems = getVisibleProperties(item.properties, searchText);
+        const matched = (searchText ?? '') == '' || item.path.toLowerCase().includes(searchText) || item.label?.toLowerCase().includes(searchText);
+        
+        if (matched || childItems.length > 0){
+          const filteredItem: IPropertyMetadata = { ...item, properties: childItems };
+          result.push(filteredItem)
+        }
+      }
     });
+
     return result;
+  }
+
+  const datasourcesWithVisible = useMemo<FilteredDataSource[]>(() => {
+    const dataSources = allDataSources.map<FilteredDataSource>((ds) => (
+      {
+        datasource: ds,
+        visibleItems: getVisibleProperties(ds.items, searchText),
+      }
+    ));
+    return dataSources;    
   }, [allDataSources, searchText]);
+
+  const itemContainsText = (item: IPropertyMetadata, loweredSearchText: string): boolean => {
+    if (item.path.toLowerCase().includes(loweredSearchText) || item.label?.toLowerCase().includes(loweredSearchText))
+      return true;
+
+    return (item.properties ?? []).some(child => itemContainsText(child, loweredSearchText))
+  }
 
   if (allDataSources.length === 0)
     return null;
@@ -60,61 +85,30 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
   const onCollapseChange = (key: string | string[]) => {
     setOpenedKeys(Array.isArray(key) ? key : [key]);
   };
-  let idx = 0;
   return (
     <>
       <div className='sidebar-subheader'>
         Data
       </div>
       <SearchBox value={searchText} onChange={setSearchText} placeholder='Search data properties' />
-      {filteredGroups.length > 0 && (
+      
+      {datasourcesWithVisible.length > 0 && (
         <Collapse activeKey={openedKeys} onChange={onCollapseChange}>
-          {filteredGroups.map((ds, dsIndex) => {
-            const visibleItems = ds.items.filter(c => c.isVisible === true && !c.isFrameworkRelated);
-
-            const sortableItems = visibleItems.map<ItemInterface>(dsItem => {
-              return {
-                id: dsItem.path,
-                parent_id: null,
-                type: TOOLBOX_DATA_ITEM_DROPPABLE_KEY,
-                metadata: dsItem,
-              };
-            });
+          {datasourcesWithVisible.map((ds, dsIndex) => {
+            const visibleItems = ds.visibleItems;
 
             let classes = ['sha-toolbox-panel'];
-            if (ds.id === activeDataSourceId) classes.push('active');
-
+            if (ds.datasource.id === activeDataSourceId) classes.push('active');
+            
             return visibleItems.length === 0 ? null : (
-              <Panel header={ds.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
-                <ReactSortable
-                  list={sortableItems}
-                  setList={() => { }}
-                  group={{
-                    name: 'shared',
-                    pull: 'clone',
-                    put: false,
-                  }}
-                  sort={false}
-                  draggable=".sha-toolbox-component"
-                  ghostClass="sha-component-ghost"
-                >
-                  {visibleItems.map((item, itemIndex) => {
-                    idx++;
-                    return (
-                      <DataSourceItem
-                        key={`Group${dsIndex}:DsItem${itemIndex}`}
-                        item={item}
-                        index={idx}
-                      ></DataSourceItem>
-                    );
-                  })}
-                </ReactSortable>
+              <Panel header={ds.datasource.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
+                <DataSourceTree items={visibleItems} searchText={searchText} defaultExpandAll={(searchText ?? '') !== ''}></DataSourceTree>
               </Panel>
             );
           })}
         </Collapse>
       )}
-      {filteredGroups.length === 0 && (
+      {datasourcesWithVisible.length === 0 && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Properties not found" />
       )}
     </>

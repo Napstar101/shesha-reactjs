@@ -64,6 +64,10 @@ export interface PropertyMetadataDto {
    * If true, indicates that current property is a framework-related (e.g. Abp.Domain.Entities.ISoftDelete.IsDeleted, Abp.Domain.Entities.Auditing.IHasModificationTime.LastModificationTime)
    */
   isFrameworkRelated?: boolean;
+  /**
+   * Child properties, applicable for complex data types (e.g. object, array)
+   */
+  properties?: PropertyMetadataDto[] | null;
 }
 
 export interface PropertyMetadataDtoListAjaxResponse {
