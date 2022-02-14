@@ -1,6 +1,6 @@
 export { default as BasicDisplayFormItem, IBasicDisplayFormItemProps } from './basicDisplayFormItem';
 export { default as ConfigurableLogo } from './configurableLogo';
-export { default as GenericCreateModal, IGenericCreateModalProps } from './crudViews/createModal';
+export { default as GenericCreateModal, IGenericCreateModalProps, OnSuccessActionType } from './crudViews/createModal';
 export { default as GenericEditModal, IGenericEditModalProps } from './crudViews/editModal';
 export { default as GenericDetailsPage, IGenericDetailsPageProps } from './crudViews/detailsPage';
 export {
