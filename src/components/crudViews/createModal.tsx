@@ -130,8 +130,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
         case OnSuccessActionType.GoToDetails:
           setLocalKeepOpen(false);
           onSuccess(form, localKeepOpen);
-          console.log(JSON.stringify(result));
-          router?.push(onSuccessUrl + '/' + result.id);
+          router?.push(onSuccessUrl + '/?id=' + result.id);
           break;
 
         // Go to a specific url on success if the OnSuccessActionType is GoToUrl
