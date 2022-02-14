@@ -109,6 +109,13 @@ export interface IConfigurableFormComponent extends IFormComponentContainer {
 
   /** If true, indicates that component is rendered dynamically and some of rules (e.g. visibility) shouldn't be applied to this component */
   isDynamic?: boolean;
+
+  /**
+   * This allows a component to display a quickview popover with entity details.
+   * The quickview is only displayed in readonly mode
+   */
+  enableQuickview?: boolean;
+
 }
 
 export interface IComponentsContainer {
