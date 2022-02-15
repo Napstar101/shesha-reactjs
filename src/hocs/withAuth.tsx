@@ -19,6 +19,7 @@ export const ComponentWithAuth: FC<IComponentWithAuthProps> = props => {
 
     if (!loginInfo) {
       if (token) {
+        console.log('checkauth from effect', {isCheckingAuth, token})
         checkAuth();
       } else {
         goingToRoute(redirectRoute(router?.asPath, landingPage, unauthorizedRedirectUrl));
