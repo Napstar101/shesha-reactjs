@@ -358,6 +358,21 @@
           "validate": {}
         },
         {
+          "id": "8e70db8a-addb-43a5-a8ce-24a829b4f3c7",
+          "type": "labelValueEditor",
+          "name": "customActionParameters",
+          "label": "Parameters",
+          "labelAlign": "right",
+          "hidden": false,
+          "customVisibility": "return data.buttonAction === 'executeFormAction'",
+          "labelTitle": "Key",
+          "labelName": "key",
+          "valueTitle": "Value",
+          "valueName": "value",
+          "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
           "id": "4b5e5951-4998-4635-b1c8-0b6d3940c301",
           "type": "codeEditor",
           "name": "actionScript",

@@ -23,4 +23,6 @@ export interface IToolbarItem extends Omit<IToolbarButton, 'id' | 'icon'> {
   tooltipName?: string;
 
   tooltip?: string;
+
+  customActionParameters?: [{ key: string; value: string }];
 }

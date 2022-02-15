@@ -4,7 +4,7 @@ import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
 import { IToolbarItem } from '../../interfaces';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import ActionButtonGroup from '../actionButtonGroup';
-import { joinStringValues } from '../../utils';
+import classNames from 'classnames';
 
 export interface IIndexToolbarProps {
   items: IToolbarItem[];
@@ -14,8 +14,9 @@ export interface IIndexToolbarProps {
 }
 
 export const IndexToolbar: FC<IIndexToolbarProps> = ({ items, elementsRight, className, btnSize = 'middle' }) => {
+  console.log('IndexToolbar items :>> ', items);
   return (
-    <div className={joinStringValues(['sha-index-toolbar', className])}>
+    <div className={classNames('sha-index-toolbar', className)}>
       <div className="sha-index-toolbar-left">
         <ActionButtonGroup items={items} btnSize={btnSize} />
       </div>

@@ -356,6 +356,10 @@ export const evaluateExpression = (expression, data: any) => {
   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
 };
 
+// export const evaluateExpression = (expression, data: any) => {
+//   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
+// };
+
 export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) => {
   if (!value) return value;
   if (!dictionary) return null;

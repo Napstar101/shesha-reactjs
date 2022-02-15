@@ -1,8 +1,8 @@
-import { Breadcrumb, Space, Tag } from 'antd';
+import { Breadcrumb, Space } from 'antd';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid/non-secure';
 import React, { FC, useEffect } from 'react';
-import { CancelButton, ShaSpin, StatusLabel } from '..';
+import { CancelButton, IStatusTagProps, ShaSpin, StatusTag } from '..';
 import { useShaRouting, useSheshaApplication } from '../..';
 import { IToolbarItem } from '../../interfaces';
 import { IndexToolbar } from '../indexToolbar';
@@ -15,17 +15,12 @@ export interface IPageHeadProps {
   readonly description?: string;
   readonly url?: string;
   readonly ogImage?: string;
+  readonly formId?: string;
 }
 
 export interface IBreadcrumbItem {
   text: string;
   link?: string;
-}
-
-export interface IStatus {
-  color?: string;
-  visible?: boolean;
-  text: string;
 }
 
 export interface IPageProps extends IPageHeadProps {
@@ -36,7 +31,7 @@ export interface IPageProps extends IPageHeadProps {
   loading?: boolean;
   noPadding?: boolean;
   loadingText?: string;
-  status?: IStatus;
+  status?: IStatusTagProps;
 }
 
 export const Page: FC<IPageProps> = ({
@@ -54,6 +49,8 @@ export const Page: FC<IPageProps> = ({
   const { router } = useShaRouting();
   const { applicationName } = useSheshaApplication();
   const { formMode } = useForm();
+
+  console.log('Page toolbarItems :>> ', toolbarItems);
 
   useEffect(() => {
     document.title = `${applicationName} | ${title}`;
@@ -78,8 +75,8 @@ export const Page: FC<IPageProps> = ({
                   <Space>
                     {title}
 
-                    <Show when={Boolean(status) && (status?.visible || typeof status?.visible !== 'boolean')}>
-                      <Tag color={status?.color}>{status?.text}</Tag>
+                    <Show when={!!status && !!Object.values(status)?.length}>
+                      <StatusTag {...status} />
                     </Show>
                   </Space>
                 </h1>

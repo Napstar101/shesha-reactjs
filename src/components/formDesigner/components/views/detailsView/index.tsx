@@ -21,8 +21,9 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
   type: 'detailsView',
   name: 'Details View',
   icon: <ProfileOutlined />,
-  factory: (model: IDetailsViewComponentProps) => {
-    console.log('DetailsViewComponent model :>> ', model);
+  factory: (model: IDetailsViewComponentProps, ...rest) => {
+    console.log('DetailsViewComponent rest :>> ', rest);
+
     const { formMode, visibleComponentIds, formData } = useForm();
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
@@ -37,6 +38,7 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
 
     return (
       <Page
+        formId={model?.id}
         title={evaluatedTitle}
         toolbarItems={model?.toolbarItems}
         backUrl={model?.backUrl}
@@ -48,11 +50,6 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
         <ComponentsContainer containerId={model.id} />
       </Page>
     );
-    // return (
-    //   <ConditionalWrap condition={!isDesignerMode} wrap={children => <Page>{children}</Page>}>
-    //     <ComponentsContainer containerId={model.id} />
-    //   </ConditionalWrap>
-    // );
   },
   // settingsFormMarkup: settingsForm,
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {

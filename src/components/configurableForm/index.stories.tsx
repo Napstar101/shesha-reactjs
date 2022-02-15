@@ -107,6 +107,7 @@ const DualModeForm: Story<IConfigurableFormProps> = ({ path, mode = 'readonly' }
               initialValues={{
                 firstName: 'Some',
                 lastName: 'Name',
+                status: 1,
                 friend: {
                   name: 'John',
                   lastName: 'Doe',

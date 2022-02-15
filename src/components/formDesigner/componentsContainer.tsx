@@ -41,18 +41,6 @@ const ComponentsContainer: FC<IProps> = ({
     id: c.id,
   }));
 
-  console.log('ComponentsContainer props: ', {
-    containerId,
-    children,
-    direction,
-    justifyContent,
-    className,
-    type,
-    isViewTemplateComponent,
-    componentsCount: components?.length,
-    componentsMapped,
-  });
-
   const onSetList = (newState: ItemInterface[], _sortable, _store) => {
     const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
 

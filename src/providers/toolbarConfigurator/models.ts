@@ -28,6 +28,7 @@ export interface IToolbarButton extends IToolbarItemBase {
   modalFormId?: string;
   modalTitle?: string;
   formAction?: string;
+  actionScript?: string;
 }
 
 export interface IButtonGroup extends IToolbarItemBase {
