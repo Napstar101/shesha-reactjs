@@ -231,6 +231,7 @@ const GenericDualEditDetailsPage = forwardRef<CommonCrudHandles, IGenericDualEdi
       }
     };
 
+    console.log('LOG:::mode', props?.formType);
     return (
       <Spin spinning={loading || saving} tip="Loading...">
         <MainLayout
@@ -246,7 +247,7 @@ const GenericDualEditDetailsPage = forwardRef<CommonCrudHandles, IGenericDualEdi
           {model && (
             <>
               <ConfigurableForm
-                mode={props?.formType === 'Edit' ? 'edit' : 'readonly'}
+                mode={'edit'}
                 {...formItemLayout}
                 form={form}
                 formRef={formRef}
