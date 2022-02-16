@@ -2,16 +2,16 @@ import { handleActions } from 'redux-actions';
 import { UserLoginInfoDto } from '../../apis/session';
 import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
 import { IErrorInfo } from '../../interfaces/errorInfo';
-//import IRequestHeaders from '../../interfaces/requestHeaders';
 import { AuthActionEnums } from './actions';
 import { AUTH_CONTEXT_INITIAL_STATE, IAuthStateContext } from './contexts';
+import flagsReducer from '../utils/flagsReducer';
 
-export const authReducer = handleActions<IAuthStateContext, any>(
+const baseAuthReducer = handleActions<IAuthStateContext, any>(
   {
     [AuthActionEnums.LoginUserRequest]: (
       state: IAuthStateContext,
     ) => {
-      return { 
+      return {
         ...state,
         errorInfo: null,
       };
@@ -20,7 +20,7 @@ export const authReducer = handleActions<IAuthStateContext, any>(
     [AuthActionEnums.LoginUserSuccess]: (
       state: IAuthStateContext,
     ) => {
-      return { 
+      return {
         ...state,
         isCheckingAuth: false,
         errorInfo: null,
@@ -42,7 +42,7 @@ export const authReducer = handleActions<IAuthStateContext, any>(
     [AuthActionEnums.CheckAuthAction]: (
       state: IAuthStateContext,
     ) => {
-      return { 
+      return {
         ...state,
         isCheckingAuth: true,
         errorInfo: null,
@@ -54,14 +54,14 @@ export const authReducer = handleActions<IAuthStateContext, any>(
     ) => {
       return { ...state, isFetchingUserInfo: true };
     },
-    
+
     [AuthActionEnums.FetchUserDataSuccess]: (
       state: IAuthStateContext,
       action: ReduxActions.Action<UserLoginInfoDto>
     ) => {
       const { payload } = action;
 
-      return { 
+      return {
         ...state,
         loginInfo: payload,
         isFetchingUserInfo: false,
@@ -75,14 +75,14 @@ export const authReducer = handleActions<IAuthStateContext, any>(
     ) => {
       const { payload } = action;
 
-      return { 
-        ...state, 
+      return {
+        ...state,
         errorInfo: payload,
         isFetchingUserInfo: false,
       };
     },
 
-    
+
     [AuthActionEnums.VerifyOtpSuccess]: (
       state: IAuthStateContext,
       action: ReduxActions.Action<ResetPasswordVerifyOtpResponse>
@@ -95,7 +95,7 @@ export const authReducer = handleActions<IAuthStateContext, any>(
     [AuthActionEnums.ResetPasswordSuccess]: (
       state: IAuthStateContext,
     ) => {
-      return { 
+      return {
         ...state,
         verifyOtpResPayload: null,
       };
@@ -109,15 +109,14 @@ export const authReducer = handleActions<IAuthStateContext, any>(
 
       return { ...state, token: payload };
     },
-
-    // [AuthActionEnums.SetHeaders]: (
-    //   state: IAuthStateContext,
-    //   action: ReduxActions.Action<IRequestHeaders>
-    // ) => {
-    //   const { payload } = action;
-
-    //   return { ...state, headers: payload };
-    // },
   },
   AUTH_CONTEXT_INITIAL_STATE
 );
+
+export function authReducer(
+  incomingState: IAuthStateContext,
+  action: ReduxActions.Action<any>
+): IAuthStateContext {
+  const state = flagsReducer(incomingState, action);
+  return baseAuthReducer(state, action);
+}

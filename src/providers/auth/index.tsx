@@ -35,6 +35,8 @@ import IRequestHeaders from '../../interfaces/requestHeaders';
 import { IHttpHeaders } from '../../interfaces/accessToken';
 import { useSheshaApplication } from '../sheshaApplication';
 import { getCurrentUrl, getLoginUrlWithReturn, getQueryParam, isSameUrls } from '../../utils/url';
+import { getFlagSetters } from '../utils/flagsSetters';
+import { IErrorInfo } from '../../interfaces/errorInfo';
 
 interface IAuthProviderProps {
   /**
@@ -87,6 +89,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     ...AUTH_CONTEXT_INITIAL_STATE,
     token: storedToken?.accessToken,
   });
+  const setters = getFlagSetters(dispatch);
 
   //#region Fetch user login info`1
 
@@ -237,7 +240,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
             const headers = getHttpHeadersFromState(newState);
             fetchUserInfo(headers);
           } else
-            dispatch(loginUserErrorAction(data?.error as any));
+            dispatch(loginUserErrorAction(data?.error as IErrorInfo));
         }
       };
 
@@ -334,6 +337,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       <AuthStateContext.Provider value={state}>
         <AuthActionsContext.Provider
           value={{
+            ...setters,
             checkAuth,
             loginUser,
             getAccessToken,

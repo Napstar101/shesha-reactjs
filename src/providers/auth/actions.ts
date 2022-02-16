@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 import { UserLoginInfoDto } from '../../apis/session';
 import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
-import { IErrorInfo } from '../../interfaces/errorInfo';
+import { IErrorInfo, IHasErrorInfo } from '../../interfaces/errorInfo';
 //import IRequestHeaders from '../../interfaces/requestHeaders';
 export enum AuthActionEnums {
   CheckAuthAction = 'CHECK_AUTH_ACTION',
@@ -32,10 +32,11 @@ export const loginUserSuccessAction = createAction(
   AuthActionEnums.LoginUserSuccess
 );
 
-export const loginUserErrorAction = createAction<IErrorInfo, IErrorInfo>(
+export const loginUserErrorAction = createAction<IHasErrorInfo, IErrorInfo>(
   AuthActionEnums.LoginUserError,
-  p => p
+  p => ({ errorInfo: p })
 );
+
 //#endregion
 
 //#region Fetch user data
@@ -47,9 +48,9 @@ export const fetchUserDataActionSuccessAction = createAction<UserLoginInfoDto, U
   p => p
 );
 
-export const fetchUserDataActionErrorAction = createAction<IErrorInfo, IErrorInfo>(
+export const fetchUserDataActionErrorAction = createAction<IHasErrorInfo, IErrorInfo>(
   AuthActionEnums.FetchUserDataError,
-  p => p
+  p => ({ errorInfo: p })
 );
 
 //#endregion
@@ -64,8 +65,4 @@ export const verifyOtpSuccessAction = createAction<ResetPasswordVerifyOtpRespons
 export const resetPasswordSuccessAction = createAction(AuthActionEnums.ResetPasswordSuccess);
 /* NEW_ACTION_GOES_HERE */
 
-//#region Token and Headers
 export const setAccessTokenAction = createAction<string, string>(AuthActionEnums.SetToken, p => p);
-
-//export const setRequestHeadersAction = createAction<IRequestHeaders, IRequestHeaders>(AuthActionEnums.SetHeaders, p => p);
-//#endregion
