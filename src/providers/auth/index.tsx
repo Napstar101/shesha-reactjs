@@ -22,7 +22,7 @@ import { IAccessToken } from '../../interfaces';
 import { OverlayLoader } from '../../components/overlayLoader';
 import { sessionGetCurrentLoginInformations } from '../../apis/session';
 import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
-import { redirectRoute, removeAccessToken as removeTokenFromStorage, saveUserToken as saveUserTokenToStorage, getAccessToken as getAccessTokenFromStorage } from '../../utils/auth';
+import { removeAccessToken as removeTokenFromStorage, saveUserToken as saveUserTokenToStorage, getAccessToken as getAccessTokenFromStorage } from '../../utils/auth';
 import {
   useTokenAuthAuthenticate,
   AuthenticateResultModelAjaxResponse,
@@ -34,6 +34,7 @@ import { useShaRouting } from '../shaRouting';
 import IRequestHeaders from '../../interfaces/requestHeaders';
 import { IHttpHeaders } from '../../interfaces/accessToken';
 import { useSheshaApplication } from '../sheshaApplication';
+import { getCurrentUrl, getLoginUrlWithReturn, getQueryParam, isSameUrls } from '../../utils/url';
 
 interface IAuthProviderProps {
   /**
@@ -78,7 +79,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   homePageUrl = URL_HOME_PAGE,
   whitelistUrls,
 }) => {
-  const { router, nextRoute } = useShaRouting();
+  const { router } = useShaRouting();
   const { backendUrl } = useSheshaApplication();
 
   const storedToken = getAccessTokenFromStorage(tokenName);
@@ -90,14 +91,11 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   //#region Fetch user login info`1
 
   const fetchUserInfo = (headers: IHttpHeaders) => {
-    if (state.isFetchingUserInfo || Boolean(state.loginInfo)) {
-      console.log('user data fetching already in progress');
+    if (state.isFetchingUserInfo || Boolean(state.loginInfo))
       return;
-    }
-    if (Boolean(state.loginInfo)) {
-      console.log('user data already fetched');
+    
+    if (Boolean(state.loginInfo)) 
       return;
-    }    
 
     dispatch(fetchUserDataAction());
     sessionGetCurrentLoginInformations({ base: backendUrl, headers: headers }).then(response => {
@@ -105,23 +103,27 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
         dispatch(fetchUserDataActionSuccessAction(response.result.user));
 
         if (state.requireChangePassword && Boolean(changePasswordUrl)) {
-          router?.push(changePasswordUrl);
+          redirect(changePasswordUrl);
         } else {
-          const returnUrl = router?.query?.returnUrl as string;
+          const currentUrl = getCurrentUrl();
 
-          router?.push(returnUrl ?? homePageUrl);
+          // if we are on the login page - redirect to the returnUrl or home page
+          if (isSameUrls(currentUrl, unauthorizedRedirectUrl)) {
+            const returnUrl = getQueryParam("returnUrl")?.toString();
+            redirect(returnUrl ?? homePageUrl);
+          }
         }
       } else {
         // user may be null in some cases
         clearAccessToken();
 
         dispatch(fetchUserDataActionErrorAction({ message: 'Not authorized' }));
-        router?.push(redirectRoute(router?.asPath, homePageUrl, unauthorizedRedirectUrl));
+        redirectToUnauthorized();
       }
     }).catch(e => {
       console.log('failed to fetch user profile', e);
       dispatch(fetchUserDataActionErrorAction({ message: 'Oops, something went wrong' }));
-      router?.push(redirectRoute(router?.asPath, homePageUrl, unauthorizedRedirectUrl));
+      redirectToUnauthorized();
     });
   }
 
@@ -129,17 +131,13 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     router?.push(url);
   };
 
-  const redirectToUnauthorized = (url: string) => {
-    const redirectUrl = url && url !== homePageUrl
-      ? `${unauthorizedRedirectUrl}?returnUrl=${url}`
-      : unauthorizedRedirectUrl;
-
+  const redirectToUnauthorized = () => {
+    const redirectUrl = getLoginUrlWithReturn(homePageUrl, unauthorizedRedirectUrl);
     redirect(redirectUrl);
   }
 
   //#region `checkAuth`
   const checkAuth = () => {
-    console.log('checkAuth');
     dispatch(checkAuthAction());
 
     const headers = getHttpHeaders();
@@ -150,7 +148,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       }
     } else {
       dispatch(loginUserErrorAction({ message: 'Oops, something went wrong' }));
-      redirectToUnauthorized(nextRoute);
+      redirectToUnauthorized();
     }
   };
   //#endregion
@@ -177,38 +175,33 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     return getHttpHeadersFromState(state);
   }
 
-  //#region AuthToken
-
-  const fireHttpHeadersChanged = () => {
+  const fireHttpHeadersChanged = (state: IAuthStateContext) => {
     if (onSetRequestHeaders) {
-      const headers = getHttpHeaders();
-      console.log('fireHttpHeadersChanged', headers);
+      const headers = getHttpHeadersFromState(state);
       onSetRequestHeaders(headers);
     }
   }
 
   const clearAccessToken = () => {
     removeTokenFromStorage(tokenName);
-    dispatch(setAccessTokenAction(null));
 
-    fireHttpHeadersChanged();
+    dispatch((dispatch, getState) => {
+      dispatch(setAccessTokenAction(null));
+      fireHttpHeadersChanged(getState());
+    })
   };
-
-  //#endregion
 
   useEffect(() => {
     const httpHeaders = getHttpHeaders();
 
-    if (!httpHeaders) {
-      if (
-        router?.pathname === unauthorizedRedirectUrl ||
-        whitelistUrls?.includes(router?.pathname)
-      ) {
-        redirect(router?.asPath); // Make sure we don't end up with /login?returnUrl=/login
-      }
+    const currentUrl = getCurrentUrl();
 
-      redirectToUnauthorized(router?.pathname);
+    if (!httpHeaders) {
+      if (currentUrl !== unauthorizedRedirectUrl && !(whitelistUrls?.includes(currentUrl))) {
+        redirectToUnauthorized();
+      }
     } else {
+      fireHttpHeadersChanged(state);
       if (!state.isCheckingAuth && !state.isFetchingUserInfo) {
         fetchUserInfo(httpHeaders);
       }
@@ -231,18 +224,18 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
             : null;
           if (token && token.accessToken) {
             // save token to the localStorage
-            const tokenResult = saveUserTokenToStorage(token, tokenName);
+            saveUserTokenToStorage(token, tokenName);
 
             // save token to the state
             dispatch(setAccessTokenAction(token.accessToken));
 
-            // Token saved successfullyZ
-            if (tokenResult) {
-              const headers = getHttpHeadersFromState(getState());
+            // get updated state and notify subscribers
+            const newState = getState();
+            fireHttpHeadersChanged(newState);
 
-              // Let's fetch the user info
-              fetchUserInfo(headers);
-            }
+            // get new headers and fetch the user info
+            const headers = getHttpHeadersFromState(newState);
+            fetchUserInfo(headers);
           } else
             dispatch(loginUserErrorAction(data?.error as any));
         }
@@ -264,9 +257,10 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
    * Logout success
    */
   const logoutSuccess = resolve => {
-    resolve(null);
     clearAccessToken();
     dispatch(logoutUserAction());
+    redirect(unauthorizedRedirectUrl);
+    resolve(null);
   };
 
   /**
@@ -305,7 +299,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const verifyOtpSuccess = (verifyOtpResPayload: ResetPasswordVerifyOtpResponse) => {
     // Redirect to the reset password page
 
-    // router?.push(URL_RESET_PASSWORD);
+    // redirect(URL_RESET_PASSWORD);
     dispatch(verifyOtpSuccessAction(verifyOtpResPayload));
   };
 
