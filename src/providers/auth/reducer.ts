@@ -1,48 +1,123 @@
+import { handleActions } from 'redux-actions';
+import { UserLoginInfoDto } from '../../apis/session';
+import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
+import { IErrorInfo } from '../../interfaces/errorInfo';
+//import IRequestHeaders from '../../interfaces/requestHeaders';
 import { AuthActionEnums } from './actions';
-import flagsReducer from '../utils/flagsReducer';
-import { IAuthStateContext } from './contexts';
+import { AUTH_CONTEXT_INITIAL_STATE, IAuthStateContext } from './contexts';
 
-export function authReducer(
-  incomingState: IAuthStateContext,
-  action: ReduxActions.Action<IAuthStateContext>
-): IAuthStateContext {
-  //#region Register flags reducer
-  const state = flagsReducer(incomingState, action);
-
-  const { type, payload } = action;
-  //#endregion
-
-  switch (type) {
-    case AuthActionEnums.LogoutUser: {
-      return {
-        isInProgress: {},
-      };
-    }
-    case AuthActionEnums.LoginUserRequest:
-    case AuthActionEnums.CheckAuthAction:
-    case AuthActionEnums.LoginUserSuccess:
-    case AuthActionEnums.LoginUserError:
-
-    case AuthActionEnums.FetchUserDataRequest:
-    case AuthActionEnums.FetchUserDataSuccess:
-    case AuthActionEnums.FetchUserDataError:
-    //#region Forgot password
-    case AuthActionEnums.VerifyOtpSuccess:
-    case AuthActionEnums.ResetPasswordSuccess:
-    case AuthActionEnums.SetToken:
-    case AuthActionEnums.SetHeaders:
-      /* NEW_ACTION_ENUM_GOES_HERE */
-
-      const newState = {
+export const authReducer = handleActions<IAuthStateContext, any>(
+  {
+    [AuthActionEnums.LoginUserRequest]: (
+      state: IAuthStateContext,
+    ) => {
+      return { 
         ...state,
-        ...payload,
+        errorInfo: null,
       };
+    },
 
-      //#endregion
-      return newState;
+    [AuthActionEnums.LoginUserSuccess]: (
+      state: IAuthStateContext,
+    ) => {
+      return { 
+        ...state,
+        isCheckingAuth: false,
+        errorInfo: null,
+      };
+    },
 
-    default: {
-      return state;
-    }
-  }
-}
+    [AuthActionEnums.LoginUserError]: (
+      state: IAuthStateContext,
+      action: ReduxActions.Action<IErrorInfo>
+    ) => {
+      const { payload } = action;
+      return { ...state, errorInfo: payload, isCheckingAuth: false };
+    },
+
+    [AuthActionEnums.LogoutUser]: () => {
+      return { ...AUTH_CONTEXT_INITIAL_STATE };
+    },
+
+    [AuthActionEnums.CheckAuthAction]: (
+      state: IAuthStateContext,
+    ) => {
+      return { 
+        ...state,
+        isCheckingAuth: true,
+        errorInfo: null,
+      };
+    },
+
+    [AuthActionEnums.FetchUserDataRequest]: (
+      state: IAuthStateContext
+    ) => {
+      return { ...state, isFetchingUserInfo: true };
+    },
+    
+    [AuthActionEnums.FetchUserDataSuccess]: (
+      state: IAuthStateContext,
+      action: ReduxActions.Action<UserLoginInfoDto>
+    ) => {
+      const { payload } = action;
+
+      return { 
+        ...state,
+        loginInfo: payload,
+        isFetchingUserInfo: false,
+        errorInfo: null,
+      };
+    },
+
+    [AuthActionEnums.FetchUserDataError]: (
+      state: IAuthStateContext,
+      action: ReduxActions.Action<IErrorInfo>
+    ) => {
+      const { payload } = action;
+
+      return { 
+        ...state, 
+        errorInfo: payload,
+        isFetchingUserInfo: false,
+      };
+    },
+
+    
+    [AuthActionEnums.VerifyOtpSuccess]: (
+      state: IAuthStateContext,
+      action: ReduxActions.Action<ResetPasswordVerifyOtpResponse>
+    ) => {
+      const { payload } = action;
+
+      return { ...state, verifyOtpResPayload: payload };
+    },
+
+    [AuthActionEnums.ResetPasswordSuccess]: (
+      state: IAuthStateContext,
+    ) => {
+      return { 
+        ...state,
+        verifyOtpResPayload: null,
+      };
+    },
+
+    [AuthActionEnums.SetToken]: (
+      state: IAuthStateContext,
+      action: ReduxActions.Action<string>
+    ) => {
+      const { payload } = action;
+
+      return { ...state, token: payload };
+    },
+
+    // [AuthActionEnums.SetHeaders]: (
+    //   state: IAuthStateContext,
+    //   action: ReduxActions.Action<IRequestHeaders>
+    // ) => {
+    //   const { payload } = action;
+
+    //   return { ...state, headers: payload };
+    // },
+  },
+  AUTH_CONTEXT_INITIAL_STATE
+);

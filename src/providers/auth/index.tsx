@@ -1,26 +1,28 @@
-import React, { FC, useReducer, useContext, useEffect, PropsWithChildren, useMemo } from 'react';
+import React, { FC, useContext, useEffect, PropsWithChildren, useMemo } from 'react';
 import { authReducer } from './reducer';
-import { AuthStateContext, AuthActionsContext, AUTH_CONTEXT_INITIAL_STATE, ILoginForm } from './contexts';
+import useThunkReducer from 'react-hook-thunk-reducer';
+import { AuthStateContext, AuthActionsContext, AUTH_CONTEXT_INITIAL_STATE, ILoginForm, IAuthStateContext } from './contexts';
 import {
   loginUserAction,
-  loginUserSuccessAction,
   loginUserErrorAction,
   logoutUserAction,
   verifyOtpSuccessAction,
   resetPasswordSuccessAction,
   setAccessTokenAction,
-  setRequestHeadersAction,
   checkAuthAction,
+  fetchUserDataAction,
+  fetchUserDataActionSuccessAction,
+  fetchUserDataActionErrorAction,
+  loginUserSuccessAction,
   /* NEW_ACTION_IMPORT_GOES_HERE */
 } from './actions';
 import { URL_LOGIN_PAGE, URL_HOME_PAGE, URL_CHANGE_PASSWORD } from '../../constants';
 import IdleTimer from 'react-idle-timer';
 import { IAccessToken } from '../../interfaces';
 import { OverlayLoader } from '../../components/overlayLoader';
-import { useSessionGetCurrentLoginInformations } from '../../apis/session';
+import { sessionGetCurrentLoginInformations } from '../../apis/session';
 import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
-import { getFlagSetters } from '../utils/flagsSetters';
-import { getAccessToken, redirectRoute, removeAccessToken, saveUserToken } from '../../utils/auth';
+import { removeAccessToken as removeTokenFromStorage, saveUserToken as saveUserTokenToStorage, getAccessToken as getAccessTokenFromStorage } from '../../utils/auth';
 import {
   useTokenAuthAuthenticate,
   AuthenticateResultModelAjaxResponse,
@@ -30,6 +32,9 @@ import { getLocalizationOrDefault } from '../../utils/localization';
 import { getTenantId } from '../../utils/multitenancy';
 import { useShaRouting } from '../shaRouting';
 import IRequestHeaders from '../../interfaces/requestHeaders';
+import { IHttpHeaders } from '../../interfaces/accessToken';
+import { useSheshaApplication } from '../sheshaApplication';
+import { getCurrentUrl, getLoginUrlWithReturn, getQueryParam, isSameUrls } from '../../utils/url';
 
 interface IAuthProviderProps {
   /**
@@ -50,6 +55,16 @@ interface IAuthProviderProps {
   unauthorizedRedirectUrl?: string;
 
   /**
+   * URL that that the user should be redirected to change the password. Default is /account/change-password
+   */
+  changePasswordUrl?: string;
+
+  /**
+   * Home page url. Default is `/`
+   */
+  homePageUrl?: string;
+
+  /**
    * @deprecated - use `withAuth` instead. Any page that doesn't require Auth will be rendered without being wrapped inside `withAuth`
    */
   whitelistUrls?: string[];
@@ -60,96 +75,91 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   tokenName = '',
   onSetRequestHeaders,
   unauthorizedRedirectUrl = URL_LOGIN_PAGE,
+  changePasswordUrl = URL_CHANGE_PASSWORD,
+  homePageUrl = URL_HOME_PAGE,
   whitelistUrls,
 }) => {
-  const { router, nextRoute } = useShaRouting();
+  const { router } = useShaRouting();
+  const { backendUrl } = useSheshaApplication();
 
-  // const { pathname } = useRouter();
-
-  const pathname = router?.pathname;
-
-  const [state, dispatch] = useReducer(authReducer, AUTH_CONTEXT_INITIAL_STATE);
-  const setters = getFlagSetters(dispatch);
-
-  //#region Fetch user login info
-  const {
-    loading: isFetchingCurrentLoginInformation,
-    refetch: fetchCurrentLoginInformation,
-    error: fetchUserInfoErrorResult,
-    data: userInfoData,
-  } = useSessionGetCurrentLoginInformations({
-    lazy: true,
+  const storedToken = getAccessTokenFromStorage(tokenName);
+  const [state, dispatch] = useThunkReducer(authReducer, {
+    ...AUTH_CONTEXT_INITIAL_STATE,
+    token: storedToken?.accessToken,
   });
 
-  useEffect(() => {
-    if (!isFetchingCurrentLoginInformation) {
-      if (userInfoData) {
-        dispatch(loginUserSuccessAction(userInfoData.result.user));
+  //#region Fetch user login info`1
 
-        if (state.requireChangePassword) {
-          router?.push(URL_CHANGE_PASSWORD);
+  const fetchUserInfo = (headers: IHttpHeaders) => {
+    if (state.isFetchingUserInfo || Boolean(state.loginInfo))
+      return;
+    
+    if (Boolean(state.loginInfo)) 
+      return;
+
+    dispatch(fetchUserDataAction());
+    sessionGetCurrentLoginInformations({ base: backendUrl, headers: headers }).then(response => {
+      if (response.result.user) {
+        dispatch(fetchUserDataActionSuccessAction(response.result.user));
+
+        if (state.requireChangePassword && Boolean(changePasswordUrl)) {
+          redirect(changePasswordUrl);
         } else {
-          const returnUrl = router?.query?.returnUrl as string;
-          if (pathname?.startsWith(URL_LOGIN_PAGE)) {
-            router?.push(returnUrl ?? URL_HOME_PAGE);
-          } else if (returnUrl) {
-            router?.push(returnUrl);
+          const currentUrl = getCurrentUrl();
+
+          // if we are on the login page - redirect to the returnUrl or home page
+          if (isSameUrls(currentUrl, unauthorizedRedirectUrl)) {
+            const returnUrl = getQueryParam("returnUrl")?.toString();
+            redirect(returnUrl ?? homePageUrl);
           }
         }
-      }
+      } else {
+        // user may be null in some cases
+        clearAccessToken();
 
-      if (fetchUserInfoErrorResult) {
-        dispatch(loginUserErrorAction({ message: 'Oops, something went wrong' }));
-        router?.push(redirectRoute(router?.asPath, URL_HOME_PAGE, unauthorizedRedirectUrl));
+        dispatch(fetchUserDataActionErrorAction({ message: 'Not authorized' }));
+        redirectToUnauthorized();
       }
-    }
-  }, [isFetchingCurrentLoginInformation]);
-  //#endregion
+    }).catch(e => {
+      console.log('failed to fetch user profile', e);
+      dispatch(fetchUserDataActionErrorAction({ message: 'Oops, something went wrong' }));
+      redirectToUnauthorized();
+    });
+  }
 
-  // const init = () => {
-  //   setters?.setIsInProgressFlag({ isIdle: false });
-  // };
+  const redirect = (url: string) => {
+    router?.push(url);
+  };
+
+  const redirectToUnauthorized = () => {
+    const redirectUrl = getLoginUrlWithReturn(homePageUrl, unauthorizedRedirectUrl);
+    redirect(redirectUrl);
+  }
 
   //#region `checkAuth`
   const checkAuth = () => {
     dispatch(checkAuthAction());
 
-    const headers = trySetTokenReturnHeaderIfSet();
+    const headers = getHttpHeaders();
 
-    if (headers && !state.loginInfo && !state?.error?.fetchUserData) {
+    if (headers && !state.loginInfo) {
       if (!state.isFetchingUserInfo) {
-        fetchCurrentLoginInformation({ requestOptions: { headers } });
+        fetchUserInfo(headers);
       }
     } else {
       dispatch(loginUserErrorAction({ message: 'Oops, something went wrong' }));
-
-      if (nextRoute) {
-        if (unauthorizedRedirectUrl === URL_LOGIN_PAGE) {
-          router?.push(`${unauthorizedRedirectUrl}?returnUrl=${nextRoute}`);
-        } else {
-          router?.push(unauthorizedRedirectUrl);
-        }
-      } else {
-        router?.push(unauthorizedRedirectUrl);
-      }
+      redirectToUnauthorized();
     }
   };
   //#endregion
 
-  //#region AuthToken
-  const trySetTokenReturnHeaderIfSet = (t: string = null): any => {
-    const headers: { [key: string]: string } = {};
+  const getHttpHeadersFromState = (state: IAuthStateContext): IHttpHeaders => {
+    const headers: IHttpHeaders = {};
 
-    let token = t || state.token;
-    if (!token) {
-      const tokenObj = getAccessToken(tokenName);
-      token = tokenObj?.accessToken;
-    }
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-      dispatch(setAccessTokenAction(token));
-    }
+    if (state.token)
+      headers['Authorization'] = `Bearer ${state.token}`;
 
+    // todo: move culture and tenant to state and restore from localStorage on start
     headers['.AspNetCore.Culture'] = getLocalizationOrDefault();
 
     const tenantId = getTenantId();
@@ -158,97 +168,87 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       headers['Abp.TenantId'] = getTenantId().toString();
     }
 
-    setRequestHeaders(headers);
+    return headers;
+  }
 
-    return Boolean(token) ? headers : null;
-  };
+  const getHttpHeaders = (): IHttpHeaders => {
+    return getHttpHeadersFromState(state);
+  }
 
-  const getAccessTokenLocal = () => trySetTokenReturnHeaderIfSet();
-
-  const clearAccessToken = () => {
-    removeAccessToken(tokenName);
-    setRequestHeaders({});
-  };
-
-  const setRequestHeaders = (headers: IRequestHeaders) => {
-    dispatch(setRequestHeadersAction(headers));
-    if (onSetRequestHeaders) onSetRequestHeaders(headers);
-  };
-  //#endregion
-
-  useEffect(() => {
-    const hasAccessToken = trySetTokenReturnHeaderIfSet();
-
-    const redirect = (url: string) => {
-      router?.push(url);
-      return;
-    };
-
-    if (!hasAccessToken) {
-      if (
-        router?.pathname === URL_LOGIN_PAGE ||
-        router?.pathname === unauthorizedRedirectUrl ||
-        whitelistUrls?.includes(router?.pathname)
-      ) {
-        return redirect(router?.asPath); // Make sure we don't end up with /login?returnUrl=/login
-      }
-
-      if (router?.pathname === URL_HOME_PAGE) return redirect(unauthorizedRedirectUrl);
-
-      return redirect(`${URL_LOGIN_PAGE}?returnUrl=${router?.pathname}`);
-    } else {
-      setTimeout(() => {
-        fetchCurrentLoginInformation({ requestOptions: { headers: hasAccessToken } });
-      }, 1500);
-    }
-  }, []);
-  /*
-  const isNotAuthorized = useMemo(() => {
-    return !state.loginInfo && !state.token && !isFetchingCurrentLoginInformation;
-  }, [state, isFetchingCurrentLoginInformation]);
-  
-  if (isNotAuthorized) {
-    if (whitelistUrls?.includes(router?.pathname) || router?.pathname === unauthorizedRedirectUrl) {
-      // TODO:
-    } else if (!router?.pathname?.includes(URL_LOGIN_PAGE)) {
-      // Not authorized
-      // console.log('Not authorized router :>> ', router);
-      router?.push(URL_LOGIN_PAGE);
+  const fireHttpHeadersChanged = (state: IAuthStateContext) => {
+    if (onSetRequestHeaders) {
+      const headers = getHttpHeadersFromState(state);
+      onSetRequestHeaders(headers);
     }
   }
-  */
+
+  const clearAccessToken = () => {
+    removeTokenFromStorage(tokenName);
+
+    dispatch((dispatch, getState) => {
+      dispatch(setAccessTokenAction(null));
+      fireHttpHeadersChanged(getState());
+    })
+  };
+
+  useEffect(() => {
+    const httpHeaders = getHttpHeaders();
+
+    const currentUrl = getCurrentUrl();
+
+    if (!httpHeaders) {
+      if (currentUrl !== unauthorizedRedirectUrl && !(whitelistUrls?.includes(currentUrl))) {
+        redirectToUnauthorized();
+      }
+    } else {
+      fireHttpHeadersChanged(state);
+      if (!state.isCheckingAuth && !state.isFetchingUserInfo) {
+        fetchUserInfo(httpHeaders);
+      }
+    }
+  }, []);
 
   //#region  Login
   const { mutate: loginUserHttp } = useTokenAuthAuthenticate({});
 
-  const loginSuccessHandler = (data: AuthenticateResultModelAjaxResponse) => {
-    if (data) {
-      const tokenResult = saveUserToken(data.result as IAccessToken, tokenName);
-
-      // Token saved successfully
-      if (tokenResult) {
-        const unsavedHeaders = trySetTokenReturnHeaderIfSet(tokenResult?.accessToken);
-
-        // Let's fetch the user info
-        fetchCurrentLoginInformation({ requestOptions: { headers: unsavedHeaders } });
-      }
-
-      if (data.error) {
-        dispatch(loginUserErrorAction(data?.error as any));
-      }
-    }
-  };
-
   const loginUser = (loginFormData: ILoginForm) => {
-    dispatch(loginUserAction()); // We jut want to let the user know we're logging in
+    dispatch((dispatch, getState) => {
+      dispatch(loginUserAction()); // We just want to let the user know we're logging in
 
-    loginUserHttp(loginFormData)
-      .then(loginSuccessHandler)
-      .catch(err => {
-        dispatch(loginUserErrorAction(err?.data));
-      });
+      const loginSuccessHandler = (data: AuthenticateResultModelAjaxResponse) => {
+
+        dispatch(loginUserSuccessAction());
+        if (data) {
+          const token = data.success && data.result
+            ? data.result as IAccessToken
+            : null;
+          if (token && token.accessToken) {
+            // save token to the localStorage
+            saveUserTokenToStorage(token, tokenName);
+
+            // save token to the state
+            dispatch(setAccessTokenAction(token.accessToken));
+
+            // get updated state and notify subscribers
+            const newState = getState();
+            fireHttpHeadersChanged(newState);
+
+            // get new headers and fetch the user info
+            const headers = getHttpHeadersFromState(newState);
+            fetchUserInfo(headers);
+          } else
+            dispatch(loginUserErrorAction(data?.error as any));
+        }
+      };
+
+      loginUserHttp(loginFormData)
+        .then(loginSuccessHandler)
+        .catch(err => {
+          dispatch(loginUserErrorAction(err?.data));
+        });
+    })
   };
-  ////#endregion
+  //#endregion
 
   //#region Logout user
   const { mutate: signOffRequest } = useTokenAuthSignOff({});
@@ -257,9 +257,10 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
    * Logout success
    */
   const logoutSuccess = resolve => {
-    resolve(null);
     clearAccessToken();
     dispatch(logoutUserAction());
+    redirect(unauthorizedRedirectUrl);
+    resolve(null);
   };
 
   /**
@@ -298,7 +299,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const verifyOtpSuccess = (verifyOtpResPayload: ResetPasswordVerifyOtpResponse) => {
     // Redirect to the reset password page
 
-    // router?.push(URL_RESET_PASSWORD);
+    // redirect(URL_RESET_PASSWORD);
     dispatch(verifyOtpSuccessAction(verifyOtpResPayload));
   };
 
@@ -310,14 +311,17 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const showLoader = useMemo(() => {
     return !!(
       (
-        isFetchingCurrentLoginInformation ||
-        // state.isInProgress?.isIdle ||
-        (!isFetchingCurrentLoginInformation && !state.loginInfo && state.token)
+        state.isFetchingUserInfo ||
+        (!state.isFetchingUserInfo && !state.loginInfo && state.token)
       ) // Done fetching user info but the state is not yet updated
     );
-  }, [isFetchingCurrentLoginInformation, state]);
+  }, [state.isFetchingUserInfo, state]);
 
   //#endregion
+
+  const getAccessToken = () => {
+    return state.token;
+  }
 
   if (showLoader) {
     return <OverlayLoader loading={true} loadingText="Initializing..." />;
@@ -330,14 +334,14 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       <AuthStateContext.Provider value={state}>
         <AuthActionsContext.Provider
           value={{
-            ...setters,
             checkAuth,
             loginUser,
-            getAccessToken: getAccessTokenLocal,
+            getAccessToken,
             logoutUser,
             anyOfPermissionsGranted: anyOfPermissionsGrantedWrapper,
             verifyOtpSuccess,
             resetPasswordSuccess,
+
             /* NEW_ACTION_GOES_HERE */
           }}
         >
