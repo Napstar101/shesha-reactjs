@@ -135,6 +135,7 @@ export const componentsFlatStructureToTree = (
  * Load form from the back-end
  */
 export const loadFormById = (id: string) => {
+  // @ts-ignore
   return formGet({ id });
 };
 export const loadFormByPath = (path: string) => {
@@ -317,6 +318,7 @@ export const getValidationRules = (component: IConfigurableFormComponent) => {
 
     if (validate.validator)
       rules.push({
+        // tslint:disable-next-line:function-constructor
         validator: (...r) => new Function('rule', 'value', 'callback', validate.validator)(...r),
       });
   }
@@ -352,9 +354,12 @@ export const evaluateValue = (value: string, dictionary: any) => {
  * @param data the data to use to evaluate the expression
  * @returns
  */
-export const evaluateExpression = (expression, data: any) => {
-  return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
+export const evaluateExpression = (expression: string, data: any) => {
+  return expression.replace(/\$\{(.*?)\}/g, (_, token) => nestedProperty.get(data, token));
 };
+// export const evaluateExpression = (expression: string, data: any) => {
+//   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
+// };
 
 // export const evaluateExpression = (expression, data: any) => {
 //   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));

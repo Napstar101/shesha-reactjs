@@ -5,7 +5,7 @@ type ToolbarItemType = 'item' | 'group';
 export type ToolbarItemProps = IToolbarButton | IButtonGroup;
 
 type ToolbarItemSubType = 'button' | 'separator' | 'line';
-type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction';
+type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction' | 'submit' | 'reset';
 
 export interface IToolbarItemBase {
   id: string;
@@ -16,8 +16,8 @@ export interface IToolbarItemBase {
   itemType: ToolbarItemType;
   icon?: string;
   buttonType?: ButtonType;
-
   customVisibility?: string;
+  customEnabled?: string;
   permissions?: string;
 }
 

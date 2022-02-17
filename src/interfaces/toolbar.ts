@@ -1,21 +1,13 @@
 import { ReactNode } from 'react';
-import { IToolbarButton } from '../providers/toolbarConfigurator/models';
 
-export interface IToolbarItem extends Omit<IToolbarButton, 'id' | 'icon'> {
+export interface IToolbarItem {
   id?: string;
-
   className?: string;
-
   title: ReactNode;
-
-  icon?: ReactNode | string;
-
+  icon?: ReactNode;
   onClick?: (args: any) => void;
-
   hide?: boolean;
-
   disabled?: boolean;
-
   render?: () => ReactNode;
   /**
    * @deprecated - use tooltip instead
@@ -23,6 +15,4 @@ export interface IToolbarItem extends Omit<IToolbarButton, 'id' | 'icon'> {
   tooltipName?: string;
 
   tooltip?: string;
-
-  customActionParameters?: [{ key: string; value: string }];
 }

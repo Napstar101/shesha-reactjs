@@ -4,7 +4,9 @@ export interface IDetailsViewProps {
   title?: string;
   path: string;
   backUrl?: string;
-  statusName?: string;
+  statusValue?: string;
   statusColor?: string;
+  statusOverride?: string;
+  statusColorExpression?: string;
   toolbarItems?: IToolbarItem[];
 }

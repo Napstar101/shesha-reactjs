@@ -1,23 +1,23 @@
 import React, { FC } from 'react';
 import { nanoid } from 'nanoid/non-secure';
 import NodeOrFuncRenderer, { ReactNodeOrFunc } from '../nodeOrFuncRenderer';
-import { IToolbarItem } from '../../interfaces';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
-import ActionButtonGroup from '../actionButtonGroup';
 import classNames from 'classnames';
+import ToolbarButtonGroup from './toolbarButtons';
+import { IToolbarButtonItem } from './models';
 
 export interface IIndexToolbarProps {
-  items: IToolbarItem[];
+  items: IToolbarButtonItem[];
   elementsRight?: ReactNodeOrFunc;
   className?: string;
   btnSize?: SizeType;
 }
 
-export const IndexToolbar: FC<IIndexToolbarProps> = ({ items, elementsRight, className, btnSize = 'middle' }) => {
+export const Toolbar: FC<IIndexToolbarProps> = ({ items, elementsRight, className, btnSize = 'middle' }) => {
   return (
     <div className={classNames('sha-index-toolbar', className)}>
       <div className="sha-index-toolbar-left">
-        <ActionButtonGroup items={items} btnSize={btnSize} />
+        <ToolbarButtonGroup items={items} btnSize={btnSize} />
       </div>
 
       <div className="sha-index-toolbar-right">
@@ -31,4 +31,4 @@ export const IndexToolbar: FC<IIndexToolbarProps> = ({ items, elementsRight, cla
   );
 };
 
-export default IndexToolbar;
+export default Toolbar;

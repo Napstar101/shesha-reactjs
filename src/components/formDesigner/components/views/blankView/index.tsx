@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { BorderOutlined } from '@ant-design/icons';

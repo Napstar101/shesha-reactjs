@@ -63,3 +63,11 @@ export function humanizeString(value: string) {
 
   return localValue;
 }
+
+export function isNumeric(value: string) {
+  if (typeof value !== 'string') return false; // we only process strings!
+
+  return (
+    !isNaN(value as any) && !isNaN(parseFloat(value)) // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+  ); // ...and ensure strings of whitespace fail
+}

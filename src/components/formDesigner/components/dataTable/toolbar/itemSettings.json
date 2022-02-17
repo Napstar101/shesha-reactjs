@@ -168,6 +168,16 @@
           "dataSourceType": "values",
           "values": [
             {
+              "id": "188c8767-90f3-4e43-a5c4-91be96f4e906",
+              "label": "Submit",
+              "value": "submit"
+            },
+            {
+              "id": "1b357606-45ee-4dcb-9afb-da1fd28e9b25",
+              "label": "Reset",
+              "value": "reset"
+            },
+            {
               "id": "5c717647-2ecd-434d-8d74-6c6805303007",
               "label": "Navigate",
               "value": "navigate"

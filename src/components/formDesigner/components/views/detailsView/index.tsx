@@ -3,7 +3,7 @@ import { IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { ProfileOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import { Page } from '../../../../..';
+import { evaluateValue, Page } from '../../../../..';
 import ComponentsContainer from '../../../componentsContainer';
 import { useForm } from '../../../../../providers/form';
 import { evaluateExpression, validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
@@ -21,9 +21,7 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
   type: 'detailsView',
   name: 'Details View',
   icon: <ProfileOutlined />,
-  factory: (model: IDetailsViewComponentProps, ...rest) => {
-    console.log('DetailsViewComponent rest :>> ', rest);
-
+  factory: (model: IDetailsViewComponentProps) => {
     const { formMode, visibleComponentIds, formData } = useForm();
 
     const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
@@ -36,16 +34,27 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
 
     const evaluatedTitle = evaluateExpression(model?.title, formData);
 
+    const override = evaluateValue(model?.statusOverride, { data: formData });
+    const color = evaluateValue(model?.statusColor, { data: formData });
+    const value = evaluateValue(model?.statusValue, { data: formData });
+
+    const evaluatedBakUrl = evaluateExpression(model?.backUrl || '', formData);
+
     return (
       <Page
         formId={model?.id}
         title={evaluatedTitle}
         toolbarItems={model?.toolbarItems}
-        backUrl={model?.backUrl}
-        headerTagList={[
-          { title: 'Some title', tag: 'Some tag' },
-          { title: 'Another title', tag: 'another tag' },
-        ]}
+        backUrl={evaluatedBakUrl}
+        status={{
+          override,
+          color,
+          value,
+        }}
+        // headerTagList={[
+        //   { title: 'Some title', tag: 'Some tag' },
+        //   { title: 'Another title', tag: 'another tag' },
+        // ]}
       >
         <ComponentsContainer containerId={model.id} />
       </Page>

@@ -50,35 +50,13 @@ export interface IStatusLabelProps {
   text: string;
   color?: StatusLabelColor;
   customColor?: string;
-  code?: StatusCodes;
 }
 
-enum StatusCodes {
-  Completed = 1,
-  InProgress = 2,
-  Overdue = 3,
-}
-
-// let initial
-
-export const StatusLabel: FC<IStatusLabelProps> = ({ code }) => {
-  // const hexColor = (COLORS as any)[color];
-
-  let text: string;
-  let color: string;
-
-  switch (code) {
-    case StatusCodes.Completed:
-      text = 'Completed';
-      color = 'green';
-      break;
-
-    default:
-      break;
-  }
+export const StatusLabel: FC<IStatusLabelProps> = ({ text, color }) => {
+  const hexColor = (COLORS as any)[color];
 
   return (
-    <Tag className="sha-status-label" color={color}>
+    <Tag className="sha-status-label" style={{ color: invertColor(hexColor, true), background: hexColor }}>
       {text}
     </Tag>
   );

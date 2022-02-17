@@ -136,4 +136,3 @@ export { default as SimpleIndexPageDefault } from './crudViews/plainSimpleIndexP
 export { default as Page } from './page';
 export { default as DefaultLayout, getDefaultLayout } from './defaultLayout';
 export { default as EditableTagGroup, IEditableTagGroupProps } from './editableTagGroup';
-export { default as StatusTag, IStatusTagProps } from './statusTag';

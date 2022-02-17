@@ -27,13 +27,13 @@ const ComponentsContainer: FC<IProps> = ({
     startDragging,
     endDragging,
     formMode,
-    type,
+    // type,
   } = useForm();
 
   const isDesignerMode = formMode === 'designer';
 
-  const isViewTemplateComponent =
-    type === 'dashboard' || type === 'details' || type === 'masterDetails' || type === 'table' || type === 'menu';
+  // const isViewTemplateComponent =
+  //   type === 'dashboard' || type === 'details' || type === 'masterDetails' || type === 'table' || type === 'menu';
 
   const components = getChildComponents(containerId);
 

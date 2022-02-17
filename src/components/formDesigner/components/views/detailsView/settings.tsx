@@ -1,37 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { SectionSeparator } from '../../../..';
 import { IDetailsViewProps } from './models';
 import { CodeEditor } from '../../codeEditor/codeEditor';
 import { ToolbarSettingsModal } from '../../dataTable/toolbar/toolbarSettingsModal';
-
-const OPTIONS = [
-  {
-    id: 'm8ftW2-rhDwiwPi92shLu',
-    label: 'Cancelled',
-    value: '#f50',
-  },
-  {
-    id: 'VVJYg-lDKV8at0NPXXhdD',
-    label: 'New',
-    value: '#2db7f5',
-  },
-  {
-    id: 'hIMuJBAr_VItu0baUFuPK',
-    label: 'Success',
-    value: '#87d068',
-  },
-  {
-    id: 'ZNsHU7t77OD6Q6Xl8tIgF',
-    label: 'Active',
-    value: '#108ee9',
-  },
-  {
-    id: 'AeAQg30fuaWLAJ6pcVFk-',
-    label: 'Rejected',
-    value: '#55acee',
-  },
-];
 
 export interface IDetailsPageSettingsProps {
   model: IDetailsViewProps;
@@ -68,21 +40,23 @@ function DetailsViewSettings({ onSave, model, onValuesChange }: IDetailsPageSett
 
       <SectionSeparator sectionName="Status" />
 
-      <Form.Item name="statusName" label="Status name" initialValue={model?.statusName}>
+      <Form.Item name="statusValue" label="Status value" initialValue={model?.statusValue}>
         <Input />
       </Form.Item>
 
       <Form.Item name="statusColor" label="Status color" initialValue={model?.statusColor}>
-        <Select>
-          {OPTIONS.map(({ id, label, value }) => (
-            <Select.Option key={id} value={value}>
-              {label}
-            </Select.Option>
-          ))}
-        </Select>
+        <Input />
       </Form.Item>
 
-      <Form.Item name="statusCustomColor" label="Status color expression" initialValue={model?.statusName}>
+      <Form.Item name="statusOverride" label="Status override" initialValue={model?.statusOverride}>
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        name="statusColorExpression"
+        label="Status color expression"
+        initialValue={model?.statusColorExpression}
+      >
         <CodeEditor
           label="Custom code"
           description="Something"

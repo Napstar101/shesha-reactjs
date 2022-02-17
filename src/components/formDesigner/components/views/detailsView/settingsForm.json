@@ -41,45 +41,23 @@
     {
       "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
       "type": "textField",
-      "name": "status",
+      "name": "statusName",
       "parentId": "root",
       "label": "Status name property"
     },
     {
-      "id": "57a40a33-7e08-4ce4-9f08-a34d24a83338",
-      "type": "dropdown",
+      "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+      "type": "textField",
+      "name": "statusColor",
+      "parentId": "root",
+      "label": "Status name property"
+    },
+    {
+      "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+      "type": "textField",
       "name": "status",
       "parentId": "root",
-      "label": "Status color",
-      "values": [
-        {
-          "id": "m8ftW2-rhDwiwPi92shLu",
-          "label": "Cancelled",
-          "value": "#f50"
-        },
-        {
-          "id": "VVJYg-lDKV8at0NPXXhdD",
-          "label": "New",
-          "value": "#2db7f5"
-        },
-        {
-          "id": "hIMuJBAr_VItu0baUFuPK",
-          "label": "Success",
-          "value": "#87d068"
-        },
-        {
-          "id": "ZNsHU7t77OD6Q6Xl8tIgF",
-          "label": "Active",
-          "value": "#108ee9"
-        },
-        {
-          "id": "AeAQg30fuaWLAJ6pcVFk-",
-          "label": "Rejected",
-          "value": "#55acee"
-        }
-      ],
-      "dataSourceType": "values",
-      "validate": {}
+      "label": "Status name property"
     }
   ],
   "formSettings": {
