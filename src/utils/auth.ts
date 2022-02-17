@@ -1,4 +1,5 @@
 import jseu from 'js-encoding-utils';
+import { getLocalizationOrDefault } from './localization';
 import { getLocalStorage } from './storage';
 
 // Fields to remove from the AuthContext
@@ -52,3 +53,13 @@ export const removeAccessToken = (tokenName: string) => {
 export const hasTokenExpired = (date: string): boolean => {
   return new Date(date) < new Date();
 };
+
+export const getHttpHeaders = (token: string | null) => {
+  const headers = {};
+  if (token)
+    headers['Authorization'] = `Bearer ${token}`;
+
+  headers['.AspNetCore.Culture'] = getLocalizationOrDefault();
+    
+  return headers;
+}

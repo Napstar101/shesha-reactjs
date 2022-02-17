@@ -22,7 +22,11 @@ import { IAccessToken } from '../../interfaces';
 import { OverlayLoader } from '../../components/overlayLoader';
 import { sessionGetCurrentLoginInformations } from '../../apis/session';
 import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
-import { removeAccessToken as removeTokenFromStorage, saveUserToken as saveUserTokenToStorage, getAccessToken as getAccessTokenFromStorage } from '../../utils/auth';
+import { 
+    removeAccessToken as removeTokenFromStorage, 
+    saveUserToken as saveUserTokenToStorage, 
+    getAccessToken as getAccessTokenFromStorage,
+    getHttpHeaders as getHttpHeadersFromToken } from '../../utils/auth';
 import {
   useTokenAuthAuthenticate,
   AuthenticateResultModelAjaxResponse,
@@ -88,6 +92,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const [state, dispatch] = useThunkReducer(authReducer, {
     ...AUTH_CONTEXT_INITIAL_STATE,
     token: storedToken?.accessToken,
+    headers: getHttpHeadersFromToken(storedToken?.accessToken),
   });
   const setters = getFlagSetters(dispatch);
 

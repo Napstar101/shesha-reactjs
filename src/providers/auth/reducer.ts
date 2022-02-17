@@ -5,6 +5,7 @@ import { IErrorInfo } from '../../interfaces/errorInfo';
 import { AuthActionEnums } from './actions';
 import { AUTH_CONTEXT_INITIAL_STATE, IAuthStateContext } from './contexts';
 import flagsReducer from '../utils/flagsReducer';
+import { getHttpHeaders } from '../../utils/auth';
 
 const baseAuthReducer = handleActions<IAuthStateContext, any>(
   {
@@ -105,9 +106,12 @@ const baseAuthReducer = handleActions<IAuthStateContext, any>(
       state: IAuthStateContext,
       action: ReduxActions.Action<string>
     ) => {
-      const { payload } = action;
+      const { payload: token } = action;
 
-      return { ...state, token: payload };
+      return { 
+        ...state, 
+        token: token,
+      };
     },
   },
   AUTH_CONTEXT_INITIAL_STATE
@@ -118,5 +122,9 @@ export function authReducer(
   action: ReduxActions.Action<any>
 ): IAuthStateContext {
   const state = flagsReducer(incomingState, action);
+  
+  // temporary solution, headers will be reviewed
+  state.headers = getHttpHeaders(state.token);
+
   return baseAuthReducer(state, action);
 }
