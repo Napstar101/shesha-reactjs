@@ -11,6 +11,7 @@ import { IErrorInfo } from '../../interfaces/errorInfo';
 import { AuthenticateModel } from '../../apis/tokenAuth';
 import IRequestHeaders from '../../interfaces/requestHeaders';
 import { IFlagsSetters, IFlagsState } from '../../interfaces';
+import { EMPTY_FLAGS_STATE } from '../../interfaces/flagsState';
 
 export type IFlagProgressFlags =
   | 'isIdle'
@@ -87,6 +88,7 @@ export interface IAuthActionsContext
 }
 
 export const AUTH_CONTEXT_INITIAL_STATE: IAuthStateContext = {
+  ...EMPTY_FLAGS_STATE,
   isCheckingAuth: false,
   isFetchingUserInfo: false,
 };
