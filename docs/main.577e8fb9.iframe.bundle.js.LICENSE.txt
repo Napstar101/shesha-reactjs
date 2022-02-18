@@ -5,3 +5,5 @@
  * @license BSD-3-Clause
  * @version 3.5.11
  */
+
+//!newState.some(item => item.chosen !== null && item.chosen !== undefined);
