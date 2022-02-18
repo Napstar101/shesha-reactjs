@@ -20,6 +20,7 @@ import { IPropertyMetadata } from '../../interfaces/metadata';
 import { nanoid } from 'nanoid';
 import { Rule } from 'antd/lib/form';
 import { getFullPath } from '../../utils/metadata';
+import nestedProperty from 'nested-property';
 
 /** Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
@@ -334,6 +335,22 @@ export const camelize = str => {
 const DICTIONARY_ACCESSOR_REGEX = /(^[\s]*\{(?<key>[\w]+)\.(?<accessor>[^\}]+)\}[\s]*$)/;
 const NESTED_ACCESSOR_REGEX = /((?<key>[\w]+)\.(?<accessor>[^\}]+))/;
 
+/**
+ * Evaluates an string expression and returns the evaluated value.
+ *
+ * Example: Given
+ *  let const person = { name: 'First', surname: 'Last' };
+ *  let expression = 'Full name is {{name}} {{surname}}';
+ *
+ * evaluateExpression(expression, person) will display 'Full name is First Last';
+ * @param expression the expression to evaluate
+ * @param data the data to use to evaluate the expression
+ * @returns
+ */
+export const evaluateStringLiteralExpression = (expression: string, data: any) => {
+  return expression.replace(/\$\{(.*?)\}/g, (_, token) => nestedProperty.get(data, token));
+};
+
 export const evaluateValue = (value: string, dictionary: any) => {
   return _evaluateValue(value, dictionary, true);
 };
@@ -501,14 +518,18 @@ export function listComponentToModelMetadata<TModel extends IConfigurableFormCom
 
 const getContainerNames = (toolboxComponent: IToolboxComponent): string[] => {
   const containers = [...(toolboxComponent.customContainerNames ?? [])];
-  if (!containers.includes('components'))
-    containers.push('components');
+  if (!containers.includes('components')) containers.push('components');
   return containers;
-}
+};
 
 export type ProcessingFunc = (child: IConfigurableFormComponent, parentId: string) => void;
 
-export const processRecursive = (componentsRegistration: IToolboxComponentGroup[], parentId: string, component: IConfigurableFormComponent, func: ProcessingFunc) => {
+export const processRecursive = (
+  componentsRegistration: IToolboxComponentGroup[],
+  parentId: string,
+  component: IConfigurableFormComponent,
+  func: ProcessingFunc
+) => {
   func(component, parentId);
 
   const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
@@ -517,7 +538,7 @@ export const processRecursive = (componentsRegistration: IToolboxComponentGroup[
   if (containers) {
     containers.forEach(containerName => {
       const containerComponents = component[containerName] as IConfigurableFormComponent[];
-      if (containerComponents){
+      if (containerComponents) {
         containerComponents.forEach(child => {
           func(child, component.id);
           processRecursive(componentsRegistration, parentId, child, func);
@@ -525,29 +546,32 @@ export const processRecursive = (componentsRegistration: IToolboxComponentGroup[
       }
     });
   }
-}
+};
 
 /**
  * Clone components and generate new ids for them
- * @param componentsRegistration 
- * @param components 
- * @returns 
+ * @param componentsRegistration
+ * @param components
+ * @returns
  */
-export const cloneComponents = (componentsRegistration: IToolboxComponentGroup[], components: IConfigurableFormComponent[]): IConfigurableFormComponent[] => {
+export const cloneComponents = (
+  componentsRegistration: IToolboxComponentGroup[],
+  components: IConfigurableFormComponent[]
+): IConfigurableFormComponent[] => {
   let result: IConfigurableFormComponent[] = [];
 
   components.forEach(component => {
-    let clone = {...component, id: nanoid() };
+    let clone = { ...component, id: nanoid() };
 
     result.push(clone);
 
     const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
     const containers = getContainerNames(toolboxComponent);
-  
+
     if (containers) {
       containers.forEach(containerName => {
         const containerComponents = clone[containerName] as IConfigurableFormComponent[];
-        if (containerComponents){
+        if (containerComponents) {
           const newChilds = cloneComponents(componentsRegistration, containerComponents);
           clone[containerName] = newChilds;
         }
@@ -556,7 +580,7 @@ export const cloneComponents = (componentsRegistration: IToolboxComponentGroup[]
   });
 
   return result;
-}
+};
 
 export const createComponentModelForDataProperty = (
   components: IToolboxComponentGroup[],
