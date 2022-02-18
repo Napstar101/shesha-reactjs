@@ -283,8 +283,13 @@ FormComponentView.args = {
 
 export const BlankView = DesignerTemplate.bind({});
 
+// BlankView.args = {
+//   formPath: '/view/forms/blank',
+//   modelType: 'blank',
+// };
+
 BlankView.args = {
-  formPath: '/view/forms/blank',
+  formPath: '/view/test/typography',
   modelType: 'blank',
 };
 
