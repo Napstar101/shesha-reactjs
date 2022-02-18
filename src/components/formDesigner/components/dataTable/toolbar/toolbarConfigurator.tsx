@@ -14,8 +14,17 @@ export interface IToolbarConfiguratorProps {
 export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGroups = true, render }) => {
   const { items, addButton, addGroup } = useToolbarConfigurator();
 
-  const customContent = typeof render === 'function' ? render() : render;
-  const content = customContent || <ToolbarItemProperties />;
+  const content = () => {
+    if (!!render) {
+      if (typeof render === 'function') {
+        return render();
+      } else {
+        return <>{render}</>;
+      }
+    }
+
+    return <ToolbarItemProperties />;
+  };
 
   return (
     <div className="sha-toolbar-configurator">
@@ -36,7 +45,7 @@ export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGro
         rightSidebarProps={{
           open: true,
           title: () => 'Properties',
-          content: () => content,
+          content,
         }}
       >
         <ToolbarItemsContainer items={items} index={[]} />
