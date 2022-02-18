@@ -23,7 +23,8 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
   }));
 
   const onSetList = (newState: ItemInterface[], _sortable, _store) => {
-    const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
+    // temporary commented out, the behavoiur of the sortablejs differs sometimes
+    const listChanged = true;//!newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     if (listChanged) {
       const newDataItemIndex = newState.findIndex(item => item['type'] == TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
