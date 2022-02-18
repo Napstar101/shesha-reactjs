@@ -9,9 +9,10 @@ import './styles/index.less';
 export interface IToolbarConfiguratorProps {
   allowAddGroups?: boolean;
   render?: ReactNode | (() => ReactNode);
+  heading?: ReactNode | (() => ReactNode);
 }
 
-export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGroups = true, render }) => {
+export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGroups = true, render, heading }) => {
   const { items, addButton, addGroup } = useToolbarConfigurator();
 
   const content = () => {
@@ -24,6 +25,18 @@ export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGro
     }
 
     return <ToolbarItemProperties />;
+  };
+
+  const title = () => {
+    if (!!heading) {
+      if (typeof heading === 'function') {
+        return heading();
+      } else {
+        return <>{heading}</>;
+      }
+    }
+
+    return 'Properties';
   };
 
   return (
@@ -44,7 +57,7 @@ export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGro
       <SidebarContainer
         rightSidebarProps={{
           open: true,
-          title: () => 'Properties',
+          title,
           content,
         }}
       >
