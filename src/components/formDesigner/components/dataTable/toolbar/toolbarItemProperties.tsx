@@ -37,6 +37,11 @@ export const ToolbarItemProperties: FC<IProps> = () => {
     }
   }, [selectedItemId]);
 
+  useEffect(() => {
+    const editor = getEditor();
+    setEditor(editor);
+  }, [selectedItemId]);
+
   const getEditor = () => {
     const emptyEditor = null;
     if (!selectedItemId) return emptyEditor;
@@ -64,11 +69,6 @@ export const ToolbarItemProperties: FC<IProps> = () => {
       ></ConfigurableForm>
     );
   };
-
-  useEffect(() => {
-    const editor = getEditor();
-    setEditor(editor);
-  }, [selectedItemId]);
 
   if (!Boolean(selectedItemId)) {
     return (
