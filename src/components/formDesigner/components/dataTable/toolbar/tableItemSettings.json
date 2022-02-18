@@ -1,0 +1,88 @@
+{
+  "components": [
+    {
+      "id": "feed9649-67ea-4edb-853e-a28989f4d937",
+      "type": "textField",
+      "name": "title",
+      "label": "Title",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "id": "464976a0-bd68-4e63-abdb-0cd6eb2fc44d",
+      "type": "iconPicker",
+      "name": "icon",
+      "label": "Icon",
+      "labelAlign": "right",
+      "parentId": "345c2181-fb9f-48ed-9631-864ac357807b",
+      "hidden": false,
+      "customVisibility": "return data.itemSubType === 'button'",
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "9270da72-79e9-4e2a-8a99-a3d98db2ad15",
+      "type": "codeEditor",
+      "name": "onClickCustom",
+      "label": "On Click",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom on Click code.  You must return a function which is handled/executed on click. The global variable data is provided.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "55c9eeb0-7166-4c25-86f9-c60899659a10",
+      "type": "codeEditor",
+      "name": "hide",
+      "label": "Hide",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom on visibility condition for hide.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "6863e57f-2562-4789-8c47-1eda14324e27",
+      "type": "codeEditor",
+      "name": "disabled",
+      "label": "Disabled",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "description": "Enter custom condition for disability.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "27198257-61bc-403c-820c-8638766c6a33",
+      "type": "textField",
+      "name": "permissions",
+      "label": "Permissions",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {}
+    }
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": {
+      "span": 5
+    },
+    "wrapperCol": {
+      "span": 13
+    }
+  }
+}
