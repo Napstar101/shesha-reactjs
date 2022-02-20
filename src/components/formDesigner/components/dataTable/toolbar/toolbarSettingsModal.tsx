@@ -11,6 +11,7 @@ export interface IToolbarSettingsModal {
   onChange?: any;
   allowAddGroups?: boolean;
   render?: ReactNode | (() => ReactNode);
+  title?: ReactNode | string;
   heading?: ReactNode | (() => ReactNode);
 }
 
@@ -20,6 +21,7 @@ export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({
   hideModal,
   allowAddGroups,
   render,
+  title = 'Configure Toolbar',
   heading,
 }) => {
   const { items } = useToolbarConfigurator();
@@ -30,7 +32,7 @@ export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({
   };
 
   return (
-    <Modal width="60%" visible={visible} title="Configure Toolbar" okText="Save" onCancel={hideModal} onOk={onOkClick}>
+    <Modal width="60%" visible={visible} title={title} okText="Save" onCancel={hideModal} onOk={onOkClick}>
       <ToolbarConfigurator allowAddGroups={allowAddGroups} heading={heading} render={render} />
     </Modal>
   );
