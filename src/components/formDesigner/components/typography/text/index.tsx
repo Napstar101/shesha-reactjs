@@ -11,7 +11,7 @@ const { Text } = Typography;
 
 export interface ITextProps extends IConfigurableFormComponent {
   content: string;
-  textType: 'secondary' | 'success' | 'warning' | 'danger';
+  contentType: 'secondary' | 'success' | 'warning' | 'danger';
   code?: boolean;
   keyboard?: boolean;
   copyable?: boolean;
@@ -38,7 +38,7 @@ const TextComponent: IToolboxComponent<ITextProps> = {
       underline: model?.underline,
       keyboard: model?.keyboard,
       strong: model?.strong,
-      type: model?.textType,
+      type: model?.contentType,
     };
 
     return <Text {...props}>{model?.content}</Text>;

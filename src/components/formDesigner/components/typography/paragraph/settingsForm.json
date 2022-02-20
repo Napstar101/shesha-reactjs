@@ -55,6 +55,13 @@
       "label": "Code style?"
     },
     {
+      "id": "96f479b7-8ebc-4cda-a0b8-ecb4c7fe3a5d",
+      "type": "checkbox",
+      "name": "delete",
+      "parentId": "root",
+      "label": "Delete?"
+    },
+    {
       "id": "27cc9d42-1d07-4f70-a17c-50711d03acc5",
       "type": "checkbox",
       "name": "keyboard",
@@ -67,13 +74,6 @@
       "name": "copyable",
       "parentId": "root",
       "label": "Copyable?"
-    },
-    {
-      "id": "91c7811b-27fc-4222-be2d-655fde301b4f",
-      "type": "checkbox",
-      "name": "copyable",
-      "parentId": "root",
-      "label": "Deleted line style?"
     },
     {
       "id": "3a97e341-7f20-4479-9fa6-d8086e8b9a17",

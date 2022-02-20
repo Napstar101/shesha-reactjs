@@ -11,7 +11,7 @@ const { Title } = Typography;
 
 export interface ITitleProps extends IConfigurableFormComponent {
   content: string;
-  textType: 'secondary' | 'success' | 'warning' | 'danger';
+  contentType: 'secondary' | 'success' | 'warning' | 'danger';
   code?: boolean;
   copyable?: boolean;
   delete?: boolean;
@@ -36,7 +36,7 @@ const TitleComponent: IToolboxComponent<ITitleProps> = {
       mark: model?.mark,
       underline: model?.underline,
       level: model?.level,
-      type: model?.textType,
+      type: model?.contentType,
     };
 
     return <Title {...props}>{model?.content}</Title>;

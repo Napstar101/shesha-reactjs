@@ -8,272 +8,77 @@
       "label": "Display"
     },
     {
-      "id": "5c813b1a-04c5-4658-ac0f-cbcbae6b3bd4",
-      "type": "propertyAutocomplete",
-      "name": "name",
+      "id": "1a3bfee6-3cde-41f0-b371-f743e801bef3",
+      "type": "checkbox",
+      "name": "container",
       "parentId": "root",
-      "label": "Name",
-      "validate": {
-        "required": true
-      }
+      "label": "Container?"
     },
     {
-      "id": "46d07439-4c18-468c-89e1-60c002ce96c5",
-      "type": "textField",
-      "name": "label",
-      "parentId": "root",
-      "label": "Label"
-    },
-    {
-      "id": "8615d12f-6ea0-4b11-a1a1-6088c7160fd9",
+      "id": "6d29cf2c-96fe-40ce-be97-32e9f5d0fe40",
       "type": "dropdown",
-      "name": "textType",
+      "name": "dividerType",
       "parentId": "root",
-      "label": "Type",
+      "label": "Divider Type",
       "values": [
         {
-          "label": "text",
-          "value": "text",
-          "id": "4f11403c-95fd-4e49-bb60-cb8c25f0f3c3"
+          "label": "Horizontal",
+          "value": "horizontal",
+          "id": "03a48d1c-ad8a-4070-8d63-3bc7da9a61e3"
         },
         {
-          "label": "password",
-          "value": "password",
-          "id": "8f85c476-e632-4fa7-89ad-2be6cfb7f1f1"
+          "label": "Vertical",
+          "value": "vertical",
+          "id": "896d291e-93f9-42c6-b5f6-7ad0dfb6d0e9"
         }
       ],
       "dataSourceType": "values"
     },
     {
-      "id": "57a40a33-7e08-4ce4-9f08-a34d24a83338",
+      "id": "3496cef5-a86f-4839-b70a-1f9871f96f45",
       "type": "dropdown",
-      "name": "labelAlign",
+      "name": "contentType",
       "parentId": "root",
-      "label": "Label align",
+      "label": "Content type",
       "values": [
         {
-          "label": "left",
+          "label": "Left",
           "value": "left",
-          "id": "f01e54aa-a1a4-4bd6-ba73-c395e48af8ce"
+          "id": "03a48d1c-ad8a-4070-8d63-3bc7da9a61e3"
         },
         {
-          "label": "right",
+          "label": "Right",
           "value": "right",
-          "id": "b920ef96-ae27-4a01-bfad-b5b7d07218da"
+          "id": "896d291e-93f9-42c6-b5f6-7ad0dfb6d0e9"
+        },
+        {
+          "label": "Center",
+          "value": "center",
+          "id": "3496cef5-a86f-4839-b70a-1f9871f96f45"
         }
       ],
       "dataSourceType": "values"
     },
     {
-      "id": "fbdb6bb1-5994-4205-86b4-236ca61ae54e",
+      "id": "006dcd8f-690c-4caa-89d2-bf9f701b50fd",
       "type": "textField",
-      "name": "placeholder",
+      "name": "orientationMargin",
       "parentId": "root",
-      "label": "Placeholder"
+      "label": "Orientation Margin"
     },
     {
-      "id": "2d32fe70-99a0-4825-ae6c-8b933004e119",
-      "type": "textArea",
-      "name": "description",
-      "parentId": "root",
-      "label": "Description"
-    },
-    {
-      "id": "12d700d6-ed4d-49d5-9cfd-fe8f0060f3b6",
-      "type": "textField",
-      "name": "prefix",
-      "parentId": "root",
-      "label": "Prefix"
-    },
-    {
-      "id": "d68b1754-682c-4f2c-b49a-a1f250467474",
-      "type": "textField",
-      "name": "suffix",
-      "parentId": "root",
-      "label": "Suffix"
-    },
-    {
-      "id": "fbdb6bb1-5994-4205-86b4-236ca62ae54e",
-      "type": "textField",
-      "name": "initialValue",
-      "parentId": "root",
-      "label": "Default value"
-    },
-    {
-      "id": "0225b82d-19aa-47c7-b665-90508112bd23",
+      "id": "89c6096e-c351-4185-ab49-9d98e1b638a5",
       "type": "checkbox",
-      "name": "passEmptyStringByDefault",
+      "name": "dashed",
       "parentId": "root",
-      "label": "Empty as default",
-      "description": "Whether the component should be initialized with an empty string"
+      "label": "Dashed"
     },
     {
-      "id": "cfd7d45e-c7e3-4a27-987b-dc525c412448",
+      "id": "00d60630-64b1-4a2e-b3b2-71f4c6021bf1",
       "type": "checkbox",
-      "name": "hidden",
+      "name": "plain",
       "parentId": "root",
-      "label": "Hidden"
-    },
-    {
-      "id": "c6885251-96a6-40ce-99b2-4b5209a9e01c",
-      "type": "checkbox",
-      "name": "hideLabel",
-      "parentId": "root",
-      "label": "Hide Label"
-    },
-    {
-      "id": "24a8be15-98eb-40f7-99ea-ebb602693e9c",
-      "type": "checkbox",
-      "name": "disabled",
-      "parentId": "root",
-      "label": "Disabled"
-    },
-    {
-      "id": "1ceb3851-f15e-437b-98b6-84d6a1fbf801",
-      "type": "checkbox",
-      "name": "readOnly",
-      "parentId": "root",
-      "label": "Read Only"
-    },
-    {
-      "id": "c67b7404-d980-437a-a544-74e4e816f6cd",
-      "type": "checkbox",
-      "name": "hideBorder",
-      "label": "Hide border",
-      "parentId": "root",
-      "hidden": false,
-      "customVisibility": null,
-      "validate": {}
-    },
-    {
-      "id": "990f54ee-b754-479d-8e45-559efbd70c10",
-      "type": "sectionSeparator",
-      "name": "sectionEvent",
-      "parentId": "root",
-      "label": "Events"
-    },
-    {
-      "id": "3cef348b-6bba-4176-93f6-f3a8b21e33c9",
-      "type": "codeEditor",
-      "name": "onChangeCustom",
-      "label": "On Change",
-      "labelAlign": "right",
-      "parentId": "root",
-      "hidden": false,
-      "customVisibility": null,
-      "description": "Enter custom even handler.",
-      "validate": {},
-      "settingsValidationErrors": []
-    },
-    {
-      "id": "88c2d96c-b808-4316-8a36-701b09e5f6c7",
-      "type": "codeEditor",
-      "name": "onFocusCustom",
-      "label": "On Focus",
-      "labelAlign": "right",
-      "parentId": "root",
-      "hidden": false,
-      "customVisibility": null,
-      "description": "Enter custom even handler.",
-      "validate": {},
-      "settingsValidationErrors": []
-    },
-    {
-      "id": "4a2b7329-1a89-45d1-a5b0-f66db21744b0",
-      "type": "codeEditor",
-      "name": "onBlurCustom",
-      "label": "On Blur",
-      "labelAlign": "right",
-      "parentId": "root",
-      "hidden": false,
-      "customVisibility": null,
-      "description": "Enter custom even handler.",
-      "validate": {},
-      "settingsValidationErrors": []
-    },
-    {
-      "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
-      "type": "sectionSeparator",
-      "name": "separator2",
-      "parentId": "root",
-      "label": "Validation"
-    },
-    {
-      "id": "3be9da3f-f47e-48ae-b4c3-f5cc36e534d9",
-      "type": "checkbox",
-      "name": "validate.required",
-      "parentId": "root",
-      "label": "Required"
-    },
-    {
-      "id": "b61a1580-0ff9-460e-8f13-43b9d80ceb6c",
-      "type": "numberField",
-      "name": "validate.minLength",
-      "parentId": "root",
-      "label": "Min Length",
-      "validate": {}
-    },
-    {
-      "id": "cc0d5dc1-19e6-42c3-bd5e-e63946a7f53c",
-      "type": "numberField",
-      "name": "validate.maxLength",
-      "parentId": "root",
-      "label": "Max Length",
-      "validate": {}
-    },
-    {
-      "id": "9ee3a529-1f0c-4def-bd41-ee166a5dfcd7",
-      "type": "textField",
-      "name": "validate.message",
-      "parentId": "root",
-      "label": "Message",
-      "validate": {}
-    },
-    {
-      "id": "22725416-3a3c-412c-8461-4c8d55e5c073",
-      "type": "codeEditor",
-      "name": "validate.validator",
-      "parentId": "root",
-      "label": "Validator",
-      "validate": {},
-      "labelAlign": "right",
-      "hidden": false,
-      "customVisibility": null,
-      "description": "Enter custom validator logic for form.item rules. Params include (rules, value, callback). Returns a Promise",
-      "settingsValidationErrors": []
-    },
-    {
-      "id": "41721f44-adbc-42fe-8c70-69b30e36f4ca",
-      "type": "sectionSeparator",
-      "name": "sectionVisibility",
-      "parentId": "root",
-      "label": "Visibility"
-    },
-    {
-      "id": "aec2d8de-6e86-4e4e-a9da-62c11e538363",
-      "type": "codeEditor",
-      "name": "customVisibility",
-      "label": "Custom Visibility",
-      "labelAlign": "right",
-      "parentId": "root",
-      "hidden": false,
-      "customVisibility": null,
-      "description": "Enter custom visibility code.  You must return true to show the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
-      "validate": {},
-      "settingsValidationErrors": []
-    },
-    {
-      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c300",
-      "type": "codeEditor",
-      "name": "customEnabled",
-      "label": "Custom Enabled",
-      "labelAlign": "right",
-      "parentId": "root",
-      "hidden": false,
-      "customEnabled": null,
-      "description": "Enter custom enabled code.  You must return true to enable the component. The global variable data is provided, and allows you to access the data of any form component, by using its API key.",
-      "validate": {},
-      "settingsValidationErrors": []
+      "label": "Plain"
     }
   ],
   "formSettings": {
