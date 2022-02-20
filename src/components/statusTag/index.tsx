@@ -4,8 +4,8 @@ import { isNumeric } from '../../utils/string';
 
 interface IStatusMap {
   code?: number;
-  text: string;
-  color: string;
+  text?: string;
+  color?: string;
   override?: string;
 }
 
@@ -32,6 +32,10 @@ export interface IStatusTagProps {
 
 export const StatusTag: FC<IStatusTagProps> = ({ override, value, color }) => {
   const { color: displayColor, text: displayText } = useMemo(() => {
+    if (!override && !value && !color) {
+      return {};
+    }
+
     let result = mappings?.mapping?.find(item => {
       const { code, text } = item;
 
@@ -65,7 +69,7 @@ export const StatusTag: FC<IStatusTagProps> = ({ override, value, color }) => {
     return result;
   }, [override, value, color]);
 
-  if ([override, value, color].filter(Boolean)?.length === 0) {
+  if (!displayColor) {
     return null;
   }
 

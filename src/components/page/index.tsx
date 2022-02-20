@@ -77,7 +77,7 @@ export const Page: FC<IPageProps> = ({
                   <Space>
                     {title}
 
-                    <StatusTag color={status?.color} value={status.value} override={status.override} />
+                    <StatusTag color={status?.color} value={status?.value} override={status?.override} />
                   </Space>
                 </h1>
               </Show>
