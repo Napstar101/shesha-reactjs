@@ -51,6 +51,11 @@ import FormView from '../../../components/formDesigner/components/views/formView
 import DashboardView from '../../../components/formDesigner/components/views/dashboardView';
 import MasterDetailsView from '../../../components/formDesigner/components/views/masterDetailsView';
 import MenuView from '../../../components/formDesigner/components/views/menuView';
+import Paragraph from '../../../components/formDesigner/components/typography/paragraph';
+import Text from '../../../components/formDesigner/components/typography/text';
+import Title from '../../../components/formDesigner/components/typography/title';
+import Divider from '../../../components/formDesigner/components/divider';
+import Space from '../../../components/formDesigner/components/space';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -80,7 +85,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
     name: 'Layout',
     visible: true,
-    components: [CollapsiblePanel, Columns, ContainerComponent, SectionSeprator, Tabs],
+    components: [CollapsiblePanel, Columns, ContainerComponent, SectionSeprator, Tabs, Divider, Space],
   },
   {
     name: 'Custom',
@@ -121,6 +126,11 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
     visible: false,
     name: 'Views',
     components: [DetailsView, BlankView, TableView, FormView, DashboardView, MasterDetailsView, MenuView],
+  },
+  {
+    visible: true,
+    name: 'Typography',
+    components: [Text, Title, Paragraph],
   },
 ];
 

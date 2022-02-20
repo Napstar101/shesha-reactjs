@@ -1,10 +1,10 @@
 import { ArrowsAltOutlined } from '@ant-design/icons';
 import { Space, SpaceProps } from 'antd';
 import React from 'react';
-import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
-import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces/formDesigner';
-import { FormMarkup } from '../../../../../providers/form/models';
-import ComponentsContainer from '../../../componentsContainer';
+import { validateConfigurableComponentSettings } from '../../../../formDesignerUtils';
+import { IConfigurableFormComponent, IToolboxComponent } from '../../../../interfaces/formDesigner';
+import { FormMarkup } from '../../../../providers/form/models';
+import ComponentsContainer from '../../componentsContainer';
 import settingsFormJson from './settingsForm.json';
 
 export interface ISpaceProps extends IConfigurableFormComponent {

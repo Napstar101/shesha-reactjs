@@ -1,10 +1,10 @@
 import { LineOutlined } from '@ant-design/icons';
 import { Divider, DividerProps } from 'antd';
 import React from 'react';
-import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
-import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces/formDesigner';
-import { FormMarkup } from '../../../../../providers/form/models';
-import ComponentsContainer from '../../../componentsContainer';
+import { validateConfigurableComponentSettings } from '../../../../formDesignerUtils';
+import { IConfigurableFormComponent, IToolboxComponent } from '../../../../interfaces/formDesigner';
+import { FormMarkup } from '../../../../providers/form/models';
+import ComponentsContainer from '../../componentsContainer';
 import settingsFormJson from './settingsForm.json';
 
 export interface IDividerProps extends IConfigurableFormComponent {
@@ -18,7 +18,7 @@ export interface IDividerProps extends IConfigurableFormComponent {
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const SpaceComponent: IToolboxComponent<IDividerProps> = {
+const DividerComponent: IToolboxComponent<IDividerProps> = {
   type: 'divider',
   name: 'Divider',
   icon: <LineOutlined />,
@@ -50,4 +50,4 @@ const SpaceComponent: IToolboxComponent<IDividerProps> = {
   }),
 };
 
-export default SpaceComponent;
+export default DividerComponent;
