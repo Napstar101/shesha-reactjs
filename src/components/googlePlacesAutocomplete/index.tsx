@@ -54,7 +54,8 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
   const [showSuggestionsDropdownContainer, setShowSuggestionsDropdownContainer] = useState(true);
   const suggestionRef = useRef<ISuggestion[]>([]);
 
-  if (!(typeof window.google === 'object' && typeof window.google.maps === 'object')) return null;
+  if (typeof window === 'undefined' || !(typeof window.google === 'object' && typeof window.google.maps === 'object'))
+    return null;
 
   const handleChange = (localAddress: string) => {
     try {
@@ -172,7 +173,7 @@ const GooglePlacesAutocomplete: FC<IGooglePlacesAutocompleteProps> = ({
       value={(prefixText ? `${prefixText} ${displayValue}` : displayValue) ?? ''}
       onChange={handleChange}
       onSelect={handleSelect}
-      
+
       // className="location-search-input"
     >
       {({ getInputProps, suggestions, getSuggestionItemProps }) => (
