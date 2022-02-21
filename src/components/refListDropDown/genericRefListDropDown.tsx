@@ -6,7 +6,7 @@ import { CustomLabeledValue, IGenericRefListDropDownProps, ISelectOption } from 
 import ReadOnlyDisplayFormItem from '../readOnlyDisplayFormItem';
 
 // tslint:disable-next-line:whitespace
-export const GenericRefListDropDown = <TValue,>(props: IGenericRefListDropDownProps<TValue>) => {
+export const GenericRefListDropDown = <TValue, >(props: IGenericRefListDropDownProps<TValue>) => {
   const {
     listName,
     listNamespace,

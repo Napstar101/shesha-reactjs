@@ -1,6 +1,5 @@
 import { Alert, Button, Form, Input, Modal } from 'antd';
-import React, { FC, Fragment } from 'react';
-import { useState } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import { ShaRoutingProvider, SidebarMenuProvider, useAuth } from '../../providers';
 import SectionSeparator from '../sectionSeparator';
 import classNames from 'classnames';

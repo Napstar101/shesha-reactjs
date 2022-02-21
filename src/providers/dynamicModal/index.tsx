@@ -126,9 +126,9 @@ function useDynamicModals() {
 }
 
 function useModal(modalProps: IModalProps) {
-  if (!modalProps) return null;
-
   const context = useDynamicModals();
+
+  if (!modalProps) return null;
 
   const instance = {
     open: () => {

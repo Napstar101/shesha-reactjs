@@ -29,7 +29,7 @@ export const ActionButtonGroup: FC<IActionButtonGroupProps> = ({ items, classNam
           <Fragment>
             {items
               ?.filter(({ hide }) => !hide)
-              ?.map(({ title, icon, onClick, className, disabled, tooltipName, render }) => {
+              ?.map(({ title, icon, onClick, className: btnClassName, disabled, tooltipName, render }) => {
                 if (render && typeof render === 'function') {
                   return render();
                 }
@@ -42,7 +42,7 @@ export const ActionButtonGroup: FC<IActionButtonGroupProps> = ({ items, classNam
                         onClick(event);
                       }}
                       disabled={disabled}
-                      className={`toolbar-item ${disabled ? 'disabled' : ''} ${className || ''}`}
+                      className={`toolbar-item ${disabled ? 'disabled' : ''} ${btnClassName || ''}`}
                       key={nanoid()}
                       type="link"
                       icon={icon}

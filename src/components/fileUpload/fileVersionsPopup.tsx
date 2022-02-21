@@ -11,10 +11,8 @@ interface IProps {
 }
 
 export const FileVersionsPopup: FC<IProps> = ({ fileId }) => {
-  if (fileId == null) return null;
-
   const { headers } = useAuth();
-
+  
   const {
     loading: loading,
     refetch: fetchHistory,
@@ -28,6 +26,8 @@ export const FileVersionsPopup: FC<IProps> = ({ fileId }) => {
   });
 
   const { downloadFile } = useStoredFile();
+
+  if (fileId == null) return null;
 
   const handleVisibleChange = () => {
     if (!serverData) fetchHistory();

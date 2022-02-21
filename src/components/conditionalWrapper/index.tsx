@@ -1,6 +1,4 @@
-import React from "react";
-import { FC, PropsWithChildren, ReactNode } from "react";
-
+import React, { FC, PropsWithChildren, ReactNode } from "react";
 
 export interface IConditionalWrapProps {
     condition: boolean;
