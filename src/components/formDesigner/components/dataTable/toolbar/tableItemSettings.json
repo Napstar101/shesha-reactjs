@@ -3,7 +3,7 @@
     {
       "id": "feed9649-67ea-4edb-853e-a28989f4d937",
       "type": "textField",
-      "name": "title",
+      "name": "name",
       "label": "Title",
       "labelAlign": "right",
       "parentId": "root",
