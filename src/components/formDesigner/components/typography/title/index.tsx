@@ -19,6 +19,7 @@ export interface ITitleProps extends IConfigurableFormComponent {
   content: string;
   contentType: 'secondary' | 'success' | 'warning' | 'danger';
   code?: boolean;
+  italic?: boolean;
   copyable?: boolean;
   delete?: boolean;
   ellipsis?: boolean;
@@ -42,6 +43,7 @@ const TitleComponent: IToolboxComponent<ITitleProps> = {
       delete: model?.delete,
       ellipsis: model?.ellipsis,
       mark: model?.mark,
+      italic: model?.italic,
       underline: model?.underline,
       level: model?.level ? (Number(model?.level) as LevelType) : 1,
       type: model?.contentType,

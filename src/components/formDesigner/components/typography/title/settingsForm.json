@@ -55,6 +55,13 @@
       "label": "Code style?"
     },
     {
+      "id": "aa17f452-0b07-473a-9c7a-986dfc2d37d9",
+      "type": "checkbox",
+      "name": "italic",
+      "parentId": "root",
+      "label": "Italic"
+    },
+    {
       "id": "43f91890-9728-47f3-9694-3d893d820c86",
       "type": "checkbox",
       "name": "copyable",

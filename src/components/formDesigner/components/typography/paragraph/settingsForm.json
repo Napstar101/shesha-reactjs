@@ -55,6 +55,13 @@
       "label": "Code style?"
     },
     {
+      "id": "aa17f452-0b07-473a-9c7a-986dfc2d37d9",
+      "type": "checkbox",
+      "name": "italic",
+      "parentId": "root",
+      "label": "Italic"
+    },
+    {
       "id": "27cc9d42-1d07-4f70-a17c-50711d03acc5",
       "type": "checkbox",
       "name": "keyboard",

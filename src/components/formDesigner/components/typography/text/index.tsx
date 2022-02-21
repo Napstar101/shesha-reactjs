@@ -15,6 +15,7 @@ export interface ITextProps extends IConfigurableFormComponent {
   content: string;
   contentType: 'secondary' | 'success' | 'warning' | 'danger';
   code?: boolean;
+  italic?: boolean;
   keyboard?: boolean;
   copyable?: boolean;
   delete?: boolean;
@@ -42,6 +43,7 @@ const TextComponent: IToolboxComponent<ITextProps> = {
       underline: model?.underline,
       keyboard: model?.keyboard,
       strong: model?.strong,
+      italic: model?.italic,
       type: model?.contentType,
     };
 
