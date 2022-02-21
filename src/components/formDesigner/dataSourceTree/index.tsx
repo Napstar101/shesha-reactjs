@@ -41,8 +41,8 @@ const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll, searchText }) => 
     const [manuallyExpanded, setManuallyExpanded] = useState<string[]>(null);
     const treeData = useMemo<NodesWithExpanded>(() => {
         const expanded: string[] = [];
-        const nodes = items.map(item => getTreeData(item, (item) => {
-            expanded.push(item.path);
+        const nodes = items.map(item => getTreeData(item, (currentItem) => {
+            expanded.push(currentItem.path);
         }));
 
         return {
@@ -87,7 +87,7 @@ const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll, searchText }) => 
         return (
             <ReactSortable
                 list={[sortableItem]}
-                setList={() => { }}
+                setList={() => { /*nop*/ }}
                 group={{
                     name: 'shared',
                     pull: 'clone',
@@ -98,7 +98,7 @@ const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll, searchText }) => 
                 ghostClass="sha-component-ghost"
             >
                 <div className='sha-toolbox-component'>
-                    {icon && <ShaIcon iconName={icon}></ShaIcon>}
+                    {icon && <ShaIcon iconName={icon} />}
                     <span className='sha-component-title'>{getTitle(node.meta)}</span>
                 </div>
             </ReactSortable>

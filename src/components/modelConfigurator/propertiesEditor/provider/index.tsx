@@ -47,8 +47,8 @@ const PropertiesEditorProvider: FC<PropsWithChildren<IPropertiesEditorProviderPr
   }
   */
   const dispatchAndFire = (action: Action<any>) => {
-    dispatch((dispatch, getState) => {
-      dispatch(action);
+    dispatch((dispatchThunk, getState) => {
+      dispatchThunk(action);
       if (props.onChange) {
         const updatedItems = getState()?.items;
         props.onChange(updatedItems);

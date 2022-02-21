@@ -93,7 +93,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
         className={`sha-form sha-form-${formMode} ${isDragging ? 'sha-dragging' : ''}`}
         {...mergedProps}
       >
-        <ComponentsContainer containerId={ROOT_COMPONENT_KEY}></ComponentsContainer>
+        <ComponentsContainer containerId={ROOT_COMPONENT_KEY}/>
         {children}
       </Form>
     </Spin>

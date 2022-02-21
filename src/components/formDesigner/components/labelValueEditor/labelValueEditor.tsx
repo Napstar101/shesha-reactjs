@@ -122,7 +122,7 @@ const DraggableBodyRowInner = ({ items, className, style, ...restProps }) => {
                 {...providedDraggable.draggableProps}
                 style={getItemStyle(providedDraggable.draggableProps.style, snapshotDraggable.isDragging)}
                 {...restProps}
-              ></tr>
+              />
             </EditableContext.Provider>
           </DragHandleContext.Provider>
         </Form>
@@ -161,7 +161,7 @@ export const LabelValueEditor: FC<ILabelValueEditorProps> = ({
 
   const handleSaveCell = row => {
     const newData = [...items];
-    const index = newData.findIndex(item => row.id === item.id);
+    const index = newData.findIndex(currentItem => row.id === currentItem.id);
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
 
@@ -234,11 +234,11 @@ export const LabelValueEditor: FC<ILabelValueEditorProps> = ({
     if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
     const reorder = (list: IItemProps[], startIndex: number, endIndex: number): IItemProps[] => {
-      const result = [...list];
-      const [removed] = result.splice(startIndex, 1);
-      result.splice(endIndex, 0, removed);
+      const orderedList = [...list];
+      const [removed] = orderedList.splice(startIndex, 1);
+      orderedList.splice(endIndex, 0, removed);
 
-      return result;
+      return orderedList;
     };
 
     if (source.droppableId === destination.droppableId) {

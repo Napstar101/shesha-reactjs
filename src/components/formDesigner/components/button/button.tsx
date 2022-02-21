@@ -71,9 +71,11 @@ const TextField: IToolboxComponent<IButtonProps> = {
           if (action) {
             const actionArgs = {};
             for (const parameterIdx in model.customActionParameters) {
-              const parameter = model.customActionParameters[parameterIdx];
-              const value = evaluateValue(parameter.value, { data: formData });
-              actionArgs[parameter.key] = value;
+              if (model.customActionParameters.hasOwnProperty(parameterIdx)) {
+                const parameter = model.customActionParameters[parameterIdx];
+                const value = evaluateValue(parameter.value, { data: formData });
+                actionArgs[parameter.key] = value;
+              }
             }
 
             action(formData, actionArgs);

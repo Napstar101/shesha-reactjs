@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Button } from 'antd';
 import { ITableComponentProps } from './models';
 import { ColumnsEditorModal } from './columnsEditor/columnsEditorModal';
-import React from 'react';
 
 export interface IProps {
   model: ITableComponentProps;
@@ -30,7 +29,7 @@ function ColumnsSettings(props: IProps) {
             hideModal={() => {
               setModalVisible(false);
             }}
-          ></ColumnsEditorModal>
+          />
         </Form.Item>
       </Form>
     </>

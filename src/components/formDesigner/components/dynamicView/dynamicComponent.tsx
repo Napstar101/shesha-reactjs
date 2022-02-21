@@ -1,5 +1,4 @@
-import { FC, useRef } from 'react';
-import React from 'react';
+import React, { FC, useRef } from 'react';
 import { ErrorBoundary } from '../../..';
 import { IConfigurableFormComponent } from '../../../../interfaces';
 import { useForm } from '../../../..';

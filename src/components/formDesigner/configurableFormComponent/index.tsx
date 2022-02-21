@@ -1,10 +1,8 @@
-import { FC, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { Button, Tooltip } from 'antd';
-import { DeleteFilled, StopOutlined } from '@ant-design/icons';
+import { DeleteFilled, StopOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import FormComponent from '../formComponent';
 import { useForm } from '../../../providers/form';
-import { EyeInvisibleOutlined } from '@ant-design/icons';
-import React from 'react';
 import ErrorBoundary from '../../errorBoundary/errorBoundary';
 import DragHandle from './dragHandle';
 import ValidationIcon from './validationIcon';
@@ -66,13 +64,13 @@ const ConfigurableFormComponent: FC<IConfigurableFormComponentProps> = ({ id /*,
       </span>
 
       {invalidConfiguration && (
-        <ValidationIcon validationErrors={componentModel.settingsValidationErrors}></ValidationIcon>
+        <ValidationIcon validationErrors={componentModel.settingsValidationErrors} />
       )}
       <div className="sha-component-controls">
-        <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger></Button>
+        <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger />
       </div>
       <div>
-        <DragHandle componentId={id} componentRef={componentRef}></DragHandle>
+        <DragHandle componentId={id} componentRef={componentRef} />
         <div style={{ paddingLeft: '15px' }}>{renderComponent()}</div>
       </div>
     </div>

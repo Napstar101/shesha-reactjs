@@ -2,10 +2,10 @@ import qs from "qs";
 
 export interface BaseRequestOptions {
   /**
-     * An escape hatch and an alternative to `path` when you'd like
-     * to fetch from an entirely different URL.
-     *
-     */
+   * An escape hatch and an alternative to `path` when you'd like
+   * to fetch from an entirely different URL.
+   *
+   */
   base?: string;
   /** Options passed into the fetch call. */
   headers?: HeadersInit;
@@ -57,10 +57,10 @@ export interface MutateProps<
   /** is used by the react hooks only */
   _TPathParams = any
   > extends BaseRequestOptions {
-    data: TRequestBody | null;
-    queryParams?: TQueryParams;
-    signal?: RequestInit["signal"]
-    //options?: MutateRequestOptions<TQueryParams, TPathParams>
+  data: TRequestBody | null;
+  queryParams?: TQueryParams;
+  signal?: RequestInit["signal"]
+  //options?: MutateRequestOptions<TQueryParams, TPathParams>
 }
 
 export const mutate = <

@@ -26,11 +26,8 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
     // temporary commented out, the behavoiur of the sortablejs differs sometimes
     const listChanged = true; //!newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
-    const listChangedTemp = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
-    console.log(listChangedTemp, newState);
-
     if (listChanged) {
-      const newDataItemIndex = newState.findIndex(item => item['type'] == TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
+      const newDataItemIndex = newState.findIndex(item => item['type'] === TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
       if (newDataItemIndex > -1) {
         // dropped data item
         const draggedItem = newState[newDataItemIndex];
@@ -41,7 +38,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
           index: newDataItemIndex,          
         });        
       } else {
-        const newComponentIndex = newState.findIndex(item => item['type'] == TOOLBOX_COMPONENT_DROPPABLE_KEY);
+        const newComponentIndex = newState.findIndex(item => item['type'] === TOOLBOX_COMPONENT_DROPPABLE_KEY);
         if (newComponentIndex > -1) {
           // add new component
           const toolboxComponent = newState[newComponentIndex];
@@ -71,7 +68,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
 
   const renderComponents = () => {
     return components.map((c, index) => (
-      <ConfigurableFormComponent id={c.id} index={index} key={c.id}></ConfigurableFormComponent>
+      <ConfigurableFormComponent id={c.id} index={index} key={c.id} />
     ));
   };
 
@@ -82,7 +79,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
     <div className={`sha-components-container ${direction} ${className}`}>
       {isDesignerMode && (
         <>
-          {components.length == 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
+          {components.length === 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
           <ReactSortable
             disabled={!isDesignerMode}
             onStart={onDragStart}

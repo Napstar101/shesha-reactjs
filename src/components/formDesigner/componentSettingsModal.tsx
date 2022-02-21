@@ -49,10 +49,10 @@ function ComponentSettingsModal<T extends IConfigurableFormComponent>({ isVisibl
           <Tabs type="card" defaultActiveKey="1" size={size} style={{ marginBottom: 32 }}>
             <TabPane tab="Display" key="1">
               <Form.Item name="name" label="Name" rules={[{ required: true }]} initialValue={model?.name}>
-                <Input></Input>
+                <Input />
               </Form.Item>
               <Form.Item name="label" label="Label" initialValue={model?.label}>
-                <Input></Input>
+                <Input />
               </Form.Item>
             </TabPane>
             <TabPane tab="Validation" key="2">

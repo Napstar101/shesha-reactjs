@@ -27,11 +27,11 @@ export interface IFormDesignerStoryProps {
   mode?: FormMode;
 }
 
-const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
+const defaultBackendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
 const DesignerTemplate: Story<IFormDesignerStoryProps> = ({ formPath, formId, mode = 'designer' }) => (
-  <ShaApplicationProvider backendUrl={backendUrl}>
+  <ShaApplicationProvider backendUrl={defaultBackendUrl}>
     <AuthContainer layout={true}>
       <MetadataDispatcherProvider>
         <FormProvider path={formPath} id={formId} mode={mode}>
@@ -62,9 +62,9 @@ export interface IActionsTemplateProps {
 }
 const ActionsTemplate: Story<IActionsTemplateProps> = props => {
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
+    <ShaApplicationProvider backendUrl={defaultBackendUrl}>
       <AuthContainer layout={true}>
-        <ActionsTemplateContent {...props}></ActionsTemplateContent>
+        <ActionsTemplateContent {...props} />
       </AuthContainer>
     </ShaApplicationProvider>
   );
@@ -230,7 +230,7 @@ export const FormsEditor: FC = () => {
           options={options}
           labelInValue={true}
           onChange={value => setCurrentForm(value.value)}
-        ></Select>
+        />
       </div>
       <div>
         Designer {currentForm}
@@ -247,9 +247,9 @@ export const FormsEditor: FC = () => {
 };
 
 const BrowserTemplate: Story = () => (
-  <ShaApplicationProvider backendUrl={backendUrl}>
+  <ShaApplicationProvider backendUrl={defaultBackendUrl}>
     <AuthContainer layout={true}>
-      <FormsEditor></FormsEditor>
+      <FormsEditor />
     </AuthContainer>
   </ShaApplicationProvider>
 );

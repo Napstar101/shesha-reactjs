@@ -26,7 +26,7 @@ export const renderSidebarMenuItem = (props: IProps) => {
 
   const renderedIcon = icon 
     ? typeof(icon) === 'string'
-      ? <ShaIcon iconName={icon as IconType}></ShaIcon> 
+      ? <ShaIcon iconName={icon as IconType}/>
       : React.isValidElement(icon)
         ? icon
         : null

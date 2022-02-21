@@ -89,9 +89,7 @@ const IconPicker: FC<IIconPickerProps> = ({ selectBtnSize = 'middle', value, onI
       const filteredGroup = {};
       const objectKeys = Object.keys(_activeGroup);
 
-      for (let index = 0; index < objectKeys.length; index++) {
-        const key = objectKeys[index];
-
+      for (const key of objectKeys) {
         filteredGroup[key] = _activeGroup[key].filter((groupItem: string) =>
           groupItem?.toLowerCase().includes(searchQuery.toLowerCase())
         );

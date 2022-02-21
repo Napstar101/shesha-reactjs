@@ -42,7 +42,7 @@ const addComponentToFlatStructure = (
     processRecursive(structure.toolboxComponentGroups, containerId, component, (cmp, parentId) => {
       allComponents[cmp.id] = cmp;
       
-      if (parentId != containerId) {
+      if (parentId !== containerId) {
         const relations = childRelations[parentId] ?? [];
         childRelations[parentId] = [...relations, cmp.id];
       }
@@ -107,7 +107,7 @@ const reducer = handleActions<IFormStateContext, any>(
         // create new component
         let count = 0;
         for (const key in state.allComponents) {
-          if (state.allComponents[key].type == toolboxComponent.type) count++;
+          if (state.allComponents[key].type === toolboxComponent.type) count++;
         }
         const componentName = `${toolboxComponent.name}${count + 1}`;
 
@@ -192,7 +192,7 @@ const reducer = handleActions<IFormStateContext, any>(
 
         // remove deleted containers
         oldContainers.forEach(oldContainer => {
-          if (newContainers.find(nc => nc.id == oldContainer.id) == null) {
+          if (!(newContainers.find(nc => nc.id === oldContainer.id))) {
             delete newComponents[oldContainer.id];
 
             delete componentRelations[oldContainer.id];
@@ -334,7 +334,7 @@ const reducer = handleActions<IFormStateContext, any>(
 
       payload.componentIds.forEach(id => {
         const component = state.allComponents[id];
-        if (component.parentId != payload.containerId) {
+        if (component.parentId !== payload.containerId) {
           // NOTE: we don't need it because when the user moves a component from one container to another the react-sortable make two calls to update new parent and old parent
           // update old parent
           // const oldParentKey = component.parentId || ROOT_COMPONENT_KEY;

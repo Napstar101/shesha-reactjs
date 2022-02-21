@@ -45,12 +45,13 @@ export const getQueryParams = (): QueryStringParams => {
     if (!Boolean(qs))
         return {};
     
-    const parsed = qs.substring(1).split('&').reduce(function (q, query) {
+    const parsed = qs.substring(1).split('&').reduce((q, query) => {
         const chunks = query.split('=');
         const key = chunks[0];
         const decodedValue = decodeURIComponent(chunks[1]);
         const value = isNaN(Number(decodedValue)) ? decodedValue : Number(decodedValue);
-        return (q[key] = value, q);
+        q[key] = value;
+        return q;
     }, {} as QueryStringParams);
 
     return parsed;

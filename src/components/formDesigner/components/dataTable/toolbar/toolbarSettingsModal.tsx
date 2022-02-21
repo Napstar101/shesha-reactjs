@@ -1,9 +1,8 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Modal } from 'antd';
 import { ToolbarConfiguratorProvider, useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
 import { ToolbarConfigurator } from './toolbarConfigurator';
 import { ToolbarItemProps } from '../../../../../providers/toolbarConfigurator/models';
-import React from 'react';
 
 export interface IToolbarSettingsModal {
   visible: boolean;
@@ -22,7 +21,7 @@ export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({ visible, 
 
   return (
     <Modal width="60%" visible={visible} title="Configure Toolbar" okText="Save" onCancel={hideModal} onOk={onOkClick}>
-      <ToolbarConfigurator></ToolbarConfigurator>
+      <ToolbarConfigurator />
     </Modal>
   );
 };
@@ -30,7 +29,7 @@ export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({ visible, 
 export const ToolbarSettingsModal: FC<IToolbarSettingsModal> = props => {
   return (
     <ToolbarConfiguratorProvider items={(props.value as ToolbarItemProps[]) || []}>
-      <ToolbarSettingsModalInner {...props}></ToolbarSettingsModalInner>
+      <ToolbarSettingsModalInner {...props} />
     </ToolbarConfiguratorProvider>
   );
 };

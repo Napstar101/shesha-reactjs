@@ -198,8 +198,8 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
 
     const { file } = payload;
 
-    const appendIfDefined = (name, value) => {
-      if (value) formData.append(name, value);
+    const appendIfDefined = (itemName, itemValue) => {
+      if (itemValue) formData.append(itemName, itemValue);
     };
 
     formData.append('file', file);

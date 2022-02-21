@@ -1,10 +1,9 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Button } from 'antd';
 import { SidebarContainer } from '../../../../../components';
 import { ToolbarItemProperties } from './toolbarItemProperties';
 import ToolbarItemsContainer from './toolbarItemsContainer';
 import { useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
-import React from 'react';
 import './styles/index.less';
 
 export interface IToolbarConfiguratorProps {}
@@ -27,10 +26,10 @@ export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = () => {
         rightSidebarProps={{
           open: true,
           title: () => 'Properties',
-          content: () => <ToolbarItemProperties></ToolbarItemProperties>,
+          content: () => <ToolbarItemProperties />,
         }}
       >
-        <ToolbarItemsContainer items={items} index={[]}></ToolbarItemsContainer>
+        <ToolbarItemsContainer items={items} index={[]} />
       </SidebarContainer>
     </div>
   );

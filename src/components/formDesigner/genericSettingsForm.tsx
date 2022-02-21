@@ -63,7 +63,7 @@ function Settings<TModel extends IConfigurableFormComponent>({
       actions={{
         linkToModelMetadata
       }}
-    ></ConfigurableForm>
+    />
   );
 }
 

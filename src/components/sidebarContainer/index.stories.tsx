@@ -51,7 +51,7 @@ const TemplateBasic: Story<ISidebarContainerProps> = args => {
             onOpen: toggleRightSidebarVisibility,
             onClose: toggleRightSidebarVisibility,
           }}
-        ></SidebarContainer>
+        />
       </AuthContainer>
     </ShaApplicationProvider>
   );
@@ -82,7 +82,7 @@ const TemplateLeftSidebarOnly: Story<ISidebarContainerProps> = args => {
             onOpen: toggleLeftSidebarVisibility,
             onClose: toggleLeftSidebarVisibility,
           }}
-        ></SidebarContainer>
+        />
       </AuthContainer>
     </ShaApplicationProvider>
   );
@@ -113,7 +113,7 @@ const TemplateRightSidebarOnly: Story<ISidebarContainerProps> = args => {
             onOpen: toggleRightSidebarVisibility,
             onClose: toggleRightSidebarVisibility,
           }}
-        ></SidebarContainer>
+        />
       </AuthContainer>
     </ShaApplicationProvider>
   );

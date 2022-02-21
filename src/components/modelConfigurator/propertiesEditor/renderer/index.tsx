@@ -1,10 +1,9 @@
-import { FC, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Button, Tabs } from 'antd';
 import { CodeEditor, SidebarContainer } from '../../../';
 import { ToolbarItemProperties } from './itemProperties';
 import ItemsContainer from './itemsContainer';
 import { usePropertiesEditor } from '../provider';
-import React from 'react';
 
 export interface IModelConfiguratorProps { }
 

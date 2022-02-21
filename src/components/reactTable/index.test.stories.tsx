@@ -29,8 +29,8 @@ const Template: Story<IGenericIndexPageProps> = () => {
             title="Members"
             tableConfigId="Members_Index"
             // tableConfigId="Members_Index"
-            detailsUrl={id => `/members/details?id=${id}`}
-            editUrl={id => `/members/edit?id=${id}`}
+            detailsUrl={currentId => `/members/details?id=${currentId}`}
+            editUrl={currentId => `/members/edit?id=${currentId}`}
           />
         </>
       </AuthContainer>

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
 import { LayoutOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
@@ -6,7 +6,6 @@ import settingsFormJson from './settingsForm.json';
 import { IShaDataTableProps } from '../../../../../';
 import { DataTableSelectionProvider, useDataTableSelection } from '../../../../../providers/dataTableSelection';
 import ComponentsContainer from '../../../componentsContainer';
-import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
 import { MetadataProvider, useDataTableStore, useForm } from '../../../../../providers';
 import DataTableProvider from '../../../../../providers/dataTable';
@@ -24,7 +23,7 @@ const TableContextComponent: IToolboxComponent<ITableContextComponentProps> = {
   name: 'DataTable Context',
   icon: <LayoutOutlined />,
   factory: (model: ITableContextComponentProps) => {
-    return <TableContext {...model}></TableContext>;
+    return <TableContext {...model} />;
   },
   initModel: (model: ITableContextComponentProps) => {
     return {
@@ -42,7 +41,7 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
 
   useEffect(() => {
     const uniqueKey = `${props.tableConfigId ?? 'empty'}_${props.entityType ?? 'empty'}`; // is used just for re-rendering
-    setTable(<TableContextInner key={uniqueKey} {...props}></TableContextInner>);
+    setTable(<TableContextInner key={uniqueKey} {...props} />);
   }, [props.tableConfigId, props.entityType]);
 
   return entityType
@@ -96,7 +95,7 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
         selectedRow={selectedRow}
         onSelectRow={onSelectRow}
       >
-        <TableContextAccessor {...props}></TableContextAccessor>
+        <TableContextAccessor {...props} />
       </DataTableProvider>
     </DataTableSelectionProvider>
   );
@@ -132,7 +131,7 @@ const TableContextAccessor: FC<ITableContextComponentProps> = ({ id, tableConfig
     [tableConfigLoaded, tableConfigId, selectedRow]
   );
 
-  return <ComponentsContainer containerId={id}></ComponentsContainer>;
+  return <ComponentsContainer containerId={id} />;
 };
 
 export default TableContextComponent;

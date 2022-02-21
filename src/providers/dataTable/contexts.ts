@@ -75,9 +75,9 @@ export interface IDataTableStateContext
 
   /** Datatable data (fetched from the back-end) */
   tableData?: object[];
-  /** Selected page size*/
+  /** Selected page size */
   selectedPageSize?: number;
-  /** Current page number*/
+  /** Current page number */
   currentPage?: number;
   /** Total number of pages */
   totalPages?: number;
@@ -96,7 +96,7 @@ export interface IDataTableStateContext
 
   /** Advanced filter: applied values */
   tableFilter?: ITableFilter[];
-  /** Advanced filter: current editor state*/
+  /** Advanced filter: current editor state */
   tableFilterDirty?: ITableFilter[];
 
   /** Selected filters (stored or predefined) */

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
@@ -6,7 +6,6 @@ import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, GenericIndexPage, SimpleIndexPage } from '../..';
 import { IGenericIndexPageProps } from './indexPage';
 import { useAreaCreate } from '../../apis/area';
-import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { OnSuccessActionType } from './createModal';
 

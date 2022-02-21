@@ -2,7 +2,6 @@ import { ReactNode, MutableRefObject } from 'react';
 import { IConfigurableFormComponent, IFormComponentContainer, FormMarkup } from '../providers/form/models';
 import { FormInstance } from 'antd';
 import { InternalNamePath } from 'rc-field-form/lib/interface';
-//import { AuthorizationSettingsDto } from '../apis/authorizationSettings';
 import { IPropertyMetadata } from './metadata';
 
 export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
@@ -63,7 +62,7 @@ export interface IToolboxComponent<T = IConfigurableFormComponent> {
   settingsFormFactory?: ISettingsFormFactory<T>;
   /** 
    * Markup of the settings form. Applied when the @settingsFormFactory is not specified, in this case you can render settings for in the designer itself
-  */
+   */
   settingsFormMarkup?: FormMarkup;
   /**
    * Settings validator

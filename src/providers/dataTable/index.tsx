@@ -53,7 +53,7 @@ import {
   IStoredFilter,
   ITableFilter,
 } from './interfaces';
-import { useMutate } from 'restful-react';
+import { useMutate, useGet } from 'restful-react';
 import _ from 'lodash';
 import { GetColumnsInput, DataTableColumnDtoListAjaxResponse } from '../../apis/dataTable';
 import { IResult } from '../../interfaces/result';
@@ -61,7 +61,6 @@ import { useLocalStorage } from '../../hooks';
 import { useAuth } from '../auth';
 import { nanoid } from 'nanoid/non-secure';
 import { useDebouncedCallback } from 'use-debounce';
-import { useGet } from 'restful-react';
 import {
   IConfigurableColumnsBase,
   IConfigurableColumnsProps,
@@ -380,9 +379,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   /** change quick search and refresh table data */
   const performQuickSearch = (val: string) => {
     // note: use thunk to get state after update
-    dispatch((dispatch, getState) => {
-      dispatch(changeQuickSearchAction(val));
-      dispatch(setCurrentPageAction(1));
+    dispatch((dispatchThunk, getState) => {
+      dispatchThunk(changeQuickSearchAction(val));
+      dispatchThunk(setCurrentPageAction(1));
 
       const payload = getFetchTableDataPayloadInternal(getState());
       fetchTableData(payload);
@@ -436,7 +435,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           break;
         case 'date':
         case 'string':
-        case 'date':
           data[column.accessor] = '';
           break;
         case 'number':
@@ -492,8 +490,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   const getDataProperties = (columns: IConfigurableColumnsBase[]) => {
     const dataFields = columns.filter(
       c =>
-        c.itemType == 'item' &&
-        (c as IConfigurableColumnsProps).columnType == 'data' &&
+        c.itemType === 'item' &&
+        (c as IConfigurableColumnsProps).columnType === 'data' &&
         Boolean((c as IDataColumnsProps).propertyName)
     ) as IDataColumnsProps[];
 
@@ -502,11 +500,11 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   };
 
   useEffect(() => {
-    const { configurableColumns, entityType } = state;
+    const { configurableColumns } = state;
     if (!entityType) return;
 
     const properties = getDataProperties(configurableColumns);
-    if (properties.length == 0) {
+    if (properties.length === 0) {
       // don't fetch data from server when properties is empty
       dispatch(fetchColumnsSuccessSuccessAction({ columns: [], configurableColumns, userConfig: userDTSettings }));
       return;

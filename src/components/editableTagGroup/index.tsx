@@ -42,12 +42,12 @@ export const EditableTagGroup: FC<IEditableTagGroupProps> = ({ value = [], onCha
   };
 
   const handleInputConfirm = () => {
-    const { inputValue } = state;
+    const { inputValue: currentValue } = state;
 
     let localValue = value;
 
-    if (inputValue && localValue?.indexOf(inputValue) === -1) {
-      localValue = [...localValue, inputValue];
+    if (currentValue && localValue?.indexOf(currentValue) === -1) {
+      localValue = [...localValue, currentValue];
 
       if (onChange) {
         onChange(localValue);
@@ -62,14 +62,14 @@ export const EditableTagGroup: FC<IEditableTagGroupProps> = ({ value = [], onCha
 
   const onTagEdit = (tag: string) => {
     const newTags = value?.filter(v => v !== tag);
-    const { inputValue } = state;
+    const { inputValue: currentValue } = state;
 
     setState({
       inputVisible: true,
       inputValue: tag,
     });
 
-    onChange(inputValue?.trim() ? [...newTags, inputValue] : newTags);
+    onChange(currentValue?.trim() ? [...newTags, currentValue] : newTags);
   };
 
   const forMap = (tag: string) => {

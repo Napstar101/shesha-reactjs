@@ -58,7 +58,7 @@ export const fetchTableDataSuccessAction = createAction<ITableDataResponse, ITab
   p => p
 );
 
-export const fetchTableDataErrorAction = createAction(DataTableActionEnums.FetchTableDataError, () => {});
+export const fetchTableDataErrorAction = createAction(DataTableActionEnums.FetchTableDataError, () => { /*nop*/ });
 
 export const fetchTableConfigAction = createAction<string, string>(DataTableActionEnums.FetchTableConfig, p => p);
 

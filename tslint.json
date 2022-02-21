@@ -58,6 +58,6 @@
       "check-typecast",
       "check-type-operator"
     ],
-    "react-hooks-nesting": "error"
+    "react-hooks-nesting": false
   }
 }

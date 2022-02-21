@@ -29,7 +29,7 @@ export const IndexViewSelectorRenderer: FC<IIndexViewSelectorRendererProps> = ({
     return (
       <span key={currentId} onClick={() => onSelectFilter(currentId)} className="custom-filter-container">
         {currentName}
-        {tooltip && <TooltipIcon tooltip={tooltip}></TooltipIcon>}
+        {tooltip && <TooltipIcon tooltip={tooltip} />}
       </span>
     );
   };
@@ -52,7 +52,7 @@ export const IndexViewSelectorRenderer: FC<IIndexViewSelectorRendererProps> = ({
           {selectedFilter ? (
             <>
               {selectedFilter.name}{' '}
-              {selectedFilter.tooltip && <TooltipIcon tooltip={selectedFilter.tooltip}></TooltipIcon>}
+              {selectedFilter.tooltip && <TooltipIcon tooltip={selectedFilter.tooltip} />}
             </>
           ) : (
             header

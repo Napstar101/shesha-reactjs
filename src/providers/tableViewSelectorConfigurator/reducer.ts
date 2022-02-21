@@ -86,7 +86,7 @@ const toolbarReducer = handleActions<ITableViewSelectorConfiguratorStateContext,
       const {
         payload: { index, childs: childIds },
       } = action;
-      if (!Boolean(index) || index.length == 0) {
+      if (!Boolean(index) || index.length === 0) {
         return {
           ...state,
           items: childIds,

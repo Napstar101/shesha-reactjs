@@ -17,7 +17,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   const { refreshTable } = useDataTableStore();
 
   const modalProps: IModalProps =
-    props.buttonAction == 'dialogue'
+    props.buttonAction === 'dialogue'
       ? {
           id: props.id, // link modal to the current form component by id
           isVisible: false,

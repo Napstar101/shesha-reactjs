@@ -1,8 +1,7 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { JsonLogicResult } from 'react-awesome-query-builder';
 import { Modal, Button, Collapse } from 'antd';
 import { IProperty } from '../../../../providers/queryBuilder/models';
-import React from 'react';
 import QueryBuilder from '../../../queryBuilder';
 import { CodeEditor } from '../../..';
 import { CaretRightOutlined } from '@ant-design/icons';
@@ -91,7 +90,7 @@ export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
         onOk={onOkClick}
       >
         <h4>Here you can create your own table filters using the query builder below</h4>
-        <QueryBuilder value={props.value} onChange={onChange} fields={props.fields}></QueryBuilder>
+        <QueryBuilder value={props.value} onChange={onChange} fields={props.fields} />
       </Modal>
     </>
   );

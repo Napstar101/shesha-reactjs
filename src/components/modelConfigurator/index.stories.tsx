@@ -18,8 +18,7 @@ const Template: Story<IModelConfiguratorProps> = args => (
   <ShaApplicationProvider backendUrl={backendUrl}>
     <AuthContainer layout={true}>
       <MetadataDispatcherProvider>
-          <ModelConfigurator {...args}>
-          </ModelConfigurator>
+          <ModelConfigurator {...args} />
       </MetadataDispatcherProvider>
     </AuthContainer>
   </ShaApplicationProvider >

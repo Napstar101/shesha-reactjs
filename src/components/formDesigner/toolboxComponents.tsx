@@ -59,7 +59,7 @@ export const ToolboxComponents: FC<IToolboxComponentsProps> = () => {
               <Panel header={group.name} key={groupIndex.toString()}>
                 <ReactSortable
                   list={sortableItems}
-                  setList={() => { }}
+                  setList={() => { /* nop */}}
                   group={{
                     name: 'shared',
                     pull: 'clone',
@@ -76,7 +76,7 @@ export const ToolboxComponents: FC<IToolboxComponentsProps> = () => {
                         key={`Group${groupIndex}:Component${componentIndex}`}
                         component={component}
                         index={idx}
-                      ></ToolboxComponent>
+                      />
                     );
                   })}
                 </ReactSortable>

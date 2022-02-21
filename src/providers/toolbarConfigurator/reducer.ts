@@ -24,7 +24,7 @@ const toolbarReducer = handleActions<IToolbarConfiguratorStateContext, any>(
 
       const newItems = [...state.items];
       const parent = state.selectedItemId ? (getItemById(newItems, state.selectedItemId) as IButtonGroup) : null;
-      if (parent && parent.itemType == 'group') {
+      if (parent && parent.itemType === 'group') {
         parent.childItems = [...parent.childItems, buttonProps];
       } else newItems.push(buttonProps);
 

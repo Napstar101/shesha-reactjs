@@ -161,11 +161,11 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   };
   //#endregion
 
-  const getHttpHeadersFromState = (state: IAuthStateContext): IHttpHeaders => {
+  const getHttpHeadersFromState = (providedState: IAuthStateContext): IHttpHeaders => {
     const headers: IHttpHeaders = {};
 
-    if (state.token)
-      headers['Authorization'] = `Bearer ${state.token}`;
+    if (providedState.token)
+      headers['Authorization'] = `Bearer ${providedState.token}`;
 
     // todo: move culture and tenant to state and restore from localStorage on start
     headers['.AspNetCore.Culture'] = getLocalizationOrDefault();
@@ -183,9 +183,9 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     return getHttpHeadersFromState(state);
   }
 
-  const fireHttpHeadersChanged = (state: IAuthStateContext) => {
+  const fireHttpHeadersChanged = (providedState: IAuthStateContext) => {
     if (onSetRequestHeaders) {
-      const headers = getHttpHeadersFromState(state);
+      const headers = getHttpHeadersFromState(providedState);
       onSetRequestHeaders(headers);
     }
   }
@@ -193,8 +193,8 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const clearAccessToken = () => {
     removeTokenFromStorage(tokenName);
 
-    dispatch((dispatch, getState) => {
-      dispatch(setAccessTokenAction(null));
+    dispatch((dispatchThunk, getState) => {
+      dispatchThunk(setAccessTokenAction(null));
       fireHttpHeadersChanged(getState());
     })
   };
@@ -220,12 +220,12 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const { mutate: loginUserHttp } = useTokenAuthAuthenticate({});
 
   const loginUser = (loginFormData: ILoginForm) => {
-    dispatch((dispatch, getState) => {
-      dispatch(loginUserAction()); // We just want to let the user know we're logging in
+    dispatch((dispatchThunk, getState) => {
+      dispatchThunk(loginUserAction()); // We just want to let the user know we're logging in
 
       const loginSuccessHandler = (data: AuthenticateResultModelAjaxResponse) => {
 
-        dispatch(loginUserSuccessAction());
+        dispatchThunk(loginUserSuccessAction());
         if (data) {
           const token = data.success && data.result
             ? data.result as IAccessToken
@@ -235,7 +235,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
             saveUserTokenToStorage(token, tokenName);
 
             // save token to the state
-            dispatch(setAccessTokenAction(token.accessToken));
+            dispatchThunk(setAccessTokenAction(token.accessToken));
 
             // get updated state and notify subscribers
             const newState = getState();
@@ -245,14 +245,14 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
             const headers = getHttpHeadersFromState(newState);
             fetchUserInfo(headers);
           } else
-            dispatch(loginUserErrorAction(data?.error as IErrorInfo));
+            dispatchThunk(loginUserErrorAction(data?.error as IErrorInfo));
         }
       };
 
       loginUserHttp(loginFormData)
         .then(loginSuccessHandler)
         .catch(err => {
-          dispatch(loginUserErrorAction(err?.data));
+          dispatchThunk(loginUserErrorAction(err?.data));
         });
     })
   };

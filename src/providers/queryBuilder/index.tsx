@@ -19,8 +19,8 @@ const QueryBuilderProvider: FC<PropsWithChildren<IQueryBuilderProviderProps>> = 
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
-  const setFields = (fields: IProperty[]) => {
-    dispatch(setFieldsAction(fields));
+  const setFields = (newFields: IProperty[]) => {
+    dispatch(setFieldsAction(newFields));
   };
 
   return (

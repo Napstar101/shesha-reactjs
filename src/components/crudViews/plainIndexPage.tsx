@@ -1,12 +1,11 @@
 import React, { FC, useState } from 'react';
 import { GenericCreateModal, IGenericCreateModalProps, Page, Show } from '../';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
 import IndexTableFull from '../indexTableFull';
 import { IToolbarItem } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
 import { useDataTableStore } from '../../providers';
-import { EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 
 export interface IGenericIndexPageProps {

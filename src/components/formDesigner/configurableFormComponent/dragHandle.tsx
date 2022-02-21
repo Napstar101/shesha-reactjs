@@ -1,6 +1,5 @@
-import { FC, MutableRefObject } from 'react';
+import React, { FC, MutableRefObject } from 'react';
 import { useForm } from '../../../providers/form';
-import React from 'react';
 import { useMetadata } from '../../../providers';
 import { Tooltip } from 'antd';
 
@@ -39,7 +38,7 @@ export const DragHandle: FC<IDragHandleProps> = props => {
 
     return (
         <Tooltip title={tooltip} placement="right">
-            <div className="sha-component-drag-handle" onClick={onClick}></div>
+            <div className="sha-component-drag-handle" onClick={onClick} />
         </Tooltip>
     );
 };

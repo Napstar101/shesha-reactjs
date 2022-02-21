@@ -18,6 +18,26 @@ interface FilteredDataSource {
   visibleItems: IPropertyMetadata[];
 }
 
+const getVisibleProperties = (items: IPropertyMetadata[], searchText: string): IPropertyMetadata[] => {
+  const result: IPropertyMetadata[] = [];
+  if (!items)
+    return result;
+    
+  items.forEach(item => {
+    if (!item.isFrameworkRelated && item.isVisible) {
+      const childItems = getVisibleProperties(item.properties, searchText);
+      const matched = (searchText ?? '') === '' || item.path.toLowerCase().includes(searchText) || item.label?.toLowerCase().includes(searchText);
+      
+      if (matched || childItems.length > 0) {
+        const filteredItem: IPropertyMetadata = { ...item, properties: childItems };
+        result.push(filteredItem)
+      }
+    }
+  });
+
+  return result;
+}
+
 export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
   const [openedKeys, setOpenedKeys] = useLocalStorage('shaDesigner.toolbox.datasources.openedKeys', ['']);
   const [searchText, setSearchText] = useLocalStorage('shaDesigner.toolbox.datasources.search', '');
@@ -41,26 +61,6 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
 
     return dataSources;
   }, [formDs, currentDataSource]);
-
-  const getVisibleProperties = (items: IPropertyMetadata[], searchText: string): IPropertyMetadata[] => {
-    const result: IPropertyMetadata[] = [];
-    if (!items)
-      return result;
-      
-    items.forEach(item => {
-      if (!item.isFrameworkRelated && item.isVisible) {
-        const childItems = getVisibleProperties(item.properties, searchText);
-        const matched = (searchText ?? '') == '' || item.path.toLowerCase().includes(searchText) || item.label?.toLowerCase().includes(searchText);
-        
-        if (matched || childItems.length > 0) {
-          const filteredItem: IPropertyMetadata = { ...item, properties: childItems };
-          result.push(filteredItem)
-        }
-      }
-    });
-
-    return result;
-  }
 
   const datasourcesWithVisible = useMemo<FilteredDataSource[]>(() => {
     const dataSources = allDataSources.map<FilteredDataSource>((ds) => (
@@ -102,7 +102,7 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
             
             return visibleItems.length === 0 ? null : (
               <Panel header={ds.datasource.name} key={dsIndex.toString()} className={classes.reduce((a, c) => a + ' ' + c)}>
-                <DataSourceTree items={visibleItems} searchText={searchText} defaultExpandAll={(searchText ?? '') !== ''}></DataSourceTree>
+                <DataSourceTree items={visibleItems} searchText={searchText} defaultExpandAll={(searchText ?? '') !== ''} />
               </Panel>
             );
           })}

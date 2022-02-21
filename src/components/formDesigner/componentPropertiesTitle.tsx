@@ -1,8 +1,7 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Button } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import { useForm } from '../../providers/form';
-import React from 'react';
 
 export interface IProps {
 }
@@ -25,7 +24,7 @@ export const ComponentPropertiesTitle: FC<IProps> = ({}) => {
             size="small"
             danger
             title="Delete component"
-          ></Button>
+          />
         </div>
       )}
     </div>

@@ -32,8 +32,8 @@ export const JobTitleFieldEditor: FC<IColumnEditFieldProps> = ({
 
   const placeholder = `Select ${caption}`;
 
-    const onChange = (val: ReferenceListItemDto) => {
-      setSelectedOption(val);
+    const onChange = (newValue: ReferenceListItemDto) => {
+      setSelectedOption(newValue);
 
       // handleChange(name, val);
     };

@@ -17,7 +17,7 @@ const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
   name: 'Toolbar',
   icon: <DashOutlined />,
   factory: (model: IToolbarProps) => {
-    return <Toolbar {...model}></Toolbar>;
+    return <Toolbar {...model} />;
   },
   initModel: (model: IToolbarProps) => {
     return {
@@ -50,11 +50,11 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
         switch (itemProps.itemSubType) {
           case 'button':
             return (
-              <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps}></ToolbarButton>
+              <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps} />
             );
 
           case 'separator':
-            return <div key={index} className="sha-toolbar-separator"></div>;
+            return <div key={index} className="sha-toolbar-separator" />;
 
           default:
             return null;

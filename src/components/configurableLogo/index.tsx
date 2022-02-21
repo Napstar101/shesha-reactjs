@@ -8,7 +8,7 @@ export const ConfigurableLogo: FC = () => {
       {(componentState, BlockOverlay) => (
           <ErrorBoundary>
             <div className={`logo ${componentState.wrapperClassName}`}>
-              <BlockOverlay></BlockOverlay>
+              <BlockOverlay/>
               <a href="/">
                 <img src="/images/app-logo.png" />
               </a>

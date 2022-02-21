@@ -54,28 +54,30 @@ const DynamicModalProvider: FC<PropsWithChildren<IDynamicModalProviderProps>> = 
   const renderInstances = () => {
     const rendered = [];
     for (const id in state.instances) {
-      const instance = state.instances[id];
-      rendered.push(
-        <DynamicModalInstanceContext.Provider
-          key={instance.id}
-          value={{
-            instance,
-            show: () => show(instance.id),
-            hide: () => hide(instance.id),
-            close: () => removeModal(instance.id),
-          }}
-        >
-          <DynamicModal
+      if (state.instances.hasOwnProperty(id)) {
+        const instance = state.instances[id];
+        rendered.push(
+          <DynamicModalInstanceContext.Provider
             key={instance.id}
-            id={instance.id}
-            title={instance.props.title}
-            isVisible={instance.isVisible}
-            mode="edit"
-            formId={instance.props.formId}
-            onSubmitted={instance.props.onSubmitted}
-          ></DynamicModal>
-        </DynamicModalInstanceContext.Provider>
-      );
+            value={{
+              instance,
+              show: () => show(instance.id),
+              hide: () => hide(instance.id),
+              close: () => removeModal(instance.id),
+            }}
+          >
+            <DynamicModal
+              key={instance.id}
+              id={instance.id}
+              title={instance.props.title}
+              isVisible={instance.isVisible}
+              mode="edit"
+              formId={instance.props.formId}
+              onSubmitted={instance.props.onSubmitted}
+            />
+          </DynamicModalInstanceContext.Provider>
+        );
+      }
     }
     return rendered;
   };

@@ -8,8 +8,8 @@ export interface IProps {}
 const Toolbox: FC<IProps> = () => {
   return (
     <div className="sha-designer-toolbox">
-      <ToolboxComponents></ToolboxComponents>
-      <ToolboxDataSources></ToolboxDataSources>
+      <ToolboxComponents />
+      <ToolboxDataSources />
     </div>
   );
 };

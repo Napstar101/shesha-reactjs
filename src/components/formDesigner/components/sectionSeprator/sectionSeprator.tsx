@@ -20,7 +20,7 @@ const SectionSeparatorComponent: IToolboxComponent<ISectionSeparatorProps> = {
 
     if (isComponentHidden(model)) return null;
 
-    return <SectionSeparator sectionName={model.label}></SectionSeparator>;
+    return <SectionSeparator sectionName={model.label} />;
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),

@@ -1,10 +1,9 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { ToolbarItem } from './toolbarItem';
 import { ToolbarItemsGroup } from './toolbarItemsGroup';
 import { useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
 import { IButtonGroup, IToolbarButton, ToolbarItemProps } from '../../../../../providers/toolbarConfigurator/models';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
-import React from 'react';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];
@@ -19,11 +18,11 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
     switch (item.itemType) {
       case 'item':
         const itemProps = item as IToolbarButton;
-        return <ToolbarItem key={index} index={[...props.index, index]} {...itemProps}></ToolbarItem>;
+        return <ToolbarItem key={index} index={[...props.index, index]} {...itemProps} />;
 
       case 'group':
         const groupProps = item as IButtonGroup;
-        return <ToolbarItemsGroup key={index} {...groupProps} index={[...props.index, index]}></ToolbarItemsGroup>;
+        return <ToolbarItemsGroup key={index} {...groupProps} index={[...props.index, index]} />;
     }
   };
 

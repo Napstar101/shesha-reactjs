@@ -19,7 +19,7 @@ const PropertyAutocompleteComponent: IToolboxComponent<IPropertyAutocompleteComp
   factory: (model: IPropertyAutocompleteComponentProps) => {
     return (
       <FormItem model={model}>
-        <PropertyAutocomplete id={model.id}></PropertyAutocomplete>
+        <PropertyAutocomplete id={model.id} />
       </FormItem>
     );
   },
