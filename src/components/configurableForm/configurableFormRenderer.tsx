@@ -30,7 +30,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
       props.onValuesChange(changedValues, values);
 
     // recalculate components visibility
-    setFormData({ values: values, mergeValues: true });
+    setFormData({ values, mergeValues: true });
 
     // update validation rules
   };

@@ -59,7 +59,7 @@ const DynamicModalProvider: FC<PropsWithChildren<IDynamicModalProviderProps>> = 
         <DynamicModalInstanceContext.Provider
           key={instance.id}
           value={{
-            instance: instance,
+            instance,
             show: () => show(instance.id),
             hide: () => hide(instance.id),
             close: () => removeModal(instance.id),

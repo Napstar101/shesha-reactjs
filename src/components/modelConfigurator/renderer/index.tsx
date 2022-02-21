@@ -18,7 +18,7 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
     const dto = { ...values, id };
     save(dto)
       .then(() => message.success('Model saved successfully'))
-      .catch(() => message.error('Failed to save model'));;
+      .catch(() => message.error('Failed to save model')); ;
   };
 
   const initialValues = {...modelConfiguration};

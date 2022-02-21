@@ -22,7 +22,7 @@ export const ComplexProperty: FC<IProps> = props => {
     deleteItem(props.id);
   };
 
-  let classes = ['sha-sidebar-item'];
+  const classes = ['sha-sidebar-item'];
   if (selectedItemId === props.id) {
     classes.push('selected');
   }

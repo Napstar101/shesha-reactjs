@@ -24,7 +24,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
 
   const onSetList = (newState: ItemInterface[], _sortable, _store) => {
     // temporary commented out, the behavoiur of the sortablejs differs sometimes
-    const listChanged = true;//!newState.some(item => item.chosen !== null && item.chosen !== undefined);
+    const listChanged = true; //!newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     const listChangedTemp = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
     console.log(listChangedTemp, newState);
@@ -37,7 +37,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
 
         addDataProperty({
           propertyMetadata: draggedItem.metadata,
-          containerId: containerId,
+          containerId,
           index: newDataItemIndex,          
         });        
       } else {
@@ -47,14 +47,14 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
           const toolboxComponent = newState[newComponentIndex];
           
           addComponent({
-            containerId: containerId,
+            containerId,
             componentType: toolboxComponent.id.toString(),
             index: newComponentIndex,
           });
         } else {
           // reorder existing components
           const newIds = newState.map<string>(item => item.id.toString());
-          updateChildComponents({ containerId: containerId, componentIds: newIds });
+          updateChildComponents({ containerId, componentIds: newIds });
         }
       }
     }
@@ -75,7 +75,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
     ));
   };
 
-  let style = {};
+  const style = {};
   if (direction === 'horizontal' && justifyContent) style['justifyContent'] = justifyContent;
 
   return (

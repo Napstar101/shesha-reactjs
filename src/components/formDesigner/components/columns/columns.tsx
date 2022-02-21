@@ -52,7 +52,7 @@ const ColumnsComponent: IToolboxComponent<IColumnsComponentProps> = {
     );
   },
   initModel: model => {
-    let tabsModel: IColumnsComponentProps = {
+    const tabsModel: IColumnsComponentProps = {
       ...model,
       name: 'custom Name',
       columns: [

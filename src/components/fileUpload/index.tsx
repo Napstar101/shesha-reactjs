@@ -86,7 +86,7 @@ export const FileUpload: FC<IFileUploadProps> = ({
 
   const fileProps: UploadProps = {
     name: 'file',
-    accept: accept,
+    accept,
     multiple: false,
     fileList: fileInfo ? [fileInfo] : [],
     customRequest: onCustomRequest,

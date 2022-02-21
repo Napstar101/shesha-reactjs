@@ -17,7 +17,7 @@ export const ColumnsGroup: FC<IProps> = props => {
     deleteGroup(props.id);
   };
 
-  let classes = ['sha-toolbar-item'];
+  const classes = ['sha-toolbar-item'];
   if (selectedItemId === props.id) classes.push('selected');
 
   return (

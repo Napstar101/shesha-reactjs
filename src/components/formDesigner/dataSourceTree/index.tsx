@@ -46,7 +46,7 @@ const DataSourceTree: FC<IProps> = ({ items, defaultExpandAll, searchText }) => 
         }));
 
         return {
-            nodes: nodes,
+            nodes,
             expandedKeys: expanded,
         };
     }, [items]);

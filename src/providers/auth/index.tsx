@@ -106,7 +106,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       return;
 
     dispatch(fetchUserDataAction());
-    sessionGetCurrentLoginInformations({ base: backendUrl, headers: headers }).then(response => {
+    sessionGetCurrentLoginInformations({ base: backendUrl, headers }).then(response => {
       if (response.result.user) {
         dispatch(fetchUserDataActionSuccessAction(response.result.user));
 

@@ -115,7 +115,7 @@ export function updateTreeData(list: IDataNode[], key: React.Key, children: IDat
 }
 
 export function deepFlattenTree<T>(r: T[], a: T[], key: keyof T) {
-  var b = {};
+  const b = {};
   Object.keys(a).forEach(function(k) {
     if (k !== key) {
       b[k] = a[k];
@@ -134,7 +134,7 @@ export const filterOnSelectionsChange = (
 ): ISaveSelectionsInput => {
   let allChecked = true;
 
-  let response: ISaveSelectionsInput = {
+  const response: ISaveSelectionsInput = {
     id,
     ownerId,
     ownerType,

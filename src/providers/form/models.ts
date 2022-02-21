@@ -152,10 +152,10 @@ export interface Store {
   [name: string]: StoreValue;
 }
 
-export type FormMarkupWithSettings = {
+export interface FormMarkupWithSettings {
   formSettings: IFormSettings;
   components: IConfigurableFormComponent[];
-};
+}
 export type FormMarkup = IConfigurableFormComponent[] | FormMarkupWithSettings;
 
 export interface IConfigurableFormBaseProps {

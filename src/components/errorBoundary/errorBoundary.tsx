@@ -1,7 +1,7 @@
 import React from 'react';
 import Catch from "./catch"
 
-type Props = {
+interface Props {
   children: React.ReactNode
 }
 

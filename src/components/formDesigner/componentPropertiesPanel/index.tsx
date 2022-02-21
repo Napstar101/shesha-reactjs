@@ -20,7 +20,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
 
   const debouncedSave = useDebouncedCallback(
     values => {
-      updateComponent({ componentId: id, settings: { ...values, id: id } });
+      updateComponent({ componentId: id, settings: { ...values, id } });
     },
     // delay in ms
     300
@@ -29,7 +29,7 @@ export const ComponentPropertiesPanel: FC<IProps> = () => {
   const onCancel = () => { };
 
   const onSave = values => {
-    updateComponent({ componentId: id, settings: { ...values, id: id } });
+    updateComponent({ componentId: id, settings: { ...values, id } });
   };
 
   const onValuesChange = (_changedValues, values) => {

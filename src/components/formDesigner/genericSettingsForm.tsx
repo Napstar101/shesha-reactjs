@@ -61,7 +61,7 @@ function Settings<TModel extends IConfigurableFormComponent>({
       initialValues={model}
       onValuesChange={onValuesChange}
       actions={{
-        linkToModelMetadata: linkToModelMetadata
+        linkToModelMetadata
       }}
     ></ConfigurableForm>
   );

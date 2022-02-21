@@ -115,14 +115,14 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   const initial: IFormStateContext = {
     ...FORM_CONTEXT_INITIAL_STATE,
-    id: id,
-    path: path,
+    id,
+    path,
     formMode: mode,
     components: formComponents || [],
     form,
     actions: convertActions(null, actions),
     sections: convertSectionsToList(null, sections),
-    context: context,
+    context,
     toolboxComponentGroups: actualComponentGroups,
     ...flatComponents,
   };
@@ -294,7 +294,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
           dispatch(
             componentUpdateSettingsValidationAction({
               componentId: payload.componentId,
-              validationErrors: validationErrors,
+              validationErrors,
             })
           );
         });
@@ -307,7 +307,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   // todo: review usage of useFormUpdateMarkup after
   const { mutate: saveFormHttp /*, loading: saveFormInProgress, error: saveFormError*/ } = useFormUpdateMarkup({
-    id: id,
+    id,
   });
 
   const saveForm = (): Promise<void> => {
@@ -440,16 +440,16 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   };
 
   const registerActions = (id: string, actions: IFormActions) => {
-    dispatch(registerComponentActionsAction({ id, actions: actions }));
+    dispatch(registerComponentActionsAction({ id, actions }));
   };
 
   const getAction = (id: string, name: string) => {
     // search requested action in all parents and fallback to form
     let currentId = id;
     do {
-      let component = state.present.allComponents[currentId];
+      const component = state.present.allComponents[currentId];
 
-      let action = state.present.actions.find(a => a.owner == component?.parentId && a.name == name);
+      const action = state.present.actions.find(a => a.owner == component?.parentId && a.name == name);
       if (action) return (data, parameters) => action.body(data, parameters);
 
       currentId = component?.parentId;
@@ -463,9 +463,9 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     let currentId = id;
 
     do {
-      let component = state.present.allComponents[currentId];
+      const component = state.present.allComponents[currentId];
 
-      let action = state.present.sections.find(a => a.owner == component?.parentId && a.name == name);
+      const action = state.present.sections.find(a => a.owner == component?.parentId && a.name == name);
       if (action) return data => action.body(data);
 
       currentId = component?.parentId;

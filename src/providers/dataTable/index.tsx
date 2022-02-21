@@ -128,10 +128,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 }) => {
   const [state, dispatch] = useThunkReducer(dataTableReducer, {
     ...DATA_TABLE_CONTEXT_INITIAL_STATE,
-    tableId: tableId,
-    entityType: entityType,
-    title: title,
-    parentEntityId: parentEntityId,
+    tableId,
+    entityType,
+    title,
+    parentEntityId,
   });
 
   const { backendUrl } = useSheshaApplication();
@@ -306,8 +306,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
     const payload: IGetDataPayload = {
       id: tableId,
-      entityType: entityType,
-      properties: properties,
+      entityType,
+      properties,
       pageSize: localState.selectedPageSize,
       currentPage: localState.currentPage,
       sorting: localState.tableSorting,
@@ -427,7 +427,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   const initializeNewDataCreation = () => {
     const id = nanoid();
 
-    let data = { Id: '' };
+    const data = { Id: '' };
 
     state?.columns?.forEach(column => {
       switch (column.dataType) {
@@ -459,7 +459,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     data.Id = id;
 
     setCrudRowData({
-      id: id,
+      id,
       data,
       mode: 'create',
     });
@@ -514,8 +514,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
     // fetch columns config from server
     const getColumnsPayload: GetColumnsInput = {
-      entityType: entityType,
-      properties: properties,
+      entityType,
+      properties,
     };
 
     axios({

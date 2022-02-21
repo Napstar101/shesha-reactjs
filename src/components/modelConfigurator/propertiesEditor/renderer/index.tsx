@@ -16,7 +16,7 @@ export const PropertiesEditorRenderer: FC<IModelConfiguratorProps> = () => {
 const onAddClick = () => {
   addItem().then(_item => {
     const element = selectedItemRef?.current;
-    if (element){
+    if (element) {
       const offset = 0;
       
       //get how much pixels left to scrolling our ReactElement

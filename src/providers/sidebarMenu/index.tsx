@@ -107,7 +107,7 @@ const SidebarMenuDefaultsProvider: FC<PropsWithChildren<ISidebarMenuDefaultsProv
   return (
     <SidebarMenuDefaultsContext.Provider
       value={{
-        items: items,
+        items,
       }}
     >
       {children}

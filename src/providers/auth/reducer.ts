@@ -110,7 +110,7 @@ const baseAuthReducer = handleActions<IAuthStateContext, any>(
 
       return { 
         ...state, 
-        token: token,
+        token,
       };
     },
   },

@@ -85,8 +85,8 @@ const IconPicker: FC<IIconPickerProps> = ({ selectBtnSize = 'middle', value, onI
 
   const memoizedActiveGroup = useMemo(() => {
     if (searchQuery) {
-      let _activeGroup = searchOption?.group;
-      let filteredGroup = {};
+      const _activeGroup = searchOption?.group;
+      const filteredGroup = {};
       const objectKeys = Object.keys(_activeGroup);
 
       for (let index = 0; index < objectKeys.length; index++) {

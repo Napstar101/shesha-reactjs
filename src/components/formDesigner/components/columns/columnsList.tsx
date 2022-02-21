@@ -236,7 +236,7 @@ export const ColumnsList: FC<IProps> = ({ value, onChange }) => {
     };
 
     if (source.droppableId === destination.droppableId) {
-      let newColumns = reorder(columns, source.index, destination.index);
+      const newColumns = reorder(columns, source.index, destination.index);
 
       onChange(newColumns);
     }

@@ -175,7 +175,7 @@ export const ReadOnly = addStory(DualModeForm, {
 
 export const IndexPage = IndexPageTemplate.bind({});
 IndexPage.args = {
-  backendUrl: backendUrl,
+  backendUrl,
   formPath: '/indexTable',
 };
 

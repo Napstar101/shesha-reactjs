@@ -115,7 +115,7 @@ const modelReducer = handleActions<IPropertiesEditorStateContext, any>(
 
       if (!position) return state;
 
-      let newArray = position.ownerArray;
+      const newArray = position.ownerArray;
 
       newArray[position.index] = {
         ...newArray[position.index],

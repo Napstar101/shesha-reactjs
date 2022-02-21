@@ -46,7 +46,7 @@ const TableWithControls: FC<IGenericIndexPageProps> = props => {
 
   const { refreshTable } = useDataTableStore();
 
-  let toolbarItems: IToolbarItem[] = [];
+  const toolbarItems: IToolbarItem[] = [];
 
   if (props.createModalProps)
     toolbarItems.push({

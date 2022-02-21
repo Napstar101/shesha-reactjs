@@ -42,8 +42,8 @@ export const get = <
   };
 
   return fetch(url, {
-    headers: headers,
-    signal: signal
+    headers,
+    signal
   }).then(res => res.json());
 };
 

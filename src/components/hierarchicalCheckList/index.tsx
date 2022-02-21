@@ -101,7 +101,7 @@ export interface IHierarchicalCheckListProps {
   onSelectionsChange?: (selections: ISaveSelectionsInput) => void;
 }
 
-type HierarchicalCheckListHandle = {
+interface HierarchicalCheckListHandle {
   /**
    * A handle to check that the checklist is valid.
    *
@@ -119,7 +119,7 @@ type HierarchicalCheckListHandle = {
    * A callback for saving the selections
    */
   save: () => void;
-};
+}
 
 const Checklist: ForwardRefRenderFunction<HierarchicalCheckListHandle, IHierarchicalCheckListProps> = (
   props,
@@ -486,7 +486,7 @@ const Checklist: ForwardRefRenderFunction<HierarchicalCheckListHandle, IHierarch
 
   const commonTreeProps: TreeProps = {
     disabled: (disableTree || readOnly) ?? false,
-    treeData: treeData,
+    treeData,
     multiple: true,
   };
 

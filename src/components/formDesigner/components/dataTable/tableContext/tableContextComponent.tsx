@@ -124,10 +124,10 @@ const TableContextAccessor: FC<ITableContextComponentProps> = ({ id, tableConfig
     () =>
       registerActions(id, {
         refresh: refreshTable,
-        toggleColumnsSelector: toggleColumnsSelector,
-        toggleAdvancedFilter: toggleAdvancedFilter,
+        toggleColumnsSelector,
+        toggleAdvancedFilter,
         exportToExcel,
-        deleteRow: deleteRow,
+        deleteRow,
       }),
     [tableConfigLoaded, tableConfigId, selectedRow]
   );

@@ -36,13 +36,13 @@ const addComponentToFlatStructure = (
   // build all components dictionary
   const allComponents = { ...structure.allComponents };
 
-  let childRelations: IComponentRelations = {};
+  const childRelations: IComponentRelations = {};
 
   formComponents.forEach(component => {
     processRecursive(structure.toolboxComponentGroups, containerId, component, (cmp, parentId) => {
       allComponents[cmp.id] = cmp;
       
-      if (parentId != containerId){
+      if (parentId != containerId) {
         const relations = childRelations[parentId] ?? [];
         childRelations[parentId] = [...relations, cmp.id];
       }
@@ -106,7 +106,7 @@ const reducer = handleActions<IFormStateContext, any>(
       } else {
         // create new component
         let count = 0;
-        for (let key in state.allComponents) {
+        for (const key in state.allComponents) {
           if (state.allComponents[key].type == toolboxComponent.type) count++;
         }
         const componentName = `${toolboxComponent.name}${count + 1}`;
@@ -148,7 +148,7 @@ const reducer = handleActions<IFormStateContext, any>(
       const { [payload.componentId]: component, ...allComponents } = state.allComponents;
 
       // delete self as parent
-      let componentRelations = { ...state.componentRelations };
+      const componentRelations = { ...state.componentRelations };
       delete componentRelations[payload.componentId];
 
       // delete self as child
@@ -162,8 +162,8 @@ const reducer = handleActions<IFormStateContext, any>(
 
       return {
         ...state,
-        allComponents: allComponents,
-        componentRelations: componentRelations,
+        allComponents,
+        componentRelations,
         selectedComponentId: state.selectedComponentId === payload.componentId ? null : state.selectedComponentId, // clear selection if we delete current component
       };
     },
@@ -181,8 +181,8 @@ const reducer = handleActions<IFormStateContext, any>(
 
       const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, c => c.type === component.type);
 
-      let newComponents = { ...state.allComponents, [payload.componentId]: newComponent };
-      let componentRelations = { ...state.componentRelations };
+      const newComponents = { ...state.allComponents, [payload.componentId]: newComponent };
+      const componentRelations = { ...state.componentRelations };
 
       if (toolboxComponent.getContainers) {
         // update child components
@@ -212,7 +212,7 @@ const reducer = handleActions<IFormStateContext, any>(
       return {
         ...state,
         allComponents: newComponents,
-        componentRelations: componentRelations,
+        componentRelations,
       };
     },
 
@@ -327,8 +327,8 @@ const reducer = handleActions<IFormStateContext, any>(
       const { payload } = action;
 
       // 2. update parentId in new components list
-      let updatedComponents = {};
-      let updatedRelations: { [index: string]: string[] } = {
+      const updatedComponents = {};
+      const updatedRelations: { [index: string]: string[] } = {
         [payload.containerId]: payload.componentIds,
       };
 
@@ -350,8 +350,8 @@ const reducer = handleActions<IFormStateContext, any>(
 
       return {
         ...state,
-        componentRelations: componentRelations,
-        allComponents: allComponents,
+        componentRelations,
+        allComponents,
       };
     },
 

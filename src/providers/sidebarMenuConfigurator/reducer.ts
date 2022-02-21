@@ -76,7 +76,7 @@ const sidebarMenuReducer = handleActions<ISidebarMenuConfiguratorStateContext, a
 
       if (!position) return state;
 
-      let newArray = position.ownerArray;
+      const newArray = position.ownerArray;
 
       newArray[position.index] = {
         ...newArray[position.index],

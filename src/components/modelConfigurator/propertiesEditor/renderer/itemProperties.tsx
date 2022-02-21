@@ -31,7 +31,7 @@ export const ToolbarItemProperties: FC<IProps> = () => {
     if (formRef.current) {
       const values = form.getFieldsValue();
 
-      formRef.current.setFormData({ values: values, mergeValues: false });
+      formRef.current.setFormData({ values, mergeValues: false });
     }
   }, [selectedItemId]);
 

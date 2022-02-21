@@ -44,6 +44,6 @@ Basic.args = { ...configurableFormProps };
 export const IndexPage = Template.bind({});
 
 IndexPage.args = {
-  backendUrl: backendUrl,
+  backendUrl,
   formPath: '/indexTable',
 };

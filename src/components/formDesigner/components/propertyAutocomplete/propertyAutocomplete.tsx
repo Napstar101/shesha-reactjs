@@ -84,7 +84,7 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
     const onFillPropsClick = () => {
         const action = getAction(props.id, 'linkToModelMetadata');
 
-        if (typeof(action) === 'function'){
+        if (typeof(action) === 'function') {
             action(selectedProperty);
         }
     }

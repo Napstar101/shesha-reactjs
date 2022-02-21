@@ -48,11 +48,11 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
       return result;
       
     items.forEach(item => {
-      if (!item.isFrameworkRelated && item.isVisible){
+      if (!item.isFrameworkRelated && item.isVisible) {
         const childItems = getVisibleProperties(item.properties, searchText);
         const matched = (searchText ?? '') == '' || item.path.toLowerCase().includes(searchText) || item.label?.toLowerCase().includes(searchText);
         
-        if (matched || childItems.length > 0){
+        if (matched || childItems.length > 0) {
           const filteredItem: IPropertyMetadata = { ...item, properties: childItems };
           result.push(filteredItem)
         }
@@ -97,7 +97,7 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
           {datasourcesWithVisible.map((ds, dsIndex) => {
             const visibleItems = ds.visibleItems;
 
-            let classes = ['sha-toolbox-panel'];
+            const classes = ['sha-toolbox-panel'];
             if (ds.datasource.id === activeDataSourceId) classes.push('active');
             
             return visibleItems.length === 0 ? null : (

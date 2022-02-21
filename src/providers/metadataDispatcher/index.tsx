@@ -41,7 +41,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
     return {
       ...property, 
       path: property.path, 
-      prefix: prefix,
+      prefix,
       properties: property.properties?.map(child => mapProperty(child, property.path)) 
     };
   }
@@ -80,7 +80,7 @@ const MetadataDispatcherProvider: FC<PropsWithChildren<IMetadataDispatcherProvid
 
   const registerProvider = (payload: IRegisterProviderPayload) => {
     const existingProvider = providers.current[payload.id];
-    if (!existingProvider){
+    if (!existingProvider) {
       providers.current[payload.id] = {  
         id: payload.id,
         modelType: payload.modelType,

@@ -18,7 +18,7 @@ export const Column: FC<IProps> = props => {
     deleteButton(props.id);
   };
 
-  let classes = ['sha-toolbar-item'];
+  const classes = ['sha-toolbar-item'];
   if (selectedItemId === props.id) classes.push('selected');
 
   const actionProps = props.columnType == 'action'

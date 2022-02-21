@@ -105,7 +105,7 @@ const toolbarReducer = handleActions<IColumnsConfiguratorStateContext, any>(
       const position = getItemPositionById(newItems, payload.id);
       if (!position) return state;
 
-      let newArray = position.ownerArray;
+      const newArray = position.ownerArray;
       newArray[position.index] = {
         ...newArray[position.index],
         ...payload.settings,

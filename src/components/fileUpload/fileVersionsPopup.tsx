@@ -18,7 +18,7 @@ export const FileVersionsPopup: FC<IProps> = ({ fileId }) => {
     refetch: fetchHistory,
     /*error: fetchError, */ data: serverData,
   } = useStoredFileGetFileVersions({ 
-    fileId: fileId, 
+    fileId, 
     lazy: true, 
     requestOptions: {
       headers,
@@ -36,7 +36,7 @@ export const FileVersionsPopup: FC<IProps> = ({ fileId }) => {
   const uploads = serverData?.result;
 
   const handleVersionDownloadClick = (fileVersion: StoredFileVersionInfoDto) => {
-    downloadFile({ fileId: fileId, versionNo: fileVersion.versionNo, fileName: fileVersion.fileName });
+    downloadFile({ fileId, versionNo: fileVersion.versionNo, fileName: fileVersion.fileName });
   };
 
   const content = (

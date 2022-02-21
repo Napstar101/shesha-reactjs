@@ -34,7 +34,7 @@ export const ColumnProperties: FC<IProps> = () => {
     if (formRef.current) {
       const values = form.getFieldsValue();
 
-      formRef.current.setFormData({ values: values, mergeValues: false });
+      formRef.current.setFormData({ values, mergeValues: false });
     }
   }, [selectedItemId]);
 
@@ -69,7 +69,7 @@ export const ColumnProperties: FC<IProps> = () => {
         initialValues={componentModel}
         onValuesChange={debouncedSave}
         actions={{
-          linkToModelMetadata: linkToModelMetadata
+          linkToModelMetadata
         }}
       >
       </ConfigurableForm>
