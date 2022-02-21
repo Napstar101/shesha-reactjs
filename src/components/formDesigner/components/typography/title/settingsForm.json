@@ -9,7 +9,7 @@
     },
     {
       "id": "b9857800-eb4d-4303-b1ac-6f9bc7f140ad",
-      "type": "textField",
+      "type": "textArea",
       "name": "content",
       "parentId": "root",
       "label": "Content",
@@ -55,7 +55,7 @@
       "label": "Code style?"
     },
     {
-      "id": "96f479b7-8ebc-4cda-a0b8-ecb4c7fe3a5d",
+      "id": "43f91890-9728-47f3-9694-3d893d820c86",
       "type": "checkbox",
       "name": "copyable",
       "parentId": "root",

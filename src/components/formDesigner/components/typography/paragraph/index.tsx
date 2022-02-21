@@ -4,7 +4,9 @@ import { ParagraphProps } from 'antd/lib/typography/Paragraph';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces/formDesigner';
+import { useForm } from '../../../../../providers';
 import { FormMarkup } from '../../../../../providers/form/models';
+import { evaluateExpression } from '../../../../../providers/form/utils';
 import settingsFormJson from './settingsForm.json';
 
 const { Paragraph } = Typography;
@@ -29,6 +31,8 @@ const ParagraphComponent: IToolboxComponent<IParagraphProps> = {
   name: 'Paragraph',
   icon: <FileTextOutlined />,
   factory: (model: IParagraphProps) => {
+    const { formData } = useForm();
+
     const props: ParagraphProps = {
       code: model?.code,
       copyable: model?.copyable,
@@ -41,7 +45,9 @@ const ParagraphComponent: IToolboxComponent<IParagraphProps> = {
       type: model?.contentType,
     };
 
-    return <Paragraph {...props}>{model?.content}</Paragraph>;
+    const content = evaluateExpression(model?.content, formData);
+
+    return <Paragraph {...props}>{content}</Paragraph>;
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),

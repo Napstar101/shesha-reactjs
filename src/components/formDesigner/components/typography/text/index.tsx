@@ -4,7 +4,9 @@ import { TextProps } from 'antd/lib/typography/Text';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces/formDesigner';
+import { useForm } from '../../../../../providers';
 import { FormMarkup } from '../../../../../providers/form/models';
+import { evaluateExpression } from '../../../../../providers/form/utils';
 import settingsFormJson from './settingsForm.json';
 
 const { Text } = Typography;
@@ -29,6 +31,8 @@ const TextComponent: IToolboxComponent<ITextProps> = {
   name: 'Text',
   icon: <FileTextOutlined />,
   factory: (model: ITextProps) => {
+    const { formData } = useForm();
+
     const props: TextProps = {
       code: model?.code,
       copyable: model?.copyable,
@@ -41,7 +45,9 @@ const TextComponent: IToolboxComponent<ITextProps> = {
       type: model?.contentType,
     };
 
-    return <Text {...props}>{model?.content}</Text>;
+    const content = evaluateExpression(model?.content, formData);
+
+    return <Text {...props}>{content}</Text>;
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),

@@ -9,7 +9,7 @@
     },
     {
       "id": "b9857800-eb4d-4303-b1ac-6f9bc7f140ad",
-      "type": "textField",
+      "type": "textArea",
       "name": "content",
       "parentId": "root",
       "label": "Content",
@@ -69,7 +69,7 @@
       "label": "Copyable?"
     },
     {
-      "id": "96f479b7-8ebc-4cda-a0b8-ecb4c7fe3a5d",
+      "id": "821d3a6c-abdb-4f11-b659-e562c75bada9",
       "type": "checkbox",
       "name": "delete",
       "parentId": "root",
@@ -90,14 +90,14 @@
       "label": "Marked style?"
     },
     {
-      "id": "23f1f1d7-7eb8-440b-8620-bb059b6938e4",
+      "id": "cbfdec6c-8fe5-4d35-b067-6c00de8ba311",
       "type": "checkbox",
       "name": "strong",
       "parentId": "root",
       "label": "Strong?"
     },
     {
-      "id": "9a94a3ad-c833-438d-9ea8-1196f2ae1c64",
+      "id": "12b8a36a-3aec-414c-942f-a57e37f00901",
       "type": "checkbox",
       "name": "underline",
       "parentId": "root",

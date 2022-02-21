@@ -4,10 +4,16 @@ import { TitleProps } from 'antd/lib/typography/Title';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces/formDesigner';
+import { useForm } from '../../../../../providers';
 import { FormMarkup } from '../../../../../providers/form/models';
+import { evaluateExpression } from '../../../../../providers/form/utils';
 import settingsFormJson from './settingsForm.json';
 
 const { Title } = Typography;
+
+declare const TITLE_ELE_LIST: [1, 2, 3, 4, 5];
+
+type LevelType = typeof TITLE_ELE_LIST[number];
 
 export interface ITitleProps extends IConfigurableFormComponent {
   content: string;
@@ -18,7 +24,7 @@ export interface ITitleProps extends IConfigurableFormComponent {
   ellipsis?: boolean;
   mark?: boolean;
   underline?: boolean;
-  level?: 1 | 2 | 3 | 4 | 5;
+  level?: LevelType;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -28,6 +34,8 @@ const TitleComponent: IToolboxComponent<ITitleProps> = {
   name: 'Title',
   icon: <LineHeightOutlined />,
   factory: (model: ITitleProps) => {
+    const { formData } = useForm();
+
     const props: TitleProps = {
       code: model?.code,
       copyable: model?.copyable,
@@ -35,11 +43,13 @@ const TitleComponent: IToolboxComponent<ITitleProps> = {
       ellipsis: model?.ellipsis,
       mark: model?.mark,
       underline: model?.underline,
-      level: model?.level,
+      level: model?.level ? (Number(model?.level) as LevelType) : 1,
       type: model?.contentType,
     };
 
-    return <Title {...props}>{model?.content}</Title>;
+    const content = evaluateExpression(model?.content, formData);
+
+    return <Title {...props}>{content}</Title>;
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
@@ -52,6 +62,7 @@ const TitleComponent: IToolboxComponent<ITitleProps> = {
     mark: false,
     italic: false,
     underline: false,
+    level: 1,
     ...model,
   }),
 };
