@@ -32,11 +32,9 @@ const ConfigurableFormItem: FC<IConfigurableFormItemProps> = ({
   labelCol,
   wrapperCol,
 }) => {
-  const { formMode, visibleComponentIds } = useForm();
+  const { isComponentHidden } = useForm();
 
-  const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-
-  const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+  const isHidden = isComponentHidden(model);
 
   return (
     <Form.Item

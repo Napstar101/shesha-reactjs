@@ -7,10 +7,11 @@ import {
   UserResetPasswordSendOtpQueryParams,
 } from '../../apis/user';
 import { UserLoginInfoDto } from '../../apis/session';
-import { IFlagsSetters, IFlagsState } from '../../interfaces';
 import { IErrorInfo } from '../../interfaces/errorInfo';
 import { AuthenticateModel } from '../../apis/tokenAuth';
 import IRequestHeaders from '../../interfaces/requestHeaders';
+import { IFlagsSetters, IFlagsState } from '../../interfaces';
+import { EMPTY_FLAGS_STATE } from '../../interfaces/flagsState';
 
 export type IFlagProgressFlags =
   | 'isIdle'
@@ -40,7 +41,7 @@ export interface ILoginForm extends AuthenticateModel {
   rememberMe?: boolean;
 }
 
-export interface IAuthStateContext
+export interface IAuthStateContext 
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   isCheckingAuth?: boolean;
   isFetchingUserInfo?: boolean;
@@ -66,7 +67,7 @@ export interface IAuthStateContext
   //#endregion
 }
 
-export interface IAuthActionsContext
+export interface IAuthActionsContext 
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   loginUser?: (loginFormData: ILoginForm) => void;
 
@@ -79,7 +80,7 @@ export interface IAuthActionsContext
 
   resetPasswordSuccess?: () => void;
 
-  getAccessToken?: () => any;
+  getAccessToken: () => string;
 
   checkAuth?: () => void;
 
@@ -87,9 +88,9 @@ export interface IAuthActionsContext
 }
 
 export const AUTH_CONTEXT_INITIAL_STATE: IAuthStateContext = {
-  isInProgress: {
-    isIdle: true,
-  },
+  ...EMPTY_FLAGS_STATE,
+  isCheckingAuth: false,
+  isFetchingUserInfo: false,
 };
 
 export const AuthStateContext = createContext<IAuthStateContext>(AUTH_CONTEXT_INITIAL_STATE);

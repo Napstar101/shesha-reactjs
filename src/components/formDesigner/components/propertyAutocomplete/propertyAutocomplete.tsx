@@ -1,6 +1,5 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { AutoComplete, Button, Input } from 'antd';
-import React from 'react';
 import { ThunderboltOutlined } from '@ant-design/icons';
 import { useForm, useMetadata } from '../../../../providers';
 
@@ -84,7 +83,7 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
     const onFillPropsClick = () => {
         const action = getAction(props.id, 'linkToModelMetadata');
 
-        if (typeof(action) === 'function'){
+        if (typeof(action) === 'function') {
             action(selectedProperty);
         }
     }
@@ -99,15 +98,13 @@ export const PropertyAutocomplete: FC<IPropertyAutocompleteProps> = (props) => {
                     onSelect={onSelect}
                     onSearch={onSearch}
                     notFoundContent="Not found"
-                >
-                </AutoComplete>
+                />
                 <Button
                     icon={<ThunderboltOutlined />}
                     onClick={onFillPropsClick}
                     disabled={!Boolean(selectedProperty)}
                     style={{ width: '32px' }}
-                >
-                </Button>
+                />
             </Input.Group>
         </>
     );

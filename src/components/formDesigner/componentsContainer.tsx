@@ -42,7 +42,8 @@ const ComponentsContainer: FC<IProps> = ({
   }));
 
   const onSetList = (newState: ItemInterface[], _sortable, _store) => {
-    const listChanged = !newState.some(item => item.chosen !== null && item.chosen !== undefined);
+    // temporary commented out, the behavoiur of the sortablejs differs sometimes
+    const listChanged = true; //!newState.some(item => item.chosen !== null && item.chosen !== undefined);
 
     if (listChanged) {
       const newDataItemIndex = newState.findIndex(item => item['type'] === TOOLBOX_DATA_ITEM_DROPPABLE_KEY);
@@ -100,7 +101,6 @@ const ComponentsContainer: FC<IProps> = ({
   };
 
   const style: CSSProperties = {};
-
   if (direction === 'horizontal' && justifyContent) style['justifyContent'] = justifyContent;
 
   return (
@@ -108,7 +108,6 @@ const ComponentsContainer: FC<IProps> = ({
       {isDesignerMode ? (
         <>
           {components.length === 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
-
           <ReactSortable
             // disabled
             disabled={!isDesignerMode}

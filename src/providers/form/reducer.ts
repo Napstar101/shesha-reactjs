@@ -27,21 +27,11 @@ import {
 } from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
-import {
-  camelize,
-  cloneComponents,
-  convertActions,
-  findToolboxComponent,
-  getCustomEnabledFunc,
-  getCustomVisibilityFunc,
-  listComponentToModelMetadata,
-  processRecursive,
-} from './utils';
+import { camelize, cloneComponents, convertActions, createComponentModelForDataProperty, findToolboxComponent, getCustomEnabledFunc, getCustomVisibilityFunc, processRecursive } from './utils';
 import undoable, { includeAction } from 'redux-undo';
-import { IFormValidationErrors, IToolboxComponentGroup } from '../../interfaces';
+import { IFormValidationErrors } from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { nanoid } from 'nanoid/non-secure';
-import { IPropertyMetadata } from '../../interfaces/metadata';
 
 const addComponentToFlatStructure = (
   structure: IFlatComponentsStructure & IHasComponentGroups,
@@ -52,13 +42,13 @@ const addComponentToFlatStructure = (
   // build all components dictionary
   const allComponents = { ...structure.allComponents };
 
-  let childRelations: IComponentRelations = {};
+  const childRelations: IComponentRelations = {};
 
   formComponents.forEach(component => {
     processRecursive(structure.toolboxComponentGroups, containerId, component, (cmp, parentId) => {
       allComponents[cmp.id] = cmp;
-
-      if (parentId != containerId) {
+      
+      if (parentId !== containerId) {
         const relations = childRelations[parentId] ?? [];
         childRelations[parentId] = [...relations, cmp.id];
       }
@@ -86,41 +76,6 @@ const addComponentToFlatStructure = (
   };
 };
 
-const createComponentForProperty = (
-  components: IToolboxComponentGroup[],
-  propertyMetadata: IPropertyMetadata
-): IConfigurableFormComponent => {
-  const toolboxComponent = findToolboxComponent(
-    components,
-    c =>
-      Boolean(c.dataTypeSupported) &&
-      c.dataTypeSupported({ dataType: propertyMetadata.dataType, dataFormat: propertyMetadata.dataFormat })
-  );
-  if (!Boolean(toolboxComponent)) return null;
-
-  // find appropriate toolbox component
-  // create instance of the component
-  // init default values for the component
-  // init component according to the metadata
-
-  let componentModel: IConfigurableFormComponent = {
-    id: nanoid(),
-    type: toolboxComponent.type,
-    name: camelize(propertyMetadata.path),
-    label: propertyMetadata.label,
-    labelAlign: 'right',
-    //parentId: containerId,
-    hidden: false,
-    customVisibility: null,
-    visibilityFunc: _data => true,
-  };
-  if (toolboxComponent.initModel) componentModel = toolboxComponent.initModel(componentModel);
-
-  componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
-
-  return componentModel;
-};
-
 const reducer = handleActions<IFormStateContext, any>(
   {
     [FormActionEnums.DataPropertyAdd]: (
@@ -131,7 +86,7 @@ const reducer = handleActions<IFormStateContext, any>(
         payload: { propertyMetadata, index, containerId },
       } = action;
 
-      const formComponent = createComponentForProperty(state.toolboxComponentGroups, propertyMetadata);
+      const formComponent = createComponentModelForDataProperty(state.toolboxComponentGroups, propertyMetadata);
       if (!Boolean(formComponent)) return state;
 
       formComponent.parentId = containerId; // set parent
@@ -161,8 +116,8 @@ const reducer = handleActions<IFormStateContext, any>(
       } else {
         // create new component
         let count = 0;
-        for (let key in state.allComponents) {
-          if (state.allComponents[key].type == toolboxComponent.type) count++;
+        for (const key in state.allComponents) {
+          if (state.allComponents[key].type === toolboxComponent.type) count++;
         }
         const componentName = `${toolboxComponent.name}${count + 1}`;
 
@@ -177,6 +132,7 @@ const reducer = handleActions<IFormStateContext, any>(
           customVisibility: null,
           visibilityFunc: _data => true,
           enabledFunc: _data => true,
+          isDynamic: false,
         };
         if (toolboxComponent.initModel) formComponent = toolboxComponent.initModel(formComponent);
 
@@ -202,7 +158,7 @@ const reducer = handleActions<IFormStateContext, any>(
       const { [payload.componentId]: component, ...allComponents } = state.allComponents;
 
       // delete self as parent
-      let componentRelations = { ...state.componentRelations };
+      const componentRelations = { ...state.componentRelations };
       delete componentRelations[payload.componentId];
 
       // delete self as child
@@ -216,8 +172,8 @@ const reducer = handleActions<IFormStateContext, any>(
 
       return {
         ...state,
-        allComponents: allComponents,
-        componentRelations: componentRelations,
+        allComponents,
+        componentRelations,
         selectedComponentId: state.selectedComponentId === payload.componentId ? null : state.selectedComponentId, // clear selection if we delete current component
       };
     },
@@ -235,8 +191,8 @@ const reducer = handleActions<IFormStateContext, any>(
 
       const toolboxComponent = findToolboxComponent(state.toolboxComponentGroups, c => c.type === component.type);
 
-      let newComponents = { ...state.allComponents, [payload.componentId]: newComponent };
-      let componentRelations = { ...state.componentRelations };
+      const newComponents = { ...state.allComponents, [payload.componentId]: newComponent };
+      const componentRelations = { ...state.componentRelations };
 
       if (toolboxComponent.getContainers) {
         // update child components
@@ -246,7 +202,7 @@ const reducer = handleActions<IFormStateContext, any>(
 
         // remove deleted containers
         oldContainers.forEach(oldContainer => {
-          if (newContainers.find(nc => nc.id == oldContainer.id) == null) {
+          if (!(newContainers.find(nc => nc.id === oldContainer.id))) {
             delete newComponents[oldContainer.id];
 
             delete componentRelations[oldContainer.id];
@@ -255,7 +211,7 @@ const reducer = handleActions<IFormStateContext, any>(
 
         // create or update new containers
         newContainers.forEach(c => {
-          const existingContainer = newComponents[c.id] || { name: '', type: '' };
+          const existingContainer = newComponents[c.id] || { name: '', type: '', isDynamic: false };
           newComponents[c.id] = { ...existingContainer, ...c };
         });
 
@@ -382,14 +338,14 @@ const reducer = handleActions<IFormStateContext, any>(
       const { payload } = action;
 
       // 2. update parentId in new components list
-      let updatedComponents = {};
-      let updatedRelations: { [index: string]: string[] } = {
+      const updatedComponents = {};
+      const updatedRelations: { [index: string]: string[] } = {
         [payload.containerId]: payload.componentIds,
       };
 
       payload.componentIds.forEach(id => {
         const component = state.allComponents[id];
-        if (component.parentId != payload.containerId) {
+        if (component.parentId !== payload.containerId) {
           // NOTE: we don't need it because when the user moves a component from one container to another the react-sortable make two calls to update new parent and old parent
           // update old parent
           // const oldParentKey = component.parentId || ROOT_COMPONENT_KEY;
@@ -405,8 +361,8 @@ const reducer = handleActions<IFormStateContext, any>(
 
       return {
         ...state,
-        componentRelations: componentRelations,
-        allComponents: allComponents,
+        componentRelations,
+        allComponents,
       };
     },
 

@@ -36,6 +36,10 @@ export const ToolbarItemProperties: FC<IProps> = () => {
     }
   }, [selectedItemId]);
 
+  useEffect(() => {
+    setEditor(getEditor());
+  }, [selectedItemId]);
+
   const getEditor = () => {
     const emptyEditor = null;
     if (!selectedItemId) return emptyEditor;
@@ -63,11 +67,6 @@ export const ToolbarItemProperties: FC<IProps> = () => {
       />
     );
   };
-
-  useEffect(() => {
-    const localEditor = getEditor();
-    setEditor(localEditor);
-  }, [selectedItemId]);
 
   if (!Boolean(selectedItemId)) {
     return (

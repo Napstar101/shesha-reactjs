@@ -19,11 +19,10 @@ const AlertComponent: IToolboxComponent<IAlertProps> = {
   name: 'Alert',
   icon: <ExclamationCircleOutlined />,
   factory: (model: IAlertProps) => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
     const { text, alertType, description, showIcon } = model;
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
+    const isHidden = isComponentHidden(model);
     if (isHidden) return null;
 
     return (

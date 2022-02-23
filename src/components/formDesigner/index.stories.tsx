@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import FormDesigner from './formDesigner';
 import {
@@ -23,16 +22,11 @@ export interface IFormDesignerStoryProps {
   modelType?: ViewType;
 }
 
-export default {
-  title: 'Components/Temp/FormDesigner',
-  component: FormDesigner,
-} as Meta<IFormDesignerStoryProps>;
-
-const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
+const defaultBackendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
 
 // Create a master template for mapping args to render the Button component
 const DesignerTemplate: Story<IFormDesignerStoryProps> = ({ formPath, formId, mode = 'designer' }) => (
-  <ShaApplicationProvider backendUrl={backendUrl}>
+  <ShaApplicationProvider backendUrl={defaultBackendUrl}>
     <AuthContainer layout={true}>
       <MetadataDispatcherProvider>
         <FormProvider path={formPath} id={formId} mode={mode}>
@@ -63,7 +57,7 @@ export interface IActionsTemplateProps {
 }
 const ActionsTemplate: Story<IActionsTemplateProps> = props => {
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
+    <ShaApplicationProvider backendUrl={defaultBackendUrl}>
       <AuthContainer layout={true}>
         <ActionsTemplateContent {...props} />
       </AuthContainer>
@@ -201,8 +195,8 @@ export const PropertyProps = addStory(DesignerTemplate, {
   formId: '97a5ba27-a3a4-4651-92b1-07bfe1debb2c',
 });
 
-export const ModelProps = addStory(DesignerTemplate, {
-  formId: 'd76d4fd7-b5e7-4fea-9c15-a34a63371430',
+export const DynamicViewProps = addStory(DesignerTemplate, {
+  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\etalon\\shesha-reactjs\\src\\components\\formDesigner\\components\\dynamicView\\settingsForm.json'
 });
 
 export const Empty = addStory(DesignerTemplate, {
@@ -248,7 +242,7 @@ export const FormsEditor: FC = () => {
 };
 
 const BrowserTemplate: Story = () => (
-  <ShaApplicationProvider backendUrl={backendUrl}>
+  <ShaApplicationProvider backendUrl={defaultBackendUrl}>
     <AuthContainer layout={true}>
       <FormsEditor />
     </AuthContainer>

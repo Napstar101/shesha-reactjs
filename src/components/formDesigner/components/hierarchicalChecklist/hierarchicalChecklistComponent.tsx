@@ -31,7 +31,7 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
   name: 'Hierarchical Checklist',
   icon: <ApartmentOutlined />,
   factory: (model: IHierarchicalChecklistProps, _componentRef: MutableRefObject<any>) => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
 
     const { formData } = useForm();
 
@@ -61,9 +61,7 @@ const HierarchicalChecklistComponent: IToolboxComponent<IHierarchicalChecklistPr
       );
     };
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     const wrapperColProps: Omit<IConfigurableFormItemProps, 'model'> = model?.dropdown ? {} : { wrapperCol: { span: 24 } };
 

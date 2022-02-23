@@ -32,11 +32,9 @@ const ContainerComponent: IToolboxComponent<IContainerComponentProps> = {
   name: 'Container',
   icon: <GroupOutlined />,
   factory: (model: IContainerComponentProps) => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     return (
       <ComponentsContainer

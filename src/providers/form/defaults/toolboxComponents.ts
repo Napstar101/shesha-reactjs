@@ -56,6 +56,7 @@ import Title from '../../../components/formDesigner/components/typography/title'
 import Divider from '../../../components/formDesigner/components/divider';
 import Space from '../../../components/formDesigner/components/space';
 import StatusTag from '../../../components/formDesigner/components/statusTag';
+import DynamicView from '../../../components/formDesigner/components/dynamicView';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -105,6 +106,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       CodeEditor,
       EditableTagGroup,
       StatusTag,
+      DynamicView,
     ],
   },
   {
@@ -115,7 +117,6 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       AdvancedFilterButton,
       DataTable,
       Pager,
-      //QueryBuilderComponent,
       QuickSearch,
       SelectColumnsButton,
       TableContext,

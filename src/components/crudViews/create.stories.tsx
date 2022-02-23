@@ -32,6 +32,6 @@ const Template: Story<IGenericCreatePageProps> = (props) => {
 };
 
 export const Base = addStory(Template, {
-  formPath: '/persons/create',
+  formPath: '/areas/create',
   updater: usePersonTestCreate,
 });

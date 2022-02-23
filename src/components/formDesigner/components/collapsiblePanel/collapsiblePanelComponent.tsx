@@ -20,13 +20,10 @@ const ColapsiblePanelComponent: IToolboxComponent<ICollapsiblePanelProps> = {
   name: 'Collapsible Panel',
   icon: <GroupOutlined />,
   factory: (model: ICollapsiblePanelProps) => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
     const { label, expandIconPosition } = model;
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     return (
       <CollapsiblePanel header={label} expandIconPosition={expandIconPosition}>

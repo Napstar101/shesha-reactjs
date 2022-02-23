@@ -40,7 +40,7 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
       crudMode
     } = model;
     
-    const { formMode, visibleComponentIds, formData } = useForm();
+    const { isComponentHidden, formData } = useForm();
 
     const tableRef = useRef<DataTableFullInstance>(null);
     const { registerActions } = useForm();
@@ -75,15 +75,13 @@ const ChildDataTableComponent: IToolboxComponent<IChildDataTableProps> = {
       crudMode,
     };
 
-    if (!tableProps.id) return <Alert message="Child DataTable is not configured properly" type="warning" showIcon />;
-
     const { parentEntityId: currentParentEntityId } = useDataTableState();
+
+    if (!tableProps.id) return <Alert message="Child DataTable is not configured properly" type="warning" showIcon />;
 
     const evaluatedParentEntityId = evaluateValue(parentEntityId, { data: formData });
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     return (
       <DataTableProvider tableId={tableProps.id} parentEntityId={currentParentEntityId || evaluatedParentEntityId}>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Modal } from 'antd';
 import { ToolbarConfiguratorProvider, useToolbarConfigurator } from '../../../../../providers/toolbarConfigurator';
 import { ToolbarConfigurator } from './toolbarConfigurator';
@@ -10,6 +10,9 @@ export interface IToolbarSettingsModal {
   value?: object;
   onChange?: any;
   allowAddGroups?: boolean;
+  render?: ReactNode | (() => ReactNode);
+  title?: ReactNode | string;
+  heading?: ReactNode | (() => ReactNode);
 }
 
 export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({
@@ -17,6 +20,9 @@ export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({
   onChange,
   hideModal,
   allowAddGroups,
+  render,
+  title = 'Configure Toolbar',
+  heading,
 }) => {
   const { items } = useToolbarConfigurator();
 
@@ -26,8 +32,8 @@ export const ToolbarSettingsModalInner: FC<IToolbarSettingsModal> = ({
   };
 
   return (
-    <Modal width="60%" visible={visible} title="Configure Toolbar" okText="Save" onCancel={hideModal} onOk={onOkClick}>
-      <ToolbarConfigurator allowAddGroups={allowAddGroups} />
+    <Modal width="60%" visible={visible} title={title} okText="Save" onCancel={hideModal} onOk={onOkClick}>
+      <ToolbarConfigurator allowAddGroups={allowAddGroups} heading={heading} render={render} />
     </Modal>
   );
 };
@@ -40,4 +46,4 @@ export const ToolbarSettingsModal: FC<IToolbarSettingsModal> = props => {
   );
 };
 
-export default IToolbarSettingsModal;
+export default ToolbarSettingsModal;

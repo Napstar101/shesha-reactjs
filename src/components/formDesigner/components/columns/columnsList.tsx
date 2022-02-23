@@ -144,9 +144,9 @@ export const ColumnsList: FC<IProps> = ({ value, onChange }) => {
 
   const handleSaveCell = row => {
     const newData = [...columns];
-    const index = newData.findIndex(localItem => row.id === localItem.id);
-    const item = newData[index];
-    newData.splice(index, 1, { ...item, ...row });
+    const index = newData.findIndex(item => row.id === item.id);
+    const currentItem = newData[index];
+    newData.splice(index, 1, { ...currentItem, ...row });
 
     onChange(newData);
   };
@@ -228,11 +228,11 @@ export const ColumnsList: FC<IProps> = ({ value, onChange }) => {
     if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
     const reorder = (list: IColumnProps[], startIndex: number, endIndex: number): IColumnProps[] => {
-      const localResult = [...list];
-      const [removed] = localResult.splice(startIndex, 1);
-      localResult.splice(endIndex, 0, removed);
+      const orderedList = [...list];
+      const [removed] = orderedList.splice(startIndex, 1);
+      orderedList.splice(endIndex, 0, removed);
 
-      return localResult;
+      return orderedList;
     };
 
     if (source.droppableId === destination.droppableId) {
@@ -258,7 +258,12 @@ export const ColumnsList: FC<IProps> = ({ value, onChange }) => {
                 components={{
                   body: {
                     row: ({ className, style, ...restProps }) => (
-                      <DraggableBodyRowInner columns={columns} className={className} style={style} {...restProps} />
+                      <DraggableBodyRowInner
+                        columns={columns}
+                        className={className}
+                        style={style}
+                        {...restProps}
+                      />
                     ),
                     cell: EditableCell,
                   },

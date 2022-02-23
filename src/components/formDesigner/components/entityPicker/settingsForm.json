@@ -83,6 +83,13 @@
       "label": "Disabled"
     },
     {
+      "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
+      "type": "checkbox",
+      "name": "quickView",
+      "parentId": "root",
+      "label": "Quickview"
+    },
+    {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
       "type": "sectionSeparator",
       "name": "separator2",

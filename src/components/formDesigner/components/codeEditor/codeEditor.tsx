@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState, FC } from 'react';
+import React, { FC, Fragment, useMemo, useState } from 'react';
 import { IConfigurableFormComponent } from '../../../../interfaces';
 import { useMetadata } from '../../../../providers';
 import { CodeEditor as BaseCodeEditor, Show } from '../../../..';

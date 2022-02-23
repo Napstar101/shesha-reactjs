@@ -89,10 +89,10 @@ export const renderers: ITableCustomTypesRender[] = [
         }
       };
 
-      const actionProps = getActionProps(props);
+      const aProps = getActionProps(props);
       return (
         <a className="sha-link" onClick={e => clickHandler(e, props)}>
-          {actionProps.icon && <ShaIcon iconName={actionProps.icon as IconType} />}
+          {aProps.icon && <ShaIcon iconName={aProps.icon as IconType} />}
         </a>
       );
     },

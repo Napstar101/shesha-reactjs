@@ -3,29 +3,37 @@ import { Menu } from 'antd';
 import renderSidebarMenuItem from './sidebarMenuItem';
 import { MenuTheme } from 'antd/lib/menu/MenuContext';
 import { useLocalStorage } from '../../hooks';
-import { useSidebarMenu } from '../../providers/sidebarMenu';
-import { useShaRouting } from '../../providers/shaRouting';
+import { ISidebarMenuItem, useSidebarMenu } from '../../providers/sidebarMenu';
+import { getCurrentUrl, normalizeUrl } from '../../utils/url';
 
 export interface ISidebarMenuProps {
   isCollapsed?: boolean;
   theme?: MenuTheme;
 }
 
+const findItem = (target: string, array: ISidebarMenuItem[]): ISidebarMenuItem => {
+  for (const item of array) {
+    if (item.target === target) 
+      return item;
+    if (item.childItems) {
+      const child = findItem(target, item.childItems);
+      if (child) 
+        return child;
+    }
+  }
+  return null;
+}
+
 export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
   const [openedKeys, setOpenedKeys] = useLocalStorage('openedSidebarKeys', null);
-  const { router } = useShaRouting();
   const { getItems, isItemVisible } = useSidebarMenu();
 
   const items = getItems();
 
-  const asPath = router?.asPath;
-
   if ((items ?? []).length === 0) return null;
 
-  const currentPath =
-    asPath === '/' ? asPath : (asPath ?? '').endsWith('/') ? (asPath ?? '').substr(0, asPath.length - 1) : asPath;
-
-  const selectedItem = items.find(item => item.target === currentPath);
+  const currentPath = normalizeUrl(getCurrentUrl());
+  const selectedItem = findItem(currentPath, items);
   const selectedKey = selectedItem?.id;
 
   const onOpenChange = (openKeys: React.Key[]) => {
@@ -33,8 +41,6 @@ export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
   };
 
   const keys = openedKeys && openedKeys.length > 0 ? openedKeys : undefined;
-
-  // console.log('SidebarMenu items: ', items);
 
   return (
     <Menu
@@ -45,7 +51,7 @@ export const SidebarMenu: FC<ISidebarMenuProps> = ({ theme = 'dark' }) => {
       onOpenChange={onOpenChange}
       theme={theme}
     >
-      {items.map(item => renderSidebarMenuItem({ ...item, isItemVisible, router }))}
+      {items.map(item => renderSidebarMenuItem({ ...item, isItemVisible }))}
     </Menu>
   );
 };

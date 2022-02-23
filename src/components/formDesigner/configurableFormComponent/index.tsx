@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { Button, Tooltip } from 'antd';
 import { DeleteFilled, StopOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import FormComponent from '../formComponent';
@@ -83,16 +83,9 @@ const ConfigurableFormComponent: FC<IConfigurableFormComponentProps> = ({ id /*,
       </span>
 
       {invalidConfiguration && <ValidationIcon validationErrors={componentModel.settingsValidationErrors} />}
-
-      {/* You should not be able to delete a view template */}
-      {!isViewTemplateComponent && (
-        <Fragment>
-          <div className="sha-component-controls">
-            <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger />
-          </div>
-        </Fragment>
-      )}
-
+      <div className="sha-component-controls">
+        <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger />
+      </div>
       <div>
         <DragHandle componentId={id} componentRef={componentRef} />
         <div style={{ paddingLeft: '15px' }}>{renderComponent()}</div>

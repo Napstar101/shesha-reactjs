@@ -16,13 +16,11 @@ const SectionSeparatorComponent: IToolboxComponent<ISectionSeparatorProps> = {
   name: 'Section Separator',
   icon: <LineOutlined />,
   factory: (model: ISectionSeparatorProps) => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
-    return <SectionSeparator sectionName={model.label}></SectionSeparator>;
+    return <SectionSeparator sectionName={model.label} />;
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),

@@ -2,11 +2,12 @@ import { FormInstance } from 'antd';
 import { DOMAttributes } from 'react';
 import { IConfigurableFormComponent } from '../../..';
 
-export const onCustomEventsHandler: Function = <FormCustomEvent = any>(
+export const onCustomEventsHandler = <FormCustomEvent = any>(
   event: FormCustomEvent,
   customEventAction: string,
   form: FormInstance
 ) => {
+  /* tslint:disable:function-constructor */  
   const eventFunc = new Function('event', 'form', 'settings', customEventAction);
 
   return eventFunc(event, form);

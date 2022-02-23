@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Alert, Button } from 'antd';
 import { SidebarContainer } from '../../../../../components';
 import { ToolbarItemProperties } from './toolbarItemProperties';
@@ -8,10 +8,36 @@ import './styles/index.less';
 
 export interface IToolbarConfiguratorProps {
   allowAddGroups?: boolean;
+  render?: ReactNode | (() => ReactNode);
+  heading?: ReactNode | (() => ReactNode);
 }
 
-export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGroups = true }) => {
+export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGroups = true, render, heading }) => {
   const { items, addButton, addGroup } = useToolbarConfigurator();
+
+  const content = () => {
+    if (Boolean(render)) {
+      if (typeof render === 'function') {
+        return render();
+      } else {
+        return <>{render}</>;
+      }
+    }
+
+    return <ToolbarItemProperties />;
+  };
+
+  const title = () => {
+    if (Boolean(heading)) {
+      if (typeof heading === 'function') {
+        return heading();
+      } else {
+        return <>{heading}</>;
+      }
+    }
+
+    return 'Properties';
+  };
 
   return (
     <div className="sha-toolbar-configurator">
@@ -31,8 +57,8 @@ export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGro
       <SidebarContainer
         rightSidebarProps={{
           open: true,
-          title: () => 'Properties',
-          content: () => <ToolbarItemProperties />,
+          title,
+          content,
         }}
       >
         <ToolbarItemsContainer items={items} index={[]} />

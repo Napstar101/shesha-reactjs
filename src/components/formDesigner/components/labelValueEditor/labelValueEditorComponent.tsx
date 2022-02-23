@@ -18,12 +18,10 @@ const LabelValueEditorComponent: IToolboxComponent<ILabelValueEditorProps> = {
   name: 'Label Value editor',
   icon: <OneToOneOutlined />,
   factory: model => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
     const customProps = model as ILabelValueEditorProps;
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
+    if (isComponentHidden(model)) return null;
 
     return (
       <ConfigurableFormItem model={model}>

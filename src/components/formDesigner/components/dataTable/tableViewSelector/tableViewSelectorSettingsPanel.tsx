@@ -121,7 +121,7 @@ function ColumnsSettings(props: IProps) {
             hideModal={() => {
               setModalVisible(false);
             }}
-          ></TableViewSelectorSettingsModal>
+          />
         </Form.Item>
       </Form>
     </QueryBuilderProvider>

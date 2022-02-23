@@ -82,14 +82,14 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
 
   const { headers } = useAuth();
 
-  const fileFetcher = useStoredFileGet({ 
+  const fileFetcher = useStoredFileGet({
     lazy: true,
     requestOptions: {
       headers,
     },
   });
 
-  const propertyFetcher = useStoredFileGetEntityProperty({ 
+  const propertyFetcher = useStoredFileGetEntityProperty({
     lazy: true,
     requestOptions: {
       headers,
@@ -110,7 +110,7 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
   }, [uploadMode, ownerId, ownerType, propertyName, fileId]);
 
   useEffect(() => {
-    if (uploadMode === 'sync') {
+    if (uploadMode === 'sync' && value) {
       const fileInfo: IStoredFile = value
         ? {
             //id: value.uid,
@@ -162,10 +162,10 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
       versionNo: payload.versionNo,
     })}`;
     axios({
-      url: url,
+      url,
       method: 'GET',
       responseType: 'blob',
-      headers: headers,
+      headers,
     })
       .then(response => {
         dispatch(downloadFileSuccessAction());
@@ -194,12 +194,12 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
   };
 
   const uploadFileAsync = (payload: IUploadFilePayload, callback?: (...args: any) => any) => {
-    let formData = new FormData();
+    const formData = new FormData();
 
     const { file } = payload;
 
-    const appendIfDefined = (name, value) => {
-      if (value) formData.append(name, value);
+    const appendIfDefined = (itemName, itemValue) => {
+      if (itemValue) formData.append(itemName, itemValue);
     };
 
     formData.append('file', file);
@@ -222,7 +222,7 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
 
     axios
       .put(`${baseUrl}/api/StoredFile`, formData, {
-        headers: headers,
+        headers,
       })
       .then((response: any) => {
         const responseFile = response.data.result as IStoredFile;
@@ -232,7 +232,7 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
         dispatch(uploadFileSuccessAction({ ...responseFile }));
         if (callback) callback(responseFile);
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(e);
         dispatch(uploadFileErrorAction({ ...newFile, uid: '-1', status: 'error', error: 'uploading failed' }));
       });
@@ -265,10 +265,10 @@ const StoredFileProvider: FC<PropsWithChildren<IStoredFileProviderProps>> = prop
     dispatch(deleteFileRequestAction());
 
     const deleteFileInput: StoredFileDeleteQueryParams = {
-      fileId: fileId,
-      ownerId: ownerId,
-      ownerType: ownerType,
-      propertyName: propertyName,
+      fileId,
+      ownerId,
+      ownerType,
+      propertyName,
     };
     deleteFileHttp('Delete', { queryParams: deleteFileInput })
       .then(() => {

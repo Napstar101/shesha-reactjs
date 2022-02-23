@@ -1,9 +1,8 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { TableView } from './tableView';
 import { useTableViewSelectorConfigurator } from '../../../../../providers/tableViewSelectorConfigurator';
 import { ITableViewProps } from '../../../../../providers/tableViewSelectorConfigurator/models';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
-import React from 'react';
 
 export interface IToolbarItemsSortableProps {
   index?: number[];
@@ -42,7 +41,7 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
       bubbleScroll={true}
     >
       {props.items.map((item, index) => (
-        <TableView index={[index]} key={index} {...item}></TableView>
+        <TableView index={[index]} key={index} {...item} />
       ))}
     </ReactSortable>
   );

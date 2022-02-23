@@ -48,7 +48,9 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
 
         switch (itemProps.itemSubType) {
           case 'button':
-            return <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps} />;
+            return (
+              <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps} />
+            );
 
           case 'separator':
             return <div key={index} className="sha-toolbar-separator" />;

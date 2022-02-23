@@ -161,7 +161,7 @@ export const LabelValueEditor: FC<ILabelValueEditorProps> = ({
 
   const handleSaveCell = row => {
     const newData = [...items];
-    const index = newData.findIndex(localItem => row.id === localItem.id);
+    const index = newData.findIndex(currentItem => row.id === currentItem.id);
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
 
@@ -234,11 +234,11 @@ export const LabelValueEditor: FC<ILabelValueEditorProps> = ({
     if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
     const reorder = (list: IItemProps[], startIndex: number, endIndex: number): IItemProps[] => {
-      const localResult = [...list];
-      const [removed] = localResult.splice(startIndex, 1);
-      localResult.splice(endIndex, 0, removed);
+      const orderedList = [...list];
+      const [removed] = orderedList.splice(startIndex, 1);
+      orderedList.splice(endIndex, 0, removed);
 
-      return localResult;
+      return orderedList;
     };
 
     if (source.droppableId === destination.droppableId) {

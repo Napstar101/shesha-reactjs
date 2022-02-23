@@ -20,20 +20,16 @@ const NotesComponent: IToolboxComponent<INotesProps> = {
   name: 'Notes',
   icon: <FormOutlined />,
   factory: (model: INotesProps) => {
-    const { formMode, visibleComponentIds } = useForm();
+    const { isComponentHidden } = useForm();
 
     const { formData } = useForm();
     const ownerId = evaluateValue(model.ownerId, { data: formData });
 
-    const hiddenByCondition = visibleComponentIds && !visibleComponentIds.includes(model.id);
-    const isHidden = formMode !== 'designer' && (model.hidden || hiddenByCondition);
-    if (isHidden) return null;
-
-    const isReadOnly = model?.readOnly || formMode === 'readonly';
+    if (isComponentHidden(model)) return null;
 
     return (
       <NotesProvider ownerId={ownerId} ownerType={model.ownerType}>
-        <NotesRenderer showCommentBox={model.disabled !== true && !isReadOnly} />
+        <NotesRenderer showCommentBox={model.disabled !== true} />
       </NotesProvider>
     );
   },

@@ -3,7 +3,8 @@
     "tslint-config-standard",
     "tslint:latest",
     "tslint-react",
-    "tslint-config-prettier"
+    "tslint-config-prettier",
+    "tslint-react-hooks"
   ],
   "rules": {
     "quotemark": false,
@@ -16,7 +17,7 @@
       "spaces"
     ],
     "interface-name": [
-      true,
+      false,
       "always-prefix"
     ],
     "jsx-self-close": true,
@@ -45,10 +46,7 @@
     "no-parameter-reassignment": true,
     "no-string-literal": false,
     "typedef-whitespace": [
-      true,
-      {
-        "index-signature": "nospace"
-      },
+      false,
       {
         "index-signature": "nospace"
       }
@@ -64,6 +62,7 @@
       "check-separator",
       "check-typecast",
       "check-type-operator"
-    ]
+    ],
+    "react-hooks-nesting": false
   }
 }

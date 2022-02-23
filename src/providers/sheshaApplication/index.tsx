@@ -58,8 +58,8 @@ const ShaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>
     dispatch(setHeadersAction(headers));
   };
 
-  const changeBackendUrl = (backendUrl: string) => {
-    dispatch(setBackendUrlAction(backendUrl));
+  const changeBackendUrl = (newBackendUrl: string) => {
+    dispatch(setBackendUrlAction(newBackendUrl));
   };
 
   return (

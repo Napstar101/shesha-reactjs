@@ -107,6 +107,13 @@
       "label": "Read Only"
     },
     {
+      "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
+      "type": "checkbox",
+      "name": "quickView",
+      "parentId": "root",
+      "label": "Quickview"
+    },
+    {
       "id": "7e4876d8-1ed4-4576-9f5b-46cfd77d8643",
       "type": "checkbox",
       "name": "hideBorder",

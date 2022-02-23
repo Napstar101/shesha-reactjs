@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form } from 'antd';
+import { Form, Modal } from 'antd';
 import { ConfigurableForm } from '../configurableForm';
 import { IConfigurableFormComponent } from '../../providers/form/models';
 

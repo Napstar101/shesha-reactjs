@@ -11,7 +11,8 @@ export interface IAppActionsContext {
   switchApplicationMode: (mode: ApplicationMode) => void;
   toggleEditModeConfirmation: (visible: boolean) => void;
   toggleCloseEditModeConfirmation: (visible: boolean) => void;
-  getSettings: (id: string) => Promise<IComponentSettings>;
+  fetchSettings: (id: string) => Promise<IComponentSettings>;
+  getSettings: (id: string) => IComponentSettings | null;
   invalidateSettings: (id: string) => void;
 
   /* NEW_ACTION_ACTION_DECLARATIO_GOES_HERE */

@@ -73,7 +73,8 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items }) => {
       : setIsInProgressFlag({ isFiltering: false, isSelectingColumns: false });
   };
 
-  if (isDesignMode && !tableId && !entityType) return <NotConfiguredWarning />;
+  if (isDesignMode && !tableId && !entityType)
+    return <NotConfiguredWarning />;
 
   const onSelectRow = (index: number, row: any) => {
     setSelectedRow(index, row);

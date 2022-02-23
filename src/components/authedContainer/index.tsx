@@ -1,10 +1,11 @@
 import { Alert, Button, Form, Input, Modal } from 'antd';
-import React, { FC, Fragment } from 'react';
-import { useState } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import { ShaRoutingProvider, SidebarMenuProvider, useAuth } from '../../providers';
 import SectionSeparator from '../sectionSeparator';
 import classNames from 'classnames';
 import './index.less';
+import { ValidationErrors } from '../validationErrors';
+import { IErrorInfo } from '../../interfaces/errorInfo';
 
 export const ACCESS_TOKEN_NAME = 'xDFcxiooPQxazdndDsdRSerWQPlincytLDCarcxVxv';
 
@@ -23,7 +24,8 @@ interface IAuthContainerProps {
 const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) => {
   const [isSignInModalVisible, setSignInModalVisibility] = useState(false);
 
-  const { loginUser, logoutUser, isInProgress, loginInfo } = useAuth();
+  const { loginUser, logoutUser, isInProgress, loginInfo, error } = useAuth();
+  
   const isLoggedIn = Boolean(loginInfo?.userName);
 
   const [loginForm] = Form.useForm();
@@ -93,6 +95,8 @@ const AuthContainer: FC<IAuthContainerProps> = ({ children, layout = false }) =>
           onOk={() => loginForm?.submit()}
           okButtonProps={{ loading: isInProgress?.loginUser || false }}
         >
+          <ValidationErrors error={error?.loginUser as IErrorInfo} />
+
           <Form form={loginForm} onFinish={login}>
             <Item name="userNameOrEmailAddress" rules={[{ required: true }]}>
               <Input placeholder="username" />

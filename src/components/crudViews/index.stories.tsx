@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
@@ -6,8 +6,8 @@ import AuthContainer from '../authedContainer';
 import { GenericDetailsPage, GenericIndexPage, SimpleIndexPage } from '../..';
 import { IGenericIndexPageProps } from './indexPage';
 import { useAreaCreate } from '../../apis/area';
-import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
+import { OnSuccessActionType } from './createModal';
 
 export default {
   title: 'Components/CrudViews/IndexView',
@@ -30,12 +30,14 @@ const Template: Story<IGenericIndexPageProps> = () => {
         <>
           <GenericIndexPage
             title="All Areas"
-            tableConfigId="Users_Index"
+            tableConfigId="Areas_Index"
             createModalProps={{
-              updater: useAreaCreate,
-              formPath: '/areas/create',
-              // keepModalOpenAfterSave: true,
               title: 'Add new area',
+              formPath: '/areas/create',
+              updater: useAreaCreate,
+              OnSuccessAction: OnSuccessActionType.GoToUrl,
+              onSuccessUrl: '/settings',
+              submitButtonLabel: "Submit"
             }}
           />
         </>
@@ -89,7 +91,7 @@ Basic.args = { ...configurableFormProps };
 
 export const IndexPage = Template.bind({});
 IndexPage.args = {
-  backendUrl: backendUrl,
+  backendUrl,
   formPath: '/indexTable',
 };
 

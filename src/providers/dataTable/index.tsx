@@ -53,7 +53,7 @@ import {
   IStoredFilter,
   ITableFilter,
 } from './interfaces';
-import { useMutate } from 'restful-react';
+import { useMutate, useGet } from 'restful-react';
 import _ from 'lodash';
 import { GetColumnsInput, DataTableColumnDtoListAjaxResponse } from '../../apis/dataTable';
 import { IResult } from '../../interfaces/result';
@@ -61,7 +61,6 @@ import { useLocalStorage } from '../../hooks';
 import { useAuth } from '../auth';
 import { nanoid } from 'nanoid/non-secure';
 import { useDebouncedCallback } from 'use-debounce';
-import { useGet } from 'restful-react';
 import {
   IConfigurableColumnsBase,
   IConfigurableColumnsProps,
@@ -128,10 +127,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 }) => {
   const [state, dispatch] = useThunkReducer(dataTableReducer, {
     ...DATA_TABLE_CONTEXT_INITIAL_STATE,
-    tableId: tableId,
-    entityType: entityType,
-    title: title,
-    parentEntityId: parentEntityId,
+    tableId,
+    entityType,
+    title,
+    parentEntityId,
   });
 
   const { backendUrl } = useSheshaApplication();
@@ -380,9 +379,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   /** change quick search and refresh table data */
   const performQuickSearch = (val: string) => {
     // note: use thunk to get state after update
-    dispatch((dispatch, getState) => {
-      dispatch(changeQuickSearchAction(val));
-      dispatch(setCurrentPageAction(1));
+    dispatch((dispatchThunk, getState) => {
+      dispatchThunk(changeQuickSearchAction(val));
+      dispatchThunk(setCurrentPageAction(1));
 
       const payload = getFetchTableDataPayloadInternal(getState());
       fetchTableData(payload);
@@ -436,7 +435,6 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           break;
         case 'date':
         case 'string':
-        case 'date':
           data[column.accessor] = '';
           break;
         case 'number':
@@ -502,7 +500,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   };
 
   useEffect(() => {
-    const { configurableColumns, entityType } = state;
+    const { configurableColumns } = state;
     if (!entityType) return;
 
     const properties = getDataProperties(configurableColumns);

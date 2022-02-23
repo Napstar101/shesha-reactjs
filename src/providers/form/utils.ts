@@ -21,8 +21,19 @@ import { IPropertyMetadata } from '../../interfaces/metadata';
 import { nanoid } from 'nanoid';
 import { Rule } from 'antd/lib/form';
 import nestedProperty from 'nested-property';
+import { getFullPath } from '../../utils/metadata';
+import blankViewMarkup from './defaults/markups/blankView.json';
+import dashboardViewMarkup from './defaults/markups/dashboardView.json';
+import detailsViewMarkup from './defaults/markups/detailsView.json';
+import formViewMarkup from './defaults/markups/formView.json';
+import masterDetailsViewMarkup from './defaults/markups/masterDetailsView.json';
+import menuViewMarkup from './defaults/markups/menuView.json';
+import tableViewMarkup from './defaults/markups/tableView.json';
 
 /**
+import nestedProperty from 'nested-property';
+
+/** 
  * Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
  *    allComponents - dictionary (key:value) of components. key - Id of the component, value - conponent settings
@@ -32,7 +43,7 @@ export const componentsTreeToFlatStructure = (
   toolboxComponents: IToolboxComponents,
   components: IConfigurableFormComponent[]
 ): IFlatComponentsStructure => {
-  let result: IFlatComponentsStructure = {
+  const result: IFlatComponentsStructure = {
     allComponents: {},
     componentRelations: {},
   };
@@ -54,7 +65,7 @@ export const componentsTreeToFlatStructure = (
       const componentRegistration = toolboxComponents[component.type];
 
       // custom containers
-      let customContainerNames = componentRegistration?.customContainerNames || [];
+      const customContainerNames = componentRegistration?.customContainerNames || [];
       let subContainers: IComponentsContainer[] = [];
       customContainerNames.forEach(containerName => {
         const containers = component[containerName] as IComponentsContainer[];
@@ -86,7 +97,7 @@ export const componentsFlatStructureToTree = (
   toolboxComponents: IToolboxComponents,
   flat: IFlatComponentsStructure
 ): IConfigurableFormComponent[] => {
-  let tree: IConfigurableFormComponent[] = [];
+  const tree: IConfigurableFormComponent[] = [];
 
   const processComponent = (container: IConfigurableFormComponent[], ownerId: string) => {
     const componentIds = flat.componentRelations[ownerId];
@@ -144,14 +155,12 @@ export const loadFormByPath = (path: string) => {
 
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
   if (customVisibility) {
-    // console.log('customVisibility : name, customVisibility', name, customVisibility);
-  }
-
-  if (customVisibility) {
     try {
+      /* tslint:disable:function-constructor */
+
       const customVisibilityExecutor = customVisibility ? new Function('value, data', customVisibility) : null;
 
-      const getIsVisible = function(data = {}) {
+      const getIsVisible = (data = {}) => {
         if (customVisibilityExecutor) {
           try {
             return customVisibilityExecutor(name ? data[name] : undefined, data);
@@ -177,9 +186,11 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
 export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormComponent) => {
   if (customEnabled) {
     try {
+      /* tslint:disable:function-constructor */
+
       const customEnabledExecutor = customEnabled ? new Function('value, data', customEnabled) : null;
 
-      const getIsEnabled = function(data = {}) {
+      const getIsEnabled = (data = {}) => {
         if (customEnabledExecutor) {
           try {
             return customEnabledExecutor(name ? data[name] : undefined, data);
@@ -228,7 +239,7 @@ export const getVisibilityFunc2 = (expression, name) => {
     try {
       const customVisibilityExecutor = expression ? new Function('data, context', expression) : null;
 
-      const getIsVisible = function(data = {}, context = {}) {
+      const getIsVisible = (data = {}, context = {}) => {
         if (customVisibilityExecutor) {
           try {
             return customVisibilityExecutor(data, context);
@@ -254,13 +265,15 @@ export const getVisibilityFunc2 = (expression, name) => {
  * Return ids of visible components according to the custom visibility
  */
 export const getVisibleComponentIds = (components: IComponentsDictionary, values: any): string[] => {
-  let visibleComponents: string[] = [];
-  for (let key in components) {
-    const component = components[key] as IConfigurableFormComponent;
-    if (!component || component.hidden) continue;
+  const visibleComponents: string[] = [];
+  for (const key in components) {
+    if (components.hasOwnProperty(key)) {
+      const component = components[key] as IConfigurableFormComponent;
+      if (!component || component.hidden) continue;
 
-    const isVisible = component.visibilityFunc == null || component.visibilityFunc(values);
-    if (isVisible) visibleComponents.push(key);
+      const isVisible = component.visibilityFunc == null || component.visibilityFunc(values);
+      if (isVisible) visibleComponents.push(key);
+    }
   }
   return visibleComponents;
 };
@@ -269,16 +282,18 @@ export const getVisibleComponentIds = (components: IComponentsDictionary, values
  * Return ids of visible components according to the custom enabled
  */
 export const getEnabledComponentIds = (components: IComponentsDictionary, values: any): string[] => {
-  let enabledComponents: string[] = [];
-  for (let key in components) {
-    const component = components[key] as IConfigurableFormComponent;
-    if (!component || component.disabled) continue;
+  const enabledComponents: string[] = [];
+  for (const key in components) {
+    if (components.hasOwnProperty(key)) {
+      const component = components[key] as IConfigurableFormComponent;
+      if (!component || component.disabled) continue;
 
-    const isEnabled =
-      !Boolean(component?.enabledFunc) ||
-      (typeof component?.enabledFunc === 'function' && component?.enabledFunc(values));
+      const isEnabled =
+        !Boolean(component?.enabledFunc) ||
+        (typeof component?.enabledFunc === 'function' && component?.enabledFunc(values));
 
-    if (isEnabled) enabledComponents.push(key);
+      if (isEnabled) enabledComponents.push(key);
+    }
   }
   return enabledComponents;
 };
@@ -298,7 +313,7 @@ export const getFieldNameFromExpression = (expression: string) => {
  */
 export const getValidationRules = (component: IConfigurableFormComponent) => {
   const { validate } = component;
-  let rules: Rule[] = [];
+  const rules: Rule[] = [];
 
   // todo: implement more generic way (e.g. using validation providers)
 
@@ -346,7 +361,7 @@ export const getValidationRules = (component: IConfigurableFormComponent) => {
 /* Convert string to camelCase */
 export const camelize = str => {
   return str
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
       return index === 0 ? word.toLowerCase() : word.toUpperCase();
     })
     .replace(/\s+/g, '');
@@ -354,6 +369,22 @@ export const camelize = str => {
 
 const DICTIONARY_ACCESSOR_REGEX = /(^[\s]*\{(?<key>[\w]+)\.(?<accessor>[^\}]+)\}[\s]*$)/;
 const NESTED_ACCESSOR_REGEX = /((?<key>[\w]+)\.(?<accessor>[^\}]+))/;
+
+/**
+ * Evaluates an string expression and returns the evaluated value.
+ *
+ * Example: Given
+ *  let const person = { name: 'First', surname: 'Last' };
+ *  let expression = 'Full name is {{name}} {{surname}}';
+ *
+ * evaluateExpression(expression, person) will display 'Full name is First Last';
+ * @param expression the expression to evaluate
+ * @param data the data to use to evaluate the expression
+ * @returns
+ */
+export const evaluateStringLiteralExpression = (expression: string, data: any) => {
+  return expression.replace(/\$\{(.*?)\}/g, (_, token) => nestedProperty.get(data, token));
+};
 
 export const evaluateValue = (value: string, dictionary: any) => {
   return _evaluateValue(value, dictionary, true);
@@ -429,32 +460,36 @@ export const replaceTags = (value: string, dictionary: any) => {
 };
 
 export const convertActions = (ownerId: string, actions: IFormActions): IFormAction[] => {
-  let result: IFormAction[] = [];
-  for (let key in actions) {
-    result.push({
-      owner: ownerId,
-      name: key,
-      body: actions[key],
-    });
+  const result: IFormAction[] = [];
+  for (const key in actions) {
+    if (actions.hasOwnProperty(key)) {
+      result.push({
+        owner: ownerId,
+        name: key,
+        body: actions[key],
+      });
+    }
   }
   return result;
 };
 
 export const convertSectionsToList = (ownerId: string, sections: IFormSections): IFormSection[] => {
-  let result: IFormSection[] = [];
-  for (let key in sections) {
-    result.push({
-      owner: ownerId,
-      name: key,
-      body: sections[key],
-    });
+  const result: IFormSection[] = [];
+  for (const key in sections) {
+    if (sections.hasOwnProperty(key)) {
+      result.push({
+        owner: ownerId,
+        name: key,
+        body: sections[key],
+      });
+    }
   }
 
   return result;
 };
 
 export const toolbarGroupsToComponents = (availableComponents: IToolboxComponentGroup[]): IToolboxComponents => {
-  let allComponents: IToolboxComponents = {};
+  const allComponents: IToolboxComponents = {};
   if (availableComponents) {
     availableComponents.forEach(group => {
       group.components.forEach(component => {
@@ -464,32 +499,15 @@ export const toolbarGroupsToComponents = (availableComponents: IToolboxComponent
   }
   return allComponents;
 };
-/*
-export const findToolboxComponent = (
-  availableComponents: IToolboxComponentGroup[],
-  type: string
-): IToolboxComponent => {
-  if (availableComponents) {
-    for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
-      const group = availableComponents[gIdx];
-      for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
-        if (group.components[cIdx].type === type) return group.components[cIdx];
-      }
-    }
-  }
 
-  return null;
-};
-*/
 export const findToolboxComponent = (
   availableComponents: IToolboxComponentGroup[],
   predicate: (component: IToolboxComponent) => boolean
 ): IToolboxComponent => {
   if (availableComponents) {
-    for (let gIdx = 0; gIdx < availableComponents.length; gIdx++) {
-      const group = availableComponents[gIdx];
-      for (let cIdx = 0; cIdx < group.components.length; cIdx++) {
-        if (predicate(group.components[cIdx])) return group.components[cIdx];
+    for (const group of availableComponents) {
+      for (const component of group.components) {
+        if (predicate(component)) return component;
       }
     }
   }
@@ -601,10 +619,10 @@ export const cloneComponents = (
   componentsRegistration: IToolboxComponentGroup[],
   components: IConfigurableFormComponent[]
 ): IConfigurableFormComponent[] => {
-  let result: IConfigurableFormComponent[] = [];
+  const result: IConfigurableFormComponent[] = [];
 
   components.forEach(component => {
-    let clone = { ...component, id: nanoid() };
+    const clone = { ...component, id: nanoid() };
 
     result.push(clone);
 
@@ -625,14 +643,6 @@ export const cloneComponents = (
   return result;
 };
 
-import blankViewMarkup from './defaults/markups/blankView.json';
-import dashboardViewMarkup from './defaults/markups/dashboardView.json';
-import detailsViewMarkup from './defaults/markups/detailsView.json';
-import formViewMarkup from './defaults/markups/formView.json';
-import masterDetailsViewMarkup from './defaults/markups/masterDetailsView.json';
-import menuViewMarkup from './defaults/markups/menuView.json';
-import tableViewMarkup from './defaults/markups/tableView.json';
-
 export const getDefaultFormMarkup = (type: ViewType = 'blank') => {
   switch (type) {
     case 'blank':
@@ -652,4 +662,41 @@ export const getDefaultFormMarkup = (type: ViewType = 'blank') => {
     default:
       return blankViewMarkup;
   }
+};
+export const createComponentModelForDataProperty = (
+  components: IToolboxComponentGroup[],
+  propertyMetadata: IPropertyMetadata
+): IConfigurableFormComponent => {
+  const toolboxComponent = findToolboxComponent(
+    components,
+    c =>
+      Boolean(c.dataTypeSupported) &&
+      c.dataTypeSupported({ dataType: propertyMetadata.dataType, dataFormat: propertyMetadata.dataFormat })
+  );
+  if (!Boolean(toolboxComponent)) return null;
+
+  // find appropriate toolbox component
+  // create instance of the component
+  // init default values for the component
+  // init component according to the metadata
+
+  const fullName = getFullPath(propertyMetadata);
+
+  let componentModel: IConfigurableFormComponent = {
+    id: nanoid(),
+    type: toolboxComponent.type,
+    name: fullName,
+    label: propertyMetadata.label,
+    labelAlign: 'right',
+    //parentId: containerId,
+    hidden: false,
+    customVisibility: null,
+    visibilityFunc: _data => true,
+    isDynamic: false,
+  };
+  if (toolboxComponent.initModel) componentModel = toolboxComponent.initModel(componentModel);
+
+  componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
+
+  return componentModel;
 };

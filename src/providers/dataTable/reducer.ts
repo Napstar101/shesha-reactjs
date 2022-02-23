@@ -314,7 +314,7 @@ const reducer = handleActions<IDataTableStateContext, any>(
                 maxWidth: column.minWidth,
 
                 dataType: 'action',
-                actionProps: actionProps, // todo: review and add to interface
+                actionProps, // todo: review and add to interface
 
                 isSortable: false,
                 isHiddenByDefault: false,
@@ -439,7 +439,7 @@ const reducer = handleActions<IDataTableStateContext, any>(
         ...f,
         filterOption: f.columnId === filterColumnId ? filterOptionValue : f.filterOption,
       }));
-      0.0;
+      
       return {
         ...state,
         tableFilterDirty: filter,

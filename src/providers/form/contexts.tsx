@@ -66,7 +66,7 @@ export interface IFormSettings {
   showModeToggler?: boolean;
 }
 
-export interface IFormDesignerStateContext extends StateWithHistory<IFormStateContext> {}
+export interface IFormDesignerStateContext extends StateWithHistory<IFormStateContext> { }
 
 export interface IHasComponentGroups {
   toolboxComponentGroups: IToolboxComponentGroup[];
@@ -74,8 +74,8 @@ export interface IHasComponentGroups {
 
 export interface IFormStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags>,
-    IHasComponentGroups,
-    IFormProps {
+  IHasComponentGroups,
+  IFormProps {
   id?: string;
   path?: string;
   formMode: FormMode;
@@ -182,7 +182,8 @@ export interface IFormActionsContext
   deleteComponent: (payload: IComponentDeletePayload) => void;
   updateComponent: (payload: IComponentUpdatePayload) => void;
   getComponentModel: (id: string) => IConfigurableFormComponent;
-  //getComponentModelValidation: (id: string) => ;
+  isComponentDisabled: (model: Pick<IConfigurableFormComponent, 'id' | 'isDynamic' | 'disabled'>) => boolean;
+  isComponentHidden: (model: Pick<IConfigurableFormComponent, 'id' | 'isDynamic' | 'hidden'>) => boolean;
   setVisibleComponents: (payload: ISetVisibleComponentsPayload) => void;
 
   setFormData: (payload: ISetFormDataPayload) => void;
@@ -255,7 +256,7 @@ export const UndoableFormStateContext = createContext<IFormDesignerStateContext>
   future: [],
 });
 
-export interface ConfigurableFormInstance extends IFormActionsContext, IFormStateContext {}
+export interface ConfigurableFormInstance extends IFormActionsContext, IFormStateContext { }
 
 export const FormStateContext = createContext<IFormStateContext>(FORM_CONTEXT_INITIAL_STATE);
 

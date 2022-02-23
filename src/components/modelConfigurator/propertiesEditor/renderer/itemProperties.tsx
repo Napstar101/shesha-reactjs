@@ -63,8 +63,7 @@ export const ToolbarItemProperties: FC<IProps> = () => {
   };
 
   useEffect(() => {
-    const editor = getEditor();
-    setEditor(editor);
+    setEditor(getEditor());
   }, [selectedItemId]);
 
   if (!Boolean(selectedItemId)) {

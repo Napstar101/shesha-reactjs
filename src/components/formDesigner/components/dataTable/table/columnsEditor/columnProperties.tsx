@@ -68,15 +68,15 @@ export const ColumnProperties: FC<IProps> = () => {
         initialValues={componentModel}
         onValuesChange={debouncedSave}
         actions={{
-          linkToModelMetadata,
+          linkToModelMetadata
         }}
       />
     );
   };
 
   useEffect(() => {
-    const _editor = getEditor();
-    setEditor(_editor);
+    const currentEditor = getEditor();
+    setEditor(currentEditor);
   }, [selectedItemId]);
 
   if (!Boolean(selectedItemId)) {

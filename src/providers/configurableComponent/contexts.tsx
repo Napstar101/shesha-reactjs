@@ -39,7 +39,7 @@ export interface IComponentLoadSuccessPayload {
   id?: string;
   name?: string;
   description?: string;
-  settings: string;
+  settings: object;
 }
 
 export interface IConfigurableComponentActionsContext<TSettings extends any>

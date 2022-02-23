@@ -1,6 +1,6 @@
 export { default as BasicDisplayFormItem, IBasicDisplayFormItemProps } from './basicDisplayFormItem';
 export { default as ConfigurableLogo } from './configurableLogo';
-export { default as GenericCreateModal, IGenericCreateModalProps } from './crudViews/createModal';
+export { default as GenericCreateModal, IGenericCreateModalProps, OnSuccessActionType } from './crudViews/createModal';
 export { default as GenericEditModal, IGenericEditModalProps } from './crudViews/editModal';
 export { default as GenericDetailsPage, IGenericDetailsPageProps } from './crudViews/detailsPage';
 export {
@@ -136,3 +136,10 @@ export { default as SimpleIndexPageDefault } from './crudViews/plainSimpleIndexP
 export { default as Page } from './page';
 export { default as DefaultLayout, getDefaultLayout } from './defaultLayout';
 export { default as EditableTagGroup, IEditableTagGroupProps } from './editableTagGroup';
+
+export { default as QuickView, IQuickViewProps } from './quickView';
+
+export { default as ToolbarSettingsModal } from './formDesigner/components/dataTable/toolbar/toolbarSettingsModal';
+export { default as CodeEditorModal } from './formDesigner/components/codeEditor/codeEditor';
+export { default as LabelValueEditor } from './formDesigner/components/labelValueEditor/labelValueEditor';
+export { default as ToolbarTableItem } from './formDesigner/components/dataTable/toolbar/toolbarTableItem';

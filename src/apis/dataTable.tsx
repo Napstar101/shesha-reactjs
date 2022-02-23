@@ -135,7 +135,7 @@ export interface DataTableData {
   totalRowsBeforeFilter?: number;
   totalPages?: number;
   echo?: number;
-  rows?: { [key: string]: any }[] | null;
+  rows?: { [key: string]:any } [] | null;
 }
 
 export interface DataTableDataAjaxResponse {

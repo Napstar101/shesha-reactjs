@@ -72,9 +72,9 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
       ...InitialConfig,
       fields: {},
       // @ts-ignore
-      types: types,
-      operators: operators,
-      widgets: widgets,
+      types,
+      operators,
+      widgets,
     };
 
     fields?.forEach(({ dataType, visible, propertyName, label, fieldSettings, preferWidgets }) => {

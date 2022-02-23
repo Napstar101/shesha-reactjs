@@ -1,12 +1,11 @@
 import React, { FC, useState } from 'react';
 import { MainLayout, GenericCreateModal, IGenericCreateModalProps } from '../';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
 import IndexTableFull from '../indexTableFull';
 import { IToolbarItem } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
 import { useDataTableStore } from '../../providers';
-import { EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 
 export interface IGenericIndexPageProps {
@@ -46,7 +45,7 @@ const TableWithControls: FC<IGenericIndexPageProps> = props => {
 
   const { refreshTable } = useDataTableStore();
 
-  let toolbarItems: IToolbarItem[] = [];
+  const toolbarItems: IToolbarItem[] = [];
 
   if (props.createModalProps)
     toolbarItems.push({

@@ -16,7 +16,7 @@ export const ModelConfigurator: FC<IModelConfiguratorProps> = (props) => {
       id={props.id}
       form={form}
     >
-      <ModelConfiguratorRenderer></ModelConfiguratorRenderer>
+      <ModelConfiguratorRenderer />
     </ModelConfiguratorProvider>
   );
 };

@@ -73,7 +73,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
         if (Array.isArray(value)) {
           const values = (value as AutocompleteType[])?.map(({ label }) => label);
 
-          return dropdownDisplayMode === 'raw' ? values?.join(', ') : values?.map(value => <Tag>{value}</Tag>);
+          return dropdownDisplayMode === 'raw' ? values?.join(', ') : values?.map((itemValue, index) => <Tag key={index}>{itemValue}</Tag>);
         }
 
         throw new Error(

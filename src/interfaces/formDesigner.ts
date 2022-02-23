@@ -2,7 +2,6 @@ import { ReactNode, MutableRefObject } from 'react';
 import { IConfigurableFormComponent, IFormComponentContainer, FormMarkup } from '../providers/form/models';
 import { FormInstance } from 'antd';
 import { InternalNamePath } from 'rc-field-form/lib/interface';
-//import { AuthorizationSettingsDto } from '../apis/authorizationSettings';
 import { IPropertyMetadata } from './metadata';
 
 export interface ISettingsFormFactoryArgs<TModel = IConfigurableFormComponent> {
