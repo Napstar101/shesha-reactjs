@@ -202,7 +202,24 @@ export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormC
   } else return () => true;
 };
 
-export const evaluateString = (template, data) => {
+/**
+ * Evaluates the string using Mustache template.
+ *
+ * Given a the below expression
+ *  const expression =  'My name is {{name}}';
+ *
+ * and the below data
+ *  const data = { name: 'John', surname: 'Dow' };
+ *  evaluateString()
+ * the expression below
+ *   evaluateString(expression, data);
+ * The below expression will return 'My name is John';
+ *
+ * @param template - string template
+ * @param data - data to use to evaluate the string
+ * @returns
+ */
+export const evaluateString = (template: string, data: any) => {
   return template ? Mustache.render(template, data) : template;
 };
 

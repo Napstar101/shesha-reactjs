@@ -306,8 +306,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
     const payload: IGetDataPayload = {
       id: tableId,
-      entityType: entityType,
-      properties: properties,
+      entityType,
+      properties,
       pageSize: localState.selectedPageSize,
       currentPage: localState.currentPage,
       sorting: localState.tableSorting,
@@ -427,7 +427,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   const initializeNewDataCreation = () => {
     const id = nanoid();
 
-    let data = { Id: '' };
+    const data = { Id: '' };
 
     state?.columns?.forEach(column => {
       switch (column.dataType) {
@@ -459,7 +459,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     data.Id = id;
 
     setCrudRowData({
-      id: id,
+      id,
       data,
       mode: 'create',
     });
@@ -492,8 +492,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
   const getDataProperties = (columns: IConfigurableColumnsBase[]) => {
     const dataFields = columns.filter(
       c =>
-        c.itemType == 'item' &&
-        (c as IConfigurableColumnsProps).columnType == 'data' &&
+        c.itemType === 'item' &&
+        (c as IConfigurableColumnsProps).columnType === 'data' &&
         Boolean((c as IDataColumnsProps).propertyName)
     ) as IDataColumnsProps[];
 
@@ -506,7 +506,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     if (!entityType) return;
 
     const properties = getDataProperties(configurableColumns);
-    if (properties.length == 0) {
+    if (properties.length === 0) {
       // don't fetch data from server when properties is empty
       dispatch(fetchColumnsSuccessSuccessAction({ columns: [], configurableColumns, userConfig: userDTSettings }));
       return;
@@ -514,8 +514,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
     // fetch columns config from server
     const getColumnsPayload: GetColumnsInput = {
-      entityType: entityType,
-      properties: properties,
+      entityType,
+      properties,
     };
 
     axios({

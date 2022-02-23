@@ -14,7 +14,7 @@ interface IStatusMappings {
   default?: IStatusMap;
 }
 
-const mappings: IStatusMappings = {
+export const DEFAULT_STATUS_TAG_MAPPINGS: IStatusMappings = {
   mapping: [
     { code: 1, text: 'Completed', color: '#87d068' },
     { code: 2, text: 'In Progress', color: '#4DA6FF', override: 'Still Busy!' },
@@ -28,9 +28,10 @@ export interface IStatusTagProps {
   override?: string;
   value: number | string;
   color: string;
+  mappings?: IStatusMappings;
 }
 
-export const StatusTag: FC<IStatusTagProps> = ({ override, value, color }) => {
+export const StatusTag: FC<IStatusTagProps> = ({ override, value, color, mappings = DEFAULT_STATUS_TAG_MAPPINGS }) => {
   const { color: displayColor, text: displayText } = useMemo(() => {
     if (!override && !value && !color) {
       return {};

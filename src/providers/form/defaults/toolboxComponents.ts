@@ -34,7 +34,6 @@ import HierarchicalChecklistComponent from '../../../components/formDesigner/com
 import Switch from '../../../components/formDesigner/components/switch/switch';
 import ValidationErrors from '../../../components/formDesigner/components/validationErrors';
 import IconPicker from '../../../components/formDesigner/components/iconPicker';
-
 import { IToolboxComponentGroup } from '../../../interfaces/formDesigner';
 import DisplayFormItem from '../../../components/formDesigner/components/basicDisplayFormItem';
 import EntityPickerComponent from '../../../components/formDesigner/components/entityPicker';
@@ -56,6 +55,7 @@ import Text from '../../../components/formDesigner/components/typography/text';
 import Title from '../../../components/formDesigner/components/typography/title';
 import Divider from '../../../components/formDesigner/components/divider';
 import Space from '../../../components/formDesigner/components/space';
+import StatusTag from '../../../components/formDesigner/components/statusTag';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -104,6 +104,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       PropertyAutocomplete,
       CodeEditor,
       EditableTagGroup,
+      StatusTag,
     ],
   },
   {

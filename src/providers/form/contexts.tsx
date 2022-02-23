@@ -56,6 +56,8 @@ export interface ILayoutProps {
 export interface IFormSettings {
   modelType?: string;
   postUrl?: string;
+  putUrl?: string;
+  deleteUrl?: string;
   getUrl?: string;
   layout: FormLayout;
   colon: boolean;

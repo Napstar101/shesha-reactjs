@@ -7,7 +7,7 @@ import { FormSettingsEditor } from './formSettingsEditor';
 export interface IFormHeaderProps {}
 
 export const FormDesignerHeader: FC<IFormHeaderProps> = () => {
-  const { name } = useForm();
+  const { name, path } = useForm();
   const [settingsVisible, setSettingsVisible] = useState(false);
 
   const onSettingsClick = () => {
@@ -18,7 +18,9 @@ export const FormDesignerHeader: FC<IFormHeaderProps> = () => {
     <div className="content-heading">
       <div className="sha-designer-header">
         <div className="sha-designer-header-left">
-          <h3 className="heading">View: {name}</h3>
+          <h3 className="heading">
+            View: {name} ({path})
+          </h3>
         </div>
         <div className="sha-designer-header-right">
           <Button icon={<SettingOutlined />} type="link" onClick={onSettingsClick}>

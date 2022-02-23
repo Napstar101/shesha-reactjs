@@ -90,7 +90,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     succeeded: { exportToExcel: exportToExcelSuccess },
     error: { exportToExcel: exportToExcelError },
   } = store;
-
   useEffect(() => {
     if (!isFetchingTableData && tableData?.length && onFetchDataSuccess) {
       onFetchDataSuccess();
@@ -255,7 +254,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
                 const { key, render } = customRender;
 
                 if (columnItem.dataType === key || columnItem.customDataType === key) {
-                  return render(props) || null;
+                  return render(props, router) || null;
                 }
               }
             }

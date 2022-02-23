@@ -261,7 +261,8 @@ export const Browser = addStory(BrowserTemplate, null);
 export const TableView = DesignerTemplate.bind({});
 
 TableView.args = {
-  formPath: '/view/forms/table',
+  // formPath: '/view/forms/table',
+  formPath: '/view/table/playground',
   modelType: 'table',
   // vi
 };
@@ -270,7 +271,8 @@ export const DetailsView = DesignerTemplate.bind({});
 
 DetailsView.args = {
   // formPath: '/view/forms/details',
-  formPath: '/view/details/testing',
+  // formPath: '/view/details/testing',
+  formPath: 'cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
   modelType: 'details',
 };
 

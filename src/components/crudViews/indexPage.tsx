@@ -85,6 +85,7 @@ const TableWithControls: FC<IGenericIndexPageProps> = props => {
           { icon: <EditOutlined />, onClick: props.editUrl },
         ]}
         toolbarItems={toolbarItems}
+        useMultiselect
       />
       {props.createModalProps && (
         <GenericCreateModal

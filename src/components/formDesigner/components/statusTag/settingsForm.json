@@ -1,0 +1,67 @@
+{
+  "components": [
+    {
+      "id": "b8954bf6-f76d-4139-a850-c99bf06c8b69",
+      "type": "sectionSeparator",
+      "name": "separator1",
+      "parentId": "root",
+      "label": "Display"
+    },
+    {
+      "id": "33b16438-9563-438b-a375-8c5f4ccdd727",
+      "type": "textField",
+      "name": "override",
+      "parentId": "root",
+      "label": "Override",
+      "validate": {}
+    },
+    {
+      "id": "43f91890-9728-47f3-9694-3d893d820c86",
+      "type": "textField",
+      "name": "value",
+      "parentId": "root",
+      "label": "Value",
+      "validate": {}
+    },
+    {
+      "id": "821d3a6c-abdb-4f11-b659-e562c75bada9",
+      "type": "textField",
+      "name": "color",
+      "parentId": "root",
+      "label": "Color",
+      "validate": {}
+    },
+    {
+      "id": "4d732742-715b-42a3-9663-e90a3caba458",
+      "type": "codeEditor",
+      "name": "colorCodeEvaluator",
+      "parentId": "root",
+      "label": "Color",
+      "validate": {}
+    },
+    {
+      "id": "12b8a36a-3aec-414c-942f-a57e37f00901",
+      "type": "codeEditor",
+      "name": "mappings",
+      "parentId": "root",
+      "label": "Default Mappings",
+      "validate": {}
+    }
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": {
+      "span": 5
+    },
+    "wrapperCol": {
+      "span": 13
+    },
+    "displayName": "DEFAULT_FORM_SETTINGS",
+    "__docgenInfo": {
+      "description": "Default form settings",
+      "displayName": "DEFAULT_FORM_SETTINGS",
+      "props": {}
+    }
+  }
+}

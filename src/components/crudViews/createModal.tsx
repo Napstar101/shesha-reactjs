@@ -2,7 +2,7 @@ import React, { FC, ReactNode, useState } from 'react';
 import { Button, Form, Modal, Spin } from 'antd';
 import { ValidationErrors, ConfigurableForm } from '../';
 import { FormInstance } from 'antd/lib/form';
-import { useUi } from '../../providers';
+import { useShaRouting, useUi } from '../../providers';
 import { IDataMutator } from './models';
 import { FormMarkup, IFormActions, IFormSections } from '../../providers/form/models';
 
@@ -10,7 +10,7 @@ export enum OnSuccessActionType {
   Return = 'RETURN',
   AddMore = 'ADD_MORE',
   GoToDetails = 'GO_TO_DETAILS',
-  GoToUrl = 'GO_TO_URL'
+  GoToUrl = 'GO_TO_URL',
 }
 
 export interface IGenericCreateModalProps {
@@ -75,6 +75,8 @@ export interface IGenericCreateModalProps {
   destroyOnClose?: boolean;
 
   formMarkup?: FormMarkup;
+
+  returnUrlOnSuccess?: string | ((data: any) => string);
 }
 
 const GenericCreateModal: FC<IGenericCreateModalProps> = ({
@@ -94,8 +96,10 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
   sections,
   destroyOnClose = true,
   formMarkup,
+  returnUrlOnSuccess,
 }) => {
   const { mutate: save, error, loading } = updater({});
+  const { router } = useShaRouting();
 
   const [localKeepOpen, setLocalKeepOpen] = useState(false);
 
@@ -121,8 +125,12 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
       return;
     }
 
-    save(preparedValues).then(() => {
+    save(preparedValues).then(response => {
       onSuccess(form, localKeepOpen);
+
+      if (returnUrlOnSuccess) {
+        router?.push(typeof returnUrlOnSuccess === 'string' ? returnUrlOnSuccess : returnUrlOnSuccess(response));
+      }
     });
   };
 
@@ -142,9 +150,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
       destroyOnClose={destroyOnClose}
       footer={
         <div>
-          <Button onClick={handleCancel}>
-            {cancelButtonLabel}
-          </Button>
+          <Button onClick={handleCancel}>{cancelButtonLabel}</Button>
           <Button type="primary" onClick={onSubmit}>
             {submitButtonLabel}
           </Button>

@@ -3,7 +3,7 @@ import { IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../../providers/form/models';
 import { ProfileOutlined } from '@ant-design/icons';
 import settingsFormJson from './settingsForm.json';
-import { evaluateValue, Page } from '../../../../..';
+import { evaluateString, Page } from '../../../../..';
 import ComponentsContainer from '../../../componentsContainer';
 import { useForm } from '../../../../../providers/form';
 import { evaluateExpression, validateConfigurableComponentSettings } from '../../../../../providers/form/utils';
@@ -34,11 +34,11 @@ const DetailsViewComponent: IToolboxComponent<IDetailsViewComponentProps> = {
 
     const evaluatedTitle = evaluateExpression(model?.title, formData);
 
-    const override = evaluateValue(model?.statusOverride, { data: formData });
-    const color = evaluateValue(model?.statusColor, { data: formData });
-    const value = evaluateValue(model?.statusValue, { data: formData });
+    const override = evaluateString(model?.statusOverride, formData);
+    const color = evaluateString(model?.statusColor, formData);
+    const value = evaluateString(model?.statusValue, formData);
 
-    const evaluatedBakUrl = evaluateExpression(model?.backUrl || '', formData);
+    const evaluatedBakUrl = evaluateString(model?.backUrl || '', formData);
 
     return (
       <Page

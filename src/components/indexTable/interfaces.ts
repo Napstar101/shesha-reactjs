@@ -20,7 +20,7 @@ export interface ITableActionColumns {
 
 export interface ITableCustomTypesRender {
   key: string;
-  render: (data: any) => ReactNode;
+  render: (data: any, router: any) => ReactNode;
 }
 
 export interface ITableCustomTypeEditor {

@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect } from 'react';
+import React, { FC, Fragment, useEffect } from 'react';
 import { IToolboxComponent } from '../../../../../interfaces';
 import { TableOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
@@ -10,7 +10,6 @@ import {
   IndexTableColumnVisibilityToggle,
 } from '../../../../../';
 import { useDataTableSelection } from '../../../../../providers/dataTableSelection';
-import React from 'react';
 import { useDataTableStore } from '../../../../../providers';
 import TableSettings from './tableComponent-settings';
 import { ITableComponentProps } from './models';
@@ -20,7 +19,7 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
   name: 'DataTable',
   icon: <TableOutlined />,
   factory: (model: ITableComponentProps) => {
-    return <TableWrapper {...model}></TableWrapper>;
+    return <TableWrapper {...model} />;
   },
   initModel: (model: ITableComponentProps) => {
     return {
@@ -29,14 +28,7 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
     };
   },
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
-    return (
-      <TableSettings
-        model={model}
-        onSave={onSave}
-        onCancel={onCancel}
-        onValuesChange={onValuesChange}
-      />
-    );
+    return <TableSettings model={model} onSave={onSave} onCancel={onCancel} onValuesChange={onValuesChange} />;
   },
 };
 
@@ -79,10 +71,9 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items }) => {
     !isSelectingColumns && !isFiltering
       ? setIsInProgressFlag({ isFiltering: true })
       : setIsInProgressFlag({ isFiltering: false, isSelectingColumns: false });
-  }
+  };
 
-  if (isDesignMode && !tableId && !entityType)
-    return <NotConfiguredWarning></NotConfiguredWarning>;
+  if (isDesignMode && !tableId && !entityType) return <NotConfiguredWarning />;
 
   const onSelectRow = (index: number, row: any) => {
     setSelectedRow(index, row);
