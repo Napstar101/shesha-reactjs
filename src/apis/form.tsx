@@ -27,6 +27,10 @@ export interface FormDto {
    */
   markup?: string | null;
   /**
+   * Type of the form
+   */
+  type?: string | null;
+  /**
    * Type of the form model
    */
   modelType?: string | null;

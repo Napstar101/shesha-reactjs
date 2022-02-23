@@ -27,7 +27,6 @@ import {
   FormMarkupWithSettings,
   IFormSections,
   FormMode,
-  ViewType,
 } from './models';
 import { getFlagSetters } from '../utils/flagsSetters';
 import {

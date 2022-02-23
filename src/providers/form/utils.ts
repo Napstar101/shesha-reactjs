@@ -31,9 +31,6 @@ import menuViewMarkup from './defaults/markups/menuView.json';
 import tableViewMarkup from './defaults/markups/tableView.json';
 
 /**
-import nestedProperty from 'nested-property';
-
-/** 
  * Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
  *    allComponents - dictionary (key:value) of components. key - Id of the component, value - conponent settings
