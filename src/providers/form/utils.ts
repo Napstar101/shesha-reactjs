@@ -227,7 +227,7 @@ export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormC
  * @param data - data to use to evaluate the string
  * @returns
  */
-export const evaluateString = (template: string, data: any) => {
+export const evaluateString = (template: string = '', data: any = {}) => {
   return template ? Mustache.render(template, data) : template;
 };
 

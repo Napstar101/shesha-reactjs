@@ -6,7 +6,7 @@ import { validateConfigurableComponentSettings } from '../../../../../formDesign
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces/formDesigner';
 import { useForm } from '../../../../../providers';
 import { FormMarkup } from '../../../../../providers/form/models';
-import { evaluateExpression } from '../../../../../providers/form/utils';
+import { evaluateString } from '../../../../../providers/form/utils';
 import settingsFormJson from './settingsForm.json';
 
 const { Title } = Typography;
@@ -49,7 +49,7 @@ const TitleComponent: IToolboxComponent<ITitleProps> = {
       type: model?.contentType,
     };
 
-    const content = evaluateExpression(model?.content, formData);
+    const content = evaluateString(model?.content, formData);
 
     return <Title {...props}>{content}</Title>;
   },

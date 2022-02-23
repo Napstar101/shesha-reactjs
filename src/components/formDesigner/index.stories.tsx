@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import FormDesigner from './formDesigner';
 import {
@@ -13,13 +14,17 @@ import { formGetByPath, formTestDelayGet, formTestDelayPost, formUpdateMarkup } 
 import allFormsJson from './allForms.json';
 import { LabeledValue } from 'antd/lib/select';
 import { addStory } from '../../stories/utils';
-import { FormMode, ViewType } from '../../providers/form/models';
+import { FormMode } from '../../providers/form/models';
+
+export default {
+  title: 'Components/Temp/FormDesigner',
+  component: FormDesigner,
+} as Meta;
 
 export interface IFormDesignerStoryProps {
   formPath?: string;
   formId?: string;
   mode?: FormMode;
-  modelType?: ViewType;
 }
 
 const defaultBackendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurable
@@ -267,7 +272,7 @@ export const DetailsView = DesignerTemplate.bind({});
 DetailsView.args = {
   // formPath: '/view/forms/details',
   // formPath: '/view/details/testing',
-  formPath: 'cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
+  formPath: 'table-cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
   modelType: 'details',
 };
 
