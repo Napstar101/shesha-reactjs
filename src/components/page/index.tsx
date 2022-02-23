@@ -2,11 +2,10 @@ import { Breadcrumb } from 'antd';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid/non-secure';
 import React, { FC, useEffect } from 'react';
-import { CancelButton, ShaSpin } from '..';
-import { useShaRouting, useSheshaApplication } from '../..';
+import { CancelButton, ShaSpin, Show } from '../';
+import { useShaRouting, useSheshaApplication } from '../../providers';
 import { IToolbarItem } from '../../interfaces';
 import { IndexToolbar } from '../indexToolbar';
-import Show from '../show';
 import PageHeaderTag, { ITagProps } from './pageHeaderTag';
 
 export interface IPageHeadProps {

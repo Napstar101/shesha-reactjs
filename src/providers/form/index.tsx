@@ -436,7 +436,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     do {
       const component = state.present.allComponents[currentId];
 
-      const action = state.present.actions.find(a => a.owner === component?.parentId && a.name === name);
+      const action = state.present.actions.find(a => a.owner === (component?.parentId ?? null) && a.name === name);
       if (action) return (data, parameters) => action.body(data, parameters);
 
       currentId = component?.parentId;
@@ -452,8 +452,8 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
     do {
       const component = state.present.allComponents[currentId];
 
-      const action = state.present.sections.find(a => a.owner === component?.parentId && a.name === name);
-      if (action) return data => action.body(data);
+      const section = state.present.sections.find(a => a.owner === (component?.parentId ?? null) && a.name === name);
+      if (section) return data => section.body(data);
 
       currentId = component?.parentId;
     } while (currentId);
