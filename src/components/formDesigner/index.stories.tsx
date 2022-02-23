@@ -196,7 +196,8 @@ export const PropertyProps = addStory(DesignerTemplate, {
 });
 
 export const DynamicViewProps = addStory(DesignerTemplate, {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\etalon\\shesha-reactjs\\src\\components\\formDesigner\\components\\dynamicView\\settingsForm.json'
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\etalon\\shesha-reactjs\\src\\components\\formDesigner\\components\\dynamicView\\settingsForm.json',
 });
 
 export const Empty = addStory(DesignerTemplate, {
