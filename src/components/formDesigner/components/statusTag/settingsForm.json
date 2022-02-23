@@ -32,11 +32,20 @@
       "validate": {}
     },
     {
+      "id": "b8954bf6-f76d-4139-a850-c99bf06c8b66",
+      "type": "sectionSeparator",
+      "name": "separator1",
+      "parentId": "root",
+      "label": "Code"
+    },
+    {
       "id": "4d732742-715b-42a3-9663-e90a3caba458",
       "type": "codeEditor",
       "name": "colorCodeEvaluator",
       "parentId": "root",
-      "label": "Color",
+      "label": "Color Expression",
+      "language": "typescript",
+      "description": "Enter the code that, when evaluated, will return a string representation of a color. Objects that have been exposed to you are 'data', which is the form and 'formMode', which is the mode the form is currently in.",
       "validate": {}
     },
     {
@@ -44,7 +53,9 @@
       "type": "codeEditor",
       "name": "mappings",
       "parentId": "root",
+      "language": "json",
       "label": "Default Mappings",
+      "description": "Enter the JSON object that should match the structure of the default one provided",
       "validate": {}
     }
   ],

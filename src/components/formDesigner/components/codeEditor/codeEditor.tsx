@@ -18,11 +18,11 @@ export interface ICodeEditorProps extends IConfigurableFormComponent {
   language?: EditorModes;
 }
 
-export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', language = 'javascript', ...props }) => {
+export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', value, language = 'javascript', ...props }) => {
   const [showDialog, setShowDialog] = useState(false);
 
-  const onChange = value => {
-    if (props.onChange) props.onChange(value);
+  const onChange = _value => {
+    if (props.onChange) props.onChange(_value);
   };
   const meta = useMetadata(false);
 
@@ -74,7 +74,7 @@ export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', language = '
       showPrintMargin={true}
       showGutter={true}
       highlightActiveLine={true}
-      value={props.value}
+      value={value}
       setOptions={{
         enableBasicAutocompletion: true,
         enableLiveAutocompletion: true,

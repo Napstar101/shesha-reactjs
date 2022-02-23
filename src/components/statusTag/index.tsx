@@ -9,7 +9,7 @@ interface IStatusMap {
   override?: string;
 }
 
-interface IStatusMappings {
+export interface IStatusMappings {
   mapping?: IStatusMap[];
   default?: IStatusMap;
 }
@@ -32,7 +32,7 @@ export interface IStatusTagProps {
 }
 
 export const StatusTag: FC<IStatusTagProps> = ({ override, value, color, mappings = DEFAULT_STATUS_TAG_MAPPINGS }) => {
-  const { color: displayColor, text: displayText } = useMemo(() => {
+  const memoized = useMemo(() => {
     if (!override && !value && !color) {
       return {};
     }
@@ -68,15 +68,15 @@ export const StatusTag: FC<IStatusTagProps> = ({ override, value, color, mapping
     }
 
     return result;
-  }, [override, value, color]);
+  }, [override, value, color, mappings]);
 
-  if (!displayColor) {
+  if (!memoized?.color) {
     return null;
   }
 
   return (
-    <Tag className="sha-status-tag" color={displayColor}>
-      {displayText}
+    <Tag className="sha-status-tag" color={memoized?.color}>
+      {memoized?.text}
     </Tag>
   );
 };
