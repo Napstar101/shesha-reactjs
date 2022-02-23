@@ -7,6 +7,7 @@ import { IPropertyMetadata } from '../../../../interfaces/metadata';
 import { Alert, Button, Modal } from 'antd';
 import { CodeOutlined } from '@ant-design/icons';
 import { IAceOptions } from 'react-ace';
+import { EditorModes } from './types';
 
 export interface ICodeEditorProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -14,9 +15,10 @@ export interface ICodeEditorProps extends IConfigurableFormComponent {
   onChange?: (value: string) => void;
   mode?: 'inline' | 'dialog';
   setOptions?: IAceOptions;
+  language?: EditorModes;
 }
 
-export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', ...props }) => {
+export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', language = 'javascript', ...props }) => {
   const [showDialog, setShowDialog] = useState(false);
 
   const onChange = value => {
@@ -65,7 +67,7 @@ export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', ...props }) 
       name={props.id}
       style={{ width: 'unset' }}
       placeholder={props.placeholder}
-      mode="typescript"
+      mode={language}
       theme="monokai"
       onChange={onChange}
       fontSize={14}
