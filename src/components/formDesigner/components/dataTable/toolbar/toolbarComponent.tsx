@@ -7,7 +7,7 @@ import { Alert, Menu, Dropdown, Button } from 'antd';
 import { IButtonGroup, IToolbarButton, ToolbarItemProps } from '../../../../../providers/toolbarConfigurator/models';
 import { useForm, isInDesignerMode } from '../../../../../providers/form';
 import { getVisibilityFunc2 } from '../../../../../providers/form/utils';
-import { useDataTableSelection } from '../../../../../providers/dataTableSelection';
+import { DataTableSelectionProvider, useDataTableSelection } from '../../../../../providers/dataTableSelection';
 import { ToolbarButton } from './toolbarButton';
 import { ShaIcon } from '../../../..';
 import { IconType } from '../../../../shaIcon';
@@ -17,7 +17,7 @@ const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
   name: 'Toolbar',
   icon: <DashOutlined />,
   factory: (model: IToolbarProps) => {
-    return <Toolbar {...model} />;
+    return <ToolbarWithProvider {...model} />;
   },
   initModel: (model: IToolbarProps) => {
     return {
@@ -38,7 +38,9 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
   const renderItem = (item: ToolbarItemProps, index: number) => {
     if (!isInDesignerMode()) {
       const visibilityFunc = getVisibilityFunc2(item.customVisibility, item.name);
-      const isVisible = visibilityFunc({}, { selectedRow });
+
+      console.log('renderItem selectedRow :>> ', selectedRow);
+      const isVisible = visibilityFunc({}, { selectedRow }, formMode);
       if (!isVisible) return null;
     }
 
@@ -48,9 +50,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
 
         switch (itemProps.itemSubType) {
           case 'button':
-            return (
-              <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps} />
-            );
+            return <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps} />;
 
           case 'separator':
             return <div key={index} className="sha-toolbar-separator" />;
@@ -102,3 +102,11 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
 };
 
 export default ToolbarComponent;
+
+//#region Page Toolbar
+const ToolbarWithProvider: FC<IToolbarProps> = props => (
+  <DataTableSelectionProvider>
+    <Toolbar {...props} />
+  </DataTableSelectionProvider>
+);
+//#endregion

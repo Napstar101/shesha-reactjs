@@ -5,7 +5,15 @@ type ToolbarItemType = 'item' | 'group';
 export type ToolbarItemProps = IToolbarButton | IButtonGroup;
 
 type ToolbarItemSubType = 'button' | 'separator' | 'line';
-type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction' | 'submit' | 'reset';
+type ButtonActionType =
+  | 'navigate'
+  | 'dialogue'
+  | 'executeScript'
+  | 'executeFormAction'
+  | 'submit'
+  | 'reset'
+  | 'startFormEdit'
+  | 'cancelFormEdit';
 
 export interface IToolbarItemBase {
   id: string;

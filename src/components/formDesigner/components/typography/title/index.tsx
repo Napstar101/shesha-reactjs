@@ -51,7 +51,11 @@ const TitleComponent: IToolboxComponent<ITitleProps> = {
 
     const content = evaluateString(model?.content, formData);
 
-    return <Title {...props}>{content}</Title>;
+    return (
+      <Title {...props} style={{ margin: 'unset' }}>
+        {content}
+      </Title>
+    );
   },
   settingsFormMarkup: settingsForm,
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),

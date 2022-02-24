@@ -46,6 +46,16 @@ export const ToolbarButtonGroup: FC<IToolbarProps> = ({ items, className, btnSiz
     return true;
   };
 
+  const getCustomVisible = (expression: string) => {
+    if (expression) {
+      const executed = getExpressionExecutor(expression);
+
+      return typeof executed === 'boolean' ? executed : true;
+    }
+
+    return true;
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: IToolbarButtonItem) => {
     event.stopPropagation();
 
@@ -129,10 +139,15 @@ export const ToolbarButtonGroup: FC<IToolbarProps> = ({ items, className, btnSiz
                   name,
                   id,
                   customEnabled,
+                  customVisibility,
                 } = item;
 
                 if (render && typeof render === 'function') {
                   return render();
+                }
+
+                if (!getCustomVisible(customVisibility)) {
+                  return null;
                 }
 
                 return (

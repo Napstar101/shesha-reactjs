@@ -234,12 +234,12 @@ export const evaluateString = (template: string = '', data: any = {}) => {
 export const getVisibilityFunc2 = (expression, name) => {
   if (expression) {
     try {
-      const customVisibilityExecutor = expression ? new Function('data, context', expression) : null;
+      const customVisibilityExecutor = expression ? new Function('data, context, formMode', expression) : null;
 
-      const getIsVisible = (data = {}, context = {}) => {
+      const getIsVisible = (data = {}, context = {}, formMode = '') => {
         if (customVisibilityExecutor) {
           try {
-            return customVisibilityExecutor(data, context);
+            return customVisibilityExecutor(data, context, formMode);
           } catch (e) {
             console.warn(`Custom Visibility of ${name} throws exception: ${e}`);
             return true;
@@ -409,6 +409,24 @@ export const evaluateExpression = (expression: string, data: any) => {
 // export const evaluateExpression = (expression, data: any) => {
 //   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
 // };
+
+/**
+ * Remove zero-width space characters from a string.
+ *
+ * Unicode has the following zero-width characters:
+ *  U+200B zero width space
+ *  U+200C zero width non-joiner Unicode code point
+ *  U+200D zero width joiner Unicode code point
+ *  U+FEFF zero width no-break space Unicode code point
+ * To remove them from a string in JavaScript, you can use a simple function:
+ *
+ * @see {@link https://stackoverflow.com/questions/11305797/remove-zero-width-space-characters-from-a-javascript-string} for further information
+ */
+export const removeZeroWidthCharsFromString = (value: string): string => {
+  if (!value) return '';
+
+  return value.replace(/[\u200B-\u200D\uFEFF]/g, '');
+};
 
 export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) => {
   if (!value) return value;

@@ -178,13 +178,23 @@
               "value": "reset"
             },
             {
+              "id": "b2c59c38-6537-4d39-9612-c4c5ae26ef7a",
+              "label": "Start Edit",
+              "value": "startFormEdit"
+            },
+            {
+              "id": "b2c59c38-6537-4d39-9612-c4c5ae26ef7a",
+              "label": "Cancel Edit",
+              "value": "cancelFormEdit"
+            },
+            {
               "id": "5c717647-2ecd-434d-8d74-6c6805303007",
               "label": "Navigate",
               "value": "navigate"
             },
             {
               "id": "c025760d-b99b-4c44-89cf-1edb2a6cd014",
-              "label": "Dialogue",
+              "label": "Dialog",
               "value": "dialogue"
             },
             {

@@ -7,3 +7,4 @@ export * from './hooks';
 export * from './formDesignerUtils';
 
 export { requestHeaders } from './utils/requestHeaders';
+export { removeZeroWidthCharsFromString } from './providers/form/utils';

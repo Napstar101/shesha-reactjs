@@ -26,6 +26,12 @@ export interface IConfigurableFormRendererProps<Values = any, FieldData = any> e
   sections?: IFormSections;
   context?: any; // todo: make generic
 
+  httpVerb?: 'POST' | 'PUT' | 'DELETE';
+  /**
+   * Pass this if you do not want an API call to be made on your behalf when you submit the form
+   */
+  skipPostOnFinish?: boolean;
+
   //onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
 }
 

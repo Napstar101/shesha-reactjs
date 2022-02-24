@@ -67,7 +67,7 @@ export interface IGenericCreateModalProps {
   /**
    * The URL to navigate to after successfully submitting the form and the OnSuccessAction is set to "GoToUrl"
    */
-  onSuccessUrl?: string;
+  onSuccessUrl?: string | ((data: any) => string);
 
   onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
 
@@ -135,7 +135,9 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
         case OnSuccessActionType.GoToUrl:
           setLocalKeepOpen(false);
           onSuccess(form, localKeepOpen);
-          router?.push(onSuccessUrl);
+          if (onSuccessUrl) {
+            router?.push(typeof onSuccessUrl === 'function' ? onSuccessUrl(result) : onSuccessUrl);
+          }
           break;
 
         // Keep the form open and keep adding more items

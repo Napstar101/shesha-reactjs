@@ -5,11 +5,7 @@ import { evaluateString, validateConfigurableComponentSettings } from '../../../
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../interfaces/formDesigner';
 import { useForm } from '../../../../providers/form';
 import { FormMarkup } from '../../../../providers/form/models';
-import StatusTag, {
-  DEFAULT_STATUS_TAG_MAPPINGS,
-  IStatusMappings,
-  IStatusTagProps as ITagProps,
-} from '../../../statusTag';
+import StatusTag, { DEFAULT_STATUS_TAG_MAPPINGS, IStatusTagProps as ITagProps } from '../../../statusTag';
 import settingsFormJson from './settingsForm.json';
 
 export interface IStatusTagProps extends Omit<ITagProps, 'mappings'>, IConfigurableFormComponent {

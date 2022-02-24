@@ -262,7 +262,8 @@ export const TableView = DesignerTemplate.bind({});
 
 TableView.args = {
   // formPath: '/view/forms/table',
-  formPath: '/view/table/playground',
+  // formPath: '/view/table/playground',
+  formPath: 'table-cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
   modelType: 'table',
   // vi
 };
@@ -271,8 +272,7 @@ export const DetailsView = DesignerTemplate.bind({});
 
 DetailsView.args = {
   // formPath: '/view/forms/details',
-  // formPath: '/view/details/testing',
-  formPath: 'table-cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
+  formPath: 'view-details-testing',
   modelType: 'details',
 };
 
@@ -291,7 +291,8 @@ export const BlankView = DesignerTemplate.bind({});
 // };
 
 BlankView.args = {
-  formPath: '/view/test/typography',
+  formPath: 'area-details-53d03368-f41c-46bc-a836-d44c51a9d75b',
+  // formPath: '/view/test/typography',
   modelType: 'blank',
 };
 
