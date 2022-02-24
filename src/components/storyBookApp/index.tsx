@@ -22,7 +22,6 @@ const DEFAULT_ROUTER = {
 };
 
 export const StoryApp: FC<PropsWithChildren<any>> = ({ children }) => {
-  console.log('render StoryApp');
 
   const renderChildren = () => {
     try {
