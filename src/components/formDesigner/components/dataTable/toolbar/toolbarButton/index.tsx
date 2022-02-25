@@ -90,6 +90,7 @@ const DialogTriggeredButton: FC<IDialogTriggeredButtonProps> = props => {
           title: props.modalTitle,
           showModalFooter: props?.showModalFooter,
           submitHttpVerb: props?.submitHttpVerb,
+          onSuccessRedirectUrl: props?.onSuccessRedirectUrl,
           onSubmitted: () => {
             // todo: implement custom actions support
             refreshTable();

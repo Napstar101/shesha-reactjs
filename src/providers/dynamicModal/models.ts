@@ -44,6 +44,8 @@ export interface IModalProps {
    * A callback to execute when the form has been submitted
    */
   onSubmitted?: () => void;
+
+  onSuccessRedirectUrl?: string;
 }
 
 /**

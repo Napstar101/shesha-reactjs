@@ -4,6 +4,7 @@ import { useDynamicModals } from '../../providers';
 import { ConfigurableForm } from '../';
 import { FormMode } from '../../providers/form/models';
 import { IModalProps } from '../../providers/dynamicModal/models';
+import { evaluateString, useShaRouting } from '../..';
 
 export interface IDynamicModalProps extends Omit<IModalProps, 'fetchUrl'> {
   id: string;
@@ -17,9 +18,10 @@ export interface IDynamicModalProps extends Omit<IModalProps, 'fetchUrl'> {
 }
 
 export const DynamicModal: FC<IDynamicModalProps> = props => {
-  const { id, title, isVisible, formId, showModalFooter, submitHttpVerb } = props;
+  const { id, title, isVisible, formId, showModalFooter, submitHttpVerb, onSuccessRedirectUrl } = props;
   const [form] = Form.useForm();
   const { hide } = useDynamicModals();
+  const { router } = useShaRouting();
 
   const onOk = () => {
     if (showModalFooter) {
@@ -29,8 +31,14 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
     }
   };
 
-  const onSubmitted = () => {
+  const onSubmitted = (_: any, response: any) => {
     form.resetFields();
+
+    if (onSuccessRedirectUrl) {
+      const computedRedirectUrl = evaluateString(onSuccessRedirectUrl, response);
+
+      router?.push(computedRedirectUrl);
+    }
 
     hideForm();
     if (props.onSubmitted) props.onSubmitted();

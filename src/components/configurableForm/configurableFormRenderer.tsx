@@ -86,9 +86,9 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
     if (submitUrl) {
       setValidationErrors(null);
       doSubmit(postData)
-        .then(() => {
+        .then(response => {
           // note: we pass merged values
-          if (props.onFinish) props.onFinish(postData);
+          if (props.onFinish) props.onFinish(postData, response?.result);
         })
         .catch(e => {
           setValidationErrors(e?.data?.error || e);
