@@ -228,7 +228,13 @@ export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormC
  * @returns
  */
 export const evaluateString = (template: string = '', data: any = {}) => {
-  return template ? Mustache.render(template, data) : template;
+  // The function throws an exception if the expression passed doesn't have a corresponding curly braces
+  try {
+    return template ? Mustache.render(template, data) : template;
+  } catch (error) {
+    console.warn('evaluateString ', error);
+    return template;
+  }
 };
 
 export const getVisibilityFunc2 = (expression, name) => {

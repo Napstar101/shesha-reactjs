@@ -74,6 +74,8 @@ const DynamicModalProvider: FC<PropsWithChildren<IDynamicModalProviderProps>> = 
               mode="edit"
               formId={instance.props.formId}
               onSubmitted={instance.props.onSubmitted}
+              showModalFooter={instance?.props?.showModalFooter}
+              submitHttpVerb={instance?.props?.submitHttpVerb}
             />
           </DynamicModalInstanceContext.Provider>
         );

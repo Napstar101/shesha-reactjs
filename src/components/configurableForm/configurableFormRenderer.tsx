@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Form, Spin } from 'antd';
 import ComponentsContainer from '../formDesigner/componentsContainer';
 import { ROOT_COMPONENT_KEY } from '../../providers/form/models';
@@ -46,10 +46,9 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
    *
    * @returns
    */
-  const getSubmitPath = () => {
-    const { postUrl, putUrl, deleteUrl } = formSettings;
-
-    let url = postUrl;
+  const submitUrl = useMemo(() => {
+    const { postUrl, putUrl, deleteUrl } = formSettings || {};
+    let url = postUrl; // Fallback for now
 
     if (httpVerb === 'POST' && postUrl) {
       url = postUrl;
@@ -64,11 +63,13 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
     }
 
     return removeZeroWidthCharsFromString(url);
-  };
+  }, [formSettings]);
+
+  // console.log('ConfigurableFormRenderer formSettings, getSubmitPath() :>> ', formSettings, getSubmitPath());
 
   const { mutate: doSubmit, loading: submitting } = useMutate({
     verb: httpVerb || 'POST', // todo: convert to configurable
-    path: getSubmitPath(),
+    path: submitUrl,
   });
 
   const onFinish = () => {
@@ -82,7 +83,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
       return;
     }
 
-    if (formSettings.postUrl) {
+    if (submitUrl) {
       setValidationErrors(null);
       doSubmit(postData)
         .then(() => {

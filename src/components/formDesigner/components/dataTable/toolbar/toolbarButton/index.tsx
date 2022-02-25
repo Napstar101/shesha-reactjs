@@ -6,6 +6,7 @@ import { IModalProps } from '../../../../../../providers/dynamicModal/models';
 import { evaluateString } from '../../../../../../providers/form/utils';
 import { IToolbarButton } from '../../../../../../providers/toolbarConfigurator/models';
 import ShaIcon, { IconType } from '../../../../../shaIcon';
+import classNames from 'classnames';
 
 export interface IToolbarButtonProps extends IToolbarButton {
   formComponentId: string;
@@ -75,7 +76,9 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   );
 };
 
-const DialogTriggeredButton: FC<IToolbarButtonProps> = props => {
+interface IDialogTriggeredButtonProps extends Omit<IModalProps, 'formId' | 'isVisible'>, IToolbarButtonProps {}
+
+const DialogTriggeredButton: FC<IDialogTriggeredButtonProps> = props => {
   const { refreshTable } = useDataTableStore();
 
   const modalProps: IModalProps =
@@ -85,6 +88,8 @@ const DialogTriggeredButton: FC<IToolbarButtonProps> = props => {
           isVisible: false,
           formId: props.modalFormId,
           title: props.modalTitle,
+          showModalFooter: props?.showModalFooter,
+          submitHttpVerb: props?.submitHttpVerb,
           onSubmitted: () => {
             // todo: implement custom actions support
             refreshTable();
@@ -107,6 +112,7 @@ const DialogTriggeredButton: FC<IToolbarButtonProps> = props => {
       type={props.buttonType}
       danger={props.danger}
       icon={props.icon ? <ShaIcon iconName={props.icon as IconType} /> : undefined}
+      className={classNames('sha-toolbar-btn sha-toolbar-btn-configurable')}
     >
       {props.name}
     </Button>

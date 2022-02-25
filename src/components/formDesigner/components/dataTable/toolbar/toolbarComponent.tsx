@@ -39,7 +39,6 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
     if (!isInDesignerMode()) {
       const visibilityFunc = getVisibilityFunc2(item.customVisibility, item.name);
 
-      console.log('renderItem selectedRow :>> ', selectedRow);
       const isVisible = visibilityFunc({}, { selectedRow }, formMode);
       if (!isVisible) return null;
     }
