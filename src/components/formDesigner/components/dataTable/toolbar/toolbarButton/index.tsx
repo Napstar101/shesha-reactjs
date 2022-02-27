@@ -70,6 +70,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
       type={props.buttonType}
       danger={props.danger}
       icon={props.icon ? <ShaIcon iconName={props.icon as IconType} /> : undefined}
+      className={classNames('sha-toolbar-btn sha-toolbar-btn-configurable')}
     >
       {props.name}
     </Button>

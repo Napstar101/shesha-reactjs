@@ -10,6 +10,8 @@ export interface IProps {
   containerId: string;
   direction?: Direction;
   justifyContent?: string;
+  alignItems?: string;
+  justifyItems?: string;
   className?: string;
 }
 const ComponentsContainer: FC<IProps> = ({
@@ -17,6 +19,8 @@ const ComponentsContainer: FC<IProps> = ({
   children,
   direction = 'vertical',
   justifyContent,
+  alignItems,
+  justifyItems,
   className,
 }) => {
   const {
@@ -101,7 +105,11 @@ const ComponentsContainer: FC<IProps> = ({
   };
 
   const style: CSSProperties = {};
-  if (direction === 'horizontal' && justifyContent) style['justifyContent'] = justifyContent;
+  if (direction === 'horizontal' && justifyContent) {
+    style['justifyContent'] = justifyContent;
+    style['alignItems'] = alignItems;
+    style['justifyItems'] = justifyItems;
+  }
 
   return (
     <div className={`sha-components-container ${direction} ${className}`}>

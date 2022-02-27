@@ -263,7 +263,8 @@ export const TableView = DesignerTemplate.bind({});
 TableView.args = {
   // formPath: '/view/forms/table',
   // formPath: '/view/table/playground',
-  formPath: 'table-cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
+  formPath: 'test-new-table',
+  // formPath: 'table-cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
   modelType: 'table',
   // vi
 };
