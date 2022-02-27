@@ -39,10 +39,12 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.entityReference,
   factory: (model: IAutocompleteProps) => {
     const { queryParams } = model;
-    const { formData, formMode } = useForm();
+    const { formData, formMode, isComponentDisabled } = useForm();
     const dataSourceUrl = model.dataSourceUrl
       ? replaceTags(model.dataSourceUrl, { data: formData })
       : model.dataSourceUrl;
+
+    const disabled = isComponentDisabled(model);
 
     const getQueryParams = (): IQueryParams => {
       const queryParamObj: IQueryParams = {};
@@ -66,7 +68,7 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
     const autocompleteProps = {
       typeShortAlias: model?.entityTypeShortAlias,
       allowInherited: true /*hardcoded for now*/,
-      disabled: model.disabled,
+      disabled,
       bordered: !model.hideBorder,
       dataSourceUrl,
       dataSourceType: model.dataSourceType,

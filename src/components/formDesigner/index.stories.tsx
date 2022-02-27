@@ -285,6 +285,8 @@ FormComponentView.args = {
 
 export const BlankView = DesignerTemplate.bind({});
 
+export const ReadOnlyForm = DesignerTemplate.bind({});
+
 // BlankView.args = {
 //   formPath: '/view/forms/blank',
 //   modelType: 'blank',
@@ -292,6 +294,12 @@ export const BlankView = DesignerTemplate.bind({});
 
 BlankView.args = {
   formPath: 'area-details-53d03368-f41c-46bc-a836-d44c51a9d75b',
+  // formPath: '/view/test/typography',
+  modelType: 'blank',
+};
+
+ReadOnlyForm.args = {
+  formPath: '/settings/forms/playground',
   // formPath: '/view/test/typography',
   modelType: 'blank',
 };

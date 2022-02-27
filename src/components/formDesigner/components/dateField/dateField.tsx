@@ -125,7 +125,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
     ...rest
   } = props;
   const { form, formMode, isComponentDisabled } = useForm();
-  
+
   const isDisabled = isComponentDisabled(rest);
 
   const isReadOnly = readOnly || formMode === 'readonly';
@@ -195,7 +195,7 @@ export const DatePickerWrapper: FC<IDateFieldProps> = props => {
   }
 
   if (isReadOnly) {
-    return <ReadOnlyDisplayFormItem value={formattedValue?.toISOString()} type="datetime" />;
+    return <ReadOnlyDisplayFormItem value={formattedValue?.toISOString()} disabled={isDisabled} type="datetime" />;
   }
 
   if (range) {

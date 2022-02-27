@@ -6,7 +6,7 @@ import { CustomLabeledValue, IGenericRefListDropDownProps, ISelectOption } from 
 import ReadOnlyDisplayFormItem from '../readOnlyDisplayFormItem';
 
 // tslint:disable-next-line:whitespace
-export const GenericRefListDropDown = <TValue, >(props: IGenericRefListDropDownProps<TValue>) => {
+export const GenericRefListDropDown = <TValue,>(props: IGenericRefListDropDownProps<TValue>) => {
   const {
     listName,
     listNamespace,
@@ -21,6 +21,7 @@ export const GenericRefListDropDown = <TValue, >(props: IGenericRefListDropDownP
     getLabeledValue,
     getOptionFromFetchedItem,
     readOnly,
+    disabled,
     ...rest
   } = props;
 
@@ -115,6 +116,7 @@ export const GenericRefListDropDown = <TValue, >(props: IGenericRefListDropDownP
     return (
       <ReadOnlyDisplayFormItem
         value={wrapValue(value)}
+        disabled={disabled}
         type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
       />
     );
