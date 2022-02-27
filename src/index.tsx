@@ -8,3 +8,6 @@ export * from './formDesignerUtils';
 
 export { requestHeaders } from './utils/requestHeaders';
 export { removeZeroWidthCharsFromString } from './providers/form/utils';
+
+export { default as EntityConfiguratorPage } from './pages/entity-config/configurator';
+export { default as EntityConfigurationsIndexPage } from './pages/entity-config/index';
