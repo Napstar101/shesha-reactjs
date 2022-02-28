@@ -43,13 +43,6 @@ import Statistic from '../../../components/formDesigner/components/statistic';
 import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
 import CodeEditor from '../../../components/formDesigner/components/codeEditor';
 import EditableTagGroup from '../../../components/formDesigner/components/editableTagGroup';
-import DetailsView from '../../../components/formDesigner/components/views/detailsView';
-import BlankView from '../../../components/formDesigner/components/views/blankView';
-import TableView from '../../../components/formDesigner/components/views/tableView';
-import FormView from '../../../components/formDesigner/components/views/formView';
-import DashboardView from '../../../components/formDesigner/components/views/dashboardView';
-import MasterDetailsView from '../../../components/formDesigner/components/views/masterDetailsView';
-import MenuView from '../../../components/formDesigner/components/views/menuView';
 import Paragraph from '../../../components/formDesigner/components/typography/paragraph';
 import Text from '../../../components/formDesigner/components/typography/text';
 import Title from '../../../components/formDesigner/components/typography/title';
@@ -125,15 +118,15 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
     ],
   },
   {
-    visible: false,
-    name: 'Views',
-    components: [DetailsView, BlankView, TableView, FormView, DashboardView, MasterDetailsView, MenuView],
-  },
-  {
     visible: true,
     name: 'Typography',
     components: [Text, Title, Paragraph],
   },
+  // {
+  //   visible: false,
+  //   name: 'Views',
+  //   components: [DetailsView, BlankView, TableView, FormView, DashboardView, MasterDetailsView, MenuView],
+  // },
 ];
 
 export default ToolboxComponents;

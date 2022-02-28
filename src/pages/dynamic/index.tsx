@@ -103,7 +103,10 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
 
   //#region get form data
   useEffect(() => {
-    fetchEntity({ queryParams: { id } });
+    // Avoid fetching entity if we're displaying index table
+    if (id) {
+      fetchEntity({ queryParams: { id } });
+    }
   }, [id, state?.formResponse?.markup?.formSettings?.getUrl]);
 
   useEffect(() => {
@@ -231,6 +234,7 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
         onFinish={onFinish}
         initialValues={state?.fetchedEntity}
         skipPostOnFinish
+        className="sha-dynamic-page"
       />
     </Spin>
   );

@@ -5,6 +5,7 @@ import { FormProvider } from '../../providers/form';
 import ConfigurableComponent from '../appConfigurator/configurableComponent';
 import EditViewMsg from '../appConfigurator/editViewMsg';
 import { useShaRouting } from '../../providers';
+import classNames from 'classnames';
 
 export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
   const { id, markup, mode, path, actions, sections, context, formRef, ...restProps } = props;
@@ -23,7 +24,7 @@ export const ConfigurableForm: FC<IConfigurableFormProps> = props => {
       }}
     >
       {(componentState, BlockOverlay) => (
-        <div className={`${componentState.wrapperClassName}`}>
+        <div className={classNames(componentState.wrapperClassName, props?.className)}>
           <BlockOverlay>
             <EditViewMsg />
           </BlockOverlay>
