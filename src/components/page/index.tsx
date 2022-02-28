@@ -7,9 +7,9 @@ import { IToolbarItem } from '../../interfaces';
 import Show from '../show';
 import { useShaRouting, useSheshaApplication } from '../../providers';
 import PageHeaderTag, { ITagProps } from './pageHeaderTag';
+import StatusTag, { IStatusTagProps } from '../statusTag';
 import { IToolbarButtonItem } from '../toolbar/models';
 import Toolbar from '../toolbar';
-import StatusTag, { IStatusTagProps } from '../statusTag';
 
 export interface IPageHeadProps {
   readonly title?: string;

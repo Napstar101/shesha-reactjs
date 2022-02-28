@@ -1,0 +1,22 @@
+{
+  "components": [
+    {
+      "id": "2nE8XGy6RYxxdhu4UoZ2d",
+      "type": "masterDetailsView",
+      "name": "masterDetailsViewDefault",
+      "label": "Master Details View Default",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "components": []
+    }
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": { "span": 5 },
+    "wrapperCol": { "span": 13 },
+    "modelType": ""
+  }
+}

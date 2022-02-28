@@ -1,0 +1,22 @@
+{
+  "components": [
+    {
+      "id": "WQ0GdH2NL_cgSt0KJd2mX",
+      "type": "blankViewDefault",
+      "name": "blankView1",
+      "label": "Blank View Default",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "components": []
+    }
+  ],
+  "formSettings": {
+    "layout": "horizontal",
+    "colon": true,
+    "labelCol": { "span": 5 },
+    "wrapperCol": { "span": 13 },
+    "modelType": ""
+  }
+}
