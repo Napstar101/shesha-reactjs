@@ -32,6 +32,7 @@ export interface IToolbarItemBase {
 export interface IToolbarButton extends IToolbarItemBase {
   itemSubType: ToolbarItemSubType;
   buttonAction?: ButtonActionType;
+  refreshTableOnSuccess?: boolean;
   targetUrl?: string;
   modalFormId?: string;
   modalTitle?: string;

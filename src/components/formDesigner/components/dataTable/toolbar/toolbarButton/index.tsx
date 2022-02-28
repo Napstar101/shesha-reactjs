@@ -18,7 +18,23 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   const { router } = useShaRouting();
 
   if (props?.buttonAction === 'dialogue') {
-    return <DialogTriggeredButton {...props} />;
+    const convertedProps = props as IToolbarButtonTableDialogProps;
+
+    const modalProps: IModalProps = {
+      id: props.id, // link modal to the current form component by id
+      isVisible: false,
+      formId: props.modalFormId,
+      title: props.modalTitle,
+      showModalFooter: convertedProps?.showModalFooter,
+      submitHttpVerb: convertedProps?.submitHttpVerb,
+      onSuccessRedirectUrl: convertedProps?.onSuccessRedirectUrl,
+    };
+
+    return props?.refreshTableOnSuccess ? (
+      <ToolbarButtonTableDialog {...props} modalProps={modalProps} />
+    ) : (
+      <ToolbarButtonPlainDialog {...props} modalProps={modalProps} />
+    );
   }
 
   const onButtonClick = () => {
@@ -77,29 +93,50 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   );
 };
 
-interface IDialogTriggeredButtonProps extends Omit<IModalProps, 'formId' | 'isVisible'>, IToolbarButtonProps {}
+interface IToolbarButtonTableDialogProps extends Omit<IModalProps, 'formId' | 'isVisible'>, IToolbarButtonProps {
+  modalProps?: IModalProps;
+}
 
-const DialogTriggeredButton: FC<IDialogTriggeredButtonProps> = props => {
+/**
+ * This button should be rendered on the toolbar within a DataTableContext as it references the table store
+ * @param props
+ * @returns
+ */
+const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
   const { refreshTable } = useDataTableStore();
 
-  const modalProps: IModalProps =
-    props.buttonAction === 'dialogue'
-      ? {
-          id: props.id, // link modal to the current form component by id
-          isVisible: false,
-          formId: props.modalFormId,
-          title: props.modalTitle,
-          showModalFooter: props?.showModalFooter,
-          submitHttpVerb: props?.submitHttpVerb,
-          onSuccessRedirectUrl: props?.onSuccessRedirectUrl,
-          onSubmitted: () => {
-            // todo: implement custom actions support
-            refreshTable();
-          },
-        }
-      : null;
+  const modalProps: IModalProps = {
+    ...props?.modalProps,
+    onSubmitted: () => {
+      // todo: implement custom actions support
+      refreshTable();
+    },
+  };
 
   const dynamicModal = useModal(modalProps);
+
+  const onButtonClick = () => {
+    if (props.modalFormId) {
+      dynamicModal.open();
+    } else console.warn('Modal Form is not specified');
+  };
+
+  return (
+    <Button
+      title={props.tooltip}
+      onClick={onButtonClick}
+      type={props.buttonType}
+      danger={props.danger}
+      icon={props.icon ? <ShaIcon iconName={props.icon as IconType} /> : undefined}
+      className={classNames('sha-toolbar-btn sha-toolbar-btn-configurable')}
+    >
+      {props.name}
+    </Button>
+  );
+};
+
+const ToolbarButtonPlainDialog: FC<IToolbarButtonTableDialogProps> = props => {
+  const dynamicModal = useModal(props?.modalProps);
 
   const onButtonClick = () => {
     if (props.modalFormId) {
