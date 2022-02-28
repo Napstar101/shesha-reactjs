@@ -63,12 +63,18 @@ import {
   getComponentsAndSettings,
   convertSectionsToList,
   getEnabledComponentIds,
+  sheshaApplication,
 } from './utils';
 import { FormInstance } from 'antd';
 import { ActionCreators } from 'redux-undo';
 import useThunkReducer from 'react-hook-thunk-reducer';
 import { useDebouncedCallback } from 'use-debounce';
-import { IAsyncValidationError, IConfigurableFormComponent, IFormValidationErrors, IToolboxComponent, IToolboxComponentGroup } from '../../interfaces';
+import {
+  IAsyncValidationError,
+  IConfigurableFormComponent,
+  IFormValidationErrors,
+  IToolboxComponent,
+} from '../../interfaces';
 import { IDataSource } from '../formDesigner/models';
 import { useMetadataDispatcher } from '../../providers';
 
@@ -82,7 +88,6 @@ export interface IFormProviderProps {
   sections?: IFormSections;
   context?: any; // todo: make generic
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
-  toolboxComponentGroups?: IToolboxComponentGroup[];
   onValuesChange?: (changedValues: any, values: any /*Values*/) => void;
 }
 
@@ -97,8 +102,8 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   sections,
   context,
   formRef,
-  toolboxComponentGroups,
 }) => {
+  const { toolboxComponentGroups } = sheshaApplication();
   const formProps = getComponentsAndSettings(markup);
   const formComponents = formProps?.components;
 
@@ -243,7 +248,7 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
 
   const addComponentsFromTemplate = (payload: IComponentAddFromTemplatePayload) => {
     dispatch(componentAddFromTemplateAction(payload));
-  }
+  };
 
   const deleteComponent = (payload: IComponentDeletePayload) => {
     dispatch(componentDeleteAction(payload));
@@ -254,16 +259,22 @@ const FormProvider: FC<PropsWithChildren<IFormProviderProps>> = ({
   };
 
   const isComponentDisabled = (model: Pick<IConfigurableFormComponent, 'id' | 'isDynamic' | 'disabled'>): boolean => {
-    const disabledByCondition = (model.isDynamic !== true) && state.present.enabledComponentIds && !state.present.enabledComponentIds.includes(model.id);
+    const disabledByCondition =
+      model.isDynamic !== true &&
+      state.present.enabledComponentIds &&
+      !state.present.enabledComponentIds.includes(model.id);
 
     return state.present.formMode !== 'designer' && (model.disabled || disabledByCondition);
-  }
+  };
 
   const isComponentHidden = (model: Pick<IConfigurableFormComponent, 'id' | 'isDynamic' | 'hidden'>): boolean => {
-    const hiddenByCondition = (model.isDynamic !== true) && state.present.visibleComponentIds && !state.present.visibleComponentIds.includes(model.id);
+    const hiddenByCondition =
+      model.isDynamic !== true &&
+      state.present.visibleComponentIds &&
+      !state.present.visibleComponentIds.includes(model.id);
 
     return state.present.formMode !== 'designer' && (model.hidden || hiddenByCondition);
-  }
+  };
 
   const updateComponent = (payload: IComponentUpdatePayload) => {
     dispatch(componentUpdateAction(payload));
