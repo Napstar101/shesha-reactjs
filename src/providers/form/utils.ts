@@ -21,8 +21,9 @@ import { nanoid } from 'nanoid';
 import { Rule } from 'antd/lib/form';
 import { getFullPath } from '../../utils/metadata';
 import nestedProperty from 'nested-property';
+import { useSheshaApplication } from '..';
 
-/** 
+/**
  * Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
  *    allComponents - dictionary (key:value) of components. key - Id of the component, value - conponent settings
@@ -144,7 +145,8 @@ export const loadFormByPath = (path: string) => {
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
   if (customVisibility) {
     try {
-      /* tslint:disable:function-constructor */  
+      /* tslint:disable:function-constructor */
+
       const customVisibilityExecutor = customVisibility ? new Function('value, data', customVisibility) : null;
 
       const getIsVisible = (data = {}) => {
@@ -173,7 +175,8 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
 export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormComponent) => {
   if (customEnabled) {
     try {
-      /* tslint:disable:function-constructor */  
+      /* tslint:disable:function-constructor */
+
       const customEnabledExecutor = customEnabled ? new Function('value, data', customEnabled) : null;
 
       const getIsEnabled = (data = {}) => {
@@ -239,7 +242,7 @@ export const getVisibleComponentIds = (components: IComponentsDictionary, values
     if (components.hasOwnProperty(key)) {
       const component = components[key] as IConfigurableFormComponent;
       if (!component || component.hidden) continue;
-  
+
       const isVisible = component.visibilityFunc == null || component.visibilityFunc(values);
       if (isVisible) visibleComponents.push(key);
     }
@@ -256,11 +259,11 @@ export const getEnabledComponentIds = (components: IComponentsDictionary, values
     if (components.hasOwnProperty(key)) {
       const component = components[key] as IConfigurableFormComponent;
       if (!component || component.disabled) continue;
-  
+
       const isEnabled =
         !Boolean(component?.enabledFunc) ||
         (typeof component?.enabledFunc === 'function' && component?.enabledFunc(values));
-  
+
       if (isEnabled) enabledComponents.push(key);
     }
   }
@@ -538,12 +541,10 @@ export const processRecursive = (
 ) => {
   func(component, parentId);
 
-  if (parentId === ROOT_COMPONENT_KEY)
-    return;
+  if (parentId === ROOT_COMPONENT_KEY) return;
 
   const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
-  if (!toolboxComponent)
-    return;
+  if (!toolboxComponent) return;
   const containers = getContainerNames(toolboxComponent);
 
   if (containers) {
@@ -629,4 +630,12 @@ export const createComponentModelForDataProperty = (
   componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
 
   return componentModel;
+};
+
+export const sheshaApplication = () => {
+  try {
+    return useSheshaApplication();
+  } catch (error) {
+    return { toolboxComponentGroups: [] };
+  }
 };
