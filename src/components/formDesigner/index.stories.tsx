@@ -305,4 +305,11 @@ ReadOnlyForm.args = {
   modelType: 'blank',
 };
 
+export const ExportJSONDemo = DesignerTemplate.bind({});
+
+ExportJSONDemo.args = {
+  formPath: 'blank-form-index',
+  modelType: 'blank',
+};
+
 //#endregion

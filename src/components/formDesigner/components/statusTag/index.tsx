@@ -10,6 +10,8 @@ import settingsFormJson from './settingsForm.json';
 
 export interface IStatusTagProps extends Omit<ITagProps, 'mappings'>, IConfigurableFormComponent {
   colorCodeEvaluator?: string;
+  overrideCodeEvaluator?: string;
+  valueCodeEvaluator?: string;
   mappings?: string;
 }
 
@@ -33,7 +35,20 @@ const StatusTagComponent: IToolboxComponent<IStatusTagProps> = {
       return func(formData, formMode);
     };
 
-    const allEmpty = !model?.override && !model?.value && !model?.color;
+    const { colorCodeEvaluator, overrideCodeEvaluator, valueCodeEvaluator, override, value, color } = model;
+
+    const allEmpty =
+      [colorCodeEvaluator, overrideCodeEvaluator, valueCodeEvaluator, override, value, color].filter(Boolean)
+        ?.length === 0;
+
+    console.log('StatusTagComponent :>> ', {
+      colorCodeEvaluator,
+      overrideCodeEvaluator,
+      valueCodeEvaluator,
+      override,
+      value,
+      color,
+    });
 
     const getValueByExpression = (expression: string = '') => {
       return expression?.includes('{{') ? evaluateString(expression, formData) : expression;
@@ -43,13 +58,18 @@ const StatusTagComponent: IToolboxComponent<IStatusTagProps> = {
       return <Alert type="info" message="Status tag not configured properly" />;
     }
 
-    const evaluatedOverride = getValueByExpression(model?.override);
-    const evaluatedValue = getValueByExpression(model?.value as string);
-    const evaluatedColor = getValueByExpression(model?.color);
+    const evaluatedOverrideByExpression = getValueByExpression(override);
+    const localValueByExpression = getValueByExpression(value as string);
+    const localColorByExpression = getValueByExpression(color);
 
-    const computedColor = getExpressionExecutor(model?.colorCodeEvaluator) || '';
+    const computedColorByCode = getExpressionExecutor(colorCodeEvaluator) || '';
+    const computedOverrideByCode = getExpressionExecutor(overrideCodeEvaluator) || '';
+    const computedValueByCode = getExpressionExecutor(valueCodeEvaluator) || '';
 
-    const allEvaluationEmpty = [evaluatedOverride, evaluatedValue, evaluatedColor].filter(Boolean)?.length === 0;
+    // const allEvaluationEmpty = [evaluatedOverride, evaluatedValue, evaluatedColor].filter(Boolean)?.length === 0;
+
+    const allEvaluationEmpty =
+      [evaluatedOverrideByExpression, localValueByExpression, localColorByExpression].filter(Boolean)?.length === 0;
 
     const getParsedMappings = () => {
       try {
@@ -60,9 +80,10 @@ const StatusTagComponent: IToolboxComponent<IStatusTagProps> = {
     };
 
     const props: ITagProps = {
-      override: evaluatedOverride,
-      value: allEvaluationEmpty ? 1000 : evaluatedValue,
-      color: computedColor || evaluatedColor,
+      override: computedOverrideByCode || evaluatedOverrideByExpression,
+      // value: computedValue || localValueByExpression,
+      value: allEvaluationEmpty ? 1000 : computedValueByCode || localValueByExpression,
+      color: computedColorByCode || localColorByExpression,
       mappings: getParsedMappings(),
     };
 
