@@ -4,4 +4,5 @@ import { IConfigurableColumnsBase } from '../../../../../providers/datatableColu
 /** Table component props */
 export interface ITableComponentProps extends IConfigurableFormComponent {
   items: IConfigurableColumnsBase[];
+  useMultiselect: boolean;
 }

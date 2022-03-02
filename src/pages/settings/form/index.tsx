@@ -1,11 +1,15 @@
-import React from 'react';
-import { GenericIndexPageDefault, OnSuccessActionType } from '../../../components';
+import React, { FC } from 'react';
+import { GenericIndexPageDefault, IIndexTableFullProps, OnSuccessActionType } from '../../../components';
 import { IShaDataTableProps } from '../../../interfaces';
 
 import { useCreateForm } from './defaults/utils';
 
-const FormsIndexPage = () => {
-  const tableProps: IShaDataTableProps = {
+interface IFormsIndexPageProps {
+  tableProps?: Omit<IIndexTableFullProps, 'id'>;
+}
+
+const FormsIndexPage: FC<IFormsIndexPageProps> = ({ tableProps }) => {
+  const tableConfig: IShaDataTableProps = {
     id: 'Forms_Index', // hardcoded for now
     header: 'Forms',
     disableCustomFilters: true,
@@ -24,14 +28,13 @@ const FormsIndexPage = () => {
           return `/settings/forms/designer?id=${data?.result?.id}`;
         },
       }}
-      // tableProps={{}}
-      // tableRef
       detailsUrl={id => `/settings/forms/designer?id=${id}`}
       editUrl={id => `/settings/forms/edit?id=${id}`}
       title="Forms"
-      tableConfigId={tableProps?.id}
+      tableConfigId={tableConfig?.id}
       // props for the index table. selected row IDs. Does not expose selectedRowIds
-      {...tableProps}
+      {...tableConfig}
+      tableProps={tableProps}
     />
   );
 };

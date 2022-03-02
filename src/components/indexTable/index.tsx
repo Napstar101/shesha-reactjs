@@ -86,6 +86,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     cancelCreateOrEditRowData,
     updateLocalTableData,
     deleteRowItem,
+    changeSelectedIds,
     // succeeded,
     succeeded: { exportToExcel: exportToExcelSuccess },
     error: { exportToExcel: exportToExcelError },
@@ -520,6 +521,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     // disableSortBy: false, // Do not disable sorting
     onSelectRow,
     onRowDoubleClick: dblClickHandler,
+    onSelectedIdsChanged: changeSelectedIds,
     columns: preparedColumns?.map(column => {
       const cleanedColumn = removeUndefinedProperties(column);
 

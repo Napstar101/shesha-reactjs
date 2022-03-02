@@ -16,6 +16,7 @@ export interface IToolbarButtonProps extends IToolbarButton {
 export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   const { getAction, form, setFormMode } = useForm();
   const { router } = useShaRouting();
+  const { selectedIds } = useDataTableStore();
 
   if (props?.buttonAction === 'dialogue') {
     const convertedProps = props as IToolbarButtonTableDialogProps;
@@ -43,7 +44,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
         if (props.targetUrl) {
           const preparedUrl =
             props.targetUrl.indexOf('{{') > -1
-              ? evaluateString(props.targetUrl, { selectedRow: props.selectedRow })
+              ? evaluateString(props.targetUrl, { selectedRow: props.selectedRow, selectedIds })
               : props.targetUrl;
 
           router?.push(preparedUrl);

@@ -63,6 +63,7 @@ const ReactTable: FC<IReactTableProps> = ({
   onSelectRow,
   onRowDoubleClick,
   onResizedChange,
+  onSelectedIdsChanged,
   scrollBodyHorizontally = false,
   height = 250,
 }) => {
@@ -142,10 +143,26 @@ const ReactTable: FC<IReactTableProps> = ({
     }
   );
 
-  const { pageIndex, pageSize } = state;
+  const { pageIndex, pageSize, selectedRowIds } = state;
+
+  useEffect(() => {
+    if (selectedRowIds) {
+      const arrays: string[] = data
+        ?.map(({ Id }, index) => {
+          if (selectedRowIds[index]) {
+            return Id;
+          }
+
+          return null;
+        })
+        ?.filter(Boolean);
+
+      onSelectedIdsChanged(arrays);
+    }
+  }, [selectedRowIds]);
 
   // Listen for changes in pagination and use the state to fetch our new data
-  React.useEffect(() => {
+  useEffect(() => {
     if (onFetchData) {
       // onFetchData();
     }
