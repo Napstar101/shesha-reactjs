@@ -26,6 +26,7 @@ import { removeUndefinedProperties } from '../../utils/array';
 import { ValidationErrors } from '..';
 import { useAuthState, useDataTableStore } from '../../providers';
 import { IReactTableProps } from '../reactTable/interfaces';
+import { usePrevious } from 'react-use';
 
 const FormItem = Form.Item;
 
@@ -55,6 +56,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   onExportSuccess,
   onExportError,
   onFetchDataSuccess,
+  onSelectedIdsChanged,
   crudParentEntityKey = 'parentEntity',
 }) => {
   const store = useDataTableStore();
@@ -77,6 +79,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     onDblClick: onDblClickDeprecated,
     selectedRow,
     parentEntityId,
+    selectedIds,
     tableSorting,
     quickSearch,
     crudConfig,
@@ -91,6 +94,14 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     succeeded: { exportToExcel: exportToExcelSuccess },
     error: { exportToExcel: exportToExcelError },
   } = store;
+
+  const previousIds = usePrevious(selectedIds);
+  useEffect(() => {
+    if (!(previousIds?.length === 0 && selectedIds?.length === 0) && typeof onSelectedIdsChanged === 'function') {
+      onSelectedIdsChanged(selectedIds);
+    }
+  }, [selectedIds]);
+
   useEffect(() => {
     if (!isFetchingTableData && tableData?.length && onFetchDataSuccess) {
       onFetchDataSuccess();
