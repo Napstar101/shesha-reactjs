@@ -29,6 +29,7 @@ import formViewMarkup from './defaults/markups/formView.json';
 import masterDetailsViewMarkup from './defaults/markups/masterDetailsView.json';
 import menuViewMarkup from './defaults/markups/menuView.json';
 import tableViewMarkup from './defaults/markups/tableView.json';
+import { useSheshaApplication } from '..';
 
 /**
  * Convert components tree to flat structure.
@@ -614,12 +615,10 @@ export const processRecursive = (
 ) => {
   func(component, parentId);
 
-  if (parentId === ROOT_COMPONENT_KEY)
-    return;
+  if (parentId === ROOT_COMPONENT_KEY) return;
 
   const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
-  if (!toolboxComponent)
-    return;
+  if (!toolboxComponent) return;
   const containers = getContainerNames(toolboxComponent);
 
   if (containers) {
@@ -725,4 +724,12 @@ export const createComponentModelForDataProperty = (
   componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
 
   return componentModel;
+};
+
+export const sheshaApplication = () => {
+  try {
+    return useSheshaApplication();
+  } catch (error) {
+    return { toolboxComponentGroups: [] };
+  }
 };
