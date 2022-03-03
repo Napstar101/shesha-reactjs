@@ -103,7 +103,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
 export default ToolbarComponent;
 
 //#region Page Toolbar
-const ToolbarWithProvider: FC<IToolbarProps> = props => (
+export const ToolbarWithProvider: FC<IToolbarProps> = props => (
   <DataTableSelectionProvider>
     <Toolbar {...props} />
   </DataTableSelectionProvider>

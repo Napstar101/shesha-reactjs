@@ -95,6 +95,8 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items, useMultisele
         onSelectRow={onSelectRow}
         selectedRowIndex={selectedRow?.index}
         useMultiselect={useMultiselect}
+        crud
+        // crudMode="dialog"
       />
     </CollapsibleSidebarContainer>
   );

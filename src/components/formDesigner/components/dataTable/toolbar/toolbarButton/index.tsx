@@ -37,7 +37,9 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
     );
   }
 
-  const onButtonClick = () => {
+  const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
+
     switch (props.buttonAction) {
       case 'navigate':
         if (props.targetUrl) {
@@ -82,7 +84,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   return (
     <Button
       title={props.tooltip}
-      onClick={onButtonClick}
+      onClick={event => onButtonClick(event)}
       type={props.buttonType}
       danger={props.danger}
       icon={props.icon ? <ShaIcon iconName={props.icon as IconType} /> : undefined}
@@ -115,7 +117,9 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
 
   const dynamicModal = useModal(modalProps);
 
-  const onButtonClick = () => {
+  const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
+
     if (props.modalFormId) {
       dynamicModal.open();
     } else console.warn('Modal Form is not specified');
@@ -138,7 +142,9 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
 const ToolbarButtonPlainDialog: FC<IToolbarButtonTableDialogProps> = props => {
   const dynamicModal = useModal(props?.modalProps);
 
-  const onButtonClick = () => {
+  const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
+
     if (props.modalFormId) {
       dynamicModal.open();
     } else console.warn('Modal Form is not specified');
