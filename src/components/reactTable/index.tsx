@@ -159,7 +159,7 @@ const ReactTable: FC<IReactTableProps> = ({
 
       onSelectedIdsChanged(arrays);
     }
-  }, [selectedRowIds, onSelectedIdsChanged]);
+  }, [selectedRowIds]);
 
   // Listen for changes in pagination and use the state to fetch our new data
   useEffect(() => {
