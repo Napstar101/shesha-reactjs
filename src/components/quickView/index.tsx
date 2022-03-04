@@ -33,9 +33,9 @@ export interface IQuickViewProps {
 const QuickView: FC<IQuickViewProps> = ({
     title,
     displayFormPath,
-    displayPropertyName,
-    getDetailsUrl,
-    id
+    // displayPropertyName,
+    // getDetailsUrl,
+    // id
 }) => {
 
     const [form] = Form.useForm();
