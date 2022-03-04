@@ -7,27 +7,27 @@ export interface IQuickViewProps {
     /**
      * The title for the quick view window
      */
-    title: string;
+    title?: string;
 
     /**
      * Path to the form to display on the modal
      */
-    displayFormPath: string;
+    displayFormPath?: string;
 
     /**
      * The property to display from the model
      */
-    displayPropertyName: string;
+    displayPropertyName?: string;
 
     /**
      * The url to use to get the detaills of the object
      */
-    getDetailsUrl: string;
+    getDetailsUrl?: string;
 
     /**
      * The id or guid for the entity
      */
-    id: string;
+    id?: string;
 }
 
 const QuickView: FC<IQuickViewProps> = ({

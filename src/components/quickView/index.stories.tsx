@@ -40,7 +40,7 @@ const baseProps: IQuickViewProps = {
     displayFormPath: "/members/details",
     displayPropertyName: "DisplayName",
     getDetailsUrl: "/members",
-    id: "00000000000"
+    // id: "00000000000"
 };
 
 export const Base = BaseTemplate.bind({});
