@@ -83,13 +83,6 @@
       "label": "Disabled"
     },
     {
-      "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
-      "type": "checkbox",
-      "name": "quickView",
-      "parentId": "root",
-      "label": "Quickview"
-    },
-    {
       "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
       "type": "sectionSeparator",
       "name": "separator2",
@@ -103,6 +96,51 @@
       "parentId": "root",
       "label": "Required"
     },
+
+
+
+    
+    {
+      "id": "2ac8ba98-2f5a-4a17-889f-b728fa3f3ab9",
+      "type": "sectionSeparator",
+      "name": "quickViewSectionSeparator",
+      "parentId": "root",
+      "label": "Quickview"
+    },
+    {
+      "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
+      "type": "checkbox",
+      "name": "quickViewEnabled",
+      "parentId": "root",
+      "label": "Enabled"
+    },{
+      "id": "ce0c2811-8a7f-4ad1-ae24-ea3073d576cd",
+      "type": "textField",
+      "name": "displayFormPathPlaceholder",
+      "parentId": "root",
+      "label": "Form Path",
+      "customVisibility": "return data.quickViewEnabled === true"
+    },
+    {
+      "id": "aa8db30d-7fef-44e9-923c-622c79c56247",
+      "type": "textField",
+      "name": "displayPropertyNamePlaceholder",
+      "parentId": "root",
+      "label": "Property Name",
+      "customVisibility": "return data.quickViewEnabled === true"
+    },
+    {
+      "id": "e5bda2d9-773c-4614-97a8-a12cb414bcc2",
+      "type": "textField",
+      "name": "getDetailsUrlPlaceholder",
+      "parentId": "root",
+      "label": "Details Url",
+      "customVisibility": "return data.quickViewEnabled === true"
+    },
+
+
+
+    
     {
       "id": "bc67960e-77e3-40f2-89cc-f18f94678cce",
       "type": "sectionSeparator",
