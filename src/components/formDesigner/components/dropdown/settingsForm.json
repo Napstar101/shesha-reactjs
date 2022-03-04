@@ -291,7 +291,7 @@
     },{
       "id": "7c3f88e1-3e11-432a-af88-1acf916a960a",
       "type": "textField",
-      "name": "displayFormPathPlaceholder",
+      "name": "displayFormPath",
       "parentId": "root",
       "label": "Form Path",
       "customVisibility": "return data.quickViewEnabled === true"
@@ -299,7 +299,7 @@
     {
       "id": "ba0b4f47-12c3-4c41-8600-6329f29e1da0",
       "type": "textField",
-      "name": "displayPropertyNamePlaceholder",
+      "name": "displayPropertyName",
       "parentId": "root",
       "label": "Property Name",
       "customVisibility": "return data.quickViewEnabled === true"
@@ -307,7 +307,7 @@
     {
       "id": "46176f6d-da2e-48b4-beaa-8763dc1c1063",
       "type": "textField",
-      "name": "getDetailsUrlPlaceholder",
+      "name": "getDetailsUrl",
       "parentId": "root",
       "label": "Details Url",
       "customVisibility": "return data.quickViewEnabled === true"

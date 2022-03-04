@@ -28,6 +28,12 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   mode?: 'tags' | 'multiple';
   useRawValues: boolean;
   queryParams: IQueryParamProp[];
+
+  // Quickview properties
+  quickViewEnabled?: boolean;
+  displayFormPath?: string;
+  displayPropertyName?: string;
+  getDetailsUrl?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;

@@ -16,6 +16,12 @@ export interface IEntityPickerComponentProps extends IConfigurableFormComponent 
   disabled?: boolean;
   tableId: string;
   title?: string;
+
+  // Quickview properties
+  quickViewEnabled?: boolean;
+  displayFormPath?: string;
+  displayPropertyName?: string;
+  getDetailsUrl?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
