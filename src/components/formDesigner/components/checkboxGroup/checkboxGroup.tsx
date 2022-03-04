@@ -25,7 +25,6 @@ export interface ICheckboxGoupProps extends IConfigurableFormComponent {
   referenceListName?: string;
   dataSourceType: DataSourceType;
   orientation?: 'vertical' | 'inline';
-  //value?: any;
   values?: ICheckItem[];
 }
 
@@ -37,8 +36,6 @@ const CheckboxGroupComponent: IToolboxComponent<ICheckboxGoupProps> = {
   icon: <ProfileOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.referenceListItem,
   factory: (model: ICheckboxGoupProps) => {
-    //const { items = [] } = model;
-    // const checkItems = items.map(item => ({ label: item.name, value: item.value }));
     return (
       <ConfigurableFormItem model={model}>
         <RefListCheckboxGroup {...model} />
@@ -72,7 +69,6 @@ export const RefListCheckboxGroup: FC<ICheckboxGoupProps> = ({
   referenceListName,
   mode,
   items,
-  //value,
   values,
   orientation,
 }) => {
@@ -109,9 +105,6 @@ export const RefListCheckboxGroup: FC<ICheckboxGoupProps> = ({
   const options = listItems;
 
   const getOptions = (): ICheckItem[] => {
-    // return value && typeof value === 'string'
-    //   ? values.map(item => ({ id: item.id, name: item.name, value: item.value }))
-    //   : values;
     return values;
   };
 
