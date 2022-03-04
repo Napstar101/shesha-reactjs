@@ -8,7 +8,7 @@ import Autocomplete, { AutocompleteDataSourceType } from '../../../autocomplete'
 import { useForm } from '../../../../providers/form';
 import { evaluateValue, replaceTags, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { DataTypes } from '../../../../interfaces/dataTypes';
-// import { QuickView } from '../../..';
+// import QuickView from '../../../quickView';
 
 interface IQueryParamProp {
   id: string;

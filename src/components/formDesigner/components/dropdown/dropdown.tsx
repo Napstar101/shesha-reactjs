@@ -11,7 +11,7 @@ import RefListDropDown from '../../../refListDropDown';
 import { DataTypes } from '../../../../interfaces/dataTypes';
 import { useForm } from '../../../..';
 import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
-import { QuickView } from '../../..';
+import QuickView from '../../../quickView';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
