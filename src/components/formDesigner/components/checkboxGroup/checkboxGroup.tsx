@@ -4,12 +4,11 @@ import { ProfileOutlined } from '@ant-design/icons';
 import { Radio, Checkbox, Col, Row } from 'antd';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import React, { CSSProperties, FC, Key, useEffect, useState } from 'react';
+import React, { CSSProperties, FC, useEffect, useState } from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 import { DataTypes } from '../../../../interfaces/dataTypes';
 import { ReferenceListItemDto, useReferenceListGetItems } from '../../../../apis/referenceList';
 import { getCachedItems, saveListItems } from '../../../refListDropDown/utils';
-import { number } from 'prop-types';
 
 export interface ICheckItem {
   id: string;
@@ -26,7 +25,7 @@ export interface ICheckboxGoupProps extends IConfigurableFormComponent {
   referenceListName?: string;
   dataSourceType: DataSourceType;
   orientation?: 'vertical' | 'inline';
-  value?: any;
+  //value?: any;
   values?: ICheckItem[];
 }
 
@@ -38,8 +37,8 @@ const CheckboxGroupComponent: IToolboxComponent<ICheckboxGoupProps> = {
   icon: <ProfileOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.referenceListItem,
   factory: (model: ICheckboxGoupProps) => {
-    const { items = [] } = model;
-    const checkItems = items.map(item => ({ label: item.name, value: item.value }));
+    //const { items = [] } = model;
+    // const checkItems = items.map(item => ({ label: item.name, value: item.value }));
     return (
       <ConfigurableFormItem model={model}>
         <RefListCheckboxGroup {...model} />
@@ -73,7 +72,7 @@ export const RefListCheckboxGroup: FC<ICheckboxGoupProps> = ({
   referenceListName,
   mode,
   items,
-  value,
+  //value,
   values,
   orientation,
 }) => {
@@ -105,20 +104,15 @@ export const RefListCheckboxGroup: FC<ICheckboxGoupProps> = ({
     }
   }, [listItemsResult]);
 
-  const filter = ({ itemValue }: ReferenceListItemDto) => {
-    const localFilter = items?.includes(itemValue);
-
-    return localFilter ? filter : !filter;
-  };
-
   const listItems = cachedListItems?.length ? cachedListItems : listItemsResult?.result;
 
-  const options = items?.length ? listItems?.filter(filter) : listItems;
+  const options = listItems;
 
   const getOptions = (): ICheckItem[] => {
-    return value && typeof value === 'string'
-      ? values.map(item => ({ id: item.id, name: item.name, value: item.value }))
-      : values;
+    // return value && typeof value === 'string'
+    //   ? values.map(item => ({ id: item.id, name: item.name, value: item.value }))
+    //   : values;
+    return values;
   };
 
   const valueOptions = getOptions() || [];
