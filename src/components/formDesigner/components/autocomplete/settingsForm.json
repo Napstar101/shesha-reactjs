@@ -159,6 +159,26 @@
       "customVisibility": "return data.dataSourceType === 'url'"
     },
     {
+      "id": "4c6133f1-8886-4527-aa6c-ae0606506a8a",
+      "type": "textField",
+      "name": "keyPropName",
+      "parentId": "root",
+      "label": "Key Prop Name",
+      "customVisibility": "return data.dataSourceType === 'url'",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "007e5859-9299-4434-84d9-9f7b0f7228af",
+      "type": "textField",
+      "name": "valuePropName",
+      "parentId": "root",
+      "label": "Value Prop Name",
+      "customVisibility": "return data.dataSourceType === 'url'",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
       "id": "c1ffda30-8eea-4621-aae7-0af583143df6",
       "type": "autocomplete",
       "name": "entityTypeShortAlias",
