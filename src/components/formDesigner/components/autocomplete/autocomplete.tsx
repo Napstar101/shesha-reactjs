@@ -30,6 +30,12 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   queryParams: IQueryParamProp[];
   keyPropName?: string;
   valuePropName?: string;
+
+  // Quickview properties
+  quickViewEnabled?: boolean;
+  displayFormPath?: string;
+  displayPropertyName?: string;
+  getDetailsUrl?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;

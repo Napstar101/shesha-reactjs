@@ -9,6 +9,7 @@ import { EntityPicker } from '../../..';
 import { Alert } from 'antd';
 import { useForm } from '../../../../providers';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import QuickView from '../../../quickView';
 
 export interface IEntityPickerComponentProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -16,6 +17,12 @@ export interface IEntityPickerComponentProps extends IConfigurableFormComponent 
   disabled?: boolean;
   tableId: string;
   title?: string;
+
+  // Quickview properties
+  quickViewEnabled?: boolean;
+  displayFormPath?: string;
+  displayPropertyName?: string;
+  getDetailsUrl?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -34,7 +41,17 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
 
     return (
       <ConfigurableFormItem model={model} initialValue={model?.defaultValue}>
-        <EntityPicker disabled={model.disabled} tableId={model?.tableId} />
+        {model.enableQuickview ? (
+          <QuickView
+            // title={props.title}
+            displayFormPath={model.displayFormPath}
+            displayPropertyName={model.displayPropertyName}
+            getDetailsUrl={model.getDetailsUrl}
+          // id={props.id} 
+          />
+        ) : (
+          <EntityPicker disabled={model.disabled} tableId={model?.tableId} />
+        )}
       </ConfigurableFormItem>
     );
   },
