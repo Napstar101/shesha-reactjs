@@ -10,6 +10,7 @@ import { Alert } from 'antd';
 import { useForm } from '../../../../providers';
 import { DataTypes } from '../../../../interfaces/dataTypes';
 import QuickView from '../../../quickView';
+import EntityFooter from './entityFooter';
 
 export interface IEntityPickerComponentProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -17,6 +18,12 @@ export interface IEntityPickerComponentProps extends IConfigurableFormComponent 
   disabled?: boolean;
   tableId: string;
   title?: string;
+  allowNewRecord?: boolean;
+  modalFormId?: string;
+  modalTitle?: string;
+  showModalFooter?: boolean;
+  onSuccessRedirectUrl?: string;
+  submitHttpVerb?: 'POST' | 'PUT';
 
   // Quickview properties
   quickViewEnabled?: boolean;
@@ -50,7 +57,7 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
           // id={props.id} 
           />
         ) : (
-          <EntityPicker disabled={model.disabled} tableId={model?.tableId} />
+          <EntityPicker disabled={model.disabled} tableId={model?.tableId} entityFooter={<EntityFooter {...model} />} />
         )}
       </ConfigurableFormItem>
     );
