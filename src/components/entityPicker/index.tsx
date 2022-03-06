@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, Fragment, ReactNode, useState } from 'react';
 import { Modal, Input, Button, ButtonProps } from 'antd';
 import IndexTable from '../indexTable';
 import { IAnyObject } from '../../interfaces';
@@ -24,6 +24,7 @@ export interface IEntityPickerProps {
   pickerButtonProps?: ButtonProps;
   parentEntityId?: string;
   defaultValue?: string;
+  entityFooter?: ReactNode;
 }
 
 export interface IEntityPickerState {
@@ -54,6 +55,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   parentEntityId,
   defaultValue,
   title = 'Select Item',
+  entityFooter,
 }) => {
   const [state, setState] = useState<IEntityPickerState>({
     showModal: false,
@@ -129,6 +131,15 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
     setState({ ...state, showModal: true });
   };
 
+  const footer = (
+    <Fragment>
+      {entityFooter}
+      <div>
+        <Button onClick={handleCancel}>Close</Button>
+      </div>
+    </Fragment>
+  );
+
   return (
     <div className="entity-picker-container">
       <div>
@@ -169,11 +180,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
         onCancel={handleCancel}
         width="60%"
         okText="Select"
-        footer={
-          <div>
-            <Button onClick={handleCancel}>Close</Button>
-          </div>
-        }
+        footer={footer}
       >
         <DataTableProvider tableId={tableId} onDblClick={onDblClick} parentEntityId={parentEntityId}>
           <GlobalTableFilter
