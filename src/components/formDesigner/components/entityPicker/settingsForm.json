@@ -83,9 +83,129 @@
       "label": "Disabled"
     },
     {
-      "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
+      "id": "eb946e7c-5450-48b8-994a-ead765e3d631",
       "type": "sectionSeparator",
       "name": "separator2",
+      "parentId": "root",
+      "label": "Data"
+    },
+    {
+      "id": "0cc0b997-f3f7-4a3d-ba36-8590687af9bd",
+      "type": "checkbox",
+      "name": "allowNewRecord",
+      "parentId": "root",
+      "label": "Allow New Record"
+    },
+    {
+      "id": "2a5acbcf-cd52-487e-9cd7-09594a04793a",
+      "type": "collapsiblePanel",
+      "name": "pnlModalSettings",
+      "label": "Dialogue settings",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "return data.allowNewRecord === true",
+      "validate": {
+        "required": false
+      },
+      "direction": "vertical",
+      "justifyContent": "left",
+      "components": [
+        {
+          "id": "4b3b0da0-f126-4e37-b5f5-568367dc008f",
+          "type": "textField",
+          "name": "modalTitle",
+          "label": "Title",
+          "labelAlign": "right",
+          "parentId": "2a5acbcf-cd52-487e-9cd7-09594a04793a",
+          "hidden": false,
+          "customVisibility": null,
+          "validate": {}
+        },
+        {
+          "id": "fd3d4ef4-be06-40e9-9815-118754707d0e",
+          "type": "autocomplete",
+          "name": "modalFormId",
+          "label": "Modal form",
+          "labelAlign": "right",
+          "parentId": "2a5acbcf-cd52-487e-9cd7-09594a04793a",
+          "hidden": false,
+          "customVisibility": null,
+          "validate": {},
+          "dataSourceType": "entitiesList",
+          "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
+          "entityTypeShortAlias": "Shesha.Framework.Form",
+          "useRawValues": true
+        },
+        {
+          "id": "43c5fcb7-a2d4-46d7-b671-6eac73e8d95c",
+          "type": "checkbox",
+          "name": "showModalFooter",
+          "parentId": "2a5acbcf-cd52-487e-9cd7-09594a04793a",
+          "label": "Show Modal Buttons",
+          "defaultChecked": false
+        },
+        {
+          "id": "ea60aee4-a7aa-4fd6-a641-638a5a609157",
+          "type": "dropdown",
+          "name": "submitHttpVerb",
+          "parentId": "2a5acbcf-cd52-487e-9cd7-09594a04793a",
+          "label": "Submit Http Verb",
+          "values": [
+            {
+              "label": "POST",
+              "value": "POST",
+              "parentId": "ea60aee4-a7aa-4fd6-a641-638a5a609157",
+              "id": "8418606a-d85d-4795-a2ee-4a69fcc656f9"
+            },
+            {
+              "label": "PUT",
+              "value": "PUT",
+              "parentId": "ea60aee4-a7aa-4fd6-a641-638a5a609157",
+              "id": "64bbca8a-2fb1-4448-ab71-3db077233bd2"
+            }
+          ],
+          "dataSourceType": "values",
+          "customVisibility": "return data.showModalFooter === true",
+          "defaultValue": ["POST"]
+        },
+        {
+          "id": "e669632e-55e0-46f4-9585-9e81ef0ae174",
+          "type": "textField",
+          "name": "onSuccessRedirectUrl",
+          "parentId": "2a5acbcf-cd52-487e-9cd7-09594a04793a",
+          "label": "Success Redirect URL",
+          "customVisibility": "return data.showModalFooter === true"
+        }
+      ],
+      "dataSourceType": "values",
+      "values": [
+        {
+          "id": "5c717647-2ecd-434d-8d74-6c6805303007",
+          "label": "Navigate",
+          "value": "navigate"
+        },
+        {
+          "id": "c025760d-b99b-4c44-89cf-1edb2a6cd014",
+          "label": "Dialogue",
+          "value": "dialogue"
+        },
+        {
+          "id": "3f71a488-7cd8-4b9b-b0f6-8b37b8a04aae",
+          "label": "Execute Script",
+          "value": "executeScript"
+        },
+        {
+          "id": "18fa8cc0-a327-466d-9513-52c53218d39d",
+          "label": "Execute form action",
+          "value": "executeFormAction"
+        }
+      ]
+    },
+    {
+      "id": "d675bfe4-ee69-431e-931b-b0e0b9ceee6f",
+      "type": "sectionSeparator",
+      "name": "separator3",
       "parentId": "root",
       "label": "Validation"
     },
@@ -97,9 +217,6 @@
       "label": "Required"
     },
 
-
-
-    
     {
       "id": "2ac8ba98-2f5a-4a17-889f-b728fa3f3ab9",
       "type": "sectionSeparator",
@@ -113,7 +230,8 @@
       "name": "quickViewEnabled",
       "parentId": "root",
       "label": "Enabled"
-    },{
+    },
+    {
       "id": "ce0c2811-8a7f-4ad1-ae24-ea3073d576cd",
       "type": "textField",
       "name": "displayFormPath",
@@ -138,9 +256,6 @@
       "customVisibility": "return data.quickViewEnabled === true"
     },
 
-
-
-    
     {
       "id": "bc67960e-77e3-40f2-89cc-f18f94678cce",
       "type": "sectionSeparator",
