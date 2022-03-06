@@ -134,9 +134,7 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   const footer = (
     <Fragment>
       {entityFooter}
-      <div>
-        <Button onClick={handleCancel}>Close</Button>
-      </div>
+      <Button onClick={handleCancel}>Close</Button>
     </Fragment>
   );
 
