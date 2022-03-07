@@ -18,6 +18,7 @@ export interface IEntityPickerComponentProps extends IConfigurableFormComponent 
   disabled?: boolean;
   tableId: string;
   title?: string;
+  displayEntityKey?: string;
   allowNewRecord?: boolean;
   modalFormId?: string;
   modalTitle?: string;
@@ -40,10 +41,10 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
   icon: <EllipsisOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.entityReference,
   factory: (model: IEntityPickerComponentProps) => {
-    const { formMode } = useForm()
+    const { formMode } = useForm();
 
     if (formMode === 'designer' && !model?.tableId) {
-      return <Alert message="Please make sure that you've specified the tableId property" />
+      return <Alert message="Please make sure that you've specified the tableId property" />;
     }
 
     return (
@@ -54,10 +55,15 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
             displayFormPath={model.displayFormPath}
             displayPropertyName={model.displayPropertyName}
             getDetailsUrl={model.getDetailsUrl}
-          // id={props.id} 
+            // id={props.id}
           />
         ) : (
-          <EntityPicker disabled={model.disabled} tableId={model?.tableId} entityFooter={<EntityFooter {...model} />} />
+          <EntityPicker
+            disabled={model.disabled}
+            tableId={model?.tableId}
+            displayEntityKey={model?.displayEntityKey}
+            entityFooter={<EntityFooter {...model} />}
+          />
         )}
       </ConfigurableFormItem>
     );
