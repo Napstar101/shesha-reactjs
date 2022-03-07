@@ -47,14 +47,6 @@ export const TableWrapper: FC<ITableComponentProps> = ({
 
   const isDesignMode = formMode === 'designer';
 
-  console.log('TableWrapper object :>> ', {
-    id,
-    items,
-    useMultiselect,
-    overrideDefaultCrudBehavior,
-    crud,
-  });
-
   const {
     tableId,
     entityType,

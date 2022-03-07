@@ -294,7 +294,7 @@ export const ReadOnlyForm = DesignerTemplate.bind({});
 // };
 
 BlankView.args = {
-  formPath: 'area-details-53d03368-f41c-46bc-a836-d44c51a9d75b',
+  formPath: 'area-index-child-table-test',
   // formPath: '/view/test/typography',
   modelType: 'blank',
 };

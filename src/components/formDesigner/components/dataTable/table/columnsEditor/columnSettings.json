@@ -136,9 +136,180 @@
               "id": "18fa8cc0-a327-466d-9513-52c53218d39d",
               "label": "Execute form action",
               "value": "executeFormAction"
+            },
+            {
+              "id": "eacb4fd5-958a-46df-83e5-1c3c1a9269b4",
+              "label": "Edit Row",
+              "value": "editRow"
+            },
+            {
+              "id": "29ad6ee0-bee5-4f04-a5c2-2e51c2e12b79",
+              "label": "Delete row",
+              "value": "deleteRow"
             }
           ],
           "validate": {},
+          "settingsValidationErrors": []
+        },
+        {
+          "id": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "type": "collapsiblePanel",
+          "name": "pnlModalSettings",
+          "label": "Dialog settings",
+          "labelAlign": "right",
+          "parentId": "345c2181-fb9f-48ed-9631-864ac357807b",
+          "hidden": false,
+          "customVisibility": "return data.action === 'dialogue' || data.action === 'editRow'",
+          "validate": {
+            "required": false
+          },
+          "direction": "vertical",
+          "justifyContent": "left",
+          "components": [
+            {
+              "id": "a8b80cb4-b214-40e9-8289-0792376672ee",
+              "type": "textField",
+              "name": "modalTitle",
+              "label": "Title",
+              "labelAlign": "right",
+              "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+              "hidden": false,
+              "customVisibility": null,
+              "validate": {}
+            },
+            {
+              "id": "adbc3b29-9a53-4305-869a-f37ba6e8bb94",
+              "type": "autocomplete",
+              "name": "modalFormId",
+              "label": "Modal form",
+              "labelAlign": "right",
+              "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+              "hidden": false,
+              "customVisibility": null,
+              "validate": {},
+              "dataSourceType": "entitiesList",
+              "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
+              "entityTypeShortAlias": "Shesha.Framework.Form",
+              "useRawValues": true
+            },
+            {
+              "id": "2ab34541-6fa0-4be2-bb1e-eb65ec63b353",
+              "type": "textField",
+              "name": "modalActionOnSuccess",
+              "label": "Action on success",
+              "labelAlign": "right",
+              "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+              "hidden": true,
+              "customVisibility": null,
+              "validate": {}
+            },
+            {
+              "id": "c815c322-ba5d-4062-9736-e5d03c724134",
+              "type": "checkbox",
+              "name": "showModalFooter",
+              "parentId": "root",
+              "label": "Show Modal Buttons",
+              "defaultChecked": false
+            },
+            {
+              "id": "ae69ab38-65fa-4b34-a701-3b46aff045f5",
+              "type": "checkbox",
+              "name": "refreshTableOnSuccess",
+              "parentId": "root",
+              "label": "Refresh table on success?",
+              "defaultChecked": false
+            },
+            {
+              "id": "f15848e8-87fa-4d76-b5a4-8548b8c2dd8b",
+              "type": "dropdown",
+              "name": "submitHttpVerb",
+              "parentId": "root",
+              "label": "Submit Http Verb",
+              "values": [
+                {
+                  "label": "POST",
+                  "value": "POST",
+                  "id": "8418606a-d85d-4795-a2ee-4a69fcc656f9"
+                },
+                {
+                  "label": "PUT",
+                  "value": "PUT",
+                  "id": "64bbca8a-2fb1-4448-ab71-3db077233bd2"
+                }
+              ],
+              "dataSourceType": "values",
+              "customVisibility": "return data.showModalFooter === true",
+              "defaultValue": ["POST"]
+            },
+            {
+              "id": "e669632e-55e0-46f4-9585-9e81ef0ae174",
+              "type": "textField",
+              "name": "onSuccessRedirectUrl",
+              "parentId": "root",
+              "label": "Success Redirect URL",
+              "customVisibility": "return data.showModalFooter === true"
+            }
+          ],
+          "dataSourceType": "values",
+          "values": [
+            {
+              "id": "5c717647-2ecd-434d-8d74-6c6805303007",
+              "label": "Navigate",
+              "value": "navigate"
+            },
+            {
+              "id": "c025760d-b99b-4c44-89cf-1edb2a6cd014",
+              "label": "Dialogue",
+              "value": "dialogue"
+            },
+            {
+              "id": "3f71a488-7cd8-4b9b-b0f6-8b37b8a04aae",
+              "label": "Execute Script",
+              "value": "executeScript"
+            },
+            {
+              "id": "18fa8cc0-a327-466d-9513-52c53218d39d",
+              "label": "Execute form action",
+              "value": "executeFormAction"
+            }
+          ]
+        },
+        {
+          "id": "f15848e8-87fa-4d76-b5a4-8548b8c2dd8b",
+          "type": "dropdown",
+          "name": "submitHttpVerb",
+          "parentId": "root",
+          "label": "Submit Http Verb",
+          "values": [
+            {
+              "label": "POST",
+              "value": "POST",
+              "id": "8418606a-d85d-4795-a2ee-4a69fcc656f9"
+            },
+            {
+              "label": "PUT",
+              "value": "PUT",
+              "id": "64bbca8a-2fb1-4448-ab71-3db077233bd2"
+            }
+          ],
+          "dataSourceType": "values",
+          "customVisibility": "return data.showModalFooter === true",
+          "defaultValue": ["POST"]
+        },
+        {
+          "id": "0423ef34-4e96-4fd4-b1f3-95dd4f5daca9",
+          "type": "textArea",
+          "name": "deleteWarningMessage",
+          "label": "Delete warning message",
+          "labelAlign": "right",
+          "parentId": "root",
+          "hidden": false,
+          "customVisibility": "return data.action === 'deleteRow'",
+          "autoSize": false,
+          "showCount": false,
+          "allowClear": false,
+          "description": "Note that you can also use string interpolation, using Mustache, here like: 'Are you sure you want to delete {{selectedRow.name}}?'",
+          "placeholder": "Are you sure you want to delete this entity with id: {{selectedRow.Id}}? Please note this action cannot be reversed!",
           "settingsValidationErrors": []
         },
         {
@@ -196,84 +367,6 @@
           "validate": {
             "required": false
           },
-          "dataSourceType": "values",
-          "values": [
-            {
-              "id": "5c717647-2ecd-434d-8d74-6c6805303007",
-              "label": "Navigate",
-              "value": "navigate"
-            },
-            {
-              "id": "c025760d-b99b-4c44-89cf-1edb2a6cd014",
-              "label": "Dialogue",
-              "value": "dialogue"
-            },
-            {
-              "id": "3f71a488-7cd8-4b9b-b0f6-8b37b8a04aae",
-              "label": "Execute Script",
-              "value": "executeScript"
-            },
-            {
-              "id": "18fa8cc0-a327-466d-9513-52c53218d39d",
-              "label": "Execute form action",
-              "value": "executeFormAction"
-            }
-          ],
-          "settingsValidationErrors": []
-        },
-        {
-          "id": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
-          "type": "collapsiblePanel",
-          "name": "pnlModalSettings",
-          "label": "Dialogue settings",
-          "labelAlign": "right",
-          "parentId": "345c2181-fb9f-48ed-9631-864ac357807b",
-          "hidden": false,
-          "customVisibility": "return data.action === 'dialogue'",
-          "validate": {
-            "required": false
-          },
-          "direction": "vertical",
-          "justifyContent": "left",
-          "components": [
-            {
-              "id": "a8b80cb4-b214-40e9-8289-0792376672ee",
-              "type": "textField",
-              "name": "modalTitle",
-              "label": "Title",
-              "labelAlign": "right",
-              "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
-              "hidden": false,
-              "customVisibility": null,
-              "validate": {}
-            },
-            {
-              "id": "adbc3b29-9a53-4305-869a-f37ba6e8bb94",
-              "type": "autocomplete",
-              "name": "modalFormId",
-              "label": "Modal form",
-              "labelAlign": "right",
-              "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
-              "hidden": false,
-              "customVisibility": null,
-              "validate": {},
-              "dataSourceType": "entitiesList",
-              "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
-              "entityTypeShortAlias": "Shesha.Framework.Form",
-              "useRawValues": true
-            },
-            {
-              "id": "2ab34541-6fa0-4be2-bb1e-eb65ec63b353",
-              "type": "textField",
-              "name": "modalActionOnSuccess",
-              "label": "Action on success",
-              "labelAlign": "right",
-              "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
-              "hidden": true,
-              "customVisibility": null,
-              "validate": {}
-            }
-          ],
           "dataSourceType": "values",
           "values": [
             {

@@ -18,7 +18,7 @@ export interface IDynamicModalProps extends Omit<IModalProps, 'fetchUrl'> {
 }
 
 export const DynamicModal: FC<IDynamicModalProps> = props => {
-  const { id, title, isVisible, formId, showModalFooter, submitHttpVerb, onSuccessRedirectUrl } = props;
+  const { id, title, isVisible, formId, showModalFooter, submitHttpVerb, onSuccessRedirectUrl, initialValues } = props;
   const [form] = Form.useForm();
   const { hide } = useDynamicModals();
   const { router } = useShaRouting();
@@ -70,6 +70,7 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
         }}
         onFinish={onSubmitted}
         httpVerb={submitHttpVerb}
+        initialValues={initialValues}
       />
     </Modal>
   );
