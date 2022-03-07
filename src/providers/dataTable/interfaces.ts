@@ -191,4 +191,6 @@ export interface ICrudProps {
   pickerOptions?: boolean;
 
   crudParentEntityKey?: string;
+
+  overrideDefaultCrudBehavior?: boolean;
 }

@@ -3,6 +3,7 @@ import { Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React from 'react';
 import { CollapsiblePanel, GlobalTableFilter } from '../../../..';
+import { useDataTable } from '../../../../..';
 import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup } from '../../../../../providers/form/models';
@@ -23,11 +24,12 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
   icon: <TableOutlined />,
   factory: (model: IChildTableComponentProps) => {
     const {} = useForm();
+    const { title } = useDataTable();
 
     return (
       <CollapsiblePanel
         key={undefined}
-        header="This is the heading"
+        header={title}
         extra={
           <div>
             <Space size="middle">

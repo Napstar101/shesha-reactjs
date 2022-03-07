@@ -5,4 +5,10 @@ import { IConfigurableColumnsBase } from '../../../../../providers/datatableColu
 export interface ITableComponentProps extends IConfigurableFormComponent {
   items: IConfigurableColumnsBase[];
   useMultiselect: boolean;
+  crud: boolean;
+  crudMode: 'inline' | 'dialog';
+  overrideDefaultCrudBehavior?: boolean;
+  editUrl?: string;
+  deleteUrl?: boolean;
+  updateUrl?: boolean;
 }

@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import { SectionSeparator } from '../../../..';
 import { IChildTableSettingsProps } from './models';
 import { ToolbarSettingsModal } from '../../dataTable/toolbar/toolbarSettingsModal';
+import TableViewSelectorSettingsModal from '../tableViewSelector/tableViewSelectorSettingsModal';
 
 export interface IChildDataTableSettingsProps {
   model: IChildTableSettingsProps;
@@ -11,12 +12,31 @@ export interface IChildDataTableSettingsProps {
   onValuesChange?: (changedValues: any, values: IChildTableSettingsProps) => void;
 }
 
+interface IChildDataTableSettingsState {
+  toolbarModalVisible?: boolean;
+  filtersModalVisible?: boolean;
+}
+
 function ChildDataTableSettings({ onSave, model, onValuesChange }: IChildDataTableSettingsProps) {
-  const [toolbarModalVisible, setToolbarModalVisible] = useState(false);
+  const [state, setState] = useState<IChildDataTableSettingsState>({});
+
   const [form] = Form.useForm();
 
+  const toggleToolbarModal = () => setState(prev => ({ ...prev, toolbarModalVisible: !prev?.toolbarModalVisible }));
+
+  const toggleFiltersModal = () => setState(prev => ({ ...prev, filtersModalVisible: !prev?.filtersModalVisible }));
+
   return (
-    <Form form={form} onFinish={onSave} layout="vertical" onValuesChange={onValuesChange}>
+    <Form
+      form={form}
+      onFinish={onSave}
+      layout="vertical"
+      onValuesChange={(a, b) => {
+        console.log('onValuesChange a, b :>> ', a, b);
+
+        onValuesChange(a, b);
+      }}
+    >
       <SectionSeparator sectionName={'Display'} />
 
       <Form.Item
@@ -45,16 +65,22 @@ function ChildDataTableSettings({ onSave, model, onValuesChange }: IChildDataTab
 
       <SectionSeparator sectionName="Toolbar" />
 
-      <Button onClick={() => setToolbarModalVisible(true)}>Configure Toolbar</Button>
+      <Button onClick={toggleToolbarModal}>Configure Toolbar</Button>
 
       <Form.Item name="toolbarItems" initialValue={model.toolbarItems}>
         <ToolbarSettingsModal
-          visible={toolbarModalVisible}
+          visible={state?.toolbarModalVisible}
           allowAddGroups={false}
-          hideModal={() => {
-            setToolbarModalVisible(false);
-          }}
+          hideModal={toggleToolbarModal}
         />
+      </Form.Item>
+
+      <SectionSeparator sectionName="Filter" />
+
+      <Button onClick={toggleFiltersModal}>Customise Filters</Button>
+
+      <Form.Item name="filters" initialValue={model.filters}>
+        <TableViewSelectorSettingsModal visible={state?.filtersModalVisible} hideModal={toggleFiltersModal} />
       </Form.Item>
     </Form>
   );
