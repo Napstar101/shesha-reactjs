@@ -63,7 +63,12 @@ export const EntityPicker: FC<IEntityPickerProps> = ({
   });
 
   const toggleModalVisibility = () =>
-    setState(current => ({ ...current, showModal: !current?.showModal, ...INITIAL_STATE }));
+    setState(current => ({
+      ...current,
+      ...INITIAL_STATE,
+      showModal: !current?.showModal,
+      selectedValue: current?.selectedValue,
+    }));
 
   const onDblClick = (row: IAnyObject) => {
     if (onSelect) {
