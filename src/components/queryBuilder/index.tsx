@@ -33,11 +33,20 @@ export interface IQueryBuilderProps {
   columns?: IQueryBuilderColumn[];
   fields: IProperty[];
   showActionBtnOnHover?: boolean;
+  useExpression?: boolean;
 }
 
-export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = true, onChange, value, fields }) => {
+export const QueryBuilder: FC<IQueryBuilderProps> = ({
+  showActionBtnOnHover = true,
+  onChange,
+  value,
+  fields,
+  useExpression,
+}) => {
   const [tree, setTree] = useState<ImmutableTree>();
   const [config, setConfig] = useState<Config>();
+
+  console.log('QueryBuilder useExpression ', useExpression);
 
   useEffect(() => {
     initialize();
@@ -128,6 +137,12 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
 
           default:
             break;
+        }
+
+        if (useExpression) {
+          type = 'text';
+          defaultPreferWidgets = ['text'];
+          preferWidgets = ['text'];
         }
 
         conf.fields[propertyName] = {

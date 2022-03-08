@@ -41,6 +41,7 @@ import {
   deleteRowItemAction,
   registerConfigurableColumnsAction,
   fetchColumnsSuccessSuccessAction,
+  setFormDataAction,
 } from './actions';
 import {
   ITableDataResponse,
@@ -52,6 +53,7 @@ import {
   ICrudProps,
   IStoredFilter,
   ITableFilter,
+  IFormDataPayload,
 } from './interfaces';
 import { useMutate, useGet } from 'restful-react';
 import _ from 'lodash';
@@ -157,6 +159,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       selectedStoredFilterIds: payload.selectedStoredFilterIds,
       tableFilter: payload.filter,
     };
+
     setUserDTSettings(userConfigToSave);
 
     // convert filters
@@ -164,7 +167,11 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     const filters = payload.selectedStoredFilterIds
       .map(id => allFilters.find(f => f.id === id))
       .filter(f => Boolean(f));
+
     const expandedPayload: IGetDataPayload = { ...payload, selectedFilters: filters };
+
+    console.log('fetchDataTableData expandedPayload: ', expandedPayload, state?.formData);
+    console.log('fetchDataTableData expandedPayload JSON: ', JSON.stringify(expandedPayload));
 
     return fetchDataTableDataInternal(expandedPayload);
   };
@@ -553,6 +560,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     return !tableId && entityType ? 'entity' : 'tableConfig';
   };
 
+  const setFormData = (payload: IFormDataPayload) => {
+    dispatch(setFormDataAction(payload));
+  };
+
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   return (
@@ -587,6 +598,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           registerConfigurableColumns,
           getCurrentFilter,
           getDataSourceType,
+          setFormData,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

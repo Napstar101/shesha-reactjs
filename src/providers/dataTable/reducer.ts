@@ -10,6 +10,7 @@ import {
 import flagsReducer from '../utils/flagsReducer';
 import {
   IEditableRowState,
+  IFormDataPayload,
   IGetDataPayload,
   IndexColumnDataType,
   IStoredFilter,
@@ -488,6 +489,15 @@ const reducer = handleActions<IDataTableStateContext, any>(
       return {
         ...state,
         configurableColumns: [...payload.columns],
+      };
+    },
+
+    [DataTableActionEnums.SetFormData]: (state: IDataTableStateContext, action: ReduxActions.Action<any>) => {
+      const { payload } = action;
+
+      return {
+        ...state,
+        formData: payload,
       };
     },
   },

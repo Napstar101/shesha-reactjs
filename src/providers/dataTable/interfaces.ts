@@ -194,3 +194,7 @@ export interface ICrudProps {
 
   overrideDefaultCrudBehavior?: boolean;
 }
+
+export interface IFormDataPayload {
+  formData?: any;
+}

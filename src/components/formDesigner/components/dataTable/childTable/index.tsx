@@ -1,9 +1,8 @@
 import { TableOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CollapsiblePanel, GlobalTableFilter } from '../../../..';
-import { useDataTable } from '../../../../..';
+import { useDataTable, useForm } from '../../../../..';
 import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup } from '../../../../../providers/form/models';
@@ -23,8 +22,12 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
   name: 'Child Table',
   icon: <TableOutlined />,
   factory: (model: IChildTableComponentProps) => {
-    const {} = useForm();
-    const { title } = useDataTable();
+    const { formData } = useForm();
+    const { title, setFormData } = useDataTable();
+
+    useEffect(() => {
+      setFormData(formData);
+    }, [formData]);
 
     return (
       <CollapsiblePanel

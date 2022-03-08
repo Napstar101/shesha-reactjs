@@ -277,14 +277,6 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
         };
       });
 
-    console.log(
-      'crud, overrideDefaultCrudBehavior, actionColumns, getAllowedCrudActions() :>> ',
-      crud,
-      overrideDefaultCrudBehavior,
-      actionColumns,
-      crud ? getAllowedCrudActions() : []
-    );
-
     const allActionColumns = [...(actionColumns || []), ...(crud ? getAllowedCrudActions() : [])];
 
     // Now add a list of actions

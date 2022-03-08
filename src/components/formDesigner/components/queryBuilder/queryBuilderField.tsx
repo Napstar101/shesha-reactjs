@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { JsonLogicResult } from 'react-awesome-query-builder';
-import { Modal, Button, Collapse } from 'antd';
+import { Modal, Button, Collapse, Checkbox } from 'antd';
 import { IProperty } from '../../../../providers/queryBuilder/models';
 import QueryBuilder from '../../../queryBuilder';
 import { CodeEditor } from '../../..';
@@ -8,6 +8,7 @@ import { CaretRightOutlined } from '@ant-design/icons';
 
 export interface IQueryBuilderFieldProps {
   jsonExpanded?: boolean;
+  useExpression?: boolean;
   fields: IProperty[];
   value?: object;
   onChange?: (value: any) => void;
@@ -39,26 +40,36 @@ export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
 
   const onExpandClick = () => {
     setJsonExpanded(!jsonExpanded);
-  }
+  };
 
   return (
     <>
       <Collapse
         className="sha-query-builder-field"
-        activeKey={jsonExpanded ? "1" : null}
-        expandIconPosition='right'
+        activeKey={jsonExpanded ? '1' : null}
+        expandIconPosition="right"
         bordered={false}
         ghost={true}
-        expandIcon={({ isActive }) => isActive 
-          ? <span onClick={onExpandClick}>hide json <CaretRightOutlined rotate={90} /></span>
-          : <span onClick={onExpandClick}>show json <CaretRightOutlined rotate={0} /></span>
+        expandIcon={({ isActive }) =>
+          isActive ? (
+            <span onClick={onExpandClick}>
+              hide json <CaretRightOutlined rotate={90} />
+            </span>
+          ) : (
+            <span onClick={onExpandClick}>
+              show json <CaretRightOutlined rotate={0} />
+            </span>
+          )
         }
       >
-        <Collapse.Panel header={
-          <Button type="primary" onClick={() => setModalVisible(true)}>
-            Query Builder
-          </Button>
-        } key="1">
+        <Collapse.Panel
+          header={
+            <Button type="primary" onClick={() => setModalVisible(true)}>
+              Query Builder
+            </Button>
+          }
+          key="1"
+        >
           <CodeEditor
             width="100%"
             readOnly={true}
@@ -77,7 +88,7 @@ export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
               tabSize: 2,
               autoScrollEditorIntoView: true,
               minLines: 3,
-              maxLines: 100
+              maxLines: 100,
             }}
           />
         </Collapse.Panel>
@@ -90,7 +101,13 @@ export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
         onOk={onOkClick}
       >
         <h4>Here you can create your own table filters using the query builder below</h4>
-        <QueryBuilder value={props.value} onChange={onChange} fields={props.fields} />
+
+        <QueryBuilder
+          value={props.value}
+          onChange={onChange}
+          fields={props.fields}
+          useExpression={props?.useExpression}
+        />
       </Modal>
     </>
   );

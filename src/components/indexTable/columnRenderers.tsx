@@ -5,7 +5,7 @@ import { IConfigurableActionColumnsProps } from '../../providers/datatableColumn
 import ShaIcon, { IconType } from '../shaIcon';
 import { evaluateString } from '../../providers/form/utils';
 import { useDataTable, useDataTableSelection, useModal, useShaRouting } from '../../providers';
-import camelcaseKeys from 'camelcase-keys';
+import camelCaseKeys from 'camelcase-keys';
 
 export const renderers: ITableCustomTypesRender[] = [
   {
@@ -70,7 +70,7 @@ export const renderers: ITableCustomTypesRender[] = [
         isVisible: false,
         formId: props.modalFormId,
         title: props.modalTitle,
-        initialValues: selectedRow ? camelcaseKeys(selectedRow) : selectedRow,
+        initialValues: selectedRow ? camelCaseKeys(selectedRow) : selectedRow,
         showModalFooter: true, // Make it configurable
         submitHttpVerb: 'PUT', // Make it configurable
       });

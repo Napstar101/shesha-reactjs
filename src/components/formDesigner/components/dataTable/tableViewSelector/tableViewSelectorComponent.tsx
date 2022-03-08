@@ -3,8 +3,9 @@ import { IToolboxComponent } from '../../../../../interfaces';
 import { SelectOutlined } from '@ant-design/icons';
 import TableViewSelectorSettings from './tableViewSelectorSettingsPanel';
 import { ITableViewSelectorProps } from './models';
-import { IndexViewSelectorRenderer } from '../../../../../';
+import { evaluateString, IndexViewSelectorRenderer, useForm } from '../../../../../';
 import { useDataTableStore } from '../../../../../providers';
+import camelCaseKeys from 'camelcase-keys';
 
 const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
   type: 'tableViewSelector',
@@ -32,24 +33,53 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
 };
 
 export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, componentRef }) => {
-  const { columns, getDataSourceType } = useDataTableStore();
-  const dataSourceType = getDataSourceType();
-  componentRef.current = {
-    columns,
-    dataSourceType,
-  };
-
   const {
+    columns,
+    getDataSourceType,
     title,
     changeSelectedStoredFilterIds,
     predefinedFilters,
     selectedStoredFilterIds,
     setPredefinedFilters,
+    setFormData,
   } = useDataTableStore();
 
+  const { formData } = useForm();
+
+  // console.log('TableViewSelector formData, filters: ', formData, filters);
+
+  const dataSourceType = getDataSourceType();
+
+  componentRef.current = {
+    columns,
+    dataSourceType,
+  };
+
+  // useEffect(() => {
+  //   setFormData(formData);
+  // }, [formData]);
+
   useEffect(() => {
+    // const filtersString = JSON.stringify(filters);
+
+    // const computedFiltersString = evaluateString(
+    //   filtersString,
+    //   camelCaseKeys(formData || {}, { pascalCase: true }) || {}
+    // );
+
+    // const evaluatedFilters = JSON.parse(computedFiltersString);
+
+    // console.log(
+    //   'TableViewSelector formData, filters, evaluatedFilters: ',
+    //   camelCaseKeys(formData || {}, { pascalCase: true }),
+    //   filters,
+    //   evaluatedFilters
+    // );
+
     setPredefinedFilters(filters);
-  }, [filters]);
+
+    setFormData(formData);
+  }, [filters, formData]);
 
   const changeSelectedFilter = (id: string) => {
     changeSelectedStoredFilterIds(id ? [id] : []);
