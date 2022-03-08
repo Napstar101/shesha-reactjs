@@ -57,7 +57,7 @@ export const renderers: ITableCustomTypesRender[] = [
   },
   {
     key: 'action',
-    render: props => {
+    render: (props, router) => {
       const getActionProps = (data): IConfigurableActionColumnsProps => {
         return data?.column?.actionProps as IConfigurableActionColumnsProps;
       };
@@ -77,7 +77,8 @@ export const renderers: ITableCustomTypesRender[] = [
                   : actionProps.targetUrl;
 
               //router?.push(preparedUrl);
-              console.log('prepared url: ' + preparedUrl);
+              window.location.href = preparedUrl;
+              console.log('prepared url: ' + preparedUrl, router);
               break;
             } else console.warn('tagret Url is not specified');
             break;

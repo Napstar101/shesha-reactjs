@@ -53,7 +53,7 @@ export const ColumnProperties: FC<IProps> = () => {
       };
       form.setFieldsValue(newValues);
       debouncedSave(newValues);
-    }
+    };
 
     return (
       <ConfigurableForm

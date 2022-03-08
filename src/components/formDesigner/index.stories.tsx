@@ -201,7 +201,8 @@ export const PropertyProps = addStory(DesignerTemplate, {
 });
 
 export const DynamicViewProps = addStory(DesignerTemplate, {
-  formPath: 'D:\\Boxfusion\\Shesha3\\opensource\\etalon\\shesha-reactjs\\src\\components\\formDesigner\\components\\dynamicView\\settingsForm.json'
+  formPath:
+    'D:\\Boxfusion\\Shesha3\\opensource\\etalon\\shesha-reactjs\\src\\components\\formDesigner\\components\\dynamicView\\settingsForm.json',
 });
 
 export const Empty = addStory(DesignerTemplate, {
@@ -255,3 +256,60 @@ const BrowserTemplate: Story = () => (
 );
 
 export const Browser = addStory(BrowserTemplate, null);
+
+//#region Views
+export const TableView = DesignerTemplate.bind({});
+
+TableView.args = {
+  // formPath: '/view/forms/table',
+  // formPath: '/view/table/playground',
+  formPath: 'test-new-table',
+  // formPath: 'table-cbfdec6c-8fe5-4d35-b067-6c00de8ba311',
+  modelType: 'table',
+  // vi
+};
+
+export const DetailsView = DesignerTemplate.bind({});
+
+DetailsView.args = {
+  // formPath: '/view/forms/details',
+  formPath: 'view-details-testing',
+  modelType: 'details',
+};
+
+export const FormComponentView = DesignerTemplate.bind({});
+
+FormComponentView.args = {
+  formPath: '/view/forms/form',
+  modelType: 'form',
+};
+
+export const BlankView = DesignerTemplate.bind({});
+
+export const ReadOnlyForm = DesignerTemplate.bind({});
+
+// BlankView.args = {
+//   formPath: '/view/forms/blank',
+//   modelType: 'blank',
+// };
+
+BlankView.args = {
+  formPath: 'area-details-53d03368-f41c-46bc-a836-d44c51a9d75b',
+  // formPath: '/view/test/typography',
+  modelType: 'blank',
+};
+
+ReadOnlyForm.args = {
+  formPath: '/settings/forms/playground',
+  // formPath: '/view/test/typography',
+  modelType: 'blank',
+};
+
+export const ExportJSONDemo = DesignerTemplate.bind({});
+
+ExportJSONDemo.args = {
+  formPath: 'blank-form-index',
+  modelType: 'blank',
+};
+
+//#endregion

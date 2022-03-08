@@ -11,7 +11,13 @@ export interface IProps<TModel = any> {
   onSave: (model: TModel) => void;
 }
 
-export const ComponentSettingsModal = <TSettings extends any>({ title, markup, model, onCancel, onSave }: IProps<TSettings>) => {
+export const ComponentSettingsModal = <TSettings extends any>({
+  title,
+  markup,
+  model,
+  onCancel,
+  onSave,
+}: IProps<TSettings>) => {
   const formLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 13 },

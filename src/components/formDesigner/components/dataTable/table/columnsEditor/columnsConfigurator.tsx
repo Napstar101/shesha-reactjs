@@ -6,7 +6,7 @@ import ToolbarItemsContainer from './columnsContainer';
 import { useColumnsConfigurator } from '../../../../../../providers/datatableColumnsConfigurator';
 import './styles/index.less';
 
-export interface IColumnsConfiguratorProps { }
+export interface IColumnsConfiguratorProps {}
 
 export const ColumnsConfigurator: FC<IColumnsConfiguratorProps> = () => {
   const { items, addButton, addGroup } = useColumnsConfigurator();

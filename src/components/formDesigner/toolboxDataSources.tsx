@@ -1,3 +1,4 @@
+
 import React, { FC, useMemo } from 'react';
 import { Collapse, Empty } from 'antd';
 import { useLocalStorage } from '../../hooks';
@@ -9,9 +10,7 @@ import { IPropertyMetadata } from '../../interfaces/metadata';
 
 const { Panel } = Collapse;
 
-export interface IToolboxDataSourcesProps {
-
-}
+export interface IToolboxDataSourcesProps {}
 
 interface FilteredDataSource {
   datasource: IDataSource;
@@ -45,19 +44,18 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
   const currentMeta = useMetadata(false);
   const currentDataSource: IDataSource = Boolean(currentMeta?.metadata?.properties)
     ? {
-      id: currentMeta.id,
-      name: currentMeta.metadata?.name,
-      containerType: currentMeta.metadata?.type,
-      items: currentMeta.metadata?.properties
-    }
+        id: currentMeta.id,
+        name: currentMeta.metadata?.name,
+        containerType: currentMeta.metadata?.type,
+        items: currentMeta.metadata?.properties,
+      }
     : null;
 
   const { dataSources: formDs, activeDataSourceId } = useForm();
 
   const allDataSources = useMemo<IDataSource[]>(() => {
     const dataSources = [...formDs];
-    if (currentDataSource)
-      dataSources.push(currentDataSource);
+    if (currentDataSource) dataSources.push(currentDataSource);
 
     return dataSources;
   }, [formDs, currentDataSource]);
@@ -113,6 +111,6 @@ export const ToolboxDataSources: FC<IToolboxDataSourcesProps> = () => {
       )}
     </>
   );
-}
+};
 
 export default ToolboxDataSources;

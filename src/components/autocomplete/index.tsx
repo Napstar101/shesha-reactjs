@@ -322,6 +322,7 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
       <ReadOnlyDisplayFormItem
         value={autocompleteValue}
         type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
+        disabled={disabled}
       />
     );
   }

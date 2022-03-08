@@ -28,14 +28,7 @@ const TableComponent: IToolboxComponent<ITableComponentProps> = {
     };
   },
   settingsFormFactory: ({ model, onSave, onCancel, onValuesChange }) => {
-    return (
-      <TableSettings
-        model={model}
-        onSave={onSave}
-        onCancel={onCancel}
-        onValuesChange={onValuesChange}
-      />
-    );
+    return <TableSettings model={model} onSave={onSave} onCancel={onCancel} onValuesChange={onValuesChange} />;
   },
 };
 
@@ -43,7 +36,7 @@ const NotConfiguredWarning: FC = () => {
   return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 };
 
-export const TableWrapper: FC<ITableComponentProps> = ({ id, items }) => {
+export const TableWrapper: FC<ITableComponentProps> = ({ id, items, useMultiselect }) => {
   const { formMode } = useForm();
   const isDesignMode = formMode === 'designer';
 
@@ -78,10 +71,9 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items }) => {
     !isSelectingColumns && !isFiltering
       ? setIsInProgressFlag({ isFiltering: true })
       : setIsInProgressFlag({ isFiltering: false, isSelectingColumns: false });
-  }
+  };
 
-  if (isDesignMode && !tableId && !entityType)
-    return <NotConfiguredWarning />;
+  if (isDesignMode && !tableId && !entityType) return <NotConfiguredWarning />;
 
   const onSelectRow = (index: number, row: any) => {
     setSelectedRow(index, row);
@@ -98,7 +90,12 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items }) => {
       }}
       allowFullCollapse
     >
-      <IndexTable id={tableId} onSelectRow={onSelectRow} selectedRowIndex={selectedRow?.index} />
+      <IndexTable
+        id={tableId}
+        onSelectRow={onSelectRow}
+        selectedRowIndex={selectedRow?.index}
+        useMultiselect={useMultiselect}
+      />
     </CollapsibleSidebarContainer>
   );
 };

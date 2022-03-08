@@ -6,6 +6,7 @@ import DragHandle from './dragHandle';
 import ShaIcon, { IconType } from '../../shaIcon';
 import { ISidebarMenuItem } from '../../../interfaces/sidebar';
 import SidebarItemsContainer from './sidebarItemsContainer';
+import classNames from 'classnames';
 
 export interface IProps extends ISidebarMenuItem {
   index: number[];
@@ -18,13 +19,10 @@ export const SidebarMenuGroup: FC<IProps> = props => {
     deleteItem(props.id);
   };
 
-  const classes = ['sha-sidebar-item'];
-  if (selectedItemId === props.id) classes.push('selected');
-
   return (
-    <div className={classes.reduce((a, c) => a + ' ' + c)}>
+    <div className={classNames('sha-sidebar-item', { selected: selectedItemId === props.id })}>
       <div className="sha-sidebar-item-header">
-        <DragHandle id={props.id}/>
+        <DragHandle id={props.id} />
         {props.icon && <ShaIcon iconName={props.icon as IconType} />}
         <span className="sha-sidebar-item-name">{props.title}</span>
         {props.tooltip && (

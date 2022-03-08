@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, LockOutlined } from '@ant-design/icons';
 import { Show } from '../show';
 import { useForm } from '../../providers';
 import { IDtoType, ISelectOption } from '../autocomplete';
@@ -7,6 +7,7 @@ import Checkbox from 'antd/lib/checkbox/Checkbox';
 import { Switch, Tag } from 'antd';
 import { getMoment } from '../../utils/date';
 import moment from 'moment';
+import classNames from 'classnames';
 
 type AutocompleteType = ISelectOption<IDtoType>;
 
@@ -42,8 +43,8 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   checked,
   defaultChecked,
 }) => {
-  if (type === 'switch') {
-    console.log('ReadOnlyDisplayFormItem type, checkbox, defaultChecked: ', type, checked, defaultChecked);
+  if (type === 'string') {
+    console.log('ReadOnlyDisplayFormItem type, disabled: ', type, disabled);
   }
 
   const { formSettings, setFormMode, formMode } = useForm();
@@ -73,7 +74,9 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
         if (Array.isArray(value)) {
           const values = (value as AutocompleteType[])?.map(({ label }) => label);
 
-          return dropdownDisplayMode === 'raw' ? values?.join(', ') : values?.map((itemValue, index) => <Tag key={index}>{itemValue}</Tag>);
+          return dropdownDisplayMode === 'raw'
+            ? values?.join(', ')
+            : values?.map((itemValue, index) => <Tag key={index}>{itemValue}</Tag>);
         }
 
         throw new Error(
@@ -104,12 +107,18 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
     return value;
   };
 
+  const iconClass = 'read-only-mode-toggler';
+
   return (
     <span className="read-only-display-form-item">
       {renderValue()}
 
-      <Show when={formSettings?.showModeToggler && !disabled && formMode === 'readonly'}>
-        <EditOutlined className="red-only-mode-toggler" onClick={setFormModeToEdit} />
+      <Show when={formSettings?.showModeToggler && formMode === 'readonly'}>
+        {disabled ? (
+          <LockOutlined className={classNames(iconClass, { disabled })} />
+        ) : (
+          <EditOutlined className={iconClass} onClick={setFormModeToEdit} />
+        )}
       </Show>
     </span>
   );

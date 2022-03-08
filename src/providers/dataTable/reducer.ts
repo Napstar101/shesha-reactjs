@@ -439,7 +439,7 @@ const reducer = handleActions<IDataTableStateContext, any>(
         ...f,
         filterOption: f.columnId === filterColumnId ? filterOptionValue : f.filterOption,
       }));
-      
+
       return {
         ...state,
         tableFilterDirty: filter,

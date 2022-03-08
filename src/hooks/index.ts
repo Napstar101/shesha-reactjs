@@ -10,4 +10,4 @@ export { useToggle } from './useToggle';
 export { useWebStorage } from './useWebStorage';
 export { useDeepCompareMemo } from './useDeepCompareMemo';
 export { useDeepCompareMemoize } from './useDeepCompareMemoize';
-/* NEW_HOOK_EXPORT_GOES_HERE */
+export { useEnhancedCreateForm } from './useEnhancedCreateForm';

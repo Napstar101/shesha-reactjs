@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { GenericCreateModal, IGenericCreateModalProps, Page, Show } from '../';
 import { PlusOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
-import IndexTableFull from '../indexTableFull';
+import IndexTableFull, { IIndexTableFullProps } from '../indexTableFull';
 import { IToolbarItem } from '../../interfaces';
 import DataTableProvider from '../../providers/dataTable';
 import { useDataTableStore } from '../../providers';
@@ -38,6 +38,8 @@ export interface IGenericIndexPageProps {
    * A callback for when the file export has succeeded
    */
   onExportSuccess?: () => void;
+
+  tableProps?: Omit<IIndexTableFullProps, 'id'>;
 }
 
 const TableWithControls: FC<IGenericIndexPageProps> = props => {
@@ -74,6 +76,9 @@ const TableWithControls: FC<IGenericIndexPageProps> = props => {
     form.resetFields();
   };
 
+  const extraTableProps = { ...(props?.tableProps || {}) };
+  delete extraTableProps.tableRef;
+
   return (
     <Page noPadding>
       <IndexTableFull
@@ -83,7 +88,9 @@ const TableWithControls: FC<IGenericIndexPageProps> = props => {
           { icon: <SearchOutlined />, onClick: props.detailsUrl },
           { icon: <EditOutlined />, onClick: props.editUrl },
         ]}
-        toolbarItems={toolbarItems}
+        toolbarItems={[...toolbarItems, ...(props?.tableProps?.toolbarItems || [])]}
+        tableRef={props?.tableProps?.tableRef}
+        {...extraTableProps}
       />
 
       <Show when={!!props.createModalProps}>

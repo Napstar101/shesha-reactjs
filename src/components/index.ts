@@ -142,4 +142,3 @@ export { default as QuickView, IQuickViewProps } from './quickView';
 export { default as ToolbarSettingsModal } from './formDesigner/components/dataTable/toolbar/toolbarSettingsModal';
 export { default as CodeEditorModal } from './formDesigner/components/codeEditor/codeEditor';
 export { default as LabelValueEditor } from './formDesigner/components/labelValueEditor/labelValueEditor';
-export { default as ToolbarTableItem } from './formDesigner/components/dataTable/toolbar/toolbarTableItem';

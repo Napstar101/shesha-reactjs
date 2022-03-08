@@ -10,20 +10,32 @@ export interface IQuickViewProps {
     title: string;
 
     /**
-     * The id or guid for the entity
-     */
-    // id: string;
-
-    /**
      * Path to the form to display on the modal
      */
-    formPath: string;
+    displayFormPath: string;
+
+    /**
+     * The property to display from the model
+     */
+    displayPropertyName: string;
+
+    /**
+     * The url to use to get the detaills of the object
+     */
+    getDetailsUrl: string;
+
+    /**
+     * The id or guid for the entity
+     */
+    id: string;
 }
 
 const QuickView: FC<IQuickViewProps> = ({
     title,
-    // id,
-    formPath,
+    displayFormPath,
+    displayPropertyName,
+    getDetailsUrl,
+    id
 }) => {
 
     const [form] = Form.useForm();
@@ -36,7 +48,7 @@ const QuickView: FC<IQuickViewProps> = ({
             {...formItemLayout}
             form={form}
             // onFinish={onFinish}
-            path={formPath}
+            path={displayFormPath}
         // markup={formMarkup}
         // onFieldsChange={onFieldsChange}
         // actions={actions}

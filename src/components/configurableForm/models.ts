@@ -19,12 +19,25 @@ export interface IConfigurableFormRendererProps<Values = any, FieldData = any> e
   onValuesChange?: (changedValues: any, values: Values) => void;
   onFieldsChange?: (changedFields: FieldData[], allFields: FieldData[]) => void;
   fields?: FieldData[];
-  onFinish?: (values: Values) => void;
+
+  /**
+   * Returns the form data and the response data as well, only if an API was made and came back successful
+   *
+   * @param values form data before being submitted
+   * @param response response data
+   */
+  onFinish?: (values: Values, response?: any) => void;
   onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
   form?: FormInstance<any>;
   actions?: IFormActions;
   sections?: IFormSections;
   context?: any; // todo: make generic
+
+  httpVerb?: 'POST' | 'PUT' | 'DELETE';
+  /**
+   * Pass this if you do not want an API call to be made on your behalf when you submit the form
+   */
+  skipPostOnFinish?: boolean;
 
   //onFinishFailed?: (errorInfo: ValidateErrorEntity<Values>) => void;
 }
@@ -34,4 +47,6 @@ export interface IConfigurableFormProps<Values = any, FieldData = any>
     IConfigurableFormBaseProps {
   mode: FormMode;
   formRef?: MutableRefObject<Partial<ConfigurableFormInstance> | null>;
+  switchToReadOnlyOnSuccess?: boolean;
+  className?: string;
 }

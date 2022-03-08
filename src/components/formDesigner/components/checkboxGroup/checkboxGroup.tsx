@@ -40,6 +40,7 @@ const CheckboxGroupComponent: IToolboxComponent<ICheckboxGoupProps> = {
   factory: (model: ICheckboxGoupProps) => {
     const { items = [] } = model;
     const checkItems = items.map(item => ({ label: item.name, value: item.value }));
+
     return (
       <ConfigurableFormItem model={model}>
         <RefListCheckboxGroup {...model} />

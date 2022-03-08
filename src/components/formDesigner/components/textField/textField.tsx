@@ -50,7 +50,7 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
     const { formMode, isComponentDisabled } = useForm();
 
     const disabled = isComponentDisabled(model);
-    
+
     const readOnly = model?.readOnly || (formMode === 'readonly' && model.textType !== 'password');
 
     const inputProps: InputProps = {
@@ -68,9 +68,9 @@ const TextField: IToolboxComponent<ITextFieldProps> = {
     return (
       <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
         {readOnly ? (
-          <ReadOnlyDisplayFormItem />
+          <ReadOnlyDisplayFormItem disabled={disabled} />
         ) : (
-          <InputComponentType {...inputProps} {...customEventHandler(model, form)} />
+          <InputComponentType {...inputProps} disabled={disabled} {...customEventHandler(model, form)} />
         )}
       </ConfigurableFormItem>
     );

@@ -25,8 +25,10 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
                 <>
                     <QuickView
                         title={props.title}
-                        // id={props.id}
-                        formPath={props.formPath} />
+                        displayFormPath={props.displayFormPath}
+                        displayPropertyName={props.displayPropertyName}
+                        getDetailsUrl={props.getDetailsUrl}
+                        id={props.id} />
                 </>
             </AuthContainer>
         </ShaApplicationProvider>
@@ -35,8 +37,10 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
 
 const baseProps: IQuickViewProps = {
     title: "Hello",
-    // id: "4575f878-8ff1-4d8f-8532-e35b62c4fe33",
-    formPath: "/members/details"
+    displayFormPath: "/members/details",
+    displayPropertyName: "DisplayName",
+    getDetailsUrl: "/members",
+    id: "00000000000"
 };
 
 export const Base = BaseTemplate.bind({});

@@ -2,7 +2,11 @@ import React, { FC } from 'react';
 import { Column } from './column';
 import { ColumnsGroup } from './columnsGroup';
 import { useColumnsConfigurator } from '../../../../../../providers/datatableColumnsConfigurator';
-import { IConfigurableColumnGroup, IConfigurableColumnsProps, IConfigurableColumnsBase } from '../../../../../../providers/datatableColumnsConfigurator/models';
+import {
+  IConfigurableColumnGroup,
+  IConfigurableColumnsProps,
+  IConfigurableColumnsBase,
+} from '../../../../../../providers/datatableColumnsConfigurator/models';
 import { ReactSortable, ItemInterface } from 'react-sortablejs';
 
 export interface IToolbarItemsSortableProps {
@@ -55,9 +59,7 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
       scroll={true}
       bubbleScroll={true}
     >
-      {props.items.map(
-        (item, index) => renderItem(item, index)
-      )}
+      {props.items.map((item, index) => renderItem(item, index))}
     </ReactSortable>
   );
 };

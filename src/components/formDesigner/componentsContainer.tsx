@@ -1,20 +1,43 @@
-import React, { FC } from 'react';
+import React, { CSSProperties, FC } from 'react';
 import ConfigurableFormComponent from './configurableFormComponent';
-import { useFormActions, useFormState } from '../../providers/form';
+import { useForm } from '../../providers/form';
 import { TOOLBOX_COMPONENT_DROPPABLE_KEY, TOOLBOX_DATA_ITEM_DROPPABLE_KEY } from '../../providers/form/models';
 import { ItemInterface, ReactSortable } from 'react-sortablejs';
 
 export type Direction = 'horizontal' | 'vertical';
+
 export interface IProps {
   containerId: string;
   direction?: Direction;
   justifyContent?: string;
+  alignItems?: string;
+  justifyItems?: string;
   className?: string;
 }
-const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'vertical', justifyContent, className }) => {
-  const { getChildComponents, updateChildComponents, addComponent, addDataProperty, startDragging, endDragging } = useFormActions();
-  const { formMode } = useFormState();
+const ComponentsContainer: FC<IProps> = ({
+  containerId,
+  children,
+  direction = 'vertical',
+  justifyContent,
+  alignItems,
+  justifyItems,
+  className,
+}) => {
+  const {
+    getChildComponents,
+    updateChildComponents,
+    addComponent,
+    addDataProperty,
+    startDragging,
+    endDragging,
+    formMode,
+    // type,
+  } = useForm();
+
   const isDesignerMode = formMode === 'designer';
+
+  // const isViewTemplateComponent =
+  //   type === 'dashboard' || type === 'details' || type === 'masterDetails' || type === 'table' || type === 'menu';
 
   const components = getChildComponents(containerId);
 
@@ -35,14 +58,25 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
         addDataProperty({
           propertyMetadata: draggedItem.metadata,
           containerId,
-          index: newDataItemIndex,          
-        });        
+          index: newDataItemIndex,
+        });
       } else {
         const newComponentIndex = newState.findIndex(item => item['type'] === TOOLBOX_COMPONENT_DROPPABLE_KEY);
         if (newComponentIndex > -1) {
           // add new component
           const toolboxComponent = newState[newComponentIndex];
-          
+
+          console.log(
+            '"toolboxComponent.id.toString(), containerId" :>> ',
+            // toolboxComponent.id.toString(),
+            toolboxComponent.id.toString(),
+            containerId
+          );
+
+          // if (isViewTemplateComponent && containerId === 'root') {
+          //   return;
+          // }
+
           addComponent({
             containerId,
             componentType: toolboxComponent.id.toString(),
@@ -67,20 +101,23 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
   };
 
   const renderComponents = () => {
-    return components.map((c, index) => (
-      <ConfigurableFormComponent id={c.id} index={index} key={c.id} />
-    ));
+    return components.map((c, index) => <ConfigurableFormComponent id={c.id} index={index} key={c.id} />);
   };
 
-  const style = {};
-  if (direction === 'horizontal' && justifyContent) style['justifyContent'] = justifyContent;
+  const style: CSSProperties = {};
+  if (direction === 'horizontal' && justifyContent) {
+    style['justifyContent'] = justifyContent;
+    style['alignItems'] = alignItems;
+    style['justifyItems'] = justifyItems;
+  }
 
   return (
     <div className={`sha-components-container ${direction} ${className}`}>
-      {isDesignerMode && (
+      {isDesignerMode ? (
         <>
           {components.length === 0 && <div className="sha-drop-hint">Drag and Drop form component</div>}
           <ReactSortable
+            // disabled
             disabled={!isDesignerMode}
             onStart={onDragStart}
             onEnd={onDragEnd}
@@ -102,7 +139,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
             direction={direction}
             className={`sha-components-container-inner`}
             style={style}
-          /* note: may be used form horizontal containers like toolbar or action buttons
+            /* note: may be used form horizontal containers like toolbar or action buttons
       direction={(evt: SortableEvent, _target: HTMLElement, _dragEl: HTMLElement) => {
         const insideColumn = evt.target.className.includes('sha-designer-column');
         return insideColumn
@@ -114,8 +151,7 @@ const ComponentsContainer: FC<IProps> = ({ containerId, children, direction = 'v
             {renderComponents()}
           </ReactSortable>
         </>
-      )}
-      {!isDesignerMode && (
+      ) : (
         <div className="sha-components-container-inner" style={style}>
           {renderComponents()}
         </div>

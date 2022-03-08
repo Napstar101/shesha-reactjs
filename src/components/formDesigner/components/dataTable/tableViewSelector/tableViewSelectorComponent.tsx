@@ -36,7 +36,7 @@ export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, compon
   const dataSourceType = getDataSourceType();
   componentRef.current = {
     columns,
-    dataSourceType
+    dataSourceType,
   };
 
   const {
