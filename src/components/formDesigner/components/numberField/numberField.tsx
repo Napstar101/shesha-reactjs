@@ -19,16 +19,18 @@ const NumberField: IToolboxComponent<INumberFieldProps> = {
   icon: <NumberOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.number,
   factory: (model: INumberFieldProps) => {
-    const { formMode } = useForm();
+    const { formMode, isComponentDisabled } = useForm();
 
     const isReadOnly = model?.readOnly || formMode === 'readonly';
+
+    const disabled = isComponentDisabled(model);
 
     return (
       <ConfigurableFormItem model={model}>
         {isReadOnly ? (
-          <ReadOnlyDisplayFormItem />
+          <ReadOnlyDisplayFormItem disabled={disabled} />
         ) : (
-          <InputNumber disabled={model.disabled} bordered={!model.hideBorder} min={model?.min} max={model?.max} />
+          <InputNumber disabled={disabled} bordered={!model.hideBorder} min={model?.min} max={model?.max} />
         )}
       </ConfigurableFormItem>
     );

@@ -36,6 +36,12 @@ const CheckboxGroupComponent: IToolboxComponent<ICheckboxGoupProps> = {
   icon: <ProfileOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.referenceListItem,
   factory: (model: ICheckboxGoupProps) => {
+<<<<<<< HEAD
+=======
+    const { items = [] } = model;
+    const checkItems = items.map(item => ({ label: item.name, value: item.value }));
+
+>>>>>>> 70811bf970453853e3ef9b465571f77d9462a3da
     return (
       <ConfigurableFormItem model={model}>
         <RefListCheckboxGroup {...model} />

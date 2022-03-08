@@ -20,13 +20,15 @@ const SwitchComponent: IToolboxComponent<ISwitchProps> = {
   icon: <SwitcherOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.boolean,
   factory: (model: ISwitchProps) => {
-    const { formMode } = useForm();
+    const { formMode, isComponentDisabled } = useForm();
 
     const isReadOnly = model?.readOnly || formMode === 'readonly';
 
+    const disabled = isComponentDisabled(model);
+
     return (
       <ConfigurableFormItem model={model}>
-        {isReadOnly ? <ReadOnlyDisplayFormItem type="switch" /> : <Switch />}
+        {isReadOnly ? <ReadOnlyDisplayFormItem type="switch" disabled={disabled} /> : <Switch disabled={disabled} />}
       </ConfigurableFormItem>
     );
   },

@@ -18,6 +18,7 @@ import { AppConfiguratorProvider } from '../appConfigurator';
 import { DynamicModalProvider } from '../dynamicModal';
 import { UiProvider } from '../ui';
 import { MetadataDispatcherProvider } from '..';
+import { IToolboxComponentGroup } from '../..';
 
 /*
 import { 
@@ -35,6 +36,7 @@ export interface IShaApplicationProviderProps {
   applicationName?: string;
   accessTokenName?: string;
   router?: Router; // todo: replace with IRouter
+  toolboxComponentGroups?: IToolboxComponentGroup[];
   unauthorizedRedirectUrl?: string;
   whitelistUrls?: string[];
 }
@@ -45,6 +47,7 @@ const ShaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>
   applicationName,
   accessTokenName,
   router,
+  toolboxComponentGroups = [],
   unauthorizedRedirectUrl,
   whitelistUrls,
 }) => {
@@ -52,6 +55,7 @@ const ShaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>
     ...SHESHA_APPLICATION_CONTEXT_INITIAL_STATE,
     backendUrl,
     applicationName,
+    toolboxComponentGroups,
   });
 
   const onSetRequestHeaders = (headers: IRequestHeaders) => {
@@ -86,9 +90,7 @@ const ShaApplicationProvider: FC<PropsWithChildren<IShaApplicationProviderProps>
                 <AuthorizationSettingsProvider>
                   <AppConfiguratorProvider>
                     <MetadataDispatcherProvider>
-                      <DynamicModalProvider>
-                        {children}
-                      </DynamicModalProvider>
+                      <DynamicModalProvider>{children}</DynamicModalProvider>
                     </MetadataDispatcherProvider>
                   </AppConfiguratorProvider>
                 </AuthorizationSettingsProvider>

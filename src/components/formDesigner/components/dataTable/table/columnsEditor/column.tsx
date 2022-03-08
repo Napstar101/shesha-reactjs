@@ -34,9 +34,9 @@ export const Column: FC<IProps> = props => {
         </span>
         { props.description && (
           <Tooltip title={props.description}>
-            <QuestionCircleOutlined className="sha-help-icon"/>
+            <QuestionCircleOutlined className="sha-help-icon" />
           </Tooltip>
-        ) }
+        )}
         <div className="sha-toolbar-item-controls">
           <Button icon={<DeleteFilled color="red" />} onClick={onDeleteClick} size="small" danger />
         </div>

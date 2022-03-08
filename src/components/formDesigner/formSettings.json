@@ -26,6 +26,28 @@
       "validate": {}
     },
     {
+      "id": "acaefed1-f12f-4cb9-b208-b74a1cbd8c40",
+      "type": "textField",
+      "name": "putUrl",
+      "label": "PUT Url",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {}
+    },
+    {
+      "id": "1d1b9011-1437-4ef2-9d52-ad32601544e9",
+      "type": "textField",
+      "name": "deleteUrl",
+      "label": "DELETE Url",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {}
+    },
+    {
       "id": "ebcf09bb-8cfe-4514-9bdf-d48fd325f438",
       "type": "textField",
       "name": "getUrl",

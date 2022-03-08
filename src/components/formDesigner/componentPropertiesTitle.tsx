@@ -3,8 +3,7 @@ import { Button } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import { useForm } from '../../providers/form';
 
-export interface IProps {
-}
+export interface IProps {}
 
 export const ComponentPropertiesTitle: FC<IProps> = ({}) => {
   const { deleteComponent, selectedComponentId } = useForm();

@@ -34,7 +34,7 @@ export const ValidationErrors: FC<IValidationErrorsProps> = ({ error }) => {
     errorObj = error['data']['error'] as IErrorInfo;
   }
 
-  const { message, details, validationErrors } = errorObj;
+  const { message, details, validationErrors } = errorObj || {};
 
   if (validationErrors?.length) {
     const violations = (

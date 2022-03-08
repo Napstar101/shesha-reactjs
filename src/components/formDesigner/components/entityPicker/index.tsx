@@ -9,6 +9,8 @@ import { EntityPicker } from '../../..';
 import { Alert } from 'antd';
 import { useForm } from '../../../../providers';
 import { DataTypes } from '../../../../interfaces/dataTypes';
+import QuickView from '../../../quickView';
+import EntityFooter from './entityFooter';
 
 export interface IEntityPickerComponentProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -16,6 +18,19 @@ export interface IEntityPickerComponentProps extends IConfigurableFormComponent 
   disabled?: boolean;
   tableId: string;
   title?: string;
+  displayEntityKey?: string;
+  allowNewRecord?: boolean;
+  modalFormId?: string;
+  modalTitle?: string;
+  showModalFooter?: boolean;
+  onSuccessRedirectUrl?: string;
+  submitHttpVerb?: 'POST' | 'PUT';
+
+  // Quickview properties
+  quickViewEnabled?: boolean;
+  displayFormPath?: string;
+  displayPropertyName?: string;
+  getDetailsUrl?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -26,15 +41,30 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
   icon: <EllipsisOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.entityReference,
   factory: (model: IEntityPickerComponentProps) => {
-    const { formMode } = useForm()
+    const { formMode } = useForm();
 
     if (formMode === 'designer' && !model?.tableId) {
-      return <Alert message="Please make sure that you've specified the tableId property" />
+      return <Alert message="Please make sure that you've specified the tableId property" />;
     }
 
     return (
       <ConfigurableFormItem model={model} initialValue={model?.defaultValue}>
-        <EntityPicker disabled={model.disabled} tableId={model?.tableId} />
+        {model.enableQuickview ? (
+          <QuickView
+            // title={props.title}
+            displayFormPath={model.displayFormPath}
+            displayPropertyName={model.displayPropertyName}
+            getDetailsUrl={model.getDetailsUrl}
+            // id={props.id}
+          />
+        ) : (
+          <EntityPicker
+            disabled={model.disabled}
+            tableId={model?.tableId}
+            displayEntityKey={model?.displayEntityKey}
+            entityFooter={<EntityFooter {...model} />}
+          />
+        )}
       </ConfigurableFormItem>
     );
   },

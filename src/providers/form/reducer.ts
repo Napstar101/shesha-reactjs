@@ -18,7 +18,13 @@ import {
   ISetEnabledComponentsPayload,
   IHasComponentGroups,
 } from './contexts';
-import { IConfigurableFormComponent, IFormProps, FormMode, IFlatComponentsStructure, IComponentRelations } from './models';
+import {
+  IConfigurableFormComponent,
+  IFormProps,
+  FormMode,
+  IFlatComponentsStructure,
+  IComponentRelations,
+} from './models';
 import { FormActionEnums } from './actions';
 import { handleActions } from 'redux-actions';
 import { camelize, cloneComponents, convertActions, createComponentModelForDataProperty, findToolboxComponent, getCustomEnabledFunc, getCustomVisibilityFunc, processRecursive } from './utils';
@@ -58,7 +64,11 @@ const addComponentToFlatStructure = (
   formComponents.forEach(component => {
     containerComponents.splice(index, 0, component.id);
   });
-  const componentRelations = { ...structure.componentRelations, [currentLevel]: containerComponents, ...childRelations };
+  const componentRelations = {
+    ...structure.componentRelations,
+    [currentLevel]: containerComponents,
+    ...childRelations,
+  };
 
   return {
     allComponents,
@@ -135,7 +145,7 @@ const reducer = handleActions<IFormStateContext, any>(
         ...state,
         allComponents: newStructure.allComponents,
         componentRelations: newStructure.componentRelations,
-        selectedComponentId: (newComponents[0]?.id),
+        selectedComponentId: newComponents[0]?.id,
       };
     },
 
@@ -238,6 +248,7 @@ const reducer = handleActions<IFormStateContext, any>(
         allComponents: payload.allComponents,
         componentRelations: payload.componentRelations,
         formSettings: payload.formSettings,
+        type: payload.type,
       };
     },
 

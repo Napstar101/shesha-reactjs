@@ -21,12 +21,18 @@ const CheckboxComponent: IToolboxComponent<ICheckboxProps> = {
   icon: <CheckSquareOutlined />,
   dataTypeSupported: ({ dataType }) => dataType === DataTypes.boolean,
   factory: (model: ICheckboxProps) => {
-    const { formMode } = useForm();
+    const { formMode, isComponentDisabled } = useForm();
     const isReadOnly = model?.readOnly || formMode === 'readonly';
+
+    const disabled = isComponentDisabled(model);
 
     return (
       <ConfigurableFormItem model={model} valuePropName="checked" initialValue={model?.defaultValue}>
-        {isReadOnly ? <ReadOnlyDisplayFormItem type="checkbox" /> : <Checkbox disabled={model.disabled} />}
+        {isReadOnly ? (
+          <ReadOnlyDisplayFormItem type="checkbox" disabled={disabled} />
+        ) : (
+          <Checkbox disabled={disabled} />
+        )}
       </ConfigurableFormItem>
     );
   },

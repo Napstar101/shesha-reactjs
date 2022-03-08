@@ -7,6 +7,7 @@ import { IPropertyMetadata } from '../../../../interfaces/metadata';
 import { Alert, Button, Modal } from 'antd';
 import { CodeOutlined } from '@ant-design/icons';
 import { IAceOptions } from 'react-ace';
+import { EditorModes } from './types';
 
 export interface ICodeEditorProps extends IConfigurableFormComponent {
   placeholder?: string;
@@ -14,13 +15,14 @@ export interface ICodeEditorProps extends IConfigurableFormComponent {
   onChange?: (value: string) => void;
   mode?: 'inline' | 'dialog';
   setOptions?: IAceOptions;
+  language?: EditorModes;
 }
 
-export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', ...props }) => {
+export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', value, language = 'javascript', ...props }) => {
   const [showDialog, setShowDialog] = useState(false);
 
-  const onChange = value => {
-    if (props.onChange) props.onChange(value);
+  const onChange = _value => {
+    if (props.onChange) props.onChange(_value);
   };
   const meta = useMetadata(false);
 
@@ -65,14 +67,14 @@ export const CodeEditor: FC<ICodeEditorProps> = ({ mode = 'inline', ...props }) 
       name={props.id}
       style={{ width: 'unset' }}
       placeholder={props.placeholder}
-      mode="typescript"
+      mode={language}
       theme="monokai"
       onChange={onChange}
       fontSize={14}
       showPrintMargin={true}
       showGutter={true}
       highlightActiveLine={true}
-      value={props.value}
+      value={value}
       setOptions={{
         enableBasicAutocompletion: true,
         enableLiveAutocompletion: true,

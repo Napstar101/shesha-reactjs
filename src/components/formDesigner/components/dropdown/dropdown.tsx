@@ -11,6 +11,7 @@ import RefListDropDown from '../../../refListDropDown';
 import { DataTypes } from '../../../../interfaces/dataTypes';
 import { useForm } from '../../../..';
 import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
+import QuickView from '../../../quickView';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -22,7 +23,17 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   factory: (model: IDropdownProps) => {
     return (
       <ConfigurableFormItem model={model}>
-        <Dropdown {...model} />
+        {model.enableQuickview ? (
+          <QuickView
+            // title={props.title}
+            displayFormPath={model.displayFormPath}
+            displayPropertyName={model.displayPropertyName}
+            getDetailsUrl={model.getDetailsUrl}
+            // id={props.id} 
+            />
+        ) : (
+          <Dropdown {...model} />
+        )}
       </ConfigurableFormItem>
     );
   },
@@ -49,6 +60,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
 };
 
 export const Dropdown: FC<IDropdownProps> = ({
+  id,
   dataSourceType,
   values,
   onChange,
@@ -63,8 +75,9 @@ export const Dropdown: FC<IDropdownProps> = ({
   placeholder,
   useRawValues,
   readOnly,
+  isDynamic,
 }) => {
-  const { formMode } = useForm();
+  const { formMode, isComponentDisabled } = useForm();
   const getOptions = (): ILabelValue[] => {
     return value && typeof value === 'number' ? values?.map(i => ({ ...i, value: parseInt(i.value) })) : values;
   };
@@ -73,13 +86,15 @@ export const Dropdown: FC<IDropdownProps> = ({
 
   const isReadOnly = formMode === 'readonly' || readOnly;
 
+  const isDisabled = isComponentDisabled({ id, isDynamic, disabled });
+
   if (dataSourceType === 'referenceList') {
     return useRawValues ? (
       <RefListDropDown.Raw
         onChange={onChange}
         listName={referenceListName}
         listNamespace={referenceListNamespace}
-        disabled={disabled}
+        disabled={isDisabled}
         value={value}
         bordered={!hideBorder}
         defaultValue={defaultValue}
@@ -94,7 +109,7 @@ export const Dropdown: FC<IDropdownProps> = ({
         onChange={onChange}
         listName={referenceListName}
         listNamespace={referenceListNamespace}
-        disabled={disabled}
+        disabled={isDisabled}
         value={value}
         bordered={!hideBorder}
         defaultValue={defaultValue}
@@ -116,7 +131,7 @@ export const Dropdown: FC<IDropdownProps> = ({
   };
 
   if (isReadOnly) {
-    return <ReadOnlyDisplayFormItem type="string" value={getSelectValue()} />;
+    return <ReadOnlyDisplayFormItem disabled={isDisabled} type="string" value={getSelectValue()} />;
   }
 
   return (
@@ -126,7 +141,7 @@ export const Dropdown: FC<IDropdownProps> = ({
       value={options.length > 0 ? value || defaultValue : null}
       defaultValue={defaultValue}
       bordered={!hideBorder}
-      disabled={disabled}
+      disabled={isDisabled}
       mode={selectedMode}
       placeholder={placeholder}
       showSearch

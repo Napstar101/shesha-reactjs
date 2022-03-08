@@ -45,9 +45,9 @@ export const ToolbarConfigurator: FC<IToolbarConfiguratorProps> = ({ allowAddGro
 
       <div className="sha-action-buttons">
         {allowAddGroups && (
-        <Button onClick={addGroup} type="primary">
-          Add Group
-        </Button>
+          <Button onClick={addGroup} type="primary">
+            Add Group
+          </Button>
         )}
 
         <Button onClick={addButton} type="primary">
