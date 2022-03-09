@@ -53,7 +53,6 @@ import {
   ICrudProps,
   IStoredFilter,
   ITableFilter,
-  IFormDataPayload,
   ITableCrudConfig,
 } from './interfaces';
 import { useMutate, useGet } from 'restful-react';

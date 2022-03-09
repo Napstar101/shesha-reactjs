@@ -105,8 +105,8 @@ const ChildDataTableSettings: FC<IChildDataTableSettingsProps> = props => {
 
   const metadata = useMetadata(false);
 
-  const columns = (selectedComponentRef.current?.columns as ITableColumn[]) || [];
-  const dataSourceType: TableDataSourceType = selectedComponentRef.current?.dataSourceType;
+  const columns = (selectedComponentRef?.current?.columns as ITableColumn[]) || [];
+  const dataSourceType: TableDataSourceType = selectedComponentRef?.current?.dataSourceType;
 
   const fields = useMemo<IProperty[]>(() => {
     if (dataSourceType === 'tableConfig') {

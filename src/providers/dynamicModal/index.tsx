@@ -1,4 +1,4 @@
-import React, { FC, useReducer, useContext, PropsWithChildren, useEffect } from 'react';
+import React, { FC, useReducer, useContext, PropsWithChildren } from 'react';
 import DynamicModalReducer from './reducer';
 import {
   DynamicModalActionsContext,
@@ -50,10 +50,6 @@ const DynamicModalProvider: FC<PropsWithChildren<IDynamicModalProviderProps>> = 
   const modalExists = (id: string) => {
     return Boolean(state.instances[id]);
   };
-
-  useEffect(() => {
-    console.log('<<modal>>  DynamicModalProvider state?.instances: ', state?.instances);
-  }, [state?.instances]);
 
   const renderInstances = () => {
     const rendered = [];
