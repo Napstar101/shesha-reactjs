@@ -4,6 +4,7 @@ import { ITableCustomTypesRender } from './interfaces';
 import { IConfigurableActionColumnsProps } from '../../providers/datatableColumnsConfigurator/models';
 import ShaIcon, { IconType } from '../shaIcon';
 import { evaluateString } from '../../providers/form/utils';
+import { useShaRouting } from '../..';
 
 export const renderers: ITableCustomTypesRender[] = [
   {
@@ -57,7 +58,9 @@ export const renderers: ITableCustomTypesRender[] = [
   },
   {
     key: 'action',
-    render: (props, router) => {
+    render: props => {
+      const { router } = useShaRouting();
+
       const getActionProps = (data): IConfigurableActionColumnsProps => {
         return data?.column?.actionProps as IConfigurableActionColumnsProps;
       };
@@ -76,10 +79,15 @@ export const renderers: ITableCustomTypesRender[] = [
                   ? evaluateString(actionProps.targetUrl, { selectedRow: data.row.original })
                   : actionProps.targetUrl;
 
-              //router?.push(preparedUrl);
-              window.location.href = preparedUrl;
-              console.log('prepared url: ' + preparedUrl, router);
-              break;
+              if (typeof router === 'object') {
+                try {
+                  router?.push(preparedUrl);
+                } catch (error) {
+                  window.location.href = preparedUrl;
+                }
+              } else {
+                window.location.href = preparedUrl;
+              }
             } else console.warn('tagret Url is not specified');
             break;
           }
