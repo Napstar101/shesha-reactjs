@@ -98,7 +98,7 @@ function ChildDataTableSettingsInner({ onSave, model, onValuesChange }: IChildDa
       </Form.Item>
 
       <Form.Item name="defaultSelectedFilterId" label="Selected filter" required>
-        <Select value={state?.data?.defaultSelectedFilterId}>
+        <Select value={state?.data?.defaultSelectedFilterId} allowClear showSearch>
           {state?.data?.filters?.map(({ id, name }) => (
             <Select.Option value={id} key={id}>
               {name}

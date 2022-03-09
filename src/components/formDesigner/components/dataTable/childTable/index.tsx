@@ -23,8 +23,10 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
   name: 'Child Table',
   icon: <TableOutlined />,
   factory: (model: IChildTableComponentProps, componentRef: MutableRefObject<any>) => {
-    const { formData } = useForm();
-    const { columns, getDataSourceType, setPredefinedFilters } = useDataTable();
+    const { formData, formMode } = useForm();
+    const { columns, getDataSourceType, setPredefinedFilters, refreshTable } = useDataTable();
+
+    const { defaultSelectedFilterId, filters } = model;
 
     const dataSourceType = getDataSourceType();
 
@@ -33,40 +35,74 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
       dataSourceType,
     };
 
-    const hasFilters = model?.filters?.length > 0;
+    const hasFilters = filters?.length > 0;
 
-    const foundDynamicFilter = hasDynamicFilter(model?.filters);
+    const foundDynamicFilter = hasDynamicFilter(filters);
 
-    const hasManyFiltersButNoSelected = hasFilters && !model?.defaultSelectedFilterId;
+    const hasManyFiltersButNoSelected = hasFilters && !defaultSelectedFilterId;
 
     const hasFormData = Boolean(formData);
 
     useEffect(() => {
-      const evaluatedFilters = evaluateDynamicFilters(model?.filters, formData);
+      if (hasFilters) {
+        const evaluatedFilters = evaluateDynamicFilters(filters, formData);
 
-      const parsedFilters = evaluatedFilters?.map(filter => {
-        let _filter = { ...filter };
+        let parsedFilters = evaluatedFilters;
 
-        if (_filter.id === model?.defaultSelectedFilterId) {
-          _filter.defaultSelected = true;
-          _filter.selected = true;
+        if (defaultSelectedFilterId) {
+          parsedFilters = evaluatedFilters?.map(filter => {
+            let _filter = { ...filter };
+
+            if (_filter.id === defaultSelectedFilterId) {
+              _filter.defaultSelected = true;
+              _filter.selected = true;
+            }
+
+            return _filter;
+          });
+        } else {
+          let firstElement = evaluatedFilters[0];
+
+          firstElement.defaultSelected = true;
+          firstElement.selected = true;
+
+          evaluatedFilters[0] = firstElement;
         }
 
-        return _filter;
-      });
+        if (hasFormData) {
+          // Here we know we have evaluated our filters
 
-      if (formData) {
-        setPredefinedFilters(parsedFilters);
+          // TODO: Deal with the situation whereby the expression value evaluated to empty string because the action GetData will fail
+          setPredefinedFilters(parsedFilters);
+        } else if (!foundDynamicFilter) {
+          // Here we do not need dynamic filters
+          setPredefinedFilters(parsedFilters);
+        }
+
+        refreshTable();
       }
     }, [model?.filters, formData]);
 
     return (
       <Fragment>
-        <Show when={!formData}>
-          <Alert
-            type="warning"
-            message="Please note that the table will not be filtered if there is no state provided"
-          />
+        <Show when={formMode === 'designer'}>
+          <Show when={!hasFormData && foundDynamicFilter}>
+            <Alert
+              style={{ marginBottom: 6 }}
+              type="warning"
+              message="Found dynamic filters but no state"
+              description="Please note that you have dynamic filter(s) but there is no state to evaluate the filter. The table will not be filtered as a result."
+            />
+          </Show>
+
+          <Show when={hasManyFiltersButNoSelected}>
+            <Alert
+              style={{ marginBottom: 6 }}
+              type="warning"
+              message="No selected filter"
+              description="Please note you more than one filter and no one is selected. The first one will be used by default"
+            />
+          </Show>
         </Show>
 
         <CollapsiblePanel
