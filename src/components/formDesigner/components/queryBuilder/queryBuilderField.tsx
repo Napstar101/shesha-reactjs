@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { JsonLogicResult } from 'react-awesome-query-builder';
-import { Modal, Button, Collapse, Checkbox } from 'antd';
+import { Modal, Button, Collapse } from 'antd';
 import { IProperty } from '../../../../providers/queryBuilder/models';
 import QueryBuilder from '../../../queryBuilder';
 import { CodeEditor } from '../../..';
@@ -99,6 +99,7 @@ export const QueryBuilderField: FC<IQueryBuilderFieldProps> = props => {
         title="Quick Filter Query Builder"
         onCancel={() => setModalVisible(false)}
         onOk={onOkClick}
+        destroyOnClose
       >
         <h4>Here you can create your own table filters using the query builder below</h4>
 

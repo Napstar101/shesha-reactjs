@@ -46,8 +46,6 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({
   const [tree, setTree] = useState<ImmutableTree>();
   const [config, setConfig] = useState<Config>();
 
-  console.log('QueryBuilder useExpression ', useExpression);
-
   useEffect(() => {
     initialize();
   }, []);

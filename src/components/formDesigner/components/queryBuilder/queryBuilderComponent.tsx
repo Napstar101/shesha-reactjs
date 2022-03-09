@@ -21,18 +21,16 @@ const QueryBuilderComponent: IToolboxComponent<IQueryBuilderProps> = {
   icon: <FilterOutlined />,
   //dataTypes: [DataTypes.string],
   factory: (model: IQueryBuilderProps) => {
-    const { selectedItem } = useTableViewSelectorConfigurator();
+    const { selectedItemId, items } = useTableViewSelectorConfigurator();
+
+    const useExpression = items?.find(({ id }) => id === selectedItemId)?.useExpression;
 
     const queryBuilder = useQueryBuilder(false);
     const fields = queryBuilder?.fields || [];
 
     return (
       <ConfigurableFormItem model={model}>
-        <QueryBuilderField
-          fields={fields}
-          jsonExpanded={model.jsonExpanded}
-          useExpression={selectedItem?.useExpression}
-        />
+        <QueryBuilderField fields={fields} jsonExpanded={model.jsonExpanded} useExpression={useExpression} />
       </ConfigurableFormItem>
     );
   },
