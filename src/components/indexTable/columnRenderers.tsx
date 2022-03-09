@@ -9,6 +9,9 @@ import camelCaseKeys from 'camelcase-keys';
 import { message, Modal } from 'antd';
 import { useMutate } from 'restful-react';
 import { IModalProps } from '../../providers/dynamicModal/models';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { nanoid } from 'nanoid/non-secure';
 
 export const renderers: ITableCustomTypesRender[] = [
   {
@@ -63,36 +66,38 @@ export const renderers: ITableCustomTypesRender[] = [
   {
     key: 'action',
     render: props => {
-      const rowData = props?.cell?.row?.original;
       const { router } = useShaRouting();
       const { crudConfig, refreshTable } = useDataTable();
       const { mutate: deleteRowHttp } = useMutate({
         verb: 'DELETE',
         path: crudConfig?.deleteUrl,
       });
+      const [modalProps, setModalProps] = useState<IModalProps>();
 
-      const actionProps = props?.column?.actionProps as IConfigurableActionColumnsProps;
+      const dynamicModal = useModal(modalProps);
+
+      useEffect(() => {
+        if (modalProps) {
+          dynamicModal?.open();
+        }
+      }, [modalProps]);
+
+      const resetModalProps = () => {
+        setModalProps(null);
+      };
 
       const getActionProps = (data): IConfigurableActionColumnsProps => {
         return data?.column?.actionProps as IConfigurableActionColumnsProps;
       };
 
-      const convertedProps = actionProps as Omit<IModalProps, 'formId'>;
+      const getRowData = data => {
+        return data?.cell?.row?.original;
+      };
 
-      const dynamicModal = useModal({
-        id: actionProps?.id, // link modal to the current form component by id
-        isVisible: false,
-        formId: actionProps.modalFormId,
-        title: actionProps.modalTitle,
-        initialValues: rowData ? camelCaseKeys(rowData) : rowData,
-        showModalFooter: convertedProps?.showModalFooter,
-        submitHttpVerb: convertedProps?.submitHttpVerb,
-      } as any);
-
-      const handleDeleteRowClick = () => {
+      const handleDeleteRowClick = (id: string) => {
         const deletingLoader = message.loading('Action in progress..', 0);
 
-        deleteRowHttp('', { queryParams: { id: rowData?.Id } })
+        deleteRowHttp('', { queryParams: { id } })
           .then(() => {
             refreshTable();
           })
@@ -106,6 +111,8 @@ export const renderers: ITableCustomTypesRender[] = [
         event.stopPropagation();
 
         const actionProps = getActionProps(data);
+
+        const selectedRow = getRowData(data);
 
         if (!actionProps) return;
 
@@ -131,7 +138,23 @@ export const renderers: ITableCustomTypesRender[] = [
             break;
           }
           case 'editRow': {
-            dynamicModal?.open();
+            const convertedProps = actionProps as Omit<IModalProps, 'formId'>;
+
+            setModalProps({
+              id: nanoid(), // link modal to the current form component by id
+              // id: selectedRow?.Id, // link modal to the current form component by id
+              isVisible: false,
+              formId: actionProps.modalFormId,
+              title: actionProps.modalTitle,
+              initialValues: selectedRow ? camelCaseKeys(selectedRow) : selectedRow,
+              showModalFooter: convertedProps?.showModalFooter,
+              submitHttpVerb: convertedProps?.submitHttpVerb,
+              destroyOnClose: true,
+              onSubmitted: () => {
+                refreshTable();
+                resetModalProps();
+              },
+            } as any);
 
             break;
           }

@@ -54,6 +54,8 @@ export interface IModalProps {
    * Initial values of the modal
    */
   initialValues?: any;
+
+  destroyOnClose?: boolean;
 }
 
 /**
