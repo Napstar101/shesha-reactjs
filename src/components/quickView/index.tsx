@@ -1,4 +1,4 @@
-import React, { useEffect, FC, ReactNode, MutableRefObject, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, FC } from 'react';
 import { Popover, Form } from 'antd';
 import { requestHeaders } from '../../utils/requestHeaders';
 import { ConfigurableForm } from '../';
@@ -72,7 +72,7 @@ const QuickView: FC<IQuickViewProps> = ({
 
     const [form] = Form.useForm();
 
-    const { loading: loading, refetch: fetchData, error: fetchError, data: serverData } = fetcher({
+    const { loading: loading, refetch: fetchData, data: serverData } = fetcher({
         lazy: true,
         requestOptions: { headers: requestHeaders() },
         queryParams: { id: entityId },
@@ -92,7 +92,7 @@ const QuickView: FC<IQuickViewProps> = ({
     const filters = formFilters || DEFAULT_FILTERS;
 
     const model = (filterGenericModelData(serverData?.result, filters) as any) || {};
-    const initialValues = (filterGenericModelData(formValues, filters) as any) || model;
+    // const initialValues = (filterGenericModelData(formValues, filters) as any) || model;
 
     const { formItemLayout } = useUi();
 
