@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Button, Checkbox, Form, Input, Select } from 'antd';
 import { SectionSeparator } from '../../../..';
 import { IChildTableSettingsProps } from './models';
@@ -61,16 +61,6 @@ function ChildDataTableSettingsInner({ onSave, model, onValuesChange }: IChildDa
         tooltip="This can be a literal string like below 'Details for {{data.companyName}}'"
       >
         <Input placeholder="Details for {{data.companyName}}" />
-      </Form.Item>
-
-      <Form.Item
-        name="parentEntityId"
-        label="Parent Entity ID"
-        rules={[{ required: true }]}
-        initialValue={model.parentEntityId}
-        tooltip="This can be a literal string like below 'Details for {{data.companyName}}'"
-      >
-        <Input placeholder="{{data.parentEntityId}}" />
       </Form.Item>
 
       <Form.Item name="allowQuickSearch" label="Allow Quick Search" valuePropName="checked">

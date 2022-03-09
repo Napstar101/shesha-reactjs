@@ -180,6 +180,8 @@ export interface IDataTableActionsContext
    * Register columns in the table context. Is used for configurable tables
    */
   registerConfigurableColumns: (ownerId: string, columns: IConfigurableColumnsBase[]) => void;
+
+  setCrudConfig?: (config: ITableCrudConfig) => void;
   /* NEW_ACTION_ACTION_DECLARATIO_GOES_HERE */
 }
 

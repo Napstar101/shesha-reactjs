@@ -7,9 +7,6 @@ export interface ITableComponentBaseProps {
   crud: boolean;
   crudMode?: 'inline' | 'dialog';
   overrideDefaultCrudBehavior?: boolean;
-  editUrl?: string;
-  deleteUrl?: boolean;
-  updateUrl?: boolean;
 }
 
 /** Table component props */

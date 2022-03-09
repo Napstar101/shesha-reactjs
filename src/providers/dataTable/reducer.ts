@@ -10,11 +10,11 @@ import {
 import flagsReducer from '../utils/flagsReducer';
 import {
   IEditableRowState,
-  IFormDataPayload,
   IGetDataPayload,
   IndexColumnDataType,
   IStoredFilter,
   ITableColumn,
+  ITableCrudConfig,
   ITableDataResponse,
   ITableFilter,
   SortDirection,
@@ -493,12 +493,15 @@ const reducer = handleActions<IDataTableStateContext, any>(
       };
     },
 
-    [DataTableActionEnums.SetFormData]: (state: IDataTableStateContext, action: ReduxActions.Action<any>) => {
+    [DataTableActionEnums.SetCrudConfig]: (
+      state: IDataTableStateContext,
+      action: ReduxActions.Action<ITableCrudConfig>
+    ) => {
       const { payload } = action;
 
       return {
         ...state,
-        formData: payload,
+        crudConfig: payload,
       };
     },
   },

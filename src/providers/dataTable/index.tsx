@@ -41,7 +41,7 @@ import {
   deleteRowItemAction,
   registerConfigurableColumnsAction,
   fetchColumnsSuccessSuccessAction,
-  setFormDataAction,
+  setCrudConfigAction,
 } from './actions';
 import {
   ITableDataResponse,
@@ -54,6 +54,7 @@ import {
   IStoredFilter,
   ITableFilter,
   IFormDataPayload,
+  ITableCrudConfig,
 } from './interfaces';
 import { useMutate, useGet } from 'restful-react';
 import _ from 'lodash';
@@ -565,8 +566,8 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     return !tableId && entityType ? 'entity' : 'tableConfig';
   };
 
-  const setFormData = (payload: IFormDataPayload) => {
-    dispatch(setFormDataAction(payload));
+  const setCrudConfig = (config: ITableCrudConfig) => {
+    dispatch(setCrudConfigAction(config));
   };
 
   /* NEW_ACTION_DECLARATION_GOES_HERE */
@@ -603,7 +604,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           registerConfigurableColumns,
           getCurrentFilter,
           getDataSourceType,
-          setFormData,
+          setCrudConfig,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

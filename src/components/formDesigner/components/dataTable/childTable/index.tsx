@@ -2,7 +2,7 @@ import { TableOutlined } from '@ant-design/icons';
 import { Alert, Space } from 'antd';
 import React, { Fragment, MutableRefObject, useEffect } from 'react';
 import { CollapsiblePanel, GlobalTableFilter, Show } from '../../../..';
-import { useDataTable, useForm } from '../../../../..';
+import { evaluateString, useDataTable, useForm } from '../../../../..';
 import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces';
 import { FormMarkup } from '../../../../../providers/form/models';
@@ -23,8 +23,8 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
   name: 'Child Table',
   icon: <TableOutlined />,
   factory: (model: IChildTableComponentProps, componentRef: MutableRefObject<any>) => {
-    const { formData, formMode } = useForm();
-    const { columns, getDataSourceType, setPredefinedFilters, refreshTable } = useDataTable();
+    const { formData, formMode, formSettings } = useForm();
+    const { columns, getDataSourceType, setPredefinedFilters, refreshTable, setCrudConfig } = useDataTable();
 
     const { defaultSelectedFilterId, filters } = model;
 
@@ -42,6 +42,14 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
     const hasManyFiltersButNoSelected = hasFilters && !defaultSelectedFilterId;
 
     const hasFormData = Boolean(formData);
+
+    useEffect(() => {
+      if (formSettings) {
+        const { postUrl, putUrl, deleteUrl, getUrl } = formSettings;
+
+        setCrudConfig({ createUrl: postUrl, updateUrl: putUrl, deleteUrl, detailsUrl: getUrl });
+      }
+    }, [formSettings]);
 
     useEffect(() => {
       if (hasFilters) {
@@ -107,7 +115,7 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
 
         <CollapsiblePanel
           key={undefined}
-          header={model?.title}
+          header={evaluateString(model?.title, formData)}
           extra={
             <div>
               <Space size="middle">

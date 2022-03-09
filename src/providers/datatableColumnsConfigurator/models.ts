@@ -71,6 +71,11 @@ export interface IConfigurableActionColumnsProps extends IConfigurableColumnsPro
   /** Form action */
   formAction?: string;
 
+  /**
+   * The warning message to display before deleting an item
+   */
+  deleteWarningMessage?: string;
+
   //#endregion
 }
 

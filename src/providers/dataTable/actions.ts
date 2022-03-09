@@ -9,7 +9,7 @@ import {
   ITableDataResponse,
   IGetDataPayload,
   IEditableRowState,
-  IFormDataPayload,
+  ITableCrudConfig,
 } from './interfaces';
 
 export enum DataTableActionEnums {
@@ -47,7 +47,7 @@ export enum DataTableActionEnums {
   RegisterConfigurableColumns = 'REGISTER_CONFIGURABLE_COLUMNS',
   OnSelectRow = 'ON_SELECT_ROW',
 
-  SetFormData = 'SET_FORM_DATA',
+  SetCrudConfig = 'SET_CRUD_Config',
 
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
@@ -173,7 +173,7 @@ export const registerConfigurableColumnsAction = createAction<
 
 /* NEW_ACTION_GOES_HERE */
 
-export const setFormDataAction = createAction<IFormDataPayload, IFormDataPayload>(
-  DataTableActionEnums.SetFormData,
+export const setCrudConfigAction = createAction<ITableCrudConfig, ITableCrudConfig>(
+  DataTableActionEnums.SetCrudConfig,
   p => p
 );

@@ -155,10 +155,10 @@ export interface ITableDataResponse {
 export interface IDataTableInstance extends IPublicDataTableActions {}
 
 export interface ITableCrudConfig {
-  createUrl: string;
-  deleteUrl: string;
-  detailsUrl: string;
-  updateUrl: string;
+  createUrl?: string;
+  deleteUrl?: string;
+  detailsUrl?: string;
+  updateUrl?: string;
 }
 
 export interface IEditableRowState {
@@ -204,4 +204,8 @@ export interface ICrudProps {
 
 export interface IFormDataPayload {
   formData?: any;
+}
+
+export interface IFormDataPayload {
+  crudSettings?: any;
 }
