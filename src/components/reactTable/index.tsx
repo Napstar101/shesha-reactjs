@@ -146,7 +146,7 @@ const ReactTable: FC<IReactTableProps> = ({
   const { pageIndex, pageSize, selectedRowIds } = state;
 
   useEffect(() => {
-    if (selectedRowIds) {
+    if (selectedRowIds && typeof onSelectedIdsChanged === 'function') {
       const arrays: string[] = data
         ?.map(({ Id }, index) => {
           if (selectedRowIds[index]) {

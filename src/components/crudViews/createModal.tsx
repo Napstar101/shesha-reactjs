@@ -116,7 +116,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
 
   const onFinish = (values: any) => {
     // We must always use updated values, in case the user had prepared values by then also update the values in the form
-    const preparedValues = typeof prepareValues === 'function' ? { ...prepareValues(values), ...values } : values;
+    const preparedValues = typeof prepareValues === 'function' ? prepareValues(values) : values;
 
     if (beforeSubmit && !beforeSubmit(preparedValues)) {
       return;

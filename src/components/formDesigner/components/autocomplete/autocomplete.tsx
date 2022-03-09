@@ -1,13 +1,13 @@
+import { FileSearchOutlined } from '@ant-design/icons';
 import React, { Key } from 'react';
 import { IToolboxComponent } from '../../../../interfaces';
+import { DataTypes } from '../../../../interfaces/dataTypes';
+import { useForm } from '../../../../providers/form';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
-import { FileSearchOutlined } from '@ant-design/icons';
+import { evaluateValue, replaceTags, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import Autocomplete, { AutocompleteDataSourceType, ISelectOption } from '../../../autocomplete';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import Autocomplete, { AutocompleteDataSourceType } from '../../../autocomplete';
-import { useForm } from '../../../../providers/form';
-import { evaluateValue, replaceTags, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
-import { DataTypes } from '../../../../interfaces/dataTypes';
 
 interface IQueryParamProp {
   id: string;
@@ -28,6 +28,14 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   mode?: 'tags' | 'multiple';
   useRawValues: boolean;
   queryParams: IQueryParamProp[];
+  keyPropName?: string;
+  valuePropName?: string;
+
+  // Quickview properties
+  quickViewEnabled?: boolean;
+  displayFormPath?: string;
+  displayPropertyName?: string;
+  getDetailsUrl?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -65,6 +73,37 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       return null;
     };
 
+    const getFetchedItemData = (
+      item: object,
+      useRawValues: boolean,
+      value: string = 'value',
+      displayText: string = 'displayText'
+    ) =>
+      useRawValues
+        ? item[value]
+        : {
+            id: item[value],
+            displayText: item[displayText],
+          };
+
+    const getOptionFromFetchedItem = (item: object): ISelectOption => {
+      const { dataSourceType, keyPropName, useRawValues, valuePropName } = model;
+
+      if (dataSourceType === 'url' && keyPropName && valuePropName) {
+        return {
+          value: item[keyPropName],
+          label: item[valuePropName],
+          data: getFetchedItemData(item, useRawValues, keyPropName, valuePropName),
+        };
+      }
+
+      return {
+        value: item['value'],
+        label: item['displayText'],
+        data: getFetchedItemData(item, useRawValues),
+      };
+    };
+
     const autocompleteProps = {
       typeShortAlias: model?.entityTypeShortAlias,
       allowInherited: true /*hardcoded for now*/,
@@ -75,6 +114,7 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       mode: model?.mode,
       queryParams: getQueryParams(),
       readOnly: model?.readOnly || formMode === 'readonly',
+      getOptionFromFetchedItem,
     };
 
     // todo: implement other types of datasources!
