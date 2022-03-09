@@ -155,8 +155,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       quickSearch: payload.quickSearch,
       columns: state.columns,
       tableSorting: payload.sorting,
-
-      selectedStoredFilterIds: payload.selectedStoredFilterIds,
+      selectedStoredFilterIds: payload.selectedStoredFilterIds || state?.selectedStoredFilterIds,
       tableFilter: payload.filter,
     };
 
@@ -164,14 +163,20 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
 
     // convert filters
     const allFilters = [...(state.predefinedFilters || []), ...(state.storedFilters || [])];
-    const filters = payload.selectedStoredFilterIds
-      .map(id => allFilters.find(f => f.id === id))
-      .filter(f => Boolean(f));
+
+    let filters = payload.selectedStoredFilterIds.map(id => allFilters.find(f => f.id === id)).filter(f => Boolean(f));
 
     const expandedPayload: IGetDataPayload = { ...payload, selectedFilters: filters };
 
-    console.log('fetchDataTableData expandedPayload: ', expandedPayload, state?.formData);
-    console.log('fetchDataTableData expandedPayload JSON: ', JSON.stringify(expandedPayload));
+    // Check against state.selectedStoredFilterIds as well
+    if (filters?.length === 0 && state?.predefinedFilters?.length) {
+      const foundSelectedFilter = state?.predefinedFilters?.find(({ defaultSelected }) => defaultSelected);
+
+      if (foundSelectedFilter) {
+        expandedPayload.selectedStoredFilterIds = [foundSelectedFilter?.id];
+        expandedPayload.selectedFilters = [foundSelectedFilter];
+      }
+    }
 
     return fetchDataTableDataInternal(expandedPayload);
   };

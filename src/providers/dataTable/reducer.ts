@@ -58,6 +58,7 @@ const reducer = handleActions<IDataTableStateContext, any>(
       action: ReduxActions.Action<string[]>
     ) => {
       const { payload } = action;
+
       return {
         ...state,
         selectedStoredFilterIds: payload,

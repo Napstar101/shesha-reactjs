@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { Button, Checkbox, Form, Input, Select } from 'antd';
 import { SectionSeparator } from '../../../..';
 import { IChildTableSettingsProps } from './models';
 import { ToolbarSettingsModal } from '../../dataTable/toolbar/toolbarSettingsModal';
 import TableViewSelectorSettingsModal from '../tableViewSelector/tableViewSelectorSettingsModal';
+import { QueryBuilderProvider, useForm, useMetadata } from '../../../../../providers';
+import { ITableColumn } from '../../../../../interfaces';
+import { TableDataSourceType } from '../../../../../providers/dataTable/interfaces';
+import { IProperty } from '../../../../../providers/queryBuilder/models';
 
 export interface IChildDataTableSettingsProps {
   model: IChildTableSettingsProps;
@@ -15,27 +19,37 @@ export interface IChildDataTableSettingsProps {
 interface IChildDataTableSettingsState {
   toolbarModalVisible?: boolean;
   filtersModalVisible?: boolean;
+  data?: IChildTableSettingsProps;
 }
 
-function ChildDataTableSettings({ onSave, model, onValuesChange }: IChildDataTableSettingsProps) {
-  const [state, setState] = useState<IChildDataTableSettingsState>({});
-
+function ChildDataTableSettingsInner({ onSave, model, onValuesChange }: IChildDataTableSettingsProps) {
+  const [state, setState] = useState<IChildDataTableSettingsState>({ data: model });
   const [form] = Form.useForm();
 
   const toggleToolbarModal = () => setState(prev => ({ ...prev, toolbarModalVisible: !prev?.toolbarModalVisible }));
 
   const toggleFiltersModal = () => setState(prev => ({ ...prev, filtersModalVisible: !prev?.filtersModalVisible }));
 
+  const initialValues = {
+    title: model?.title,
+    parentEntityId: model?.parentEntityId,
+    allowQuickSearch: model?.allowQuickSearch,
+    toolbarItems: model?.toolbarItems,
+    filters: model?.filters,
+    defaultSelectedFilterId: model?.defaultSelectedFilterId,
+  };
+
   return (
     <Form
       form={form}
       onFinish={onSave}
       layout="vertical"
-      onValuesChange={(a, b) => {
-        console.log('onValuesChange a, b :>> ', a, b);
+      onValuesChange={(changedValues, values) => {
+        setState(prev => ({ ...prev, data: values }));
 
-        onValuesChange(a, b);
+        onValuesChange(changedValues, values);
       }}
+      initialValues={initialValues}
     >
       <SectionSeparator sectionName={'Display'} />
 
@@ -60,7 +74,7 @@ function ChildDataTableSettings({ onSave, model, onValuesChange }: IChildDataTab
       </Form.Item>
 
       <Form.Item name="allowQuickSearch" label="Allow Quick Search" valuePropName="checked">
-        <Checkbox defaultChecked={model?.allowQuickSearch} />
+        <Checkbox checked={model?.allowQuickSearch} />
       </Form.Item>
 
       <SectionSeparator sectionName="Toolbar" />
@@ -82,8 +96,69 @@ function ChildDataTableSettings({ onSave, model, onValuesChange }: IChildDataTab
       <Form.Item name="filters" initialValue={model.filters}>
         <TableViewSelectorSettingsModal visible={state?.filtersModalVisible} hideModal={toggleFiltersModal} />
       </Form.Item>
+
+      <Form.Item name="defaultSelectedFilterId" label="Selected filter" required>
+        <Select value={state?.data?.defaultSelectedFilterId}>
+          {state?.data?.filters?.map(({ id, name }) => (
+            <Select.Option value={id} key={id}>
+              {name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
     </Form>
   );
 }
+
+const ChildDataTableSettings: FC<IChildDataTableSettingsProps> = props => {
+  const { selectedComponentRef } = useForm();
+
+  const metadata = useMetadata(false);
+
+  const columns = (selectedComponentRef.current?.columns as ITableColumn[]) || [];
+  const dataSourceType: TableDataSourceType = selectedComponentRef.current?.dataSourceType;
+
+  const fields = useMemo<IProperty[]>(() => {
+    if (dataSourceType === 'tableConfig') {
+      return columns.map<IProperty>(column => ({
+        label: column.header,
+        propertyName: column.columnId,
+        visible: column.isVisible,
+        dataType: column.dataType,
+        fieldSettings: {
+          typeShortAlias: column.entityReferenceTypeShortAlias,
+          referenceListName: column.referenceListName,
+          referenceListNamespace: column.referenceListNamespace,
+          allowInherited: column.allowInherited,
+        },
+        //tooltip: column.description
+        //preferWidgets: ['']
+      }));
+    }
+    if (dataSourceType === 'entity') {
+      const properties = metadata?.metadata?.properties || [];
+      if (Boolean(properties))
+        return properties.map<IProperty>(property => ({
+          label: property.label,
+          propertyName: property.path,
+          visible: property.isVisible,
+          dataType: property.dataType,
+          fieldSettings: {
+            typeShortAlias: property.entityType,
+            referenceListName: property.referenceListName,
+            referenceListNamespace: property.referenceListNamespace,
+            allowInherited: true,
+          },
+        }));
+    }
+    return [];
+  }, [dataSourceType, columns, metadata]);
+
+  return (
+    <QueryBuilderProvider fields={fields}>
+      <ChildDataTableSettingsInner {...props} />
+    </QueryBuilderProvider>
+  );
+};
 
 export default ChildDataTableSettings;

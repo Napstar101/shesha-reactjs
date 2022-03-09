@@ -7,4 +7,5 @@ export interface IChildTableSettingsProps {
   allowQuickSearch?: boolean;
   toolbarItems?: ToolbarItemProps[];
   filters?: ITableViewProps[];
+  defaultSelectedFilterId: string;
 }
