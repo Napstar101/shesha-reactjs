@@ -52,6 +52,16 @@
       "label": "Description"
     },
     {
+      "id": "d72b6367-0e34-4b76-8621-d198961239de",
+      "type": "textField",
+      "name": "displayEntityKey",
+      "parentId": "root",
+      "label": "Display Entity Key",
+      "validate": {
+        "required": true
+      }
+    },
+    {
       "id": "2d32fe60-99a0-4825-ae6c-8b933004e119",
       "type": "textField",
       "name": "tableId",
