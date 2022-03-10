@@ -25,12 +25,15 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
       <ConfigurableFormItem model={model}>
         {model.enableQuickview ? (
           <QuickView
-            // title={props.title}
+            title={model.defaultValue}
             displayFormPath={model.displayFormPath}
             displayPropertyName={model.displayPropertyName}
             getDetailsUrl={model.getDetailsUrl}
-            // id={props.id} 
-            />
+            fetcher={null}>
+
+            <Dropdown {...model} />
+
+          </QuickView>
         ) : (
           <Dropdown {...model} />
         )}

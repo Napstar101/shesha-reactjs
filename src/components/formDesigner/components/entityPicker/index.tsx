@@ -51,12 +51,20 @@ const EntityPickerComponent: IToolboxComponent<IEntityPickerComponentProps> = {
       <ConfigurableFormItem model={model} initialValue={model?.defaultValue}>
         {model.enableQuickview ? (
           <QuickView
-            // title={props.title}
+            title={model.defaultValue}
             displayFormPath={model.displayFormPath}
             displayPropertyName={model.displayPropertyName}
             getDetailsUrl={model.getDetailsUrl}
-            // id={props.id}
-          />
+            fetcher={null}>
+
+            <EntityPicker
+              disabled={model.disabled}
+              tableId={model?.tableId}
+              displayEntityKey={model?.displayEntityKey}
+              entityFooter={<EntityFooter {...model} />}
+            />
+
+          </QuickView>
         ) : (
           <EntityPicker
             disabled={model.disabled}
