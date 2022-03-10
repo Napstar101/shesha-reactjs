@@ -398,6 +398,14 @@
               "valueTitle": "Value",
               "valueName": "value",
               "description": "Additional properties you want to be passed when the form gets submitted like parentId in the case where the modal is used in a childTable. Also note you can use Mustache expression like {{id}} for value property"
+            },
+            {
+              "id": "264903ff-b525-4a6e-893f-d560b219df9d",
+              "type": "numberField",
+              "name": "modalWidth",
+              "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+              "label": "Width",
+              "customVisibility": "return data.showModalFooter === true"
             }
           ],
           "dataSourceType": "values",

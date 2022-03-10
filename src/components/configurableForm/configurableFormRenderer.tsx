@@ -72,8 +72,36 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
     path: submitUrl,
   });
 
+  const getExpressionExecutor = (expression: string) => {
+    if (!expression) {
+      return null;
+    }
+
+    // tslint:disable-next-line:function-constructor
+    const func = new Function('data', expression);
+
+    return func(formData);
+  };
+
+  const getDynamicPreparedValues = () => {
+    const { preparedValues } = formSettings;
+
+    if (preparedValues) {
+      const localValues = getExpressionExecutor(preparedValues);
+
+      if (typeof localValues === 'object') {
+        return localValues;
+      }
+
+      console.error('Error: preparedValues is not an object::', localValues);
+
+      return getExpressionExecutor(preparedValues);
+    }
+    return {};
+  };
+
   const onFinish = () => {
-    const postData = addFormFieldsList({ ...formData }, form);
+    const postData = addFormFieldsList({ ...formData, ...getDynamicPreparedValues() }, form);
 
     if (skipPostOnFinish) {
       if (props?.onFinish) {

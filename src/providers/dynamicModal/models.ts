@@ -56,6 +56,8 @@ export interface IModalProps {
   initialValues?: any;
 
   destroyOnClose?: boolean;
+
+  width?: number;
 }
 
 /**

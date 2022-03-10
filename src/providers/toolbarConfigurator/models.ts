@@ -36,6 +36,7 @@ export interface IToolbarButton extends IToolbarItemBase {
   targetUrl?: string;
   modalFormId?: string;
   modalTitle?: string;
+  modalWidth?: number;
   formAction?: string;
   actionScript?: string;
 }

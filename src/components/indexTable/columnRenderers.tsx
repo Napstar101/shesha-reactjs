@@ -177,7 +177,9 @@ export const renderers: ITableCustomTypesRender[] = [
               initialValues: selectedRow ? camelCaseKeys(selectedRow) : selectedRow,
               showModalFooter: convertedProps?.showModalFooter,
               submitHttpVerb: convertedProps?.submitHttpVerb,
+              width: actionProps?.modalWidth,
               destroyOnClose: true,
+
               onSubmitted: () => {
                 refreshTable();
                 resetModalProps();

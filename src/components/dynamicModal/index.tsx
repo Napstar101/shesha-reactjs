@@ -28,7 +28,9 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
     onSuccessRedirectUrl,
     initialValues,
     destroyOnClose,
+    width = 800,
   } = props;
+
   const [form] = Form.useForm();
   const { hide, removeModal } = useDynamicModals();
   const { router } = useShaRouting();
@@ -77,6 +79,7 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
       onCancel={hideForm} // not used
       {...footerProps}
       destroyOnClose
+      width={width} // Hardcoded for now. This will be configurable very shortly
     >
       <ConfigurableForm
         id={formId}

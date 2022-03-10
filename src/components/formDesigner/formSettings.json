@@ -121,6 +121,21 @@
       "customVisibility": null,
       "description": "Whether the form should show mode toddler when in read mode or not. If set, clicking the pencil icon while in read-only mode, will change the form mode to editable",
       "validate": {}
+    },
+    {
+      "id": "fcfccb85-8fc3-436b-9f87-17e189bc3cdc",
+      "type": "codeEditor",
+      "name": "preparedValues",
+      "label": "Prepared Values",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "",
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "validate": {},
+      "description": "Write a code that allows you to return an object whose values will be merged with the form state before submit. The value 'data', which represents the form data is exposed by this function"
     }
   ],
   "formSettings": { "layout": "horizontal", "colon": true, "labelCol": { "span": 5 }, "wrapperCol": { "span": 19 } }
