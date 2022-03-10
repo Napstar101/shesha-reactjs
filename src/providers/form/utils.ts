@@ -407,16 +407,10 @@ export const evaluateValue = (value: string, dictionary: any) => {
  * @param data the data to use to evaluate the expression
  * @returns
  */
-export const evaluateExpression = (expression: string, data: any) => {
-  return expression.replace(/\$\{(.*?)\}/g, (_, token) => nestedProperty.get(data, token));
-};
-// export const evaluateExpression = (expression: string, data: any) => {
-//   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
-// };
 
-// export const evaluateExpression = (expression, data: any) => {
-//   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
-// };
+export const evaluateExpression = (expression, data: any) => {
+  return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token)) as string;
+};
 
 /**
  * Remove zero-width space characters from a string.

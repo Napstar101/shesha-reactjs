@@ -64,6 +64,7 @@ export interface IFormSettings {
   labelCol: ILayoutProps;
   wrapperCol: ILayoutProps;
   showModeToggler?: boolean;
+  preparedValues?: string;
 }
 
 export interface IFormDesignerStateContext extends StateWithHistory<IFormStateContext> {}

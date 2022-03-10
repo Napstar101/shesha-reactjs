@@ -35,6 +35,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
       submitHttpVerb: convertedProps?.submitHttpVerb,
       onSuccessRedirectUrl: convertedProps?.onSuccessRedirectUrl,
       destroyOnClose: true,
+      width: props?.modalWidth,
     };
 
     return props?.refreshTableOnSuccess ? (
