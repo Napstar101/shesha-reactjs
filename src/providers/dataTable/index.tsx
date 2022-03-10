@@ -164,7 +164,9 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     // convert filters
     const allFilters = [...(state.predefinedFilters || []), ...(state.storedFilters || [])];
 
-    let filters = payload.selectedStoredFilterIds.map(id => allFilters.find(f => f.id === id)).filter(f => Boolean(f));
+    const filters = payload.selectedStoredFilterIds
+      .map(id => allFilters.find(f => f.id === id))
+      .filter(f => Boolean(f));
 
     const expandedPayload: IGetDataPayload = { ...payload, selectedFilters: filters };
 

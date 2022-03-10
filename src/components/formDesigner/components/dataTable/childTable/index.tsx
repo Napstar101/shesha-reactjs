@@ -51,17 +51,17 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
 
         if (defaultSelectedFilterId) {
           parsedFilters = evaluatedFilters?.map(filter => {
-            let _filter = { ...filter };
+            const localFilter = { ...filter };
 
-            if (_filter.id === defaultSelectedFilterId) {
-              _filter.defaultSelected = true;
-              _filter.selected = true;
+            if (localFilter.id === defaultSelectedFilterId) {
+              localFilter.defaultSelected = true;
+              localFilter.selected = true;
             }
 
-            return _filter;
+            return localFilter;
           });
         } else {
-          let firstElement = evaluatedFilters[0];
+          const firstElement = evaluatedFilters[0];
 
           firstElement.defaultSelected = true;
           firstElement.selected = true;

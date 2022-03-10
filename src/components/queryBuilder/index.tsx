@@ -87,6 +87,7 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({
     fields?.forEach(({ dataType, visible, propertyName, label, fieldSettings, preferWidgets }) => {
       let type: string = dataType;
       let defaultPreferWidgets = [];
+      let localPreferWidgets = preferWidgets;
 
       /*
       Fields can be of type:
@@ -140,7 +141,7 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({
         if (useExpression) {
           type = 'text';
           defaultPreferWidgets = ['text'];
-          preferWidgets = ['text'];
+          localPreferWidgets = ['text'];
         }
 
         conf.fields[propertyName] = {
@@ -149,7 +150,7 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({
           valueSources: ['value'],
           // @ts-ignore note: types are wrong in the library, they doesn't allow to extend
           fieldSettings,
-          preferWidgets: preferWidgets || defaultPreferWidgets,
+          preferWidgets: localPreferWidgets || defaultPreferWidgets,
         };
       }
     });
