@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { ITableCustomTypesRender } from './interfaces';
 import { IConfigurableActionColumnsProps } from '../../providers/datatableColumnsConfigurator/models';
@@ -9,8 +9,6 @@ import camelCaseKeys from 'camelcase-keys';
 import { message, Modal, notification } from 'antd';
 import { useGet, useMutate } from 'restful-react';
 import { IModalProps } from '../../providers/dynamicModal/models';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import ValidationErrors from '../validationErrors';
 
 export const renderers: ITableCustomTypesRender[] = [
