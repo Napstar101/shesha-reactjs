@@ -163,7 +163,7 @@ const trimQueryString = (url: string): string => {
  * A component for working with dynamic autocomplete
  */
 
-export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
+export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   const {
     value,
     defaultValue,
@@ -342,7 +342,10 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
       <QuickView
         title={JSON.stringify(autocompleteValue)}
         formPath={quickviewFormPath}>
-        {JSON.stringify(autocompleteValue)}
+        <ReadOnlyDisplayFormItem
+          value={autocompleteValue}
+          type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
+          disabled={disabled} />
       </QuickView >
     );
   }
