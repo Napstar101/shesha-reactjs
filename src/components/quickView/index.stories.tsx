@@ -5,7 +5,6 @@ import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button } from 'antd';
-import { usePersonTestGet } from '../../apis/personTest';
 
 // #region Storybook Metadata & Configuration
 
@@ -27,11 +26,9 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
                 <>
                     <QuickView
                         title={props.title}
-                        displayFormPath={props.displayFormPath}
+                        formPath={props.formPath}
                         displayPropertyName={props.displayPropertyName}
-                        getDetailsUrl={props.getDetailsUrl}
-                        entityId={props.entityId}
-                        fetcher={props.fetcher}>
+                        formValues={{ membershipNumber: "00000000" }}>
                         <Button type="primary">Hover me</Button>
                     </QuickView>
                 </>
@@ -42,11 +39,8 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
 
 const baseProps: IQuickViewProps = {
     title: "Hello",
-    displayFormPath: "/members/details",
-    displayPropertyName: "DisplayName",
-    getDetailsUrl: "/members",
-    entityId: "433eb018-3976-4d93-b02c-4eb1e1b852e4",
-    fetcher: usePersonTestGet
+    formPath: "/members/details",
+    displayPropertyName: "DisplayName"
 };
 
 export const Base = BaseTemplate.bind({});

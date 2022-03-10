@@ -11,7 +11,6 @@ import RefListDropDown from '../../../refListDropDown';
 import { DataTypes } from '../../../../interfaces/dataTypes';
 import { useForm } from '../../../..';
 import ReadOnlyDisplayFormItem from '../../../readOnlyDisplayFormItem';
-import QuickView from '../../../quickView';
 
 const settingsForm = settingsFormJson as FormMarkup;
 
@@ -23,20 +22,7 @@ const DropdownComponent: IToolboxComponent<IDropdownProps> = {
   factory: (model: IDropdownProps) => {
     return (
       <ConfigurableFormItem model={model}>
-        {model.enableQuickview ? (
-          <QuickView
-            title={model.defaultValue}
-            displayFormPath={model.displayFormPath}
-            displayPropertyName={model.displayPropertyName}
-            getDetailsUrl={model.getDetailsUrl}
-            fetcher={null}>
-
-            <Dropdown {...model} />
-
-          </QuickView>
-        ) : (
-          <Dropdown {...model} />
-        )}
+        <Dropdown {...model} />
       </ConfigurableFormItem>
     );
   },
