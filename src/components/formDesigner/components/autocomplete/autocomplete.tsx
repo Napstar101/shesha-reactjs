@@ -126,7 +126,7 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
             title={model.defaultValue}
             formPath={model.formPath}
             displayPropertyName={model.displayPropertyName}>
-            {JSON.stringify(model)}
+            {JSON.stringify(model)} - {JSON.stringify(autocompleteProps)}
           </QuickView>
         ) : (
           model.useRawValues ? (
