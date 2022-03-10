@@ -11,10 +11,7 @@ import { useGet, useMutate } from 'restful-react';
 import { IModalProps } from '../../providers/dynamicModal/models';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { nanoid } from 'nanoid/non-secure';
 import ValidationErrors from '../validationErrors';
-import { useRef } from '@storybook/addons';
-import { MessageType } from 'antd/lib/message';
 
 export const renderers: ITableCustomTypesRender[] = [
   {
