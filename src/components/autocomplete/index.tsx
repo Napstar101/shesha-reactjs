@@ -9,6 +9,7 @@ import { LabeledValue } from 'antd/lib/select';
 import { IGuidNullableEntityWithDisplayNameDto } from '../..';
 import { ReadOnlyDisplayFormItem } from './../readOnlyDisplayFormItem';
 import { IReadOnly } from '../../interfaces/readOnly';
+import QuickView from '../quickView';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
@@ -122,6 +123,21 @@ export interface IAutocompleteProps<TValue = any> extends IReadOnly {
   readOnlyMultipleMode?: 'raw' | 'tags';
 
   queryParams?: IQueryParams;
+
+  /**
+   * Deteremines if quickview is enabled when in read only mode
+   */
+  quickviewEnabled?: boolean;
+
+  /**
+   * Specifies the form to use when quickview is enabled
+   */
+  quickviewFormPath?: string;
+
+  /**
+   * Specifies which property to display for the quickview
+   */
+  quickviewDisplayPropertyName?: string;
 }
 
 export interface IUrlFetcherQueryParams {
@@ -168,6 +184,10 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
     getLabeledValue,
     readOnly,
     readOnlyMultipleMode = 'raw',
+
+    quickviewEnabled,
+    quickviewFormPath,
+    // quickviewDisplayPropertyName,
   } = props;
 
   const entityFetcher = useAutocompleteList({ lazy: true });
@@ -191,7 +211,7 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
         ? value
         : /*: isStringArray(value)
         ? value*/
-          undefined;
+        undefined;
 
     // if value is specified but displayText is not specified - fetch text from the server
     if (dataSourceType === 'entitiesList') {
@@ -249,8 +269,8 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
     if (mode === 'multiple' || mode === 'tags') {
       return Array.isArray(localValue)
         ? (localValue as TValue[]).map<CustomLabeledValue<TValue>>(o => {
-            return getLabeledValue(o, options);
-          })
+          return getLabeledValue(o, options);
+        })
         : [getLabeledValue(localValue as TValue, options)];
     } else return getLabeledValue(localValue as TValue, options);
   };
@@ -271,8 +291,8 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
     // Note: we shouldn't process full list and make it unique because by this way we'll hide duplicates received from the back-end
     const selectedItems = selectedItem
       ? (Array.isArray(selectedItem) ? selectedItem : [selectedItem]).filter(
-          i => fetchedItems.findIndex(fi => fi.value === i.value) === -1
-        )
+        i => fetchedItems.findIndex(fi => fi.value === i.value) === -1
+      )
       : [];
 
     const result = [...fetchedItems, ...selectedItems];
@@ -317,13 +337,22 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
 
   const autocompleteValue = wrapValue(value);
 
+  if (quickviewEnabled && (readOnly || disabled)) {
+    return (
+      <QuickView
+        title={JSON.stringify(autocompleteValue)}
+        formPath={quickviewFormPath}>
+        {JSON.stringify(autocompleteValue)}
+      </QuickView >
+    );
+  }
+
   if (readOnly || disabled) {
     return (
       <ReadOnlyDisplayFormItem
         value={autocompleteValue}
         type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
-        disabled={disabled}
-      />
+        disabled={disabled} />
     );
   }
 

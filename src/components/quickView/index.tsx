@@ -13,28 +13,19 @@ export interface IQuickViewProps {
     /**
      * Path to the form to display on the modal
      */
-     formPath?: string;
-
-    /**
-     * The property to display from the model
-     */
-    displayPropertyName?: string;
+    formPath?: string;
 
     /**
      * Form Values. If passed, model will be overridden to FormValues, m.
      */
     formValues?: any;
-
-    onFormValuesChange?: (changedValues: any, values: any) => void;
 }
 
 const QuickView: FC<IQuickViewProps> = ({
     children,
     title,
     formPath,
-    // displayPropertyName,
-    formValues,
-    onFormValuesChange
+    formValues
 }) => {
 
     const [form] = Form.useForm();
@@ -46,8 +37,7 @@ const QuickView: FC<IQuickViewProps> = ({
             {...formItemLayout}
             form={form}
             path={formPath}
-            initialValues={formValues}
-            onValuesChange={onFormValuesChange} />
+            initialValues={formValues} />
     );
 
     return (

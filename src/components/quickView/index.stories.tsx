@@ -27,7 +27,6 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
                     <QuickView
                         title={props.title}
                         formPath={props.formPath}
-                        displayPropertyName={props.displayPropertyName}
                         formValues={{ membershipNumber: "00000000" }}>
                         <Button type="primary">Hover me</Button>
                     </QuickView>
@@ -40,7 +39,6 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
 const baseProps: IQuickViewProps = {
     title: "Hello",
     formPath: "/members/details",
-    displayPropertyName: "DisplayName"
 };
 
 export const Base = BaseTemplate.bind({});

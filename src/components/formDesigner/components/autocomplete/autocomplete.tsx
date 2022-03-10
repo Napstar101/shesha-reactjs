@@ -8,7 +8,6 @@ import { evaluateValue, replaceTags, validateConfigurableComponentSettings } fro
 import Autocomplete, { AutocompleteDataSourceType, ISelectOption } from '../../../autocomplete';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
-import QuickView from '../../../quickView';
 
 interface IQueryParamProp {
   id: string;
@@ -32,10 +31,9 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   keyPropName?: string;
   valuePropName?: string;
 
-  // Quickview properties
-  enableQuickview?: boolean;
-  formPath?: string;
-  displayPropertyName?: string;
+  quickviewEnabled?: boolean;
+  quickviewFormPath?: string;
+  quickviewDisplayPropertyName?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -115,26 +113,22 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       queryParams: getQueryParams(),
       readOnly: model?.readOnly || formMode === 'readonly',
       getOptionFromFetchedItem,
+
+      quickviewEnabled: model?.quickviewEnabled,
+      quickviewFormPath: model?.quickviewFormPath,
+      quickviewDisplayPropertyName: model.quickviewDisplayPropertyName
     };
 
     // todo: implement other types of datasources!
     return (
       <ConfigurableFormItem model={model}>
-
-        {model.enableQuickview ? (
-          <QuickView
-            title={model.defaultValue}
-            formPath={model.formPath}
-            displayPropertyName={model.displayPropertyName}>
-            {JSON.stringify(model)} - {JSON.stringify(autocompleteProps)}
-          </QuickView>
-        ) : (
+        {
           model.useRawValues ? (
             <Autocomplete.Raw {...autocompleteProps} />
           ) : (
             <Autocomplete.EntityDto {...autocompleteProps} />
           )
-        )}
+        }
       </ConfigurableFormItem>
     );
   },
