@@ -11,6 +11,7 @@ import { DataTableSelectionProvider, useDataTableSelection } from '../../../../.
 import { ToolbarButton } from './toolbarButton';
 import { ShaIcon } from '../../../..';
 import { IconType } from '../../../../shaIcon';
+import { useAuth } from '../../../../../providers';
 
 const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
   type: 'toolbar',
@@ -32,6 +33,7 @@ const ToolbarComponent: IToolboxComponent<IToolbarProps> = {
 
 export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
   const { formMode } = useForm();
+  const { anyOfPermissionsGranted } = useAuth();
   const { selectedRow } = useDataTableSelection();
   const isDesignMode = formMode === 'designer';
 
@@ -97,7 +99,13 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
       />
     );
 
-  return <div style={{ minHeight: '30px' }}>{items.map((item, index) => renderItem(item, index))}</div>;
+  return (
+    <div style={{ minHeight: '30px' }}>
+      {items
+        ?.filter(({ permissions }) => anyOfPermissionsGranted(permissions || []))
+        .map((item, index) => renderItem(item, index))}
+    </div>
+  );
 };
 
 export default ToolbarComponent;

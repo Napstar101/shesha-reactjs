@@ -303,6 +303,8 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   };
 
   const anyOfPermissionsGrantedWrapper = (permissions: string[]) => {
+    if (permissions?.length === 0) return true;
+
     const granted = anyOfPermissionsGranted(permissions);
 
     return granted;

@@ -26,7 +26,7 @@ export interface IToolbarItemBase {
   buttonType?: ButtonType;
   customVisibility?: string;
   customEnabled?: string;
-  permissions?: string;
+  permissions?: string[];
 }
 
 export interface IToolbarButton extends IToolbarItemBase {
