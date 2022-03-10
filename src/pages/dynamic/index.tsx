@@ -65,13 +65,19 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
 
   const { id, path, formId, mode } = state;
 
+  useEffect(() => {
+    return () => {
+      setState(null); // Reset the state on unmount
+    };
+  }, []);
+
   const {
     refetch: fetchEntity,
     error: fetchEntityError,
     loading: isFetchingEntity,
     data: fetchEntityResponse,
   } = useGet<EntityAjaxResponse>({
-    path: state?.formResponse?.markup?.formSettings?.getUrl || '',
+    path: removeZeroWidthCharsFromString(state?.formResponse?.markup?.formSettings?.getUrl) || '',
     // queryParams: { id },
     lazy: true, // We wanna make sure we have both the id and the state?.markup?.formSettings?.getUrl before fetching data
   });
@@ -104,7 +110,7 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
   //#region get form data
   useEffect(() => {
     // Avoid fetching entity if we're displaying index table
-    if (id) {
+    if (id && props?.id) {
       fetchEntity({ queryParams: { id } });
     }
   }, [id, state?.formResponse?.markup?.formSettings?.getUrl]);
