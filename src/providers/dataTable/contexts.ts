@@ -56,6 +56,8 @@ export interface IDataTableStoredConfig extends IGetDataPayload {
 export interface IDataTableStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   title?: string;
+
+  formData?: any;
   /** Id of the table configuration */
   tableId?: string; // todo: move all table-specific properties to a separate sub-store
   /** Type of entity */
@@ -161,6 +163,13 @@ export interface IDataTableActionsContext
   changeSelectedStoredFilterIds?: (selectedStoredFilterIds: string[]) => void;
   setPredefinedFilters: (filters: IStoredFilter[]) => void;
 
+  /**
+   * Sets the form state in the store.
+   *
+   * This function is used to pass the state of the form that can be used to evaluate the filters that are using expression
+   */
+  setFormData?: (formData: any) => void;
+
   changeSelectedIds?: (selectedIds: string[]) => void;
   updateLocalTableData?: () => void;
   deleteRowItem?: (idOfItemToDeleteOrUpdate: string) => void;
@@ -171,6 +180,8 @@ export interface IDataTableActionsContext
    * Register columns in the table context. Is used for configurable tables
    */
   registerConfigurableColumns: (ownerId: string, columns: IConfigurableColumnsBase[]) => void;
+
+  setCrudConfig?: (config: ITableCrudConfig) => void;
   /* NEW_ACTION_ACTION_DECLARATIO_GOES_HERE */
 }
 

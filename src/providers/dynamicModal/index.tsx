@@ -77,6 +77,8 @@ const DynamicModalProvider: FC<PropsWithChildren<IDynamicModalProviderProps>> = 
               showModalFooter={instance?.props?.showModalFooter}
               submitHttpVerb={instance?.props?.submitHttpVerb}
               onSuccessRedirectUrl={instance?.props?.onSuccessRedirectUrl}
+              initialValues={instance?.props?.initialValues}
+              destroyOnClose={instance?.props?.destroyOnClose}
             />
           </DynamicModalInstanceContext.Provider>
         );

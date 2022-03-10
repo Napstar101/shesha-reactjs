@@ -45,7 +45,17 @@ export interface IModalProps {
    */
   onSubmitted?: () => void;
 
+  /**
+   * If passed, the user will be redirected to this url on success
+   */
   onSuccessRedirectUrl?: string;
+
+  /**
+   * Initial values of the modal
+   */
+  initialValues?: any;
+
+  destroyOnClose?: boolean;
 }
 
 /**

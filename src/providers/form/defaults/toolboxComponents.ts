@@ -50,6 +50,7 @@ import Divider from '../../../components/formDesigner/components/divider';
 import Space from '../../../components/formDesigner/components/space';
 import StatusTag from '../../../components/formDesigner/components/statusTag';
 import DynamicView from '../../../components/formDesigner/components/dynamicView';
+import ChildTable from '../../../components/formDesigner/components/dataTable/childTable';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
@@ -115,6 +116,7 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       TableContext,
       TableViewSelector,
       Toolbar,
+      ChildTable,
     ],
   },
   {

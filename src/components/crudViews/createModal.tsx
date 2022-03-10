@@ -191,6 +191,7 @@ const GenericCreateModal: FC<IGenericCreateModalProps> = ({
           onFieldsChange={onFieldsChange}
           actions={actions}
           sections={sections}
+          skipPostOnFinish
         />
       </Spin>
     </Modal>

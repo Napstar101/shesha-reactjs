@@ -42,6 +42,7 @@ export interface IExtendedModalProps extends ModalProps {
 
 export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   crud,
+  overrideDefaultCrudBehavior,
   saveLocally,
   useMultiselect: useMultiSelect,
   actionColumns,
@@ -202,7 +203,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   // Crud is either boolean or ICrudState, so here we're just return allowed crud actions
   const getAllowedCrudActions = () => {
-    // console.log('getAllowedCrudActions ');
+    if (overrideDefaultCrudBehavior) return [];
 
     if (typeof crud === 'boolean') {
       return crudActionColumns;
@@ -388,7 +389,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       });
 
     setPreparedColumns(localPreparedColumns);
-  }, [columns, newOrEditableRowData?.id, crud]);
+  }, [columns, newOrEditableRowData?.id, crud, overrideDefaultCrudBehavior]);
 
   /**
    * Returns a default action column icon
