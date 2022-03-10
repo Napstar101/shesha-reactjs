@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, Key } from 'react';
 import { Button } from 'antd';
 import { useShaRouting, useDataTableStore, useForm, useModal } from '../../../../../../providers';
 import { ISelectionProps } from '../../../../../../providers/dataTableSelection/models';
 import { IModalProps } from '../../../../../../providers/dynamicModal/models';
-import { evaluateString } from '../../../../../../providers/form/utils';
+import { evaluateKeyValuesToObject, evaluateString } from '../../../../../../providers/form/utils';
 import { IToolbarButton } from '../../../../../../providers/toolbarConfigurator/models';
 import ShaIcon, { IconType } from '../../../../../shaIcon';
 import classNames from 'classnames';
@@ -11,6 +11,12 @@ import classNames from 'classnames';
 export interface IToolbarButtonProps extends IToolbarButton {
   formComponentId: string;
   selectedRow: ISelectionProps;
+}
+
+interface IKeyValue {
+  id?: string;
+  key: string;
+  value: string;
 }
 
 export const ToolbarButton: FC<IToolbarButtonProps> = props => {
@@ -97,6 +103,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
 
 interface IToolbarButtonTableDialogProps extends Omit<IModalProps, 'formId' | 'isVisible'>, IToolbarButtonProps {
   modalProps?: IModalProps;
+  additionalProperties?: IKeyValue[];
 }
 
 /**
@@ -106,9 +113,11 @@ interface IToolbarButtonTableDialogProps extends Omit<IModalProps, 'formId' | 'i
  */
 const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
   const { refreshTable } = useDataTableStore();
+  const { formData } = useForm();
 
   const modalProps: IModalProps = {
     ...props?.modalProps,
+    initialValues: evaluateKeyValuesToObject(props?.additionalProperties, formData),
     onSubmitted: () => {
       // todo: implement custom actions support
       refreshTable();

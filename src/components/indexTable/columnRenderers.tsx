@@ -6,12 +6,15 @@ import ShaIcon, { IconType } from '../shaIcon';
 import { evaluateString } from '../../providers/form/utils';
 import { useDataTable, useModal, useShaRouting } from '../../providers';
 import camelCaseKeys from 'camelcase-keys';
-import { message, Modal } from 'antd';
-import { useMutate } from 'restful-react';
+import { message, Modal, notification } from 'antd';
+import { useGet, useMutate } from 'restful-react';
 import { IModalProps } from '../../providers/dynamicModal/models';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { nanoid } from 'nanoid/non-secure';
+import ValidationErrors from '../validationErrors';
+import { useRef } from '@storybook/addons';
+import { MessageType } from 'antd/lib/message';
 
 export const renderers: ITableCustomTypesRender[] = [
   {
@@ -68,22 +71,53 @@ export const renderers: ITableCustomTypesRender[] = [
     render: props => {
       const { router } = useShaRouting();
       const { crudConfig, refreshTable } = useDataTable();
+
       const { mutate: deleteRowHttp } = useMutate({
         verb: 'DELETE',
         path: crudConfig?.deleteUrl,
       });
-      const [modalProps, setModalProps] = useState<IModalProps>();
 
-      const dynamicModal = useModal(modalProps);
+      const [state, setState] = useState<{
+        modalProps?: IModalProps;
+        entityId?: string;
+        entity?: any;
+        additionalProperties?: any; // These props will be passed as initialization properties to the modal
+      }>({});
+
+      const { refetch: fetchEntity, loading, data: fetchEntityResponse, error: fetchEntityError } = useGet({
+        path: crudConfig?.detailsUrl || '',
+        queryParams: { id: state?.entityId },
+        lazy: true,
+      });
+
+      const dynamicModal = useModal({ ...state?.modalProps, initialValues: state?.entity });
 
       useEffect(() => {
-        if (modalProps) {
+        if (state?.entityId) {
+          fetchEntity();
+        }
+      }, [state?.entityId]);
+
+      useEffect(() => {
+        if (!loading && fetchEntityResponse) {
+          setState(prev => ({ ...prev, entity: fetchEntityResponse?.result }));
+        }
+      }, [loading]);
+
+      useEffect(() => {
+        if (state?.entity && state?.modalProps) {
           dynamicModal?.open();
         }
-      }, [modalProps]);
+      }, [state?.entity]);
+
+      useEffect(() => {
+        if (fetchEntityError) {
+          notification.error({ message: <ValidationErrors error={fetchEntityError} renderMode="raw" /> });
+        }
+      }, [fetchEntityError]);
 
       const resetModalProps = () => {
-        setModalProps(null);
+        setState({});
       };
 
       const getActionProps = (data): IConfigurableActionColumnsProps => {
@@ -140,9 +174,8 @@ export const renderers: ITableCustomTypesRender[] = [
           case 'editRow': {
             const convertedProps = actionProps as Omit<IModalProps, 'formId'>;
 
-            setModalProps({
-              id: nanoid(), // link modal to the current form component by id
-              // id: selectedRow?.Id, // link modal to the current form component by id
+            const modalProps = {
+              id: selectedRow?.Id, // link modal to the current form component by id
               isVisible: false,
               formId: actionProps.modalFormId,
               title: actionProps.modalTitle,
@@ -154,7 +187,9 @@ export const renderers: ITableCustomTypesRender[] = [
                 refreshTable();
                 resetModalProps();
               },
-            } as any);
+            };
+
+            setState(prev => ({ ...prev, modalProps, entityId: selectedRow?.Id }));
 
             break;
           }

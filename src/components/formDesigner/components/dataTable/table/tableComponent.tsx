@@ -42,6 +42,11 @@ export const TableWrapper: FC<ITableComponentProps> = ({
   useMultiselect,
   overrideDefaultCrudBehavior,
   crud,
+  createUrl,
+  deleteUrl,
+  detailsUrl,
+  updateUrl,
+  isNotWrapped,
 }) => {
   const { formMode } = useForm();
 
@@ -53,7 +58,12 @@ export const TableWrapper: FC<ITableComponentProps> = ({
     isInProgress: { isFiltering, isSelectingColumns },
     setIsInProgressFlag,
     registerConfigurableColumns,
+    setCrudConfig,
   } = useDataTableStore();
+
+  useEffect(() => {
+    setCrudConfig({ createUrl, deleteUrl, detailsUrl, updateUrl });
+  }, [createUrl, deleteUrl, detailsUrl, updateUrl]);
 
   useEffect(() => {
     // register columns
@@ -86,7 +96,7 @@ export const TableWrapper: FC<ITableComponentProps> = ({
     setSelectedRow(index, row);
   };
 
-  if (!id) {
+  if (isNotWrapped) {
     return (
       <IndexTable
         id={tableId}
@@ -95,7 +105,6 @@ export const TableWrapper: FC<ITableComponentProps> = ({
         useMultiselect={useMultiselect}
         crud={crud}
         overrideDefaultCrudBehavior={overrideDefaultCrudBehavior}
-        // crudMode="dialog"
       />
     );
   }

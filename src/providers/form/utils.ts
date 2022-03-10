@@ -1,3 +1,4 @@
+import { IAnyObject } from './../../interfaces/anyObject';
 import {
   IFlatComponentsStructure,
   IConfigurableFormComponent,
@@ -730,4 +731,25 @@ export const sheshaApplication = () => {
   } catch (error) {
     return { toolboxComponentGroups: [] };
   }
+};
+
+interface IKeyValue {
+  key: string;
+  value: string;
+}
+
+export const evaluateKeyValuesToObject = (arr: IKeyValue[], data: any): IAnyObject => {
+  const queryParamObj: IAnyObject = {};
+
+  if (arr?.length) {
+    arr?.forEach(({ key, value }) => {
+      if (key?.length && value.length) {
+        queryParamObj[key] = evaluateString(value, data);
+      }
+    });
+
+    return queryParamObj;
+  }
+
+  return {};
 };

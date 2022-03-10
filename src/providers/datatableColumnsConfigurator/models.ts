@@ -76,6 +76,7 @@ export interface IConfigurableActionColumnsProps extends IConfigurableColumnsPro
    */
   deleteWarningMessage?: string;
 
+  additionalProperties?: any;
   //#endregion
 }
 

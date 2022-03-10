@@ -23,8 +23,8 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
   name: 'Child Table',
   icon: <TableOutlined />,
   factory: (model: IChildTableComponentProps, componentRef: MutableRefObject<any>) => {
-    const { formData, formMode, formSettings } = useForm();
-    const { columns, getDataSourceType, setPredefinedFilters, refreshTable, setCrudConfig } = useDataTable();
+    const { formData, formMode } = useForm();
+    const { columns, getDataSourceType, setPredefinedFilters, refreshTable } = useDataTable();
 
     const { defaultSelectedFilterId, filters } = model;
 
@@ -42,14 +42,6 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
     const hasManyFiltersButNoSelected = hasFilters && !defaultSelectedFilterId;
 
     const hasFormData = Boolean(formData);
-
-    useEffect(() => {
-      if (formSettings) {
-        const { postUrl, putUrl, deleteUrl, getUrl } = formSettings;
-
-        setCrudConfig({ createUrl: postUrl, updateUrl: putUrl, deleteUrl, detailsUrl: getUrl });
-      }
-    }, [formSettings]);
 
     useEffect(() => {
       if (hasFilters) {
@@ -149,6 +141,7 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
   validateSettings: model => validateConfigurableComponentSettings(settingsForm, model),
   initModel: model => ({
     ...model,
+    isNotWrapped: true,
   }),
 };
 
