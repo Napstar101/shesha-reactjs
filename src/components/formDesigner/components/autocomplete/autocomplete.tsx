@@ -33,7 +33,7 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   valuePropName?: string;
 
   // Quickview properties
-  quickViewEnabled?: boolean;
+  enableQuickview?: boolean;
   formPath?: string;
   displayPropertyName?: string;
 }

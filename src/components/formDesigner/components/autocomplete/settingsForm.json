@@ -234,7 +234,7 @@
     {
       "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
       "type": "checkbox",
-      "name": "quickViewEnabled",
+      "name": "enableQuickview",
       "parentId": "root",
       "label": "Enabled"
     },
@@ -244,7 +244,7 @@
       "name": "formPath",
       "parentId": "root",
       "label": "Form Path",
-      "customVisibility": "return data.quickViewEnabled === true"
+      "customVisibility": "return data.enableQuickview === true"
     },
     {
       "id": "b0eeb8cb-d9ad-479e-a731-10d5909a50a2",
@@ -252,7 +252,7 @@
       "name": "displayPropertyName",
       "parentId": "root",
       "label": "Property Name",
-      "customVisibility": "return data.quickViewEnabled === true"
+      "customVisibility": "return data.enableQuickview === true"
     },
     {
       "id": "6befdd49-41aa-41d6-a29e-76fa00590b74",
