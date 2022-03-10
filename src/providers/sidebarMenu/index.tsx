@@ -38,9 +38,11 @@ const SidebarMenuProvider: FC<PropsWithChildren<ISidebarMenuProviderProps>> = ({
   const getItems = () => items;
 
   const isItemVisible = (item: ISidebarMenuItem): boolean => {
-
     if (item.isHidden) return false;
-    if (item.requiredPermissions && !anyOfPermissionsGranted(item?.requiredPermissions)) return false;
+
+    if (item.requiredPermissions?.length) {
+      if (!anyOfPermissionsGranted(item?.requiredPermissions)) return false;
+    }
 
     return item.childItems && item.childItems.length > 0
       ? item.childItems.some(childItem => isItemVisible(childItem))
