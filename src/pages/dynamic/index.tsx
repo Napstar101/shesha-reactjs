@@ -183,11 +183,27 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
     notification.error({
       message: 'Sorry! An error occurred.',
       icon: null,
-      description: <ValidationErrors error={error} />,
+      description: <ValidationErrors error={error} renderMode="raw" />,
     });
   };
 
-  if (state && !state?.formResponse?.markup) {
+  useEffect(() => {
+    if (state && !state?.formResponse?.markup && state?.path) {
+      notification.error({
+        message: 'Form not found',
+        description: (
+          <span>
+            Could not firm with the path <strong>{state?.path}</strong>. Please make sure the path is correct or that it
+            hasn't been changed
+          </span>
+        ),
+      });
+    }
+  }, [state?.formResponse?.markup]);
+
+  const isLoading = isFetchingEntity || isFetchingFormByPath || isFetchingFormById || isPostingData;
+
+  if (state && !state?.formResponse?.markup && !isLoading) {
     return (
       <Result
         status="404"
@@ -220,11 +236,7 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
   };
 
   return (
-    <Spin
-      spinning={isFetchingEntity || isFetchingFormByPath || isFetchingFormById || isPostingData}
-      tip={getLoadingHint()}
-      indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}
-    >
+    <Spin spinning={isLoading} tip={getLoadingHint()} indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}>
       <ConfigurableForm
         path={path}
         id={formId}
