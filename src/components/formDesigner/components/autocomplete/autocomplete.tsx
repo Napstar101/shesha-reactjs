@@ -8,6 +8,7 @@ import { evaluateValue, replaceTags, validateConfigurableComponentSettings } fro
 import Autocomplete, { AutocompleteDataSourceType, ISelectOption } from '../../../autocomplete';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
+import QuickView from '../../../quickView';
 
 interface IQueryParamProp {
   id: string;
@@ -33,9 +34,8 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
 
   // Quickview properties
   quickViewEnabled?: boolean;
-  displayFormPath?: string;
+  formPath?: string;
   displayPropertyName?: string;
-  getDetailsUrl?: string;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -82,9 +82,9 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       useRawValues
         ? item[value]
         : {
-            id: item[value],
-            displayText: item[displayText],
-          };
+          id: item[value],
+          displayText: item[displayText],
+        };
 
     const getOptionFromFetchedItem = (item: object): ISelectOption => {
       const { dataSourceType, keyPropName, useRawValues, valuePropName } = model;
@@ -120,10 +120,24 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
     // todo: implement other types of datasources!
     return (
       <ConfigurableFormItem model={model}>
-        {model.useRawValues ? (
-          <Autocomplete.Raw {...autocompleteProps} />
+
+        {model.enableQuickview ? (
+          <QuickView
+            title={model.defaultValue}
+            formPath={model.formPath}
+            displayPropertyName={model.displayPropertyName}>
+            {model.useRawValues ? (
+              <Autocomplete.Raw {...autocompleteProps} />
+            ) : (
+              <Autocomplete.EntityDto {...autocompleteProps} />
+            )}
+          </QuickView>
         ) : (
-          <Autocomplete.EntityDto {...autocompleteProps} />
+          model.useRawValues ? (
+            <Autocomplete.Raw {...autocompleteProps} />
+          ) : (
+            <Autocomplete.EntityDto {...autocompleteProps} />
+          )
         )}
       </ConfigurableFormItem>
     );

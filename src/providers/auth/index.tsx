@@ -40,7 +40,7 @@ import {
   useTokenAuthSignOff,
 } from '../../apis/tokenAuth';
 import { getLocalizationOrDefault } from '../../utils/localization';
-import { getTenantId } from '../../utils/multitenancy';
+import { getCustomHeaders, getTenantId } from '../../utils/multitenancy';
 import { useShaRouting } from '../shaRouting';
 import IRequestHeaders from '../../interfaces/requestHeaders';
 import { IHttpHeaders } from '../../interfaces/accessToken';
@@ -182,6 +182,12 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       headers['Abp.TenantId'] = getTenantId().toString();
     }
 
+    const additionalHeaders = getCustomHeaders();
+
+    additionalHeaders.forEach(([key, value]) => {
+      headers[key] = value?.toString();
+    });
+
     return headers;
   };
 
@@ -189,7 +195,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     return getHttpHeadersFromState(state);
   };
 
-  const fireHttpHeadersChanged = (providedState: IAuthStateContext) => {
+  const fireHttpHeadersChanged = (providedState: IAuthStateContext = state) => {
     if (onSetRequestHeaders) {
       const headers = getHttpHeadersFromState(providedState);
       onSetRequestHeaders(headers);
@@ -349,6 +355,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
             anyOfPermissionsGranted: anyOfPermissionsGrantedWrapper,
             verifyOtpSuccess,
             resetPasswordSuccess,
+            fireHttpHeadersChanged,
 
             /* NEW_ACTION_GOES_HERE */
           }}

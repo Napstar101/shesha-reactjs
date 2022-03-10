@@ -41,7 +41,7 @@ export interface ILoginForm extends AuthenticateModel {
   rememberMe?: boolean;
 }
 
-export interface IAuthStateContext 
+export interface IAuthStateContext
   extends IFlagsState<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   isCheckingAuth?: boolean;
   isFetchingUserInfo?: boolean;
@@ -67,7 +67,7 @@ export interface IAuthStateContext
   //#endregion
 }
 
-export interface IAuthActionsContext 
+export interface IAuthActionsContext
   extends IFlagsSetters<IFlagProgressFlags, IFlagSucceededFlags, IFlagErrorFlags, IFlagActionedFlags> {
   loginUser?: (loginFormData: ILoginForm) => void;
 
@@ -83,6 +83,8 @@ export interface IAuthActionsContext
   getAccessToken: () => string;
 
   checkAuth?: () => void;
+
+  fireHttpHeadersChanged?: (state?: IAuthStateContext) => void;
 
   /* NEW_ACTION_ACTION_DECLARATION_GOES_HERE */
 }

@@ -4,6 +4,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
+import { Button } from 'antd';
 
 // #region Storybook Metadata & Configuration
 
@@ -25,10 +26,11 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
                 <>
                     <QuickView
                         title={props.title}
-                        displayFormPath={props.displayFormPath}
+                        formPath={props.formPath}
                         displayPropertyName={props.displayPropertyName}
-                        getDetailsUrl={props.getDetailsUrl}
-                        id={props.id} />
+                        formValues={{ membershipNumber: "00000000" }}>
+                        <Button type="primary">Hover me</Button>
+                    </QuickView>
                 </>
             </AuthContainer>
         </ShaApplicationProvider>
@@ -37,10 +39,8 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
 
 const baseProps: IQuickViewProps = {
     title: "Hello",
-    displayFormPath: "/members/details",
-    displayPropertyName: "DisplayName",
-    getDetailsUrl: "/members",
-    // id: "00000000000"
+    formPath: "/members/details",
+    displayPropertyName: "DisplayName"
 };
 
 export const Base = BaseTemplate.bind({});

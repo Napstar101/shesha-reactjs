@@ -271,51 +271,6 @@
       "parentId": "root",
       "label": "Required"
     },
-
-
-
-    
-    {
-      "id": "e30c5265-5ee3-430c-a8f7-919a4fd9154f",
-      "type": "sectionSeparator",
-      "name": "quickViewSectionSeparator",
-      "parentId": "root",
-      "label": "Quickview"
-    },
-    {
-      "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
-      "type": "checkbox",
-      "name": "quickViewEnabled",
-      "parentId": "root",
-      "label": "Enabled"
-    },{
-      "id": "7c3f88e1-3e11-432a-af88-1acf916a960a",
-      "type": "textField",
-      "name": "displayFormPath",
-      "parentId": "root",
-      "label": "Form Path",
-      "customVisibility": "return data.quickViewEnabled === true"
-    },
-    {
-      "id": "ba0b4f47-12c3-4c41-8600-6329f29e1da0",
-      "type": "textField",
-      "name": "displayPropertyName",
-      "parentId": "root",
-      "label": "Property Name",
-      "customVisibility": "return data.quickViewEnabled === true"
-    },
-    {
-      "id": "46176f6d-da2e-48b4-beaa-8763dc1c1063",
-      "type": "textField",
-      "name": "getDetailsUrl",
-      "parentId": "root",
-      "label": "Details Url",
-      "customVisibility": "return data.quickViewEnabled === true"
-    },
-
-
-
-    
     {
       "id": "db5f5c74-eb0c-41e3-8be5-29f2a0941def",
       "type": "sectionSeparator",

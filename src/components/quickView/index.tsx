@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { Popover, Button, Form } from 'antd';
+import { Popover, Form } from 'antd';
 import { ConfigurableForm } from '../';
 import { useUi } from '../../providers';
 
 export interface IQuickViewProps {
+
     /**
      * The title for the quick view window
      */
@@ -12,7 +13,7 @@ export interface IQuickViewProps {
     /**
      * Path to the form to display on the modal
      */
-    displayFormPath?: string;
+     formPath?: string;
 
     /**
      * The property to display from the model
@@ -20,26 +21,23 @@ export interface IQuickViewProps {
     displayPropertyName?: string;
 
     /**
-     * The url to use to get the detaills of the object
+     * Form Values. If passed, model will be overridden to FormValues, m.
      */
-    getDetailsUrl?: string;
+    formValues?: any;
 
-    /**
-     * The id or guid for the entity
-     */
-    id?: string;
+    onFormValuesChange?: (changedValues: any, values: any) => void;
 }
 
 const QuickView: FC<IQuickViewProps> = ({
+    children,
     title,
-    displayFormPath,
+    formPath,
     // displayPropertyName,
-    // getDetailsUrl,
-    // id
+    formValues,
+    onFormValuesChange
 }) => {
 
     const [form] = Form.useForm();
-
     const { formItemLayout } = useUi();
 
     const formContent = (
@@ -47,18 +45,14 @@ const QuickView: FC<IQuickViewProps> = ({
             mode="readonly"
             {...formItemLayout}
             form={form}
-            // onFinish={onFinish}
-            path={displayFormPath}
-        // markup={formMarkup}
-        // onFieldsChange={onFieldsChange}
-        // actions={actions}
-        // sections={sections}
-        />
+            path={formPath}
+            initialValues={formValues}
+            onValuesChange={onFormValuesChange} />
     );
 
     return (
         <Popover content={formContent} title={title}>
-            <Button type="primary">Hover me</Button>
+            {children}
         </Popover>
     );
 };
