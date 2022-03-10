@@ -37,7 +37,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
   const { selectedRow } = useDataTableSelection();
   const isDesignMode = formMode === 'designer';
 
-  const renderItem = (item: ToolbarItemProps, index: number) => {
+  const renderItem = (item: ToolbarItemProps) => {
     if (!isInDesignerMode()) {
       const visibilityFunc = getVisibilityFunc2(item.customVisibility, item.name);
 
@@ -51,10 +51,10 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
 
         switch (itemProps.itemSubType) {
           case 'button':
-            return <ToolbarButton formComponentId={id} key={index} selectedRow={selectedRow} {...itemProps} />;
+            return <ToolbarButton formComponentId={id} key={id} selectedRow={selectedRow} {...itemProps} />;
 
           case 'separator':
-            return <div key={index} className="sha-toolbar-separator" />;
+            return <div key={id} className="sha-toolbar-separator" />;
 
           default:
             return null;
@@ -63,9 +63,9 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
         const group = item as IButtonGroup;
         const menu = (
           <Menu>
-            {group.childItems.map((childItem, idx) => (
+            {group.childItems.map(childItem => (
               <Menu.Item
-                key={idx}
+                key={childItem?.id}
                 title={childItem.tooltip}
                 danger={childItem.danger}
                 icon={childItem.icon ? <ShaIcon iconName={childItem.icon as IconType} /> : undefined}
@@ -76,7 +76,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
           </Menu>
         );
         return (
-          <Dropdown key={index} overlay={menu}>
+          <Dropdown key={id} overlay={menu}>
             <Button
               title={item.tooltip}
               type={item.buttonType}
@@ -101,9 +101,7 @@ export const Toolbar: FC<IToolbarProps> = ({ items, id }) => {
 
   return (
     <div style={{ minHeight: '30px' }}>
-      {items
-        ?.filter(({ permissions }) => anyOfPermissionsGranted(permissions || []))
-        .map((item, index) => renderItem(item, index))}
+      {items?.filter(({ permissions }) => anyOfPermissionsGranted(permissions || [])).map(item => renderItem(item))}
     </div>
   );
 };

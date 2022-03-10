@@ -1,7 +1,7 @@
 import { TableOutlined } from '@ant-design/icons';
 import { Alert, Space } from 'antd';
 import React, { Fragment, MutableRefObject, useEffect } from 'react';
-import { CollapsiblePanel, GlobalTableFilter, Show } from '../../../..';
+import { CollapsiblePanel, GlobalTableFilter, Show, TablePager } from '../../../..';
 import { evaluateString, useDataTable, useForm } from '../../../../..';
 import { validateConfigurableComponentSettings } from '../../../../../formDesignerUtils';
 import { IConfigurableFormComponent, IToolboxComponent } from '../../../../../interfaces';
@@ -109,11 +109,13 @@ const ChildTableComponent: IToolboxComponent<IChildTableComponentProps> = {
           key={undefined}
           header={evaluateString(model?.title, formData)}
           extra={
-            <div>
+            <div onClick={e => e?.stopPropagation()}>
               <Space size="middle">
                 <Show when={model?.allowQuickSearch}>
                   <GlobalTableFilter />
                 </Show>
+
+                <TablePager />
 
                 <ToolbarWithProvider items={model?.toolbarItems || []} name={''} type={''} id={model.id} />
               </Space>

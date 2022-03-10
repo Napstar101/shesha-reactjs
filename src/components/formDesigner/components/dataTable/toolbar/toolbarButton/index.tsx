@@ -34,6 +34,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
       showModalFooter: convertedProps?.showModalFooter,
       submitHttpVerb: convertedProps?.submitHttpVerb,
       onSuccessRedirectUrl: convertedProps?.onSuccessRedirectUrl,
+      destroyOnClose: true,
     };
 
     return props?.refreshTableOnSuccess ? (
@@ -117,6 +118,7 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
 
   const modalProps: IModalProps = {
     ...props?.modalProps,
+    formId: props?.modalFormId,
     initialValues: evaluateKeyValuesToObject(props?.additionalProperties, formData),
     onSubmitted: () => {
       // todo: implement custom actions support
@@ -149,7 +151,7 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
 };
 
 const ToolbarButtonPlainDialog: FC<IToolbarButtonTableDialogProps> = props => {
-  const dynamicModal = useModal(props?.modalProps);
+  const dynamicModal = useModal({ ...props?.modalProps, formId: props?.modalFormId });
 
   const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
