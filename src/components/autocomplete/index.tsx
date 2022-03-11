@@ -342,10 +342,7 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
       <QuickView
         title={JSON.stringify(autocompleteValue)}
         formPath={quickviewFormPath}>
-        <ReadOnlyDisplayFormItem
-          value={autocompleteValue}
-          type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
-          disabled={disabled} />
+        {JSON.stringify(autocompleteValue)}
       </QuickView >
     );
   }
