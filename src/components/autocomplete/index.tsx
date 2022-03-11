@@ -122,6 +122,21 @@ export interface IAutocompleteProps<TValue = any> extends IReadOnly {
   readOnlyMultipleMode?: 'raw' | 'tags';
 
   queryParams?: IQueryParams;
+
+  /**
+   * Deteremines if quickview is enabled when in read only mode
+   */
+   quickviewEnabled?: boolean;
+
+   /**
+    * Specifies the form to use when quickview is enabled
+    */
+   quickviewFormPath?: string;
+ 
+   /**
+    * Specifies which property to display for the quickview
+    */
+   quickviewDisplayPropertyName?: string;
 }
 
 export interface IUrlFetcherQueryParams {
@@ -168,6 +183,9 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
     getLabeledValue,
     readOnly,
     readOnlyMultipleMode = 'raw',
+    quickviewEnabled,
+    quickviewFormPath,
+    quickviewDisplayPropertyName,
   } = props;
 
   const entityFetcher = useAutocompleteList({ lazy: true });
@@ -322,7 +340,10 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
       <ReadOnlyDisplayFormItem
         value={autocompleteValue}
         type={mode === 'multiple' || mode === 'tags' ? 'dropdownMultiple' : 'dropdown'}
-        disabled={disabled} />
+        disabled={disabled}
+        quickviewEnabled={quickviewEnabled}
+        quickviewFormPath={quickviewFormPath}
+        quickviewDisplayPropertyName={quickviewDisplayPropertyName} />
     );
   }
 

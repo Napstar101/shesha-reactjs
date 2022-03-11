@@ -8,6 +8,7 @@ import { Switch, Tag } from 'antd';
 import { getMoment } from '../../utils/date';
 import moment from 'moment';
 import classNames from 'classnames';
+import QuickView from '../quickView';
 
 type AutocompleteType = ISelectOption<IDtoType>;
 
@@ -30,6 +31,9 @@ export interface IReadOnlyDisplayFormItemProps {
   disabled?: boolean;
   checked?: boolean;
   defaultChecked?: boolean;
+  quickviewEnabled?: boolean;
+  quickviewFormPath?: string;
+  quickviewDisplayPropertyName?: string;
 }
 
 export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
@@ -42,6 +46,9 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   disabled,
   checked,
   defaultChecked,
+  quickviewEnabled,
+  quickviewFormPath,
+  // quickviewDisplayPropertyName,
 }) => {
   if (type === 'string') {
     console.log('ReadOnlyDisplayFormItem type, disabled: ', type, disabled);
@@ -63,7 +70,18 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
     switch (type) {
       case 'dropdown':
         if (!Array.isArray(value)) {
-          return (value as AutocompleteType)?.label;
+          const displayLabel = (value as AutocompleteType)?.label;
+          if (quickviewEnabled && quickviewFormPath) {
+            return (
+              <QuickView
+                title={JSON.stringify(value)}
+                formPath={quickviewFormPath}>
+                {JSON.stringify(value)} - {displayLabel}
+              </QuickView>
+            );
+          } else {
+            return displayLabel;
+          }
         }
 
         throw new Error(
@@ -111,6 +129,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
 
   return (
     <span className="read-only-display-form-item">
+
       {renderValue()}
 
       <Show when={formSettings?.showModeToggler && formMode === 'readonly'}>
