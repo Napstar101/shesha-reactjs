@@ -75,8 +75,9 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
             return (
               <QuickView
                 title={JSON.stringify(value)}
-                formPath={quickviewFormPath}>
-                {JSON.stringify(value)} - {displayLabel}
+                formPath={quickviewFormPath}
+                formValues={value}>
+                {displayLabel}
               </QuickView>
             );
           } else {
