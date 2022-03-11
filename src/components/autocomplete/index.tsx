@@ -9,7 +9,6 @@ import { LabeledValue } from 'antd/lib/select';
 import { IGuidNullableEntityWithDisplayNameDto } from '../..';
 import { ReadOnlyDisplayFormItem } from './../readOnlyDisplayFormItem';
 import { IReadOnly } from '../../interfaces/readOnly';
-import QuickView from '../quickView';
 
 export type AutocompleteDataSourceType = 'entitiesList' | 'url';
 
@@ -123,21 +122,6 @@ export interface IAutocompleteProps<TValue = any> extends IReadOnly {
   readOnlyMultipleMode?: 'raw' | 'tags';
 
   queryParams?: IQueryParams;
-
-  /**
-   * Deteremines if quickview is enabled when in read only mode
-   */
-  quickviewEnabled?: boolean;
-
-  /**
-   * Specifies the form to use when quickview is enabled
-   */
-  quickviewFormPath?: string;
-
-  /**
-   * Specifies which property to display for the quickview
-   */
-  quickviewDisplayPropertyName?: string;
 }
 
 export interface IUrlFetcherQueryParams {
@@ -163,7 +147,7 @@ const trimQueryString = (url: string): string => {
  * A component for working with dynamic autocomplete
  */
 
-export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
+export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   const {
     value,
     defaultValue,
@@ -184,10 +168,6 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
     getLabeledValue,
     readOnly,
     readOnlyMultipleMode = 'raw',
-
-    quickviewEnabled,
-    quickviewFormPath,
-    // quickviewDisplayPropertyName,
   } = props;
 
   const entityFetcher = useAutocompleteList({ lazy: true });
@@ -336,16 +316,6 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
   }
 
   const autocompleteValue = wrapValue(value);
-
-  if (quickviewEnabled && (readOnly || disabled)) {
-    return (
-      <QuickView
-        title={JSON.stringify(autocompleteValue)}
-        formPath={quickviewFormPath}>
-        {JSON.stringify(autocompleteValue)}
-      </QuickView>
-    );
-  }
 
   if (readOnly || disabled) {
     return (
