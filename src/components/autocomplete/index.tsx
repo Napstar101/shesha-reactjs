@@ -342,8 +342,8 @@ export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
       <QuickView
         title={JSON.stringify(autocompleteValue)}
         formPath={quickviewFormPath}>
-        {JSON.stringify(autocompleteValue)}
-      </QuickView >
+        {JSON.stringify(getLabeledValue)}
+      </QuickView>
     );
   }
 
