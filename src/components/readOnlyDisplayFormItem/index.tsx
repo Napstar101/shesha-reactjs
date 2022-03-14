@@ -4,7 +4,7 @@ import { Show } from '../show';
 import { useForm } from '../../providers';
 import { IDtoType, ISelectOption } from '../autocomplete';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
-import { Switch, Tag } from 'antd';
+import { Switch, Tag, Button } from 'antd';
 import { getMoment } from '../../utils/date';
 import moment from 'moment';
 import classNames from 'classnames';
@@ -83,7 +83,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
                 formPath={quickviewFormPath}
                 getEntityUrl={quickviewGetEntityUrl}
                 width={quickviewWidth}>
-                {displayLabel}
+                  <Button type="link">{displayLabel}</Button>
               </QuickView>
             );
           } else {

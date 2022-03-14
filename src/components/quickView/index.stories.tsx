@@ -4,6 +4,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
+import { Button } from 'antd';
 
 // #region Storybook Metadata & Configuration
 
@@ -22,7 +23,9 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
     return (
         <ShaApplicationProvider backendUrl={backendUrl}>
             <AuthContainer layout>
-                <QuickView {...props} />
+                <QuickView {...props}>
+                    <Button type="link">Hello</Button>
+                </QuickView>
             </AuthContainer>
         </ShaApplicationProvider>
     );

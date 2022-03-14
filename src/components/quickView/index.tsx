@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Popover, Form, Button, notification } from 'antd';
+import { Popover, Form, notification } from 'antd';
 import { ConfigurableForm } from '../';
 import { useUi } from '../../providers';
 import { useGet } from 'restful-react';
@@ -74,7 +74,7 @@ const QuickView: FC<IQuickViewProps> = ({
 
     return (
         <Popover content={<div style={{ width }}>{formContent}</div>}>
-            <Button type="link">{children}</Button>
+            {children}
         </Popover>
     );
 };
