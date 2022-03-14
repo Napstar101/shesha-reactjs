@@ -247,19 +247,19 @@
       "customVisibility": "return data.quickviewEnabled === true"
     },
     {
-      "id": "b0eeb8cb-d9ad-479e-a731-10d5909a50a2",
-      "type": "textField",
-      "name": "quickviewDisplayPropertyName",
-      "parentId": "root",
-      "label": "Display Property Name",
-      "customVisibility": "return data.quickviewEnabled === true"
-    },
-    {
       "id": "c6ec53eb-3bec-40d6-b1a1-687c5d1c3d1d",
       "type": "textField",
       "name": "quickviewGetEntityUrl",
       "parentId": "root",
       "label": "Get Entity Url",
+      "customVisibility": "return data.quickviewEnabled === true"
+    },
+    {
+      "id": "b0eeb8cb-d9ad-479e-a731-10d5909a50a2",
+      "type": "textField",
+      "name": "quickviewDisplayPropertyName",
+      "parentId": "root",
+      "label": "Display Property Name",
       "customVisibility": "return data.quickviewEnabled === true"
     },
     {

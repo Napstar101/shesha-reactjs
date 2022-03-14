@@ -50,7 +50,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   defaultChecked,
   quickviewEnabled,
   quickviewFormPath,
-  // quickviewDisplayPropertyName,
+  quickviewDisplayPropertyName,
   quickviewGetEntityUrl,
   quickviewWidth,
 }) => {
@@ -78,7 +78,6 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
           if (quickviewEnabled && quickviewFormPath) {
             return (
               <QuickView
-                title={JSON.stringify(value)}
                 entityId={value?.data}
                 formPath={quickviewFormPath}
                 getEntityUrl={quickviewGetEntityUrl}

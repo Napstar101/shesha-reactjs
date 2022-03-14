@@ -12,11 +12,6 @@ export interface IQuickViewProps {
     entityId?: string;
 
     /**
-     * The title for the quick view window
-     */
-    title?: string;
-
-    /**
      * Path to the form to display on the modal
      */
     formPath?: string;
@@ -27,19 +22,14 @@ export interface IQuickViewProps {
     getEntityUrl: string;
 
     /**
-     * Override the property that is displayed in the parent form and popover title
-     */
-    // displayProperty?: string;
-
-    /**
      * The width of the quickview
      */
     width?: number;
 }
 
-const QuickView: FC<Omit<IQuickViewProps, 'children'>> = ({
+const QuickView: FC<IQuickViewProps> = ({
+    children,
     entityId,
-    title,
     formPath,
     getEntityUrl,
     // displayProperty,
@@ -69,9 +59,9 @@ const QuickView: FC<Omit<IQuickViewProps, 'children'>> = ({
 
     useEffect(() => {
         if (fetchEntityError) {
-          notification.error({ message: <ValidationErrors error={fetchEntityError} renderMode="raw" /> });
+            notification.error({ message: <ValidationErrors error={fetchEntityError} renderMode="raw" /> });
         }
-      }, [fetchEntityError]);
+    }, [fetchEntityError]);
 
     const formContent = (
         <ConfigurableForm
@@ -83,8 +73,8 @@ const QuickView: FC<Omit<IQuickViewProps, 'children'>> = ({
     );
 
     return (
-        <Popover content={<div style={{ width }}>{formContent}</div>} title={title}>
-            <Button type="link">{title}</Button>
+        <Popover content={<div style={{ width }}>{formContent}</div>}>
+            <Button type="link">{children}</Button>
         </Popover>
     );
 };
