@@ -126,27 +126,27 @@ export interface IAutocompleteProps<TValue = any> extends IReadOnly {
   /**
    * Deteremines if quickview is enabled when in read only mode
    */
-   quickviewEnabled?: boolean;
+  quickviewEnabled?: boolean;
 
-   /**
-    * Specifies the form to use when quickview is enabled
-    */
-   quickviewFormPath?: string;
- 
-   /**
-    * Specifies which property to display for the quickview
-    */
-   quickviewDisplayPropertyName?: string;
+  /**
+   * Specifies the form to use when quickview is enabled
+   */
+  quickviewFormPath?: string;
 
-   /**
-     * The Url that details of the entity are retreived
-     */
-   quickviewGetEntityUrl?: string;
+  /**
+   * Specifies which property to display for the quickview
+   */
+  quickviewDisplayPropertyName?: string;
 
-   /**
-     * The width of the quickview
-     */
-   quickviewWidth?: number;
+  /**
+   * The Url that details of the entity are retreived
+   */
+  quickviewGetEntityUrl?: string;
+
+  /**
+   * The width of the quickview
+   */
+  quickviewWidth?: number;
 }
 
 export interface IUrlFetcherQueryParams {
@@ -172,7 +172,7 @@ const trimQueryString = (url: string): string => {
  * A component for working with dynamic autocomplete
  */
 
-export const Autocomplete = <TValue, >(props: IAutocompleteProps<TValue>) => {
+export const Autocomplete = <TValue,>(props: IAutocompleteProps<TValue>) => {
   const {
     value,
     defaultValue,
