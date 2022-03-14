@@ -16,15 +16,15 @@ export interface IReadOnlyDisplayFormItemProps {
   value?: any;
   render?: () => ReactNode | ReactNode;
   type?:
-    | 'string'
-    | 'number'
-    | 'dropdown'
-    | 'dropdownMultiple'
-    | 'time'
-    | 'datetime'
-    | 'checkbox'
-    | 'switch'
-    | 'radiogroup';
+  | 'string'
+  | 'number'
+  | 'dropdown'
+  | 'dropdownMultiple'
+  | 'time'
+  | 'datetime'
+  | 'checkbox'
+  | 'switch'
+  | 'radiogroup';
   dropdownDisplayMode?: 'raw' | 'tags';
   dateFormat?: string;
   timeFormat?: string;
@@ -75,8 +75,8 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
             return (
               <QuickView
                 title={JSON.stringify(value)}
-                formPath={quickviewFormPath}
-                formValues={value}>
+                entityId={value?.data}
+                formPath={quickviewFormPath}>
                 {displayLabel}
               </QuickView>
             );

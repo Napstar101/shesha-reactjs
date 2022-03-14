@@ -2,7 +2,7 @@ import React from 'react';
 import { QuickView, IQuickViewProps } from '../..';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { ShaApplicationProvider } from '../../providers';
+import { ShaApplicationProvider, FormProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button } from 'antd';
 
@@ -23,14 +23,15 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
     return (
         <ShaApplicationProvider backendUrl={backendUrl}>
             <AuthContainer layout>
-                <>
+                <FormProvider
+                    mode='readonly'
+                    path='cdm-schedule-details-testing'>
                     <QuickView
                         title={props.title}
-                        formPath={props.formPath}
-                        formValues={{ membershipNumber: "00000000" }}>
+                        formPath={props.formPath}>
                         <Button type="primary">Hover me</Button>
                     </QuickView>
-                </>
+                </FormProvider>
             </AuthContainer>
         </ShaApplicationProvider>
     );
@@ -38,7 +39,7 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
 
 const baseProps: IQuickViewProps = {
     title: "Hello",
-    formPath: "/members/details",
+    formPath: "quickview-his-health-facilities-details",
 };
 
 export const Base = BaseTemplate.bind({});
