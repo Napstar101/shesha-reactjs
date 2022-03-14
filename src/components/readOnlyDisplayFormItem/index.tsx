@@ -34,6 +34,8 @@ export interface IReadOnlyDisplayFormItemProps {
   quickviewEnabled?: boolean;
   quickviewFormPath?: string;
   quickviewDisplayPropertyName?: string;
+  quickviewGetEntityUrl?: string;
+  quickviewWidth?: number;
 }
 
 export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
@@ -49,6 +51,8 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   quickviewEnabled,
   quickviewFormPath,
   // quickviewDisplayPropertyName,
+  quickviewGetEntityUrl,
+  quickviewWidth,
 }) => {
   if (type === 'string') {
     console.log('ReadOnlyDisplayFormItem type, disabled: ', type, disabled);
@@ -76,7 +80,9 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
               <QuickView
                 title={JSON.stringify(value)}
                 entityId={value?.data}
-                formPath={quickviewFormPath}>
+                formPath={quickviewFormPath}
+                getEntityUrl={quickviewGetEntityUrl}
+                width={quickviewWidth}>
                 {displayLabel}
               </QuickView>
             );
