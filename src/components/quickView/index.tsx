@@ -1,72 +1,67 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Popover, Form } from 'antd';
+import { Popover, Form, Button } from 'antd';
 import { ConfigurableForm } from '../';
-import { useUi, useForm } from '../../providers';
+import { useUi } from '../../providers';
 import { useGet } from 'restful-react';
 
 export interface IQuickViewProps {
+  /**
+   * The id or guid for the entity
+   */
+  entityId?: string;
 
-    /**
-     * The id or guid for the entity
-     */
-    entityId?: string;
+  /**
+   * The title for the quick view window
+   */
+  title?: string;
 
-    /**
-     * The title for the quick view window
-     */
-    title?: string;
+  /**
+   * Path to the form to display on the modal
+   */
+  formPath?: string;
 
-    /**
-     * Path to the form to display on the modal
-     */
-    formPath?: string;
+  getEntityUrl: string;
 
-    /**
-     * Form Values. If passed, model will be overridden to FormValues, m.
-     */
-    formValues?: any;
+  /**
+   * Form Values. If passed, model will be overridden to FormValues, m.
+   */
+  formValues?: any;
+
+  width?: number;
 }
 
-const QuickView: FC<IQuickViewProps> = ({
-    children,
-    entityId,
-    title,
-    formPath,
-    formValues
-}) => {
+const QuickView: FC<Omit<IQuickViewProps, 'children'>> = ({ entityId, title, formPath, getEntityUrl, width = 600 }) => {
+  const [state, setState] = useState();
 
-    const [state, setState] = useState();
-    const { formSettings } = useForm();
-    const [form] = Form.useForm();
-    const { formItemLayout } = useUi();
-    const { refetch, loading, data, error } = useGet({ path: formSettings.getUrl || "", queryParams: { id: entityId }, lazy: true });
+  const [form] = Form.useForm();
+  const { formItemLayout } = useUi();
+  const { refetch, loading, data, error } = useGet({
+    path: getEntityUrl || '',
+    queryParams: { id: entityId },
+    lazy: true,
+  });
 
-    useEffect(() => {
-        if (formSettings.getUrl && entityId) {
-            refetch();
-        }
-    }, [entityId, formSettings]);
+  useEffect(() => {
+    if (getEntityUrl && entityId) {
+      refetch();
+    }
+  }, [entityId, getEntityUrl]);
 
-    useEffect(() => {
-        if (!loading && data) {
-            setState(data.result);
-        }
-    }, [loading, data]);
+  useEffect(() => {
+    if (!loading && data) {
+      setState(data.result);
+    }
+  }, [loading, data]);
 
-    const formContent = (
-        <ConfigurableForm
-            mode="readonly"
-            {...formItemLayout}
-            form={form}
-            path={formPath}
-            initialValues={state} />
-    );
+  const formContent = (
+    <ConfigurableForm mode="readonly" {...formItemLayout} form={form} path={formPath} initialValues={state} />
+  );
 
-    return (
-        <Popover content={formContent} title={title}>
-            {children}
-        </Popover>
-    );
+  return (
+    <Popover content={<div style={{ width }}>{formContent}</div>} title={title}>
+      <Button type="link">{title}</Button>
+    </Popover>
+  );
 };
 
 export default QuickView;

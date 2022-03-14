@@ -2,15 +2,15 @@ import React from 'react';
 import { QuickView, IQuickViewProps } from '../..';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { ShaApplicationProvider, FormProvider } from '../../providers';
+import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button } from 'antd';
 
 // #region Storybook Metadata & Configuration
 
 export default {
-    title: 'Components/QuickView',
-    component: QuickView,
+  title: 'Components/QuickView',
+  component: QuickView,
 } as Meta;
 
 const backendUrl = process.env.STORYBOOK_BASE_URL;
@@ -20,26 +20,20 @@ const backendUrl = process.env.STORYBOOK_BASE_URL;
 // #region Base Mapping Template and Props
 
 const BaseTemplate: Story<IQuickViewProps> = props => {
-    return (
-        <ShaApplicationProvider backendUrl={backendUrl}>
-            <AuthContainer layout>
-                <FormProvider
-                    mode='readonly'
-                    path='cdm-schedule-details-testing'>
-                    <QuickView
-                        title={props.title}
-                        formPath={props.formPath}>
-                        <Button type="primary">Hover me</Button>
-                    </QuickView>
-                </FormProvider>
-            </AuthContainer>
-        </ShaApplicationProvider>
-    );
+  return (
+    <ShaApplicationProvider backendUrl={backendUrl}>
+      <AuthContainer layout>
+        <QuickView {...props} />
+      </AuthContainer>
+    </ShaApplicationProvider>
+  );
 };
 
 const baseProps: IQuickViewProps = {
-    title: "Hello",
-    formPath: "quickview-his-health-facilities-details",
+  title: 'Hello',
+  entityId: '0cdad6b0-a3b2-4cf6-9b7d-238d753f0657',
+  formPath: 'quickview-his-health-facilities-details',
+  getEntityUrl: '/api/services/Common/HisHealthFacility/Get',
 };
 
 export const Base = BaseTemplate.bind({});
