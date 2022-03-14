@@ -50,7 +50,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   defaultChecked,
   quickviewEnabled,
   quickviewFormPath,
-  quickviewDisplayPropertyName,
+  // quickviewDisplayPropertyName,
   quickviewGetEntityUrl,
   quickviewWidth,
 }) => {
@@ -76,6 +76,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
         if (!Array.isArray(value)) {
           const displayLabel = (value as AutocompleteType)?.label;
           if (quickviewEnabled && quickviewFormPath) {
+            // const title = quickviewDisplayPropertyName ? "" : "";
             return (
               <QuickView
                 entityId={value?.data}
