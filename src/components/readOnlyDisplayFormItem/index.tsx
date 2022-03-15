@@ -4,7 +4,7 @@ import { Show } from '../show';
 import { useForm } from '../../providers';
 import { IDtoType, ISelectOption } from '../autocomplete';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
-import { Switch, Tag, Button } from 'antd';
+import { Switch, Tag } from 'antd';
 import { getMoment } from '../../utils/date';
 import moment from 'moment';
 import classNames from 'classnames';
@@ -50,7 +50,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   defaultChecked,
   quickviewEnabled,
   quickviewFormPath,
-  // quickviewDisplayPropertyName,
+  quickviewDisplayPropertyName,
   quickviewGetEntityUrl,
   quickviewWidth,
 }) => {
@@ -76,15 +76,13 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
         if (!Array.isArray(value)) {
           const displayLabel = (value as AutocompleteType)?.label;
           if (quickviewEnabled && quickviewFormPath) {
-            // const title = quickviewDisplayPropertyName ? "" : "";
             return (
               <QuickView
                 entityId={value?.data}
                 formPath={quickviewFormPath}
                 getEntityUrl={quickviewGetEntityUrl}
-                width={quickviewWidth}>
-                  <Button type="link">{displayLabel}</Button>
-              </QuickView>
+                displayProperty={quickviewDisplayPropertyName}
+                width={quickviewWidth} />
             );
           } else {
             return displayLabel;

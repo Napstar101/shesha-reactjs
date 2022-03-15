@@ -35,6 +35,7 @@ const baseProps: IQuickViewProps = {
     entityId: '0cdad6b0-a3b2-4cf6-9b7d-238d753f0657',
     formPath: 'quickview-his-health-facilities-details',
     getEntityUrl: '/api/services/Common/HisHealthFacility/Get',
+    displayProperty: null
 };
 
 export const Base = BaseTemplate.bind({});

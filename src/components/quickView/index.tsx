@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Popover, Form, notification } from 'antd';
+import { Popover, Button, Form, notification } from 'antd';
 import { ConfigurableForm } from '../';
 import { useUi } from '../../providers';
 import { useGet } from 'restful-react';
@@ -22,20 +22,25 @@ export interface IQuickViewProps {
     getEntityUrl: string;
 
     /**
+     * The property froom the data to use as the label and title for the popover
+     */
+    displayProperty: string;
+
+    /**
      * The width of the quickview
      */
     width?: number;
 }
 
-const QuickView: FC<IQuickViewProps> = ({
-    children,
+const QuickView: FC<Omit<IQuickViewProps, 'children'>> = ({
     entityId,
     formPath,
     getEntityUrl,
-    // displayProperty,
+    displayProperty,
     width = 450
 }) => {
-    const [state, setState] = useState();
+    const [formData, setFormData] = useState();
+    const [formTitle, setFormTitle] = useState();
 
     const [form] = Form.useForm();
     const { formItemLayout } = useUi();
@@ -53,7 +58,8 @@ const QuickView: FC<IQuickViewProps> = ({
 
     useEffect(() => {
         if (!loading && data) {
-            setState(data.result);
+            setFormData(data.result);
+            setFormTitle(data.result[displayProperty]);
         }
     }, [loading, data]);
 
@@ -69,12 +75,14 @@ const QuickView: FC<IQuickViewProps> = ({
             {...formItemLayout}
             form={form}
             path={formPath}
-            initialValues={state} />
+            initialValues={formData} />
     );
 
     return (
-        <Popover content={<div style={{ width }}>{formContent}</div>}>
-            {children}
+        <Popover
+            content={<div style={{ width }}>{formContent}</div>}
+            title={formTitle ? formTitle : "Display Property Not Set in Forms Designer"}>
+            <Button type="link">{formTitle ? formTitle : "Display Property Not Set in Forms Designer"}</Button>
         </Popover>
     );
 };
