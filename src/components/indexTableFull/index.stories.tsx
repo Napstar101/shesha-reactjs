@@ -47,7 +47,15 @@ const Template: Story<IShaDataTableProps> = args => {
       <AuthContainer layout>
         <DataTableProvider tableId={args.id} title="Users" {...args}>
           {/* <TableHack></TableHack> */}
-          <IndexTableFull {...tableProps} {...args} tableRef={tableRef} />
+          <IndexTableFull
+            {...tableProps}
+            {...args}
+            tableRef={tableRef}
+            useMultiselect
+            onSelectedIdsChanged={ids => {
+              console.log('onSelectedIdsChanged ids :>> ', ids);
+            }}
+          />
         </DataTableProvider>
       </AuthContainer>
     </ShaApplicationProvider>

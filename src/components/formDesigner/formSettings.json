@@ -26,6 +26,28 @@
       "validate": {}
     },
     {
+      "id": "acaefed1-f12f-4cb9-b208-b74a1cbd8c40",
+      "type": "textField",
+      "name": "putUrl",
+      "label": "PUT Url",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {}
+    },
+    {
+      "id": "1d1b9011-1437-4ef2-9d52-ad32601544e9",
+      "type": "textField",
+      "name": "deleteUrl",
+      "label": "DELETE Url",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {}
+    },
+    {
       "id": "ebcf09bb-8cfe-4514-9bdf-d48fd325f438",
       "type": "textField",
       "name": "getUrl",
@@ -99,6 +121,21 @@
       "customVisibility": null,
       "description": "Whether the form should show mode toddler when in read mode or not. If set, clicking the pencil icon while in read-only mode, will change the form mode to editable",
       "validate": {}
+    },
+    {
+      "id": "fcfccb85-8fc3-436b-9f87-17e189bc3cdc",
+      "type": "codeEditor",
+      "name": "preparedValues",
+      "label": "Prepared Values",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "",
+      "autoSize": false,
+      "showCount": false,
+      "allowClear": false,
+      "validate": {},
+      "description": "Write a code that allows you to return an object whose values will be merged with the form state before submit. The value 'data', which represents the form data is exposed by this function"
     }
   ],
   "formSettings": { "layout": "horizontal", "colon": true, "labelCol": { "span": 5 }, "wrapperCol": { "span": 19 } }

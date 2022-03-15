@@ -44,14 +44,13 @@ export const TableContext: FC<ITableContextComponentProps> = props => {
     setTable(<TableContextInner key={uniqueKey} {...props} />);
   }, [props.tableConfigId, props.entityType]);
 
-  return entityType
-    ? <MetadataProvider
-      id={props.id}
-      modelType={entityType}
-    >
+  return entityType ? (
+    <MetadataProvider id={props.id} modelType={entityType}>
       {table}
     </MetadataProvider>
-    : table;
+  ) : (
+    table
+  );
 };
 
 export const TableContextInner: FC<ITableContextComponentProps> = props => {
@@ -69,7 +68,7 @@ export const TableContextInner: FC<ITableContextComponentProps> = props => {
         type="warning"
         showIcon
       />
-    )
+    );
 
   const tableProps: IShaDataTableProps = {
     id: tableConfigId,
@@ -112,11 +111,13 @@ const TableContextAccessor: FC<ITableContextComponentProps> = ({ id, tableConfig
 
   const toggleColumnsSelector = () => {
     setIsInProgressFlag({ isSelectingColumns: true, isFiltering: false });
-  }
+  };
 
   const toggleAdvancedFilter = () => {
     setIsInProgressFlag({ isFiltering: true, isSelectingColumns: false });
-  }
+  };
+
+  const setToEditMode = () => {};
 
   // register available actions, refresh on every table configuration loading or change of the table Id
   useEffect(
@@ -127,6 +128,7 @@ const TableContextAccessor: FC<ITableContextComponentProps> = ({ id, tableConfig
         toggleAdvancedFilter,
         exportToExcel,
         deleteRow,
+        setToEditMode,
       }),
     [tableConfigLoaded, tableConfigId, selectedRow]
   );

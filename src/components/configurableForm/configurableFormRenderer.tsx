@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Form, Spin } from 'antd';
 import ComponentsContainer from '../formDesigner/componentsContainer';
 import { ROOT_COMPONENT_KEY } from '../../providers/form/models';
@@ -7,17 +7,16 @@ import { IConfigurableFormRendererProps } from './models';
 import { useMutate } from 'restful-react';
 import { ValidateErrorEntity } from '../../interfaces';
 import { addFormFieldsList } from '../../utils/form';
+import { removeZeroWidthCharsFromString } from '../..';
 
-export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ children, form, ...props }) => {
-  const { 
-    setFormData, 
-    formData, 
-    allComponents,
-    formMode, 
-    isDragging, 
-    formSettings,
-    setValidationErrors,
-   } = useForm();
+export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
+  children,
+  skipPostOnFinish,
+  form,
+  httpVerb = 'POST',
+  ...props
+}) => {
+  const { setFormData, formData, allComponents, formMode, isDragging, formSettings, setValidationErrors } = useForm();
 
   const onFieldsChange = (changedFields: any[], allFields: any[]) => {
     if (props.onFieldsChange) props.onFieldsChange(changedFields, allFields);
@@ -26,8 +25,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
   };
 
   const onValuesChangeInternal = (changedValues: any, values: any) => {
-    if (props.onValuesChange) 
-      props.onValuesChange(changedValues, values);
+    if (props.onValuesChange) props.onValuesChange(changedValues, values);
 
     // recalculate components visibility
     setFormData({ values, mergeValues: true });
@@ -43,24 +41,86 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
     }
   }, [allComponents, props.initialValues]);
 
+  /**
+   * This function return the submit url.
+   *
+   * @returns
+   */
+  const submitUrl = useMemo(() => {
+    const { postUrl, putUrl, deleteUrl } = formSettings || {};
+    let url = postUrl; // Fallback for now
+
+    if (httpVerb === 'POST' && postUrl) {
+      url = postUrl;
+    }
+
+    if (httpVerb === 'PUT' && putUrl) {
+      url = putUrl;
+    }
+
+    if (httpVerb === 'DELETE' && deleteUrl) {
+      url = deleteUrl;
+    }
+
+    return removeZeroWidthCharsFromString(url);
+  }, [formSettings]);
+
+  // console.log('ConfigurableFormRenderer formSettings, getSubmitPath() :>> ', formSettings, getSubmitPath());
+
   const { mutate: doSubmit, loading: submitting } = useMutate({
-    verb: 'POST', // todo: convert to configurable
-    path: formSettings.postUrl,
+    verb: httpVerb || 'POST', // todo: convert to configurable
+    path: submitUrl,
   });
 
-  const onFinish = () => {
-    const postData = addFormFieldsList({ ...formData }, form);
+  const getExpressionExecutor = (expression: string) => {
+    if (!expression) {
+      return null;
+    }
 
-    if (formSettings.postUrl) {
+    // tslint:disable-next-line:function-constructor
+    const func = new Function('data', expression);
+
+    return func(formData);
+  };
+
+  const getDynamicPreparedValues = () => {
+    const { preparedValues } = formSettings;
+
+    if (preparedValues) {
+      const localValues = getExpressionExecutor(preparedValues);
+
+      if (typeof localValues === 'object') {
+        return localValues;
+      }
+
+      console.error('Error: preparedValues is not an object::', localValues);
+
+      return getExpressionExecutor(preparedValues);
+    }
+    return {};
+  };
+
+  const onFinish = () => {
+    const postData = addFormFieldsList({ ...formData, ...getDynamicPreparedValues() }, form);
+
+    if (skipPostOnFinish) {
+      if (props?.onFinish) {
+        props?.onFinish(postData);
+      }
+
+      return;
+    }
+
+    if (submitUrl) {
       setValidationErrors(null);
       doSubmit(postData)
-        .then(() => {
+        .then(response => {
           // note: we pass merged values
-          if (props.onFinish) props.onFinish(postData);
+          if (props.onFinish) props.onFinish(postData, response?.result);
         })
         .catch(e => {
           setValidationErrors(e?.data?.error || e);
-          console.log(e);
+          console.log('ConfigurableFormRenderer onFinish e: ', e);
         }); // todo: test and show server-side validation
     } // note: we pass merged values
     else if (props.onFinish) props.onFinish(postData);
@@ -68,9 +128,8 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
 
   const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
     setValidationErrors(null);
-    if (props.onFinishFailed)
-      props.onFinishFailed(errorInfo)
-  }
+    if (props.onFinishFailed) props.onFinishFailed(errorInfo);
+  };
 
   const mergedProps = {
     layout: props.layout ?? formSettings.layout,
@@ -93,7 +152,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({ c
         className={`sha-form sha-form-${formMode} ${isDragging ? 'sha-dragging' : ''}`}
         {...mergedProps}
       >
-        <ComponentsContainer containerId={ROOT_COMPONENT_KEY}/>
+        <ComponentsContainer containerId={ROOT_COMPONENT_KEY} />
         {children}
       </Form>
     </Spin>

@@ -14,6 +14,7 @@ import {
   IndexColumnDataType,
   IStoredFilter,
   ITableColumn,
+  ITableCrudConfig,
   ITableDataResponse,
   ITableFilter,
   SortDirection,
@@ -57,6 +58,7 @@ const reducer = handleActions<IDataTableStateContext, any>(
       action: ReduxActions.Action<string[]>
     ) => {
       const { payload } = action;
+
       return {
         ...state,
         selectedStoredFilterIds: payload,
@@ -439,7 +441,7 @@ const reducer = handleActions<IDataTableStateContext, any>(
         ...f,
         filterOption: f.columnId === filterColumnId ? filterOptionValue : f.filterOption,
       }));
-      
+
       return {
         ...state,
         tableFilterDirty: filter,
@@ -488,6 +490,18 @@ const reducer = handleActions<IDataTableStateContext, any>(
       return {
         ...state,
         configurableColumns: [...payload.columns],
+      };
+    },
+
+    [DataTableActionEnums.SetCrudConfig]: (
+      state: IDataTableStateContext,
+      action: ReduxActions.Action<ITableCrudConfig>
+    ) => {
+      const { payload } = action;
+
+      return {
+        ...state,
+        crudConfig: payload,
       };
     },
   },

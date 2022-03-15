@@ -20,7 +20,7 @@ export interface ITableActionColumns {
 
 export interface ITableCustomTypesRender {
   key: string;
-  render: (data: any) => ReactNode;
+  render: (data: any, router: any) => ReactNode;
 }
 
 export interface ITableCustomTypeEditor {
@@ -54,6 +54,7 @@ export interface IShaDataTableProps extends ICrudProps {
   deleteConfirmationMessage?: string;
   selectedRowIndex?: number;
   onSelectRow?: (index: number, row: any) => void;
+  onSelectedIdsChanged?: (selectedRowIds: string[]) => void;
   onDblClick?: (data: any) => void;
   customTypeRenders?: ITableCustomTypesRender[];
   customTypeEditors?: ITableCustomTypeEditor[];

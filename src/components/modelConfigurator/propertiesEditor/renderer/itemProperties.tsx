@@ -7,7 +7,7 @@ import { FormMarkup } from '../../../../providers/form/models';
 import { ConfigurableFormInstance } from '../../../../providers/form/contexts';
 import propertySettingsJson from './propertySettings.json';
 
-export interface IProps { }
+export interface IProps {}
 
 export const ToolbarItemProperties: FC<IProps> = () => {
   const { selectedItemId, getItem, updateItem } = usePropertiesEditor();
@@ -42,11 +42,11 @@ export const ToolbarItemProperties: FC<IProps> = () => {
     const componentModel = getItem(selectedItemId);
 
     const markup = propertySettingsJson as FormMarkup;
-    
+
     return (
       <>
         <ConfigurableForm
-          size='small'
+          size="small"
           formRef={formRef}
           layout="horizontal"
           labelCol={{ span: 24 }}

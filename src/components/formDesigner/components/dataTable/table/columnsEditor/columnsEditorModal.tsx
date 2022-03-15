@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
 import { Modal } from 'antd';
-import { ColumnsConfiguratorProvider, useColumnsConfigurator } from '../../../../../../providers/datatableColumnsConfigurator';
+import {
+  ColumnsConfiguratorProvider,
+  useColumnsConfigurator,
+} from '../../../../../../providers/datatableColumnsConfigurator';
 import { ColumnsConfigurator } from './columnsConfigurator';
 import { IConfigurableColumnsBase } from '../../../../../../providers/datatableColumnsConfigurator/models';
 

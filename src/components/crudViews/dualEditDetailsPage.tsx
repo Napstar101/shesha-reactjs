@@ -231,7 +231,6 @@ const GenericDualEditDetailsPage = forwardRef<CommonCrudHandles, IGenericDualEdi
       }
     };
 
-    console.log('LOG:::mode', props?.formType);
     return (
       <Spin spinning={loading || saving} tip="Loading...">
         <MainLayout

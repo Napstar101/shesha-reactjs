@@ -3,8 +3,9 @@ import { IToolboxComponent } from '../../../../../interfaces';
 import { SelectOutlined } from '@ant-design/icons';
 import TableViewSelectorSettings from './tableViewSelectorSettingsPanel';
 import { ITableViewSelectorProps } from './models';
-import { IndexViewSelectorRenderer } from '../../../../../';
+import { IndexViewSelectorRenderer, useForm } from '../../../../../';
 import { useDataTableStore } from '../../../../../providers';
+import { evaluateDynamicFilters } from '../../../../../providers/dataTable/utils';
 
 const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
   type: 'tableViewSelector',
@@ -32,14 +33,9 @@ const TableViewSelectorComponent: IToolboxComponent<ITableViewSelectorProps> = {
 };
 
 export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, componentRef }) => {
-  const { columns, getDataSourceType } = useDataTableStore();
-  const dataSourceType = getDataSourceType();
-  componentRef.current = {
-    columns,
-    dataSourceType
-  };
-
   const {
+    columns,
+    getDataSourceType,
     title,
     changeSelectedStoredFilterIds,
     predefinedFilters,
@@ -47,8 +43,22 @@ export const TableViewSelector: FC<ITableViewSelectorProps> = ({ filters, compon
     setPredefinedFilters,
   } = useDataTableStore();
 
+  const { formData } = useForm();
+
+  const dataSourceType = getDataSourceType();
+
+  componentRef.current = {
+    columns,
+    dataSourceType,
+  };
+
   useEffect(() => {
-    setPredefinedFilters(filters);
+    const evaluatedFilters = evaluateDynamicFilters(filters, formData);
+
+    console.log('evaluatedFilters: ', evaluatedFilters);
+
+    setPredefinedFilters(evaluatedFilters);
+    // setPredefinedFilters(filters);
   }, [filters]);
 
   const changeSelectedFilter = (id: string) => {

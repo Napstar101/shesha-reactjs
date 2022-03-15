@@ -4,7 +4,6 @@ import DateField from '../../../components/formDesigner/components/dateField/dat
 import Tabs from '../../../components/formDesigner/components/tabs/tabs';
 import Columns from '../../../components/formDesigner/components/columns/columns';
 import SectionSeprator from '../../../components/formDesigner/components/sectionSeprator/sectionSeprator';
-
 import TextArea from '../../../components/formDesigner/components/textArea/textArea';
 import Autocomplete from '../../../components/formDesigner/components/autocomplete/autocomplete';
 import Dropdown from '../../../components/formDesigner/components/dropdown/dropdown';
@@ -35,7 +34,6 @@ import HierarchicalChecklistComponent from '../../../components/formDesigner/com
 import Switch from '../../../components/formDesigner/components/switch/switch';
 import ValidationErrors from '../../../components/formDesigner/components/validationErrors';
 import IconPicker from '../../../components/formDesigner/components/iconPicker';
-
 import { IToolboxComponentGroup } from '../../../interfaces/formDesigner';
 import DisplayFormItem from '../../../components/formDesigner/components/basicDisplayFormItem';
 import EntityPickerComponent from '../../../components/formDesigner/components/entityPicker';
@@ -45,11 +43,19 @@ import Statistic from '../../../components/formDesigner/components/statistic';
 import PropertyAutocomplete from '../../../components/formDesigner/components/propertyAutocomplete';
 import CodeEditor from '../../../components/formDesigner/components/codeEditor';
 import EditableTagGroup from '../../../components/formDesigner/components/editableTagGroup';
+import Paragraph from '../../../components/formDesigner/components/typography/paragraph';
+import Text from '../../../components/formDesigner/components/typography/text';
+import Title from '../../../components/formDesigner/components/typography/title';
+import Divider from '../../../components/formDesigner/components/divider';
+import Space from '../../../components/formDesigner/components/space';
+import StatusTag from '../../../components/formDesigner/components/statusTag';
 import DynamicView from '../../../components/formDesigner/components/dynamicView';
+import ChildTable from '../../../components/formDesigner/components/dataTable/childTable';
 
 export const ToolboxComponents: IToolboxComponentGroup[] = [
   {
     name: 'Basic',
+    visible: true,
     components: [
       Autocomplete,
       Button,
@@ -68,14 +74,17 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
   },
   {
     name: 'Static',
+    visible: true,
     components: [Alert, ValidationErrors, DisplayFormItem, Section],
   },
   {
     name: 'Layout',
-    components: [CollapsiblePanel, Columns, ContainerComponent, SectionSeprator, Tabs],
+    visible: true,
+    components: [CollapsiblePanel, Columns, ContainerComponent, SectionSeprator, Tabs, Divider, Space],
   },
   {
     name: 'Custom',
+    visible: true,
     components: [
       Address,
       AttachmentsEditor,
@@ -90,11 +99,13 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       PropertyAutocomplete,
       CodeEditor,
       EditableTagGroup,
+      StatusTag,
       DynamicView,
     ],
   },
   {
     name: 'Datatable',
+    visible: true,
     components: [
       TableTemplate,
       AdvancedFilterButton,
@@ -105,8 +116,19 @@ export const ToolboxComponents: IToolboxComponentGroup[] = [
       TableContext,
       TableViewSelector,
       Toolbar,
+      ChildTable,
     ],
   },
+  {
+    visible: true,
+    name: 'Typography',
+    components: [Text, Title, Paragraph],
+  },
+  // {
+  //   visible: false,
+  //   name: 'Views',
+  //   components: [DetailsView, BlankView, TableView, FormView, DashboardView, MasterDetailsView, MenuView],
+  // },
 ];
 
 export default ToolboxComponents;

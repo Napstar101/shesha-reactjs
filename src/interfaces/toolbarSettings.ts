@@ -33,7 +33,7 @@ type LabelValueEditorType = ToolbarSettingsProp & Omit<ILabelValueEditorProps, '
 type QueryBuilderType = ToolbarSettingsProp & Omit<IQueryBuilderProps, 'type'>;
 
 export class DesignerToolbarSettings {
-  protected form: IConfigurableFormComponent[];
+  protected form: IConfigurableFormComponent[]; //sdsd
 
   constructor() {
     this.form = [];

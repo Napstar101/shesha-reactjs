@@ -26,6 +26,7 @@ import { removeUndefinedProperties } from '../../utils/array';
 import { ValidationErrors } from '..';
 import { useAuthState, useDataTableStore } from '../../providers';
 import { IReactTableProps } from '../reactTable/interfaces';
+import { usePrevious } from 'react-use';
 
 const FormItem = Form.Item;
 
@@ -41,6 +42,7 @@ export interface IExtendedModalProps extends ModalProps {
 
 export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   crud,
+  overrideDefaultCrudBehavior,
   saveLocally,
   useMultiselect: useMultiSelect,
   actionColumns,
@@ -55,6 +57,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
   onExportSuccess,
   onExportError,
   onFetchDataSuccess,
+  onSelectedIdsChanged,
   crudParentEntityKey = 'parentEntity',
 }) => {
   const store = useDataTableStore();
@@ -77,6 +80,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     onDblClick: onDblClickDeprecated,
     selectedRow,
     parentEntityId,
+    selectedIds,
     tableSorting,
     quickSearch,
     crudConfig,
@@ -86,10 +90,18 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     cancelCreateOrEditRowData,
     updateLocalTableData,
     deleteRowItem,
+    changeSelectedIds,
     // succeeded,
     succeeded: { exportToExcel: exportToExcelSuccess },
     error: { exportToExcel: exportToExcelError },
   } = store;
+
+  const previousIds = usePrevious(selectedIds);
+  useEffect(() => {
+    if (!(previousIds?.length === 0 && selectedIds?.length === 0) && typeof onSelectedIdsChanged === 'function') {
+      onSelectedIdsChanged(selectedIds);
+    }
+  }, [selectedIds]);
 
   useEffect(() => {
     if (!isFetchingTableData && tableData?.length && onFetchDataSuccess) {
@@ -191,7 +203,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
 
   // Crud is either boolean or ICrudState, so here we're just return allowed crud actions
   const getAllowedCrudActions = () => {
-    // console.log('getAllowedCrudActions ');
+    if (overrideDefaultCrudBehavior) return [];
 
     if (typeof crud === 'boolean') {
       return crudActionColumns;
@@ -255,7 +267,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
                 const { key, render } = customRender;
 
                 if (columnItem.dataType === key || columnItem.customDataType === key) {
-                  return render(props) || null;
+                  return render(props, router) || null;
                 }
               }
             }
@@ -377,7 +389,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
       });
 
     setPreparedColumns(localPreparedColumns);
-  }, [columns, newOrEditableRowData?.id, crud]);
+  }, [columns, newOrEditableRowData?.id, crud, overrideDefaultCrudBehavior]);
 
   /**
    * Returns a default action column icon
@@ -521,6 +533,7 @@ export const IndexTable: FC<Partial<IIndexTableProps>> = ({
     // disableSortBy: false, // Do not disable sorting
     onSelectRow,
     onRowDoubleClick: dblClickHandler,
+    onSelectedIdsChanged: changeSelectedIds,
     columns: preparedColumns?.map(column => {
       const cleanedColumn = removeUndefinedProperties(column);
 

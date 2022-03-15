@@ -12,7 +12,12 @@ export interface IProps<T extends IConfigurableFormComponent> {
   id: string;
 }
 
-function ComponentSettingsModal<T extends IConfigurableFormComponent>({ isVisible, onSave, onCancel, model }: IProps<T>) {
+function ComponentSettingsModal<T extends IConfigurableFormComponent>({
+  isVisible,
+  onSave,
+  onCancel,
+  model,
+}: IProps<T>) {
   const [form] = Form.useForm();
   const formLayout = {
     labelCol: { span: 5 },

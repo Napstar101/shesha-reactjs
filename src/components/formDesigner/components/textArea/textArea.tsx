@@ -42,16 +42,18 @@ const TextField: IToolboxComponent<ITextAreaProps> = {
       bordered: !model.hideBorder,
     };
 
-    const { formMode } = useForm();
+    const { formMode, isComponentDisabled } = useForm();
 
     const isReadOnly = model?.readOnly || formMode === 'readonly';
+
+    const disabled = isComponentDisabled(model);
 
     return (
       <ConfigurableFormItem model={model} initialValue={(model?.passEmptyStringByDefault && '') || model?.initialValue}>
         {isReadOnly ? (
-          <ReadOnlyDisplayFormItem />
+          <ReadOnlyDisplayFormItem disabled={disabled} />
         ) : (
-          <Input.TextArea rows={2} {...textAreaProps} {...customEventHandler(model, form)} />
+          <Input.TextArea rows={2} {...textAreaProps} disabled={disabled} {...customEventHandler(model, form)} />
         )}
       </ConfigurableFormItem>
     );

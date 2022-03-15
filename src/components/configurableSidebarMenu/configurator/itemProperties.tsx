@@ -44,9 +44,7 @@ export const ToolbarItemProperties: FC<IProps> = () => {
 
     //const markup = itemSettingsJson as FormMarkup;
     const markup =
-      componentModel.itemType === 'group'
-        ? groupSettingsJson as FormMarkup
-        : itemSettingsJson as FormMarkup;
+      componentModel.itemType === 'group' ? (groupSettingsJson as FormMarkup) : (itemSettingsJson as FormMarkup);
     return (
       <ConfigurableForm
         formRef={formRef}

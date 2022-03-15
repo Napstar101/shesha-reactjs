@@ -21,11 +21,9 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
       .catch(() => message.error('Failed to save model')); ;
   };
 
-  const initialValues = {...modelConfiguration};
-
   return (
     <div className="sha-model-configurator">
-      <ModelConfiguratorToolbar />
+      { false && <ModelConfiguratorToolbar /> }
       <ErrorBoundary>
         <ConfigurableForm
           layout="horizontal"
@@ -35,7 +33,7 @@ export const ModelConfiguratorRenderer: FC<IModelConfiguratorRendererProps> = ()
           markup={modelSettingsMarkup as FormMarkup}
           onFinish={onSettingsSave}
           form={form}
-          initialValues={initialValues}
+          initialValues={modelConfiguration}
           sections={{
             properties: () => (<PropertiesEditorComponent />)
           }}

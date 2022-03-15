@@ -1,3 +1,4 @@
+import { IAnyObject } from './../../interfaces/anyObject';
 import {
   IFlatComponentsStructure,
   IConfigurableFormComponent,
@@ -10,6 +11,7 @@ import {
   FormMarkupWithSettings,
   IFormSection,
   IFormSections,
+  ViewType,
 } from './models';
 import Mustache from 'mustache';
 import { IToolboxComponent, IToolboxComponentGroup, IToolboxComponents } from '../../interfaces';
@@ -19,10 +21,18 @@ import { formGet, formGetByPath } from '../../apis/form';
 import { IPropertyMetadata } from '../../interfaces/metadata';
 import { nanoid } from 'nanoid';
 import { Rule } from 'antd/lib/form';
-import { getFullPath } from '../../utils/metadata';
 import nestedProperty from 'nested-property';
+import { getFullPath } from '../../utils/metadata';
+import blankViewMarkup from './defaults/markups/blankView.json';
+import dashboardViewMarkup from './defaults/markups/dashboardView.json';
+import detailsViewMarkup from './defaults/markups/detailsView.json';
+import formViewMarkup from './defaults/markups/formView.json';
+import masterDetailsViewMarkup from './defaults/markups/masterDetailsView.json';
+import menuViewMarkup from './defaults/markups/menuView.json';
+import tableViewMarkup from './defaults/markups/tableView.json';
+import { useSheshaApplication } from '..';
 
-/** 
+/**
  * Convert components tree to flat structure.
  * In flat structure we store components settings and their relations separately:
  *    allComponents - dictionary (key:value) of components. key - Id of the component, value - conponent settings
@@ -135,6 +145,7 @@ export const componentsFlatStructureToTree = (
  * Load form from the back-end
  */
 export const loadFormById = (id: string) => {
+  // @ts-ignore
   return formGet({ id });
 };
 export const loadFormByPath = (path: string) => {
@@ -144,7 +155,8 @@ export const loadFormByPath = (path: string) => {
 export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurableFormComponent) => {
   if (customVisibility) {
     try {
-      /* tslint:disable:function-constructor */  
+      /* tslint:disable:function-constructor */
+
       const customVisibilityExecutor = customVisibility ? new Function('value, data', customVisibility) : null;
 
       const getIsVisible = (data = {}) => {
@@ -173,7 +185,8 @@ export const getCustomVisibilityFunc = ({ customVisibility, name }: IConfigurabl
 export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormComponent) => {
   if (customEnabled) {
     try {
-      /* tslint:disable:function-constructor */  
+      /* tslint:disable:function-constructor */
+
       const customEnabledExecutor = customEnabled ? new Function('value, data', customEnabled) : null;
 
       const getIsEnabled = (data = {}) => {
@@ -199,19 +212,42 @@ export const getCustomEnabledFunc = ({ customEnabled, name }: IConfigurableFormC
   } else return () => true;
 };
 
-export const evaluateString = (template, data) => {
-  return template ? Mustache.render(template, data) : template;
+/**
+ * Evaluates the string using Mustache template.
+ *
+ * Given a the below expression
+ *  const expression =  'My name is {{name}}';
+ *
+ * and the below data
+ *  const data = { name: 'John', surname: 'Dow' };
+ *  evaluateString()
+ * the expression below
+ *   evaluateString(expression, data);
+ * The below expression will return 'My name is John';
+ *
+ * @param template - string template
+ * @param data - data to use to evaluate the string
+ * @returns
+ */
+export const evaluateString = (template: string = '', data: any = {}) => {
+  // The function throws an exception if the expression passed doesn't have a corresponding curly braces
+  try {
+    return template ? Mustache.render(template, data) : template;
+  } catch (error) {
+    console.warn('evaluateString ', error);
+    return template;
+  }
 };
 
 export const getVisibilityFunc2 = (expression, name) => {
   if (expression) {
     try {
-      const customVisibilityExecutor = expression ? new Function('data, context', expression) : null;
+      const customVisibilityExecutor = expression ? new Function('data, context, formMode', expression) : null;
 
-      const getIsVisible = (data = {}, context = {}) => {
+      const getIsVisible = (data = {}, context = {}, formMode = '') => {
         if (customVisibilityExecutor) {
           try {
-            return customVisibilityExecutor(data, context);
+            return customVisibilityExecutor(data, context, formMode);
           } catch (e) {
             console.warn(`Custom Visibility of ${name} throws exception: ${e}`);
             return true;
@@ -239,7 +275,7 @@ export const getVisibleComponentIds = (components: IComponentsDictionary, values
     if (components.hasOwnProperty(key)) {
       const component = components[key] as IConfigurableFormComponent;
       if (!component || component.hidden) continue;
-  
+
       const isVisible = component.visibilityFunc == null || component.visibilityFunc(values);
       if (isVisible) visibleComponents.push(key);
     }
@@ -256,11 +292,11 @@ export const getEnabledComponentIds = (components: IComponentsDictionary, values
     if (components.hasOwnProperty(key)) {
       const component = components[key] as IConfigurableFormComponent;
       if (!component || component.disabled) continue;
-  
+
       const isEnabled =
         !Boolean(component?.enabledFunc) ||
         (typeof component?.enabledFunc === 'function' && component?.enabledFunc(values));
-  
+
       if (isEnabled) enabledComponents.push(key);
     }
   }
@@ -319,6 +355,7 @@ export const getValidationRules = (component: IConfigurableFormComponent) => {
 
     if (validate.validator)
       rules.push({
+        // tslint:disable-next-line:function-constructor
         validator: (...r) => new Function('rule', 'value', 'callback', validate.validator)(...r),
       });
   }
@@ -356,6 +393,41 @@ export const evaluateStringLiteralExpression = (expression: string, data: any) =
 
 export const evaluateValue = (value: string, dictionary: any) => {
   return _evaluateValue(value, dictionary, true);
+};
+
+/**
+ * Evaluates an string expression and returns the evaluated value.
+ *
+ * Example: Given
+ *  let const person = { name: 'First', surname: 'Last' };
+ *  let expression = 'Full name is {{name}} {{surname}}';
+ *
+ * evaluateExpression(expression, person) will display 'Full name is First Last';
+ * @param expression the expression to evaluate
+ * @param data the data to use to evaluate the expression
+ * @returns
+ */
+
+export const evaluateExpression = (expression, data: any) => {
+  return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token)) as string;
+};
+
+/**
+ * Remove zero-width space characters from a string.
+ *
+ * Unicode has the following zero-width characters:
+ *  U+200B zero width space
+ *  U+200C zero width non-joiner Unicode code point
+ *  U+200D zero width joiner Unicode code point
+ *  U+FEFF zero width no-break space Unicode code point
+ * To remove them from a string in JavaScript, you can use a simple function:
+ *
+ * @see {@link https://stackoverflow.com/questions/11305797/remove-zero-width-space-characters-from-a-javascript-string} for further information
+ */
+export const removeZeroWidthCharsFromString = (value: string): string => {
+  if (!value) return '';
+
+  return value.replace(/[\u200B-\u200D\uFEFF]/g, '');
 };
 
 export const _evaluateValue = (value: string, dictionary: any, isRoot: boolean) => {
@@ -539,6 +611,7 @@ export const processRecursive = (
   func(component, parentId);
 
   const toolboxComponent = findToolboxComponent(componentsRegistration, c => c.type === component.type);
+  if (!toolboxComponent) return;
   const containers = getContainerNames(toolboxComponent);
 
   if (containers) {
@@ -588,6 +661,26 @@ export const cloneComponents = (
   return result;
 };
 
+export const getDefaultFormMarkup = (type: ViewType = 'blank') => {
+  switch (type) {
+    case 'blank':
+      return blankViewMarkup;
+    case 'dashboard':
+      return dashboardViewMarkup;
+    case 'details':
+      return detailsViewMarkup;
+    case 'form':
+      return formViewMarkup;
+    case 'masterDetails':
+      return masterDetailsViewMarkup;
+    case 'menu':
+      return menuViewMarkup;
+    case 'table':
+      return tableViewMarkup;
+    default:
+      return blankViewMarkup;
+  }
+};
 export const createComponentModelForDataProperty = (
   components: IToolboxComponentGroup[],
   propertyMetadata: IPropertyMetadata
@@ -624,4 +717,33 @@ export const createComponentModelForDataProperty = (
   componentModel = listComponentToModelMetadata(toolboxComponent, componentModel, propertyMetadata);
 
   return componentModel;
+};
+
+export const sheshaApplication = () => {
+  try {
+    return useSheshaApplication();
+  } catch (error) {
+    return { toolboxComponentGroups: [] };
+  }
+};
+
+interface IKeyValue {
+  key: string;
+  value: string;
+}
+
+export const evaluateKeyValuesToObject = (arr: IKeyValue[], data: any): IAnyObject => {
+  const queryParamObj: IAnyObject = {};
+
+  if (arr?.length) {
+    arr?.forEach(({ key, value }) => {
+      if (key?.length && value.length) {
+        queryParamObj[key] = evaluateString(value, data);
+      }
+    });
+
+    return queryParamObj;
+  }
+
+  return {};
 };

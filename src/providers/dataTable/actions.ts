@@ -9,6 +9,7 @@ import {
   ITableDataResponse,
   IGetDataPayload,
   IEditableRowState,
+  ITableCrudConfig,
 } from './interfaces';
 
 export enum DataTableActionEnums {
@@ -44,6 +45,9 @@ export enum DataTableActionEnums {
   UpdateLocalTableData = 'UPDATE_LOCAL_TABLE_DATA',
   DeleteRowItem = 'DELETE_ROW_ITEM',
   RegisterConfigurableColumns = 'REGISTER_CONFIGURABLE_COLUMNS',
+  OnSelectRow = 'ON_SELECT_ROW',
+
+  SetCrudConfig = 'SET_CRUD_Config',
 
   /* NEW_ACTION_TYPE_GOES_HERE */
 }
@@ -58,7 +62,9 @@ export const fetchTableDataSuccessAction = createAction<ITableDataResponse, ITab
   p => p
 );
 
-export const fetchTableDataErrorAction = createAction(DataTableActionEnums.FetchTableDataError, () => { /*nop*/ });
+export const fetchTableDataErrorAction = createAction(DataTableActionEnums.FetchTableDataError, () => {
+  /*nop*/
+});
 
 export const fetchTableConfigAction = createAction<string, string>(DataTableActionEnums.FetchTableConfig, p => p);
 
@@ -166,3 +172,8 @@ export const registerConfigurableColumnsAction = createAction<
 >(DataTableActionEnums.RegisterConfigurableColumns, p => p);
 
 /* NEW_ACTION_GOES_HERE */
+
+export const setCrudConfigAction = createAction<ITableCrudConfig, ITableCrudConfig>(
+  DataTableActionEnums.SetCrudConfig,
+  p => p
+);

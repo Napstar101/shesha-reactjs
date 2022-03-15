@@ -33,12 +33,14 @@ const TextField: IToolboxComponent<IRadioProps> = {
   factory: (model: IRadioProps) => {
     const { items = [] } = model;
 
-    const { formMode } = useForm();
+    const { formMode, isComponentDisabled } = useForm();
 
     const isReadOnly = model?.readOnly || formMode === 'readonly';
 
+    const disabled = isComponentDisabled(model);
+
     const renderCheckGroup = () => (
-      <Radio.Group disabled={isReadOnly}>
+      <Radio.Group disabled={disabled}>
         {items.map((checkItem, index) => (
           <Radio key={index} value={checkItem.value}>
             {checkItem.name}
@@ -49,7 +51,11 @@ const TextField: IToolboxComponent<IRadioProps> = {
 
     return (
       <ConfigurableFormItem model={model}>
-        {isReadOnly ? <ReadOnlyDisplayFormItem type="radiogroup" render={renderCheckGroup} /> : renderCheckGroup()}
+        {isReadOnly ? (
+          <ReadOnlyDisplayFormItem type="radiogroup" disabled={disabled} render={renderCheckGroup} />
+        ) : (
+          renderCheckGroup()
+        )}
       </ConfigurableFormItem>
     );
   },

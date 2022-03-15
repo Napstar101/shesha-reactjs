@@ -107,13 +107,6 @@
       "label": "Read Only"
     },
     {
-      "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
-      "type": "checkbox",
-      "name": "quickView",
-      "parentId": "root",
-      "label": "Quickview"
-    },
-    {
       "id": "7e4876d8-1ed4-4576-9f5b-46cfd77d8643",
       "type": "checkbox",
       "name": "hideBorder",
@@ -157,6 +150,26 @@
       "parentId": "root",
       "label": "Data Source Url",
       "customVisibility": "return data.dataSourceType === 'url'"
+    },
+    {
+      "id": "4c6133f1-8886-4527-aa6c-ae0606506a8a",
+      "type": "textField",
+      "name": "keyPropName",
+      "parentId": "root",
+      "label": "Key Prop Name",
+      "customVisibility": "return data.dataSourceType === 'url'",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "007e5859-9299-4434-84d9-9f7b0f7228af",
+      "type": "textField",
+      "name": "valuePropName",
+      "parentId": "root",
+      "label": "Value Prop Name",
+      "customVisibility": "return data.dataSourceType === 'url'",
+      "validate": {},
+      "settingsValidationErrors": []
     },
     {
       "id": "c1ffda30-8eea-4621-aae7-0af583143df6",
@@ -210,6 +223,52 @@
       "name": "validate.required",
       "parentId": "root",
       "label": "Required"
+    },
+    {
+      "id": "73013440-f7e7-4147-acd2-fb85941243ee",
+      "type": "sectionSeparator",
+      "name": "quickViewSectionSeparator",
+      "parentId": "root",
+      "label": "Quickview"
+    },
+    {
+      "id": "c8eb05cd-937a-4894-9770-271551e9ce31",
+      "type": "checkbox",
+      "name": "quickviewEnabled",
+      "parentId": "root",
+      "label": "Enabled"
+    },
+    {
+      "id": "49c6712b-7e91-4dab-9f11-4e7c5e6b6c74",
+      "type": "textField",
+      "name": "quickviewFormPath",
+      "parentId": "root",
+      "label": "Form Path",
+      "customVisibility": "return data.quickviewEnabled === true"
+    },
+    {
+      "id": "c6ec53eb-3bec-40d6-b1a1-687c5d1c3d1d",
+      "type": "textField",
+      "name": "quickviewGetEntityUrl",
+      "parentId": "root",
+      "label": "Get Entity Url",
+      "customVisibility": "return data.quickviewEnabled === true"
+    },
+    {
+      "id": "b0eeb8cb-d9ad-479e-a731-10d5909a50a2",
+      "type": "textField",
+      "name": "quickviewDisplayPropertyName",
+      "parentId": "root",
+      "label": "Display Property Name",
+      "customVisibility": "return data.quickviewEnabled === true"
+    },
+    {
+      "id": "d690a0b7-a9d3-4ab2-8843-9dcfbac08adc",
+      "type": "textField",
+      "name": "quickviewWidth",
+      "parentId": "root",
+      "label": "Width",
+      "customVisibility": "return data.quickviewEnabled === true"
     },
     {
       "id": "6befdd49-41aa-41d6-a29e-76fa00590b74",

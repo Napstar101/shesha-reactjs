@@ -8,6 +8,8 @@ export const TOOLBOX_DATA_ITEM_DROPPABLE_KEY: string = 'toolboxDataItem';
 
 export type FormMode = 'designer' | 'edit' | 'readonly';
 
+export type ViewType = 'details' | 'table' | 'form' | 'blank' | 'masterDetails' | 'menu' | 'dashboard';
+
 export type LabelAlign = 'left' | 'right';
 
 /**
@@ -145,6 +147,7 @@ export interface IFormProps extends IFlatComponentsStructure {
   description?: string;
   components: IConfigurableFormComponent[];
   formSettings: IFormSettings;
+  type?: ViewType;
 }
 
 export declare type StoreValue = any;

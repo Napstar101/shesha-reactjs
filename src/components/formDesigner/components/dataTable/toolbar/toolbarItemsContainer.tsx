@@ -31,9 +31,10 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
 
     if (listChanged) {
       const newChilds = newState.map<ToolbarItemProps>(item => item as ToolbarItemProps);
-      
+
       updateChildItems({ index: props.index, id: props.id, childs: newChilds });
     }
+
     return;
   };
 
@@ -57,9 +58,7 @@ export const ToolbarItemsContainer: FC<IToolbarItemsSortableProps> = props => {
       scroll={true}
       bubbleScroll={true}
     >
-      {props.items.map(
-        (item, index) => renderItem(item, index)
-      )}
+      {props.items.map((item, index) => renderItem(item, index))}
     </ReactSortable>
   );
 };

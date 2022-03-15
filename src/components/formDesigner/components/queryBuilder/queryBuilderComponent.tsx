@@ -4,7 +4,7 @@ import { FilterOutlined } from '@ant-design/icons';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import QueryBuilderField from './queryBuilderField';
-import { useQueryBuilder } from '../../../../providers';
+import { useQueryBuilder, useTableViewSelectorConfigurator } from '../../../../providers';
 import React from 'react';
 import { validateConfigurableComponentSettings } from '../../../../providers/form/utils';
 //import { DataTypes } from '../../../../interfaces/dataTypes';
@@ -21,12 +21,16 @@ const QueryBuilderComponent: IToolboxComponent<IQueryBuilderProps> = {
   icon: <FilterOutlined />,
   //dataTypes: [DataTypes.string],
   factory: (model: IQueryBuilderProps) => {
+    const { selectedItemId, items } = useTableViewSelectorConfigurator();
+
+    const useExpression = items?.find(({ id }) => id === selectedItemId)?.useExpression;
+
     const queryBuilder = useQueryBuilder(false);
     const fields = queryBuilder?.fields || [];
 
     return (
       <ConfigurableFormItem model={model}>
-        <QueryBuilderField fields={fields} jsonExpanded={model.jsonExpanded}/>
+        <QueryBuilderField fields={fields} jsonExpanded={model.jsonExpanded} useExpression={useExpression} />
       </ConfigurableFormItem>
     );
   },
