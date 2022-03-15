@@ -4,7 +4,7 @@ import { Show } from '../show';
 import { useForm } from '../../providers';
 import { IDtoType, ISelectOption } from '../autocomplete';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
-import { Switch, Tag, Button } from 'antd';
+import { Switch, Tag } from 'antd';
 import { getMoment } from '../../utils/date';
 import moment from 'moment';
 import classNames from 'classnames';
