@@ -82,9 +82,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
                 formPath={quickviewFormPath}
                 getEntityUrl={quickviewGetEntityUrl}
                 displayProperty={quickviewDisplayPropertyName}
-                width={quickviewWidth}>
-                  <Button type="link">{displayLabel}</Button>
-              </QuickView>
+                width={quickviewWidth} />
             );
           } else {
             return displayLabel;

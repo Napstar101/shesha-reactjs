@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Popover, Form, notification } from 'antd';
+import { Popover, Button, Form, notification } from 'antd';
 import { ConfigurableForm } from '../';
 import { useUi } from '../../providers';
 import { useGet } from 'restful-react';
@@ -32,8 +32,7 @@ export interface IQuickViewProps {
     width?: number;
 }
 
-const QuickView: FC<IQuickViewProps> = ({
-    children,
+const QuickView: FC<Omit<IQuickViewProps, 'children'>> = ({
     entityId,
     formPath,
     getEntityUrl,
@@ -82,8 +81,8 @@ const QuickView: FC<IQuickViewProps> = ({
     return (
         <Popover
             content={<div style={{ width }}>{formContent}</div>}
-            title={formTitle}>
-                {children}
+            title={formTitle ? formTitle : "Display Property Not Set in Forms Designer"}>
+            <Button type="link">{formTitle ? formTitle : "Display Property Not Set in Forms Designer"}</Button>
         </Popover>
     );
 };
