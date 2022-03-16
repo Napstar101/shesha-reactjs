@@ -8,16 +8,11 @@ import { IToolbarButton } from '../../../../../../providers/toolbarConfigurator/
 import ShaIcon, { IconType } from '../../../../../shaIcon';
 import classNames from 'classnames';
 import moment from 'moment';
+import { IKeyValue } from '../../../../../../interfaces/keyValue';
 
 export interface IToolbarButtonProps extends IToolbarButton {
   formComponentId: string;
   selectedRow: ISelectionProps;
-}
-
-interface IKeyValue {
-  id?: string;
-  key: string;
-  value: string;
 }
 
 export const ToolbarButton: FC<IToolbarButtonProps> = props => {
@@ -135,6 +130,7 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
     ...props?.modalProps,
     formId: props?.modalFormId,
     initialValues: evaluateKeyValuesToObject(props?.additionalProperties, formData),
+    parentFormValues: formData,
     onSubmitted: () => {
       // todo: implement custom actions support
       refreshTable();
@@ -144,6 +140,8 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
   const dynamicModal = useModal(modalProps);
 
   const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    console.log('<<LOG>> ToolbarButtonTableDialog modalProps: ', modalProps);
+
     event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
 
     if (props.modalFormId) {

@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import AuthContainer from '../authedContainer';
 import SidebarContainer, { ISidebarContainerProps } from './';
-import { ShaApplicationProvider } from '../../providers';
+import { GlobalStateProvider, ShaApplicationProvider } from '../../providers';
 import { CollapsiblePanel } from '..';
 import { Button } from 'antd';
 import './styles/story.less';
@@ -32,28 +32,30 @@ const TemplateBasic: Story<ISidebarContainerProps> = args => {
   const toggleRightSidebarVisibility = () => setState({ ...state, rightSidebarOpen: !state.rightSidebarOpen });
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout={true}>
-        <SidebarContainer
-          {...args}
-          title="Any title"
-          leftSidebarProps={{
-            open: state.leftSidebarOpen,
-            title: 'Left title',
-            content: <div>Content of the left sidebar goes here</div>,
-            onOpen: toggleLeftSidebarVisibility,
-            onClose: toggleLeftSidebarVisibility,
-          }}
-          rightSidebarProps={{
-            open: state.rightSidebarOpen,
-            title: 'Right title',
-            content: <div>Content of the right sidebar goes here</div>,
-            onOpen: toggleRightSidebarVisibility,
-            onClose: toggleRightSidebarVisibility,
-          }}
-        />
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout={true}>
+          <SidebarContainer
+            {...args}
+            title="Any title"
+            leftSidebarProps={{
+              open: state.leftSidebarOpen,
+              title: 'Left title',
+              content: <div>Content of the left sidebar goes here</div>,
+              onOpen: toggleLeftSidebarVisibility,
+              onClose: toggleLeftSidebarVisibility,
+            }}
+            rightSidebarProps={{
+              open: state.rightSidebarOpen,
+              title: 'Right title',
+              content: <div>Content of the right sidebar goes here</div>,
+              onOpen: toggleRightSidebarVisibility,
+              onClose: toggleRightSidebarVisibility,
+            }}
+          />
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 
@@ -70,21 +72,23 @@ const TemplateLeftSidebarOnly: Story<ISidebarContainerProps> = args => {
   const toggleLeftSidebarVisibility = () => setState({ ...state, leftSidebarOpen: !state.leftSidebarOpen });
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout={true}>
-        <SidebarContainer
-          {...args}
-          title="Any title"
-          leftSidebarProps={{
-            open: state.leftSidebarOpen,
-            title: 'Left title',
-            content: <div>Content of the left sidebar goes here</div>,
-            onOpen: toggleLeftSidebarVisibility,
-            onClose: toggleLeftSidebarVisibility,
-          }}
-        />
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout={true}>
+          <SidebarContainer
+            {...args}
+            title="Any title"
+            leftSidebarProps={{
+              open: state.leftSidebarOpen,
+              title: 'Left title',
+              content: <div>Content of the left sidebar goes here</div>,
+              onOpen: toggleLeftSidebarVisibility,
+              onClose: toggleLeftSidebarVisibility,
+            }}
+          />
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 
@@ -101,21 +105,23 @@ const TemplateRightSidebarOnly: Story<ISidebarContainerProps> = args => {
   const toggleRightSidebarVisibility = () => setState({ ...state, rightSidebarOpen: !state.rightSidebarOpen });
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout={true}>
-        <SidebarContainer
-          {...args}
-          title="Any title"
-          rightSidebarProps={{
-            open: state.rightSidebarOpen,
-            title: 'Right title',
-            content: <div>Content of the right sidebar goes here</div>,
-            onOpen: toggleRightSidebarVisibility,
-            onClose: toggleRightSidebarVisibility,
-          }}
-        />
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout={true}>
+          <SidebarContainer
+            {...args}
+            title="Any title"
+            rightSidebarProps={{
+              open: state.rightSidebarOpen,
+              title: 'Right title',
+              content: <div>Content of the right sidebar goes here</div>,
+              onOpen: toggleRightSidebarVisibility,
+              onClose: toggleRightSidebarVisibility,
+            }}
+          />
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 
@@ -140,41 +146,44 @@ const TemplateAdvanced: Story<ISidebarContainerProps> = args => {
   const toggleRightSidebarVisibility = () => setState({ ...state, rightSidebarOpen: !state.rightSidebarOpen });
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout={true}>
-        <SidebarContainer
-          {...args}
-          title="Any title"
-          // allowFullCollapse
-          leftSidebarProps={{
-            open: state.leftSidebarOpen,
-            title: 'Left title',
-            content: <div>Content of the left sidebar goes here</div>,
-            onOpen: toggleLeftSidebarVisibility,
-            onClose: toggleLeftSidebarVisibility,
-          }}
-          rightSidebarProps={{
-            open: state.rightSidebarOpen,
-            title: 'Right title',
-            content: <div>Content of the right sidebar goes here</div>,
-            onOpen: toggleRightSidebarVisibility,
-            onClose: toggleRightSidebarVisibility,
-          }}
-        >
-          <CollapsiblePanel header="Sidebar Container Content">
-            <h4>
-              Use these buttons to Show/Hide the side containers when 'AllowFullCollapse' property has been set to true.
-            </h4>
-            <div className="sha-buttons-wrapper">
-              <Button className="button" onClick={toggleLeftSidebarVisibility}>
-                Toggle Left Sidebar Visible
-              </Button>
-              <Button onClick={toggleRightSidebarVisibility}>Toggle Right Sidebar Visible</Button>
-            </div>
-          </CollapsiblePanel>
-        </SidebarContainer>
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout={true}>
+          <SidebarContainer
+            {...args}
+            title="Any title"
+            // allowFullCollapse
+            leftSidebarProps={{
+              open: state.leftSidebarOpen,
+              title: 'Left title',
+              content: <div>Content of the left sidebar goes here</div>,
+              onOpen: toggleLeftSidebarVisibility,
+              onClose: toggleLeftSidebarVisibility,
+            }}
+            rightSidebarProps={{
+              open: state.rightSidebarOpen,
+              title: 'Right title',
+              content: <div>Content of the right sidebar goes here</div>,
+              onOpen: toggleRightSidebarVisibility,
+              onClose: toggleRightSidebarVisibility,
+            }}
+          >
+            <CollapsiblePanel header="Sidebar Container Content">
+              <h4>
+                Use these buttons to Show/Hide the side containers when 'AllowFullCollapse' property has been set to
+                true.
+              </h4>
+              <div className="sha-buttons-wrapper">
+                <Button className="button" onClick={toggleLeftSidebarVisibility}>
+                  Toggle Left Sidebar Visible
+                </Button>
+                <Button onClick={toggleRightSidebarVisibility}>Toggle Right Sidebar Visible</Button>
+              </div>
+            </CollapsiblePanel>
+          </SidebarContainer>
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 

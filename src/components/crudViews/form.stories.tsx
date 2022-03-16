@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import { ConfigurableForm, GenericDetailsPage } from '../..';
+import { ConfigurableForm, GenericDetailsPage, GlobalStateProvider } from '../..';
 import { IGenericDetailsPageProps } from './detailsPage';
 
 export default {
@@ -23,22 +23,24 @@ const Template: Story<IGenericDetailsPageProps> = () => {
   // const { formItemLayout } = useUi();
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout>
-        <ConfigurableForm
-          mode="edit"
-          // {...formItemLayout}
-          path={'test/form-designer-components'}
-          onValuesChange={data => {
-            console.log('data: ', data);
-          }}
-          initialValues={{
-            ownerId: 'some-owner-id',
-            checklistId: '1698feac-56c7-436a-9bf5-117d22bfca0f',
-          }}
-        />
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout>
+          <ConfigurableForm
+            mode="edit"
+            // {...formItemLayout}
+            path={'test/form-designer-components'}
+            onValuesChange={data => {
+              console.log('data: ', data);
+            }}
+            initialValues={{
+              ownerId: 'some-owner-id',
+              checklistId: '1698feac-56c7-436a-9bf5-117d22bfca0f',
+            }}
+          />
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 

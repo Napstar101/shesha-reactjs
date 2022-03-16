@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { FormProvider, ShaApplicationProvider } from '../../providers';
+import { FormProvider, GlobalStateProvider, ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 // import { addStory } from '../../stories/utils';
 import FormDesigner from './formDesigner';
@@ -22,13 +22,15 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // Just for configuring Story
 // Create a master template for mapping args to render the Button component
 const BasicTemplate: Story<IConfigurableFormProps> = ({ path, mode, id }) => {
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer>
-        <FormProvider id={id} path={path} mode={mode}>
-          <FormDesigner />
-        </FormProvider>
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer>
+          <FormProvider id={id} path={path} mode={mode}>
+            <FormDesigner />
+          </FormProvider>
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 

@@ -7,9 +7,11 @@ import {
   ShaApplicationProvider,
   useSheshaApplication,
   MetadataDispatcherProvider,
+  GlobalStateProvider,
 } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button, Select } from 'antd';
+// @ts-ignore
 import { formGetByPath, formTestDelayGet, formTestDelayPost, formUpdateMarkup } from '../../apis/form';
 import allFormsJson from './allForms.json';
 import { LabeledValue } from 'antd/lib/select';
@@ -31,15 +33,17 @@ const defaultBackendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this con
 
 // Create a master template for mapping args to render the Button component
 const DesignerTemplate: Story<IFormDesignerStoryProps> = ({ formPath, formId, mode = 'designer' }) => (
-  <ShaApplicationProvider backendUrl={defaultBackendUrl}>
-    <AuthContainer layout={true}>
-      <MetadataDispatcherProvider>
-        <FormProvider path={formPath} id={formId} mode={mode}>
-          <FormDesigner />
-        </FormProvider>
-      </MetadataDispatcherProvider>
-    </AuthContainer>
-  </ShaApplicationProvider>
+  <GlobalStateProvider>
+    <ShaApplicationProvider backendUrl={defaultBackendUrl}>
+      <AuthContainer layout={true}>
+        <MetadataDispatcherProvider>
+          <FormProvider path={formPath} id={formId} mode={mode}>
+            <FormDesigner />
+          </FormProvider>
+        </MetadataDispatcherProvider>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  </GlobalStateProvider>
 );
 
 //#region TableContextProps
@@ -62,11 +66,13 @@ export interface IActionsTemplateProps {
 }
 const ActionsTemplate: Story<IActionsTemplateProps> = props => {
   return (
-    <ShaApplicationProvider backendUrl={defaultBackendUrl}>
-      <AuthContainer layout={true}>
-        <ActionsTemplateContent {...props} />
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={defaultBackendUrl}>
+        <AuthContainer layout={true}>
+          <ActionsTemplateContent {...props} />
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 
@@ -248,11 +254,13 @@ export const FormsEditor: FC = () => {
 };
 
 const BrowserTemplate: Story = () => (
-  <ShaApplicationProvider backendUrl={defaultBackendUrl}>
-    <AuthContainer layout={true}>
-      <FormsEditor />
-    </AuthContainer>
-  </ShaApplicationProvider>
+  <GlobalStateProvider>
+    <ShaApplicationProvider backendUrl={defaultBackendUrl}>
+      <AuthContainer layout={true}>
+        <FormsEditor />
+      </AuthContainer>
+    </ShaApplicationProvider>
+  </GlobalStateProvider>
 );
 
 export const Browser = addStory(BrowserTemplate, null);

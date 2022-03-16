@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import ConfigurableSidebarMenu from './';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import { AppEditModeToggler } from '../..';
+import { AppEditModeToggler, GlobalStateProvider } from '../..';
 import SidebarConfigurator from './configurator';
 import { SidebarMenuConfiguratorProvider } from '../../providers/sidebarMenuConfigurator';
 import { SIDEBAR_MENU_ID } from '../../constants';
@@ -57,13 +57,15 @@ export interface IConfiguratorTemplateProps {
 
 // Create a master template for mapping args to render the component
 const ConfiguratorTemplate: Story<IConfiguratorTemplateProps> = props => (
-  <ShaApplicationProvider backendUrl={props.backendUrl || ''}>
-    <AuthContainer layout={false}>
-      <SidebarMenuConfiguratorProvider items={[]}>
-        <SidebarConfigurator />
-      </SidebarMenuConfiguratorProvider>
-    </AuthContainer>
-  </ShaApplicationProvider>
+  <GlobalStateProvider>
+    <ShaApplicationProvider backendUrl={props.backendUrl || ''}>
+      <AuthContainer layout={false}>
+        <SidebarMenuConfiguratorProvider items={[]}>
+          <SidebarConfigurator />
+        </SidebarMenuConfiguratorProvider>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  </GlobalStateProvider>
 );
 
 export const Configurator = ConfiguratorTemplate.bind({});

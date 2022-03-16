@@ -227,7 +227,7 @@ export const EntityPickerInner: FC<IEntityPickerProps> = ({
   );
 };
 
-const EntityPicker: FC<IEntityPickerProps> = props => {
+export const EntityPicker: FC<IEntityPickerProps> = props => {
   const { tableId, parentEntityId, entityType } = props;
   return (
     <DataTableProvider

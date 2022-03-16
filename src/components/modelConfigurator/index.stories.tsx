@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { MetadataDispatcherProvider, ShaApplicationProvider } from '../../providers';
+import { GlobalStateProvider, MetadataDispatcherProvider, ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { ModelConfigurator, IModelConfiguratorProps } from './';
 import { addStory } from '../../stories/utils';
@@ -15,17 +15,18 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 
 // Create a master template for mapping args to render the Button component
 const Template: Story<IModelConfiguratorProps> = args => (
-  <ShaApplicationProvider backendUrl={backendUrl}>
-    <AuthContainer layout={true}>
-      <MetadataDispatcherProvider>
+  <GlobalStateProvider>
+    <ShaApplicationProvider backendUrl={backendUrl}>
+      <AuthContainer layout={true}>
+        <MetadataDispatcherProvider>
           <ModelConfigurator {...args} />
-      </MetadataDispatcherProvider>
-    </AuthContainer>
-  </ShaApplicationProvider >
+        </MetadataDispatcherProvider>
+      </AuthContainer>
+    </ShaApplicationProvider>
+  </GlobalStateProvider>
 );
 
-export const NewModel = addStory(Template, {
-});
+export const NewModel = addStory(Template, {});
 
 export const PersonModel = addStory(Template, {
   id: '0789BFDA-2864-451B-BC38-9F58F70BA11A',
