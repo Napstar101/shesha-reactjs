@@ -28,6 +28,7 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
     onSuccessRedirectUrl,
     initialValues,
     destroyOnClose,
+    parentFormValues,
     width = 800,
   } = props;
 
@@ -93,7 +94,7 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
         onFinish={onSubmitted}
         httpVerb={submitHttpVerb}
         initialValues={initialValues}
-        // parentFormValues={formData}
+        parentFormValues={parentFormValues}
       />
     </Modal>
   );

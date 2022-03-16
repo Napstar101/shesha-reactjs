@@ -143,11 +143,146 @@
           "id": "deb6f77f-c8f9-4463-a80b-f1563bbd0bfc",
           "label": "Close",
           "value": "close"
+        },
+        {
+          "id": "c025760d-b99b-4c44-89cf-1edb2a6cd014",
+          "label": "Dialog",
+          "value": "dialog"
+        },
+        {
+          "id": "3f71a488-7cd8-4b9b-b0f6-8b37b8a04aae",
+          "label": "Execute Script",
+          "value": "executeScript"
         }
       ],
       "validate": {
         "required": true
       }
+    },
+    {
+      "id": "4b5e5951-4998-4635-b1c8-0b6d3940c301",
+      "type": "codeEditor",
+      "name": "actionScript",
+      "label": "Action Script",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "return data.actionType === 'executeScript'",
+      "description": "Enter custom code that will be executed when the button is clicked. The global variable 'data' is provided, and allows you to access the 'data' of any form component, by using its API key.",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+      "type": "collapsiblePanel",
+      "name": "pnlModalSettings",
+      "label": "Dialogue settings",
+      "labelAlign": "right",
+      "parentId": "345c2181-fb9f-48ed-9631-864ac357807b",
+      "hidden": false,
+      "customVisibility": "return data.actionType === 'dialog'",
+      "validate": {
+        "required": false
+      },
+      "direction": "vertical",
+      "justifyContent": "left",
+      "components": [
+        {
+          "id": "a8b80cb4-b214-40e9-8289-0792376672ee",
+          "type": "textField",
+          "name": "modalTitle",
+          "label": "Title",
+          "labelAlign": "right",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "hidden": false,
+          "customVisibility": null,
+          "validate": {}
+        },
+        {
+          "id": "adbc3b29-9a53-4305-869a-f37ba6e8bb94",
+          "type": "autocomplete",
+          "name": "modalFormId",
+          "label": "Modal form",
+          "labelAlign": "right",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "hidden": false,
+          "customVisibility": null,
+          "validate": {},
+          "dataSourceType": "entitiesList",
+          "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
+          "entityTypeShortAlias": "Shesha.Framework.Form",
+          "useRawValues": true
+        },
+        {
+          "id": "2ab34541-6fa0-4be2-bb1e-eb65ec63b353",
+          "type": "textField",
+          "name": "modalActionOnSuccess",
+          "label": "Action on success",
+          "labelAlign": "right",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "hidden": true,
+          "customVisibility": null,
+          "validate": {}
+        },
+        {
+          "id": "c815c322-ba5d-4062-9736-e5d03c724134",
+          "type": "checkbox",
+          "name": "showModalFooter",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "label": "Show Modal Buttons",
+          "defaultChecked": false
+        },
+        {
+          "id": "f15848e8-87fa-4d76-b5a4-8548b8c2dd8b",
+          "type": "dropdown",
+          "name": "submitHttpVerb",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "label": "Submit Http Verb",
+          "values": [
+            {
+              "label": "POST",
+              "value": "POST",
+              "id": "8418606a-d85d-4795-a2ee-4a69fcc656f9"
+            },
+            {
+              "label": "PUT",
+              "value": "PUT",
+              "id": "64bbca8a-2fb1-4448-ab71-3db077233bd2"
+            }
+          ],
+          "dataSourceType": "values",
+          "customVisibility": "return data.showModalFooter === true",
+          "defaultValue": ["POST"]
+        },
+        {
+          "id": "e669632e-55e0-46f4-9585-9e81ef0ae174",
+          "type": "textField",
+          "name": "onSuccessRedirectUrl",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "label": "Success Redirect URL",
+          "customVisibility": "return data.showModalFooter === true"
+        },
+        {
+          "id": "b395c0e9-dbc1-44f1-8fef-c18a49442871",
+          "type": "labelValueEditor",
+          "name": "additionalProperties",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "label": "Additional properties",
+          "labelTitle": "Key",
+          "labelName": "key",
+          "valueTitle": "Value",
+          "valueName": "value",
+          "description": "Additional properties you want to be passed when the form gets submitted like parentId in the case where the modal is used in a childTable. Also note you can use Mustache expression like {{id}} for value property"
+        },
+        {
+          "id": "264903ff-b525-4a6e-893f-d560b219df9d",
+          "type": "numberField",
+          "name": "modalWidth",
+          "parentId": "fe4b3c03-3e0b-410f-8a9d-93db02ca51ed",
+          "label": "Width",
+          "customVisibility": "return data.showModalFooter === true"
+        }
+      ]
     },
     {
       "id": "828d2299-6684-4411-91ea-49eb96d83111",

@@ -1,3 +1,5 @@
+import { IKeyValue } from '../../interfaces/keyValue';
+
 /**
  * Dynamic Modal properties
  */
@@ -55,6 +57,8 @@ export interface IModalProps {
    */
   initialValues?: any;
 
+  parentFormValues?: any;
+
   destroyOnClose?: boolean;
 
   width?: number;
@@ -67,4 +71,17 @@ export interface IModalInstance {
   id: string;
   isVisible: boolean;
   props: IModalProps;
+}
+
+/**
+ * An interface for configuring the modal on the form designer for buttons, toolbarItem and columns
+ */
+export interface IModalProperties {
+  modalTitle?: string;
+  modalFormId?: string;
+  submitHttpVerb?: 'POST' | 'PUT';
+  onSuccessRedirectUrl?: string;
+  additionalProperties?: IKeyValue[];
+  modalWidth?: number;
+  showModalFooter?: boolean;
 }

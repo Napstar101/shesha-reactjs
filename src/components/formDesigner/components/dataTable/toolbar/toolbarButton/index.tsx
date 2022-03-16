@@ -7,16 +7,11 @@ import { evaluateKeyValuesToObject, evaluateString } from '../../../../../../pro
 import { IToolbarButton } from '../../../../../../providers/toolbarConfigurator/models';
 import ShaIcon, { IconType } from '../../../../../shaIcon';
 import classNames from 'classnames';
+import { IKeyValue } from '../../../../../../interfaces/keyValue';
 
 export interface IToolbarButtonProps extends IToolbarButton {
   formComponentId: string;
   selectedRow: ISelectionProps;
-}
-
-interface IKeyValue {
-  id?: string;
-  key: string;
-  value: string;
 }
 
 export const ToolbarButton: FC<IToolbarButtonProps> = props => {
@@ -121,6 +116,7 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
     ...props?.modalProps,
     formId: props?.modalFormId,
     initialValues: evaluateKeyValuesToObject(props?.additionalProperties, formData),
+    parentFormValues: formData,
     onSubmitted: () => {
       // todo: implement custom actions support
       refreshTable();

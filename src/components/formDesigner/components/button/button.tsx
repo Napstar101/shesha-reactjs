@@ -7,28 +7,33 @@ import { ButtonType } from 'antd/lib/button';
 import ConfigurableFormItem from '../formItem';
 import settingsFormJson from './settingsForm.json';
 import { useForm } from '../../../../providers/form';
-import { useClosestModal } from '../../../../providers/dynamicModal';
-import { evaluateValue, validateConfigurableComponentSettings } from '../../../../providers/form/utils';
+import { useClosestModal, useModal } from '../../../../providers/dynamicModal';
+import {
+  evaluateKeyValuesToObject,
+  evaluateValue,
+  validateConfigurableComponentSettings,
+} from '../../../../providers/form/utils';
 import { useShaRouting } from '../../../../providers';
 import ShaIcon, { IconType } from '../../../shaIcon';
+import { IModalProperties } from '../../../../providers/dynamicModal/models';
 
-type ButtonActionType = 'submit' | 'reset' | 'close' | 'custom';
+type ButtonActionType = 'submit' | 'reset' | 'close' | 'custom' | 'dialog' | 'executeScript';
 
 export type IActionParameters = [{ key: string; value: string }];
 
-export interface IButtonProps extends IConfigurableFormComponent {
+export interface IButtonProps extends IConfigurableFormComponent, IModalProperties {
   actionType: ButtonActionType;
   customAction?: string;
+  actionScript?: string;
   customActionParameters?: IActionParameters;
   icon?: string;
-
   buttonType?: ButtonType;
   danger?: boolean;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
 
-const TextField: IToolboxComponent<IButtonProps> = {
+const ButtonField: IToolboxComponent<IButtonProps> = {
   type: 'button',
   name: 'Button',
   icon: <BorderOutlined />,
@@ -37,6 +42,19 @@ const TextField: IToolboxComponent<IButtonProps> = {
     const { router } = useShaRouting();
     const closestModal = useClosestModal();
 
+    const dialog = useModal({
+      formId: model?.modalFormId,
+      id: model?.id,
+      isVisible: false,
+      initialValues: evaluateKeyValuesToObject(model?.additionalProperties, formData),
+      parentFormValues: formData,
+      showModalFooter: model?.showModalFooter,
+      submitHttpVerb: model?.submitHttpVerb,
+      onSuccessRedirectUrl: model?.onSuccessRedirectUrl,
+      destroyOnClose: true,
+      width: model?.modalWidth,
+    });
+
     const fieldModel = {
       ...model,
       label: null,
@@ -44,6 +62,17 @@ const TextField: IToolboxComponent<IButtonProps> = {
     };
 
     const onClick = () => {
+      const getExpressionExecutor = (expression: string) => {
+        if (!expression) {
+          return null;
+        }
+
+        // tslint:disable-next-line:function-constructor
+        const func = new Function('data', expression);
+
+        return func(formData);
+      };
+
       switch (model.actionType) {
         case 'submit':
           if (!Boolean(form)) {
@@ -82,6 +111,16 @@ const TextField: IToolboxComponent<IButtonProps> = {
           }
           break;
 
+        case 'executeScript':
+          if (model?.actionScript) {
+            getExpressionExecutor(model?.actionScript);
+          }
+          break;
+        case 'dialog':
+          dialog?.open();
+
+          break;
+
         default:
           break;
       }
@@ -113,4 +152,4 @@ const TextField: IToolboxComponent<IButtonProps> = {
   },
 };
 
-export default TextField;
+export default ButtonField;
