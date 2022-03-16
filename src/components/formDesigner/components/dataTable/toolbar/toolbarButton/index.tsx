@@ -130,6 +130,8 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
   const dynamicModal = useModal(modalProps);
 
   const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    console.log('<<LOG>> ToolbarButtonTableDialog modalProps: ', modalProps);
+
     event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
 
     if (props.modalFormId) {

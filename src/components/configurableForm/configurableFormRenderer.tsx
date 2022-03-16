@@ -14,6 +14,8 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
   skipPostOnFinish,
   form,
   httpVerb = 'POST',
+  parentFormValues,
+  initialValues,
   ...props
 }) => {
   const { setFormData, formData, allComponents, formMode, isDragging, formSettings, setValidationErrors } = useForm();
@@ -35,11 +37,11 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
 
   // reset form to initial data on any change of components or initialData
   useEffect(() => {
-    setFormData({ values: props.initialValues, mergeValues: true });
+    setFormData({ values: initialValues, mergeValues: true });
     if (form) {
       form.resetFields();
     }
-  }, [allComponents, props.initialValues]);
+  }, [allComponents, initialValues]);
 
   /**
    * This function return the submit url.
@@ -78,9 +80,9 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
     }
 
     // tslint:disable-next-line:function-constructor
-    const func = new Function('data', expression);
+    const func = new Function('data', 'parentFormValues', 'initialValues', expression);
 
-    return func(formData);
+    return func(formData, parentFormValues, initialValues);
   };
 
   const getDynamicPreparedValues = () => {
@@ -148,7 +150,7 @@ export const ConfigurableFormRenderer: FC<IConfigurableFormRendererProps> = ({
         onValuesChange={onValuesChangeInternal}
         onFieldsChange={onFieldsChange}
         fields={props.fields}
-        initialValues={props.initialValues}
+        initialValues={initialValues}
         className={`sha-form sha-form-${formMode} ${isDragging ? 'sha-dragging' : ''}`}
         {...mergedProps}
       >

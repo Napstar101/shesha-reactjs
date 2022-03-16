@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import ConfigurableLogo from './';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import { AppEditModeToggler } from '../..';
+import { AppEditModeToggler, GlobalStateProvider } from '../..';
 
 export default {
   title: 'Components/ConfigurableLogo',
@@ -16,18 +16,18 @@ export interface IConfigurableLogoStoryProps {
 }
 
 // Create a master template for mapping args to render the component
-const Template: Story<IConfigurableLogoStoryProps> = (props) => (
-  <ShaApplicationProvider 
-    backendUrl={props.backendUrl || ''}
-  >
-    <AuthContainer layout={false}>
-      <AppEditModeToggler />
-      <ConfigurableLogo />
-    </AuthContainer>
-  </ShaApplicationProvider>
+const Template: Story<IConfigurableLogoStoryProps> = props => (
+  <GlobalStateProvider>
+    <ShaApplicationProvider backendUrl={props.backendUrl || ''}>
+      <AuthContainer layout={false}>
+        <AppEditModeToggler />
+        <ConfigurableLogo />
+      </AuthContainer>
+    </ShaApplicationProvider>
+  </GlobalStateProvider>
 );
 
 export const Basic = Template.bind({});
-Basic.args = { 
+Basic.args = {
   backendUrl: process.env.STORYBOOK_BASE_URL,
 };

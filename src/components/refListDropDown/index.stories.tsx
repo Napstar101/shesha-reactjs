@@ -4,7 +4,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import RefListDropDown, { IRefListDropDownProps } from './';
 import { addStory } from '../../stories/utils';
-import { ShaApplicationProvider } from '../../providers';
+import { GlobalStateProvider, ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 
 export default {
@@ -58,58 +58,60 @@ const BaseTemplate: FC<ITemplateProps> = props => {
   };
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer>
-        <div style={{ width: 500 }}>
-          <Form
-            {...{
-              labelCol: {
-                xs: { span: 24 },
-                md: { span: 8 },
-                sm: { span: 8 },
-              },
-              wrapperCol: {
-                xs: { span: 24 },
-                md: { span: 16 },
-                sm: { span: 16 },
-              },
-            }}
-            onFinish={onFinish}
-            form={form}
-          >
-            <Form.Item label={label} name={name} initialValue={props.initialValue}>
-              {children}
-            </Form.Item>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer>
+          <div style={{ width: 500 }}>
+            <Form
+              {...{
+                labelCol: {
+                  xs: { span: 24 },
+                  md: { span: 8 },
+                  sm: { span: 8 },
+                },
+                wrapperCol: {
+                  xs: { span: 24 },
+                  md: { span: 16 },
+                  sm: { span: 16 },
+                },
+              }}
+              onFinish={onFinish}
+              form={form}
+            >
+              <Form.Item label={label} name={name} initialValue={props.initialValue}>
+                {children}
+              </Form.Item>
 
-            {Boolean(testValue) && (
-              <Button
-                onClick={() =>
-                  form?.setFieldsValue({
-                    [name]: testValue,
-                  })
-                }
-              >
-                Set Test Value
+              {Boolean(testValue) && (
+                <Button
+                  onClick={() =>
+                    form?.setFieldsValue({
+                      [name]: testValue,
+                    })
+                  }
+                >
+                  Set Test Value
+                </Button>
+              )}
+
+              <Button onClick={() => form?.resetFields()} style={{ margin: '0 12px' }}>
+                Reset
               </Button>
-            )}
 
-            <Button onClick={() => form?.resetFields()} style={{ margin: '0 12px' }}>
-              Reset
-            </Button>
-
-            <Button onClick={() => form?.submit()} type="primary">
-              Submit
-            </Button>
-          </Form>
-        </div>
-
-        {Boolean(state) && (
-          <div>
-            <pre>{JSON.stringify(state, null, 2)}</pre>
+              <Button onClick={() => form?.submit()} type="primary">
+                Submit
+              </Button>
+            </Form>
           </div>
-        )}
-      </AuthContainer>
-    </ShaApplicationProvider>
+
+          {Boolean(state) && (
+            <div>
+              <pre>{JSON.stringify(state, null, 2)}</pre>
+            </div>
+          )}
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 

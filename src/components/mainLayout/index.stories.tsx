@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../providers';
+import { GlobalStateProvider, ShaApplicationProvider, SidebarMenuDefaultsProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
 import MainLayout, { IMainLayoutProps } from './';
 import { SIDEBAR_MENU_ITEMS } from './menuItems';
@@ -22,15 +22,17 @@ const backendUrl = process.env.STORYBOOK_BASE_URL; // TODO: Make this configurab
 // Create a master template for mapping args to render the Button component
 const Template: Story<IMainLayoutProps> = args => {
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout={true}>
-        <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
-          <MainLayout {...args} title="Any title">
-            <div>This is a div</div>
-          </MainLayout>
-        </SidebarMenuDefaultsProvider>
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout={true}>
+          <SidebarMenuDefaultsProvider items={SIDEBAR_MENU_ITEMS}>
+            <MainLayout {...args} title="Any title">
+              <div>This is a div</div>
+            </MainLayout>
+          </SidebarMenuDefaultsProvider>
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 export const Default = Template.bind({});

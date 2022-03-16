@@ -4,7 +4,7 @@ import { Story } from '@storybook/react';
 import ChildDataTable, { IndexTableFull } from './';
 import DataTableProvider from '../../providers/dataTable';
 import { SearchOutlined } from '@ant-design/icons';
-import { IShaDataTableProps, ShaApplicationProvider } from '../..';
+import { GlobalStateProvider, IShaDataTableProps, ShaApplicationProvider } from '../..';
 import AuthContainer from '../authedContainer';
 
 export default {
@@ -43,22 +43,24 @@ const Template: Story<IShaDataTableProps> = args => {
   const tableRef = useRef();
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout>
-        <DataTableProvider tableId={args.id} title="Users" {...args}>
-          {/* <TableHack></TableHack> */}
-          <IndexTableFull
-            {...tableProps}
-            {...args}
-            tableRef={tableRef}
-            useMultiselect
-            onSelectedIdsChanged={ids => {
-              console.log('onSelectedIdsChanged ids :>> ', ids);
-            }}
-          />
-        </DataTableProvider>
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout>
+          <DataTableProvider tableId={args.id} title="Users" {...args}>
+            {/* <TableHack></TableHack> */}
+            <IndexTableFull
+              {...tableProps}
+              {...args}
+              tableRef={tableRef}
+              useMultiselect
+              onSelectedIdsChanged={ids => {
+                console.log('onSelectedIdsChanged ids :>> ', ids);
+              }}
+            />
+          </DataTableProvider>
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 

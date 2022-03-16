@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
-import { GenericDetailsPage, GenericIndexPage, SimpleIndexPage } from '../..';
+import { GenericDetailsPage, GenericIndexPage, GlobalStateProvider, SimpleIndexPage } from '../..';
 import { IGenericIndexPageProps } from './indexPage';
 import { useAreaCreate } from '../../apis/area';
 import { PlusOutlined } from '@ant-design/icons';
@@ -37,7 +37,7 @@ const Template: Story<IGenericIndexPageProps> = () => {
               updater: useAreaCreate,
               OnSuccessAction: OnSuccessActionType.GoToUrl,
               onSuccessUrl: '/settings',
-              submitButtonLabel: "Submit"
+              submitButtonLabel: 'Submit',
             }}
           />
         </>
@@ -66,23 +66,25 @@ const RowSelectionsTemplate: Story<IGenericIndexPageProps> = () => {
   // console.log('rowSelectionState: ', rowSelectionState);
 
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
-      <AuthContainer layout>
-        <SimpleIndexPage
-          title="All Payments"
-          tableConfigId="Invoice_Index"
-          toolbarItems={[
-            {
-              title: 'Create Payment Pack',
-              icon: <PlusOutlined />,
-              disabled: !rowSelectionState?.enableCreatePaymentPack,
-            },
-          ]}
-          onSelectRow={onSelectRow}
-          selectedRowIndex={rowSelectionState.selectedRowIndex}
-        />
-      </AuthContainer>
-    </ShaApplicationProvider>
+    <GlobalStateProvider>
+      <ShaApplicationProvider backendUrl={backendUrl}>
+        <AuthContainer layout>
+          <SimpleIndexPage
+            title="All Payments"
+            tableConfigId="Invoice_Index"
+            toolbarItems={[
+              {
+                title: 'Create Payment Pack',
+                icon: <PlusOutlined />,
+                disabled: !rowSelectionState?.enableCreatePaymentPack,
+              },
+            ]}
+            onSelectRow={onSelectRow}
+            selectedRowIndex={rowSelectionState.selectedRowIndex}
+          />
+        </AuthContainer>
+      </ShaApplicationProvider>
+    </GlobalStateProvider>
   );
 };
 
