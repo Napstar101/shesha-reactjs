@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
-import CustomFile, { ICustomFileProps } from '.';
 import StoredFilesProvider from '../../providers/storedFiles';
 import { GlobalStateProvider, ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
+import CustomFile, { ICustomFileProps } from '../customFile';
 
 export default {
   title: 'Components/Temp/CustomFile',

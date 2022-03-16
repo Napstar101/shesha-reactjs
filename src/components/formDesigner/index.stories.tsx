@@ -11,6 +11,7 @@ import {
 } from '../../providers';
 import AuthContainer from '../authedContainer';
 import { Button, Select } from 'antd';
+// @ts-ignore
 import { formGetByPath, formTestDelayGet, formTestDelayPost, formUpdateMarkup } from '../../apis/form';
 import allFormsJson from './allForms.json';
 import { LabeledValue } from 'antd/lib/select';

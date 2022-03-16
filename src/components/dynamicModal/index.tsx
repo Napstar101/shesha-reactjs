@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Modal, Form, ModalProps } from 'antd';
-import { useDynamicModals, useForm } from '../../providers';
+import { useDynamicModals } from '../../providers';
 import { ConfigurableForm } from '../';
 import { FormMode } from '../../providers/form/models';
 import { IModalProps } from '../../providers/dynamicModal/models';

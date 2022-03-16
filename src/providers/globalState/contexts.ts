@@ -16,7 +16,7 @@ export interface IGlobalStateActionsContext {
   getStateByKey?: (key: string) => IAnyObject;
 }
 
-export const GLOBAL_STATE_CONTEXT_INITIAL_STATE: IGlobalStateStateContext = {};
+export const GLOBAL_STATE_CONTEXT_INITIAL_STATE: IGlobalStateStateContext = { globalState: {} };
 
 export const GlobalStateStateContext = createContext<IGlobalStateStateContext>(GLOBAL_STATE_CONTEXT_INITIAL_STATE);
 

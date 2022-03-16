@@ -24,15 +24,13 @@ const reducer = handleActions<IGlobalStateStateContext, any>(
     },
     [GlobalStateActionEnums.ClearState]: (
       state: IGlobalStateStateContext,
-      action: ReduxActions.Action<ISetStatePayload>
+      action: ReduxActions.Action<string>
     ): IGlobalStateStateContext => {
-      const {
-        payload: { key },
-      } = action;
+      const { payload } = action;
       const { globalState } = state;
 
       const clonedState = { ...(globalState || {}) };
-      delete clonedState[key];
+      delete clonedState[payload];
 
       return {
         ...state,
