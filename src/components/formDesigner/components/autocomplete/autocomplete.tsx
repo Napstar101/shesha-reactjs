@@ -31,11 +31,11 @@ export interface IAutocompleteProps extends IConfigurableFormComponent {
   keyPropName?: string;
   valuePropName?: string;
 
-  // Quickview properties
-  quickViewEnabled?: boolean;
-  displayFormPath?: string;
-  displayPropertyName?: string;
-  getDetailsUrl?: string;
+  quickviewEnabled?: boolean;
+  quickviewFormPath?: string;
+  quickviewDisplayPropertyName?: string;
+  quickviewGetEntityUrl?: string;
+  quickviewWidth?: number;
 }
 
 const settingsForm = settingsFormJson as FormMarkup;
@@ -82,9 +82,9 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       useRawValues
         ? item[value]
         : {
-            id: item[value],
-            displayText: item[displayText],
-          };
+          id: item[value],
+          displayText: item[displayText],
+        };
 
     const getOptionFromFetchedItem = (item: object): ISelectOption => {
       const { dataSourceType, keyPropName, useRawValues, valuePropName } = model;
@@ -115,16 +115,24 @@ const AutocompleteComponent: IToolboxComponent<IAutocompleteProps> = {
       queryParams: getQueryParams(),
       readOnly: model?.readOnly || formMode === 'readonly',
       getOptionFromFetchedItem,
+
+      quickviewEnabled: model?.quickviewEnabled,
+      quickviewFormPath: model?.quickviewFormPath,
+      quickviewDisplayPropertyName: model?.quickviewDisplayPropertyName,
+      quickviewGetEntityUrl: model?.quickviewGetEntityUrl,
+      quickviewWidth: model?.quickviewWidth,
     };
 
     // todo: implement other types of datasources!
     return (
       <ConfigurableFormItem model={model}>
-        {model.useRawValues ? (
-          <Autocomplete.Raw {...autocompleteProps} />
-        ) : (
-          <Autocomplete.EntityDto {...autocompleteProps} />
-        )}
+        {
+          model.useRawValues ? (
+            <Autocomplete.Raw {...autocompleteProps} />
+          ) : (
+            <Autocomplete.EntityDto {...autocompleteProps} />
+          )
+        }
       </ConfigurableFormItem>
     );
   },

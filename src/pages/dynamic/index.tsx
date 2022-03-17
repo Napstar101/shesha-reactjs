@@ -65,13 +65,19 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
 
   const { id, path, formId, mode } = state;
 
+  useEffect(() => {
+    return () => {
+      setState(null); // Reset the state on unmount
+    };
+  }, []);
+
   const {
     refetch: fetchEntity,
     error: fetchEntityError,
     loading: isFetchingEntity,
     data: fetchEntityResponse,
   } = useGet<EntityAjaxResponse>({
-    path: state?.formResponse?.markup?.formSettings?.getUrl || '',
+    path: removeZeroWidthCharsFromString(state?.formResponse?.markup?.formSettings?.getUrl) || '',
     // queryParams: { id },
     lazy: true, // We wanna make sure we have both the id and the state?.markup?.formSettings?.getUrl before fetching data
   });
@@ -104,7 +110,7 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
   //#region get form data
   useEffect(() => {
     // Avoid fetching entity if we're displaying index table
-    if (id) {
+    if (id && props?.id) {
       fetchEntity({ queryParams: { id } });
     }
   }, [id, state?.formResponse?.markup?.formSettings?.getUrl]);
@@ -183,11 +189,27 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
     notification.error({
       message: 'Sorry! An error occurred.',
       icon: null,
-      description: <ValidationErrors error={error} />,
+      description: <ValidationErrors error={error} renderMode="raw" />,
     });
   };
 
-  if (state && !state?.formResponse?.markup) {
+  useEffect(() => {
+    if (state && !state?.formResponse?.markup && state?.path) {
+      notification.error({
+        message: 'Form not found',
+        description: (
+          <span>
+            Could not firm with the path <strong>{state?.path}</strong>. Please make sure the path is correct or that it
+            hasn't been changed
+          </span>
+        ),
+      });
+    }
+  }, [state?.formResponse?.markup]);
+
+  const isLoading = isFetchingEntity || isFetchingFormByPath || isFetchingFormById || isPostingData;
+
+  if (state && !state?.formResponse?.markup && !isLoading) {
     return (
       <Result
         status="404"
@@ -220,11 +242,7 @@ const DynamicPage: PageWithLayout<IDynamicPageProps> = props => {
   };
 
   return (
-    <Spin
-      spinning={isFetchingEntity || isFetchingFormByPath || isFetchingFormById || isPostingData}
-      tip={getLoadingHint()}
-      indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}
-    >
+    <Spin spinning={isLoading} tip={getLoadingHint()} indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}>
       <ConfigurableForm
         path={path}
         id={formId}

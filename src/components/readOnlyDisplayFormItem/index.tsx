@@ -4,10 +4,11 @@ import { Show } from '../show';
 import { useForm } from '../../providers';
 import { IDtoType, ISelectOption } from '../autocomplete';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
-import { Switch, Tag } from 'antd';
+import { Switch, Tag, Button } from 'antd';
 import { getMoment } from '../../utils/date';
 import moment from 'moment';
 import classNames from 'classnames';
+import QuickView from '../quickView';
 
 type AutocompleteType = ISelectOption<IDtoType>;
 
@@ -15,21 +16,26 @@ export interface IReadOnlyDisplayFormItemProps {
   value?: any;
   render?: () => ReactNode | ReactNode;
   type?:
-    | 'string'
-    | 'number'
-    | 'dropdown'
-    | 'dropdownMultiple'
-    | 'time'
-    | 'datetime'
-    | 'checkbox'
-    | 'switch'
-    | 'radiogroup';
+  | 'string'
+  | 'number'
+  | 'dropdown'
+  | 'dropdownMultiple'
+  | 'time'
+  | 'datetime'
+  | 'checkbox'
+  | 'switch'
+  | 'radiogroup';
   dropdownDisplayMode?: 'raw' | 'tags';
   dateFormat?: string;
   timeFormat?: string;
   disabled?: boolean;
   checked?: boolean;
   defaultChecked?: boolean;
+  quickviewEnabled?: boolean;
+  quickviewFormPath?: string;
+  quickviewDisplayPropertyName?: string;
+  quickviewGetEntityUrl?: string;
+  quickviewWidth?: number;
 }
 
 export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
@@ -42,6 +48,11 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
   disabled,
   checked,
   defaultChecked,
+  quickviewEnabled,
+  quickviewFormPath,
+  // quickviewDisplayPropertyName,
+  quickviewGetEntityUrl,
+  quickviewWidth,
 }) => {
   if (type === 'string') {
     console.log('ReadOnlyDisplayFormItem type, disabled: ', type, disabled);
@@ -63,7 +74,21 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
     switch (type) {
       case 'dropdown':
         if (!Array.isArray(value)) {
-          return (value as AutocompleteType)?.label;
+          const displayLabel = (value as AutocompleteType)?.label;
+          if (quickviewEnabled && quickviewFormPath) {
+            // const title = quickviewDisplayPropertyName ? "" : "";
+            return (
+              <QuickView
+                entityId={value?.data}
+                formPath={quickviewFormPath}
+                getEntityUrl={quickviewGetEntityUrl}
+                width={quickviewWidth}>
+                  <Button type="link">{displayLabel}</Button>
+              </QuickView>
+            );
+          } else {
+            return displayLabel;
+          }
         }
 
         throw new Error(
@@ -111,6 +136,7 @@ export const ReadOnlyDisplayFormItem: FC<IReadOnlyDisplayFormItemProps> = ({
 
   return (
     <span className="read-only-display-form-item">
+
       {renderValue()}
 
       <Show when={formSettings?.showModeToggler && formMode === 'readonly'}>

@@ -18,9 +18,21 @@ export interface IDynamicModalProps extends Omit<IModalProps, 'fetchUrl'> {
 }
 
 export const DynamicModal: FC<IDynamicModalProps> = props => {
-  const { id, title, isVisible, formId, showModalFooter, submitHttpVerb, onSuccessRedirectUrl } = props;
+  const {
+    id,
+    title,
+    isVisible,
+    formId,
+    showModalFooter,
+    submitHttpVerb,
+    onSuccessRedirectUrl,
+    initialValues,
+    destroyOnClose,
+    width = 800,
+  } = props;
+
   const [form] = Form.useForm();
-  const { hide } = useDynamicModals();
+  const { hide, removeModal } = useDynamicModals();
   const { router } = useShaRouting();
 
   const onOk = () => {
@@ -48,7 +60,13 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
     hideForm();
   };
 
-  const hideForm = () => hide(id);
+  const hideForm = () => {
+    hide(id);
+
+    if (destroyOnClose) {
+      removeModal(id);
+    }
+  };
 
   const footerProps: ModalProps = showModalFooter ? {} : { footer: null };
 
@@ -60,6 +78,8 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
       onOk={onOk} // not used
       onCancel={hideForm} // not used
       {...footerProps}
+      destroyOnClose
+      width={width} // Hardcoded for now. This will be configurable very shortly
     >
       <ConfigurableForm
         id={formId}
@@ -70,6 +90,7 @@ export const DynamicModal: FC<IDynamicModalProps> = props => {
         }}
         onFinish={onSubmitted}
         httpVerb={submitHttpVerb}
+        initialValues={initialValues}
       />
     </Modal>
   );

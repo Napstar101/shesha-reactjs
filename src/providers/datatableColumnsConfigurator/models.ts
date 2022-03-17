@@ -2,8 +2,7 @@ type ColumnsItemType = 'item' | 'group';
 
 export type ColumnsItemProps = IConfigurableColumnsProps | IConfigurableColumnGroup;
 
-type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction';
-
+type ButtonActionType = 'navigate' | 'dialogue' | 'executeScript' | 'executeFormAction' | 'deleteRow' | 'editRow';
 /**
  * Base properties of configurable column
  */
@@ -45,11 +44,11 @@ export interface IConfigurableActionColumnsProps extends IConfigurableColumnsPro
   action?: ButtonActionType;
 
   //#region Action = 'navigate'
-  
+
   /**
    * target Url, applicable when action = 'navigate'
    */
-  targetUrl?: string; 
+  targetUrl?: string;
 
   //#endregion
 
@@ -72,7 +71,15 @@ export interface IConfigurableActionColumnsProps extends IConfigurableColumnsPro
   /** Form action */
   formAction?: string;
 
-  //#endregion  
+  /**
+   * The warning message to display before deleting an item
+   */
+  deleteWarningMessage?: string;
+
+  additionalProperties?: any;
+
+  modalWidth?: any;
+  //#endregion
 }
 
 /**

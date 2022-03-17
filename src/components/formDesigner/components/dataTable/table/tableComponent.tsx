@@ -36,8 +36,20 @@ const NotConfiguredWarning: FC = () => {
   return <Alert className="sha-designer-warning" message="Table is not configured properly" type="warning" />;
 };
 
-export const TableWrapper: FC<ITableComponentProps> = ({ id, items, useMultiselect }) => {
+export const TableWrapper: FC<ITableComponentProps> = ({
+  id,
+  items,
+  useMultiselect,
+  overrideDefaultCrudBehavior,
+  crud,
+  createUrl,
+  deleteUrl,
+  detailsUrl,
+  updateUrl,
+  isNotWrapped,
+}) => {
   const { formMode } = useForm();
+
   const isDesignMode = formMode === 'designer';
 
   const {
@@ -46,7 +58,12 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items, useMultisele
     isInProgress: { isFiltering, isSelectingColumns },
     setIsInProgressFlag,
     registerConfigurableColumns,
+    setCrudConfig,
   } = useDataTableStore();
+
+  useEffect(() => {
+    setCrudConfig({ createUrl, deleteUrl, detailsUrl, updateUrl });
+  }, [createUrl, deleteUrl, detailsUrl, updateUrl]);
 
   useEffect(() => {
     // register columns
@@ -79,6 +96,19 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items, useMultisele
     setSelectedRow(index, row);
   };
 
+  if (isNotWrapped) {
+    return (
+      <IndexTable
+        id={tableId}
+        onSelectRow={onSelectRow}
+        selectedRowIndex={selectedRow?.index}
+        useMultiselect={useMultiselect}
+        crud={crud}
+        overrideDefaultCrudBehavior={overrideDefaultCrudBehavior}
+      />
+    );
+  }
+
   return (
     <CollapsibleSidebarContainer
       rightSidebarProps={{
@@ -95,6 +125,9 @@ export const TableWrapper: FC<ITableComponentProps> = ({ id, items, useMultisele
         onSelectRow={onSelectRow}
         selectedRowIndex={selectedRow?.index}
         useMultiselect={useMultiselect}
+        crud={crud}
+        overrideDefaultCrudBehavior={overrideDefaultCrudBehavior}
+        // crudMode="dialog"
       />
     </CollapsibleSidebarContainer>
   );

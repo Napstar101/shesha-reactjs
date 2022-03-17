@@ -27,40 +27,36 @@ function ColumnsSettings(props: IProps) {
 
   const fields = useMemo<IProperty[]>(() => {
     if (dataSourceType === 'tableConfig') {
-      return columns.map<IProperty>(column => (
-        {
-          label: column.header,
-          propertyName: column.columnId,
-          visible: column.isVisible,
-          dataType: column.dataType,
-          fieldSettings: {
-            typeShortAlias: column.entityReferenceTypeShortAlias,
-            referenceListName: column.referenceListName,
-            referenceListNamespace: column.referenceListNamespace,
-            allowInherited: column.allowInherited,
-          },
-          //tooltip: column.description
-          //preferWidgets: ['']
-        }
-      ));
+      return columns.map<IProperty>(column => ({
+        label: column.header,
+        propertyName: column.columnId,
+        visible: column.isVisible,
+        dataType: column.dataType,
+        fieldSettings: {
+          typeShortAlias: column.entityReferenceTypeShortAlias,
+          referenceListName: column.referenceListName,
+          referenceListNamespace: column.referenceListNamespace,
+          allowInherited: column.allowInherited,
+        },
+        //tooltip: column.description
+        //preferWidgets: ['']
+      }));
     }
     if (dataSourceType === 'entity') {
       const properties = metadata?.metadata?.properties || [];
       if (Boolean(properties))
-        return properties.map<IProperty>(property => (
-          {
-            label: property.label,
-            propertyName: property.path,
-            visible: property.isVisible,
-            dataType: property.dataType,
-            fieldSettings: {
-              typeShortAlias: property.entityType,
-              referenceListName: property.referenceListName,
-              referenceListNamespace: property.referenceListNamespace,
-              allowInherited: true,
-            }
-          }
-        ));
+        return properties.map<IProperty>(property => ({
+          label: property.label,
+          propertyName: property.path,
+          visible: property.isVisible,
+          dataType: property.dataType,
+          fieldSettings: {
+            typeShortAlias: property.entityType,
+            referenceListName: property.referenceListName,
+            referenceListNamespace: property.referenceListNamespace,
+            allowInherited: true,
+          },
+        }));
     }
     return [];
   }, [dataSourceType, columns, metadata]);

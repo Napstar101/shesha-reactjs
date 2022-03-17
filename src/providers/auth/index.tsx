@@ -1,7 +1,13 @@
 import React, { FC, useContext, useEffect, PropsWithChildren, useMemo } from 'react';
 import { authReducer } from './reducer';
 import useThunkReducer from 'react-hook-thunk-reducer';
-import { AuthStateContext, AuthActionsContext, AUTH_CONTEXT_INITIAL_STATE, ILoginForm, IAuthStateContext } from './contexts';
+import {
+  AuthStateContext,
+  AuthActionsContext,
+  AUTH_CONTEXT_INITIAL_STATE,
+  ILoginForm,
+  IAuthStateContext,
+} from './contexts';
 import {
   loginUserAction,
   loginUserErrorAction,
@@ -22,18 +28,19 @@ import { IAccessToken } from '../../interfaces';
 import { OverlayLoader } from '../../components/overlayLoader';
 import { sessionGetCurrentLoginInformations } from '../../apis/session';
 import { ResetPasswordVerifyOtpResponse } from '../../apis/user';
-import { 
-    removeAccessToken as removeTokenFromStorage, 
-    saveUserToken as saveUserTokenToStorage, 
-    getAccessToken as getAccessTokenFromStorage,
-    getHttpHeaders as getHttpHeadersFromToken } from '../../utils/auth';
+import {
+  removeAccessToken as removeTokenFromStorage,
+  saveUserToken as saveUserTokenToStorage,
+  getAccessToken as getAccessTokenFromStorage,
+  getHttpHeaders as getHttpHeadersFromToken,
+} from '../../utils/auth';
 import {
   useTokenAuthAuthenticate,
   AuthenticateResultModelAjaxResponse,
   useTokenAuthSignOff,
 } from '../../apis/tokenAuth';
 import { getLocalizationOrDefault } from '../../utils/localization';
-import { getTenantId } from '../../utils/multitenancy';
+import { getCustomHeaders, getTenantId } from '../../utils/multitenancy';
 import { useShaRouting } from '../shaRouting';
 import IRequestHeaders from '../../interfaces/requestHeaders';
 import { IHttpHeaders } from '../../interfaces/accessToken';
@@ -99,41 +106,41 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   //#region Fetch user login info`1
 
   const fetchUserInfo = (headers: IHttpHeaders) => {
-    if (state.isFetchingUserInfo || Boolean(state.loginInfo))
-      return;
-    
-    if (Boolean(state.loginInfo)) 
-      return;
+    if (state.isFetchingUserInfo || Boolean(state.loginInfo)) return;
+
+    if (Boolean(state.loginInfo)) return;
 
     dispatch(fetchUserDataAction());
-    sessionGetCurrentLoginInformations({ base: backendUrl, headers }).then(response => {
-      if (response.result.user) {
-        dispatch(fetchUserDataActionSuccessAction(response.result.user));
+    sessionGetCurrentLoginInformations({ base: backendUrl, headers })
+      .then(response => {
+        if (response.result.user) {
+          dispatch(fetchUserDataActionSuccessAction(response.result.user));
 
-        if (state.requireChangePassword && Boolean(changePasswordUrl)) {
-          redirect(changePasswordUrl);
-        } else {
-          const currentUrl = getCurrentUrl();
+          if (state.requireChangePassword && Boolean(changePasswordUrl)) {
+            redirect(changePasswordUrl);
+          } else {
+            const currentUrl = getCurrentUrl();
 
-          // if we are on the login page - redirect to the returnUrl or home page
-          if (isSameUrls(currentUrl, unauthorizedRedirectUrl)) {
-            const returnUrl = getQueryParam("returnUrl")?.toString();
-            redirect(returnUrl ?? homePageUrl);
+            // if we are on the login page - redirect to the returnUrl or home page
+            if (isSameUrls(currentUrl, unauthorizedRedirectUrl)) {
+              const returnUrl = getQueryParam('returnUrl')?.toString();
+              redirect(returnUrl ?? homePageUrl);
+            }
           }
-        }
-      } else {
-        // user may be null in some cases
-        clearAccessToken();
+        } else {
+          // user may be null in some cases
+          clearAccessToken();
 
-        dispatch(fetchUserDataActionErrorAction({ message: 'Not authorized' }));
+          dispatch(fetchUserDataActionErrorAction({ message: 'Not authorized' }));
+          redirectToUnauthorized();
+        }
+      })
+      .catch(e => {
+        console.log('failed to fetch user profile', e);
+        dispatch(fetchUserDataActionErrorAction({ message: 'Oops, something went wrong' }));
         redirectToUnauthorized();
-      }
-    }).catch(e => {
-      console.log('failed to fetch user profile', e);
-      dispatch(fetchUserDataActionErrorAction({ message: 'Oops, something went wrong' }));
-      redirectToUnauthorized();
-    });
-  }
+      });
+  };
 
   const redirect = (url: string) => {
     router?.push(url);
@@ -142,7 +149,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const redirectToUnauthorized = () => {
     const redirectUrl = getLoginUrlWithReturn(homePageUrl, unauthorizedRedirectUrl);
     redirect(redirectUrl);
-  }
+  };
 
   //#region `checkAuth`
   const checkAuth = () => {
@@ -164,8 +171,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   const getHttpHeadersFromState = (providedState: IAuthStateContext): IHttpHeaders => {
     const headers: IHttpHeaders = {};
 
-    if (providedState.token)
-      headers['Authorization'] = `Bearer ${providedState.token}`;
+    if (providedState.token) headers['Authorization'] = `Bearer ${providedState.token}`;
 
     // todo: move culture and tenant to state and restore from localStorage on start
     headers['.AspNetCore.Culture'] = getLocalizationOrDefault();
@@ -176,19 +182,25 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       headers['Abp.TenantId'] = getTenantId().toString();
     }
 
+    const additionalHeaders = getCustomHeaders();
+
+    additionalHeaders.forEach(([key, value]) => {
+      headers[key] = value?.toString();
+    });
+
     return headers;
-  }
+  };
 
   const getHttpHeaders = (): IHttpHeaders => {
     return getHttpHeadersFromState(state);
-  }
+  };
 
-  const fireHttpHeadersChanged = (providedState: IAuthStateContext) => {
+  const fireHttpHeadersChanged = (providedState: IAuthStateContext = state) => {
     if (onSetRequestHeaders) {
       const headers = getHttpHeadersFromState(providedState);
       onSetRequestHeaders(headers);
     }
-  }
+  };
 
   const clearAccessToken = () => {
     removeTokenFromStorage(tokenName);
@@ -196,7 +208,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     dispatch((dispatchThunk, getState) => {
       dispatchThunk(setAccessTokenAction(null));
       fireHttpHeadersChanged(getState());
-    })
+    });
   };
 
   useEffect(() => {
@@ -205,7 +217,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
     const currentUrl = getCurrentUrl();
 
     if (!httpHeaders) {
-      if (currentUrl !== unauthorizedRedirectUrl && !(whitelistUrls?.includes(currentUrl))) {
+      if (currentUrl !== unauthorizedRedirectUrl && !whitelistUrls?.includes(currentUrl)) {
         redirectToUnauthorized();
       }
     } else {
@@ -224,12 +236,9 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
       dispatchThunk(loginUserAction()); // We just want to let the user know we're logging in
 
       const loginSuccessHandler = (data: AuthenticateResultModelAjaxResponse) => {
-
         dispatchThunk(loginUserSuccessAction());
         if (data) {
-          const token = data.success && data.result
-            ? data.result as IAccessToken
-            : null;
+          const token = data.success && data.result ? (data.result as IAccessToken) : null;
           if (token && token.accessToken) {
             // save token to the localStorage
             saveUserTokenToStorage(token, tokenName);
@@ -244,8 +253,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
             // get new headers and fetch the user info
             const headers = getHttpHeadersFromState(newState);
             fetchUserInfo(headers);
-          } else
-            dispatchThunk(loginUserErrorAction(data?.error as IErrorInfo));
+          } else dispatchThunk(loginUserErrorAction(data?.error as IErrorInfo));
         }
       };
 
@@ -254,7 +262,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
         .catch(err => {
           dispatchThunk(loginUserErrorAction(err?.data));
         });
-    })
+    });
   };
   //#endregion
 
@@ -295,6 +303,8 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
   };
 
   const anyOfPermissionsGrantedWrapper = (permissions: string[]) => {
+    if (permissions?.length === 0) return true;
+
     const granted = anyOfPermissionsGranted(permissions);
 
     return granted;
@@ -318,10 +328,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
 
   const showLoader = useMemo(() => {
     return !!(
-      (
-        state.isFetchingUserInfo ||
-        (!state.isFetchingUserInfo && !state.loginInfo && state.token)
-      ) // Done fetching user info but the state is not yet updated
+      (state.isFetchingUserInfo || (!state.isFetchingUserInfo && !state.loginInfo && state.token)) // Done fetching user info but the state is not yet updated
     );
   }, [state.isFetchingUserInfo, state]);
 
@@ -329,7 +336,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
 
   const getAccessToken = () => {
     return state.token;
-  }
+  };
 
   if (showLoader) {
     return <OverlayLoader loading={true} loadingText="Initializing..." />;
@@ -350,6 +357,7 @@ const AuthProvider: FC<PropsWithChildren<IAuthProviderProps>> = ({
             anyOfPermissionsGranted: anyOfPermissionsGrantedWrapper,
             verifyOtpSuccess,
             resetPasswordSuccess,
+            fireHttpHeadersChanged,
 
             /* NEW_ACTION_GOES_HERE */
           }}

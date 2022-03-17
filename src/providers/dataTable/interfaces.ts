@@ -88,8 +88,8 @@ export interface IGetDataPayload {
   readonly quickSearch: string;
   readonly filter?: IFilterItem[];
   readonly parentEntityId?: string;
-  readonly selectedStoredFilterIds?: string[];
-  readonly selectedFilters?: IStoredFilter[];
+  selectedStoredFilterIds?: string[];
+  selectedFilters?: IStoredFilter[];
 }
 
 export interface ITableDataResponse {
@@ -135,7 +135,14 @@ export interface IStoredFilter {
   // Private filters are managed within the data table control
   isPrivate?: boolean;
   expressionType?: FilterExpressionType | string;
-  expression?: string;
+  expression?: string | object;
+
+  // use
+  useExpression?: boolean;
+
+  selected?: boolean;
+
+  defaultSelected?: boolean;
 }
 
 export interface ITableDataResponse {
@@ -148,10 +155,10 @@ export interface ITableDataResponse {
 export interface IDataTableInstance extends IPublicDataTableActions {}
 
 export interface ITableCrudConfig {
-  createUrl: string;
-  deleteUrl: string;
-  detailsUrl: string;
-  updateUrl: string;
+  createUrl?: string;
+  deleteUrl?: string;
+  detailsUrl?: string;
+  updateUrl?: string;
 }
 
 export interface IEditableRowState {
@@ -191,4 +198,14 @@ export interface ICrudProps {
   pickerOptions?: boolean;
 
   crudParentEntityKey?: string;
+
+  overrideDefaultCrudBehavior?: boolean;
+}
+
+export interface IFormDataPayload {
+  formData?: any;
+}
+
+export interface IFormDataPayload {
+  crudSettings?: any;
 }

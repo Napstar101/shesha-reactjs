@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import { useShaRouting, useDataTableStore, useForm, useModal } from '../../../../../../providers';
 import { ISelectionProps } from '../../../../../../providers/dataTableSelection/models';
 import { IModalProps } from '../../../../../../providers/dynamicModal/models';
-import { evaluateString } from '../../../../../../providers/form/utils';
+import { evaluateKeyValuesToObject, evaluateString } from '../../../../../../providers/form/utils';
 import { IToolbarButton } from '../../../../../../providers/toolbarConfigurator/models';
 import ShaIcon, { IconType } from '../../../../../shaIcon';
 import classNames from 'classnames';
@@ -11,6 +11,12 @@ import classNames from 'classnames';
 export interface IToolbarButtonProps extends IToolbarButton {
   formComponentId: string;
   selectedRow: ISelectionProps;
+}
+
+interface IKeyValue {
+  id?: string;
+  key: string;
+  value: string;
 }
 
 export const ToolbarButton: FC<IToolbarButtonProps> = props => {
@@ -28,6 +34,8 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
       showModalFooter: convertedProps?.showModalFooter,
       submitHttpVerb: convertedProps?.submitHttpVerb,
       onSuccessRedirectUrl: convertedProps?.onSuccessRedirectUrl,
+      destroyOnClose: true,
+      width: props?.modalWidth,
     };
 
     return props?.refreshTableOnSuccess ? (
@@ -37,7 +45,9 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
     );
   }
 
-  const onButtonClick = () => {
+  const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
+
     switch (props.buttonAction) {
       case 'navigate':
         if (props.targetUrl) {
@@ -82,7 +92,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
   return (
     <Button
       title={props.tooltip}
-      onClick={onButtonClick}
+      onClick={event => onButtonClick(event)}
       type={props.buttonType}
       danger={props.danger}
       icon={props.icon ? <ShaIcon iconName={props.icon as IconType} /> : undefined}
@@ -95,6 +105,7 @@ export const ToolbarButton: FC<IToolbarButtonProps> = props => {
 
 interface IToolbarButtonTableDialogProps extends Omit<IModalProps, 'formId' | 'isVisible'>, IToolbarButtonProps {
   modalProps?: IModalProps;
+  additionalProperties?: IKeyValue[];
 }
 
 /**
@@ -104,9 +115,12 @@ interface IToolbarButtonTableDialogProps extends Omit<IModalProps, 'formId' | 'i
  */
 const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
   const { refreshTable } = useDataTableStore();
+  const { formData } = useForm();
 
   const modalProps: IModalProps = {
     ...props?.modalProps,
+    formId: props?.modalFormId,
+    initialValues: evaluateKeyValuesToObject(props?.additionalProperties, formData),
     onSubmitted: () => {
       // todo: implement custom actions support
       refreshTable();
@@ -115,7 +129,9 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
 
   const dynamicModal = useModal(modalProps);
 
-  const onButtonClick = () => {
+  const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
+
     if (props.modalFormId) {
       dynamicModal.open();
     } else console.warn('Modal Form is not specified');
@@ -136,9 +152,11 @@ const ToolbarButtonTableDialog: FC<IToolbarButtonTableDialogProps> = props => {
 };
 
 const ToolbarButtonPlainDialog: FC<IToolbarButtonTableDialogProps> = props => {
-  const dynamicModal = useModal(props?.modalProps);
+  const dynamicModal = useModal({ ...props?.modalProps, formId: props?.modalFormId });
 
-  const onButtonClick = () => {
+  const onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation(); // Don't collapse the CollapsiblePanel when clicked
+
     if (props.modalFormId) {
       dynamicModal.open();
     } else console.warn('Modal Form is not specified');

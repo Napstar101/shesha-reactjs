@@ -4,6 +4,7 @@ import { Meta } from '@storybook/react/types-6-0';
 import { Story } from '@storybook/react';
 import { ShaApplicationProvider } from '../../providers';
 import AuthContainer from '../authedContainer';
+import { Button } from 'antd';
 
 // #region Storybook Metadata & Configuration
 
@@ -22,25 +23,18 @@ const BaseTemplate: Story<IQuickViewProps> = props => {
     return (
         <ShaApplicationProvider backendUrl={backendUrl}>
             <AuthContainer layout>
-                <>
-                    <QuickView
-                        title={props.title}
-                        displayFormPath={props.displayFormPath}
-                        displayPropertyName={props.displayPropertyName}
-                        getDetailsUrl={props.getDetailsUrl}
-                        id={props.id} />
-                </>
+                <QuickView {...props}>
+                    <Button type="link">Hello</Button>
+                </QuickView>
             </AuthContainer>
         </ShaApplicationProvider>
     );
 };
 
 const baseProps: IQuickViewProps = {
-    title: "Hello",
-    displayFormPath: "/members/details",
-    displayPropertyName: "DisplayName",
-    getDetailsUrl: "/members",
-    // id: "00000000000"
+    entityId: '0cdad6b0-a3b2-4cf6-9b7d-238d753f0657',
+    formPath: 'quickview-his-health-facilities-details',
+    getEntityUrl: '/api/services/Common/HisHealthFacility/Get',
 };
 
 export const Base = BaseTemplate.bind({});

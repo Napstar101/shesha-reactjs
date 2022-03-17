@@ -117,6 +117,8 @@ const TableContextAccessor: FC<ITableContextComponentProps> = ({ id, tableConfig
     setIsInProgressFlag({ isFiltering: true, isSelectingColumns: false });
   };
 
+  const setToEditMode = () => {};
+
   // register available actions, refresh on every table configuration loading or change of the table Id
   useEffect(
     () =>
@@ -126,6 +128,7 @@ const TableContextAccessor: FC<ITableContextComponentProps> = ({ id, tableConfig
         toggleAdvancedFilter,
         exportToExcel,
         deleteRow,
+        setToEditMode,
       }),
     [tableConfigLoaded, tableConfigId, selectedRow]
   );

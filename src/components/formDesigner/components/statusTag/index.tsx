@@ -41,15 +41,6 @@ const StatusTagComponent: IToolboxComponent<IStatusTagProps> = {
       [colorCodeEvaluator, overrideCodeEvaluator, valueCodeEvaluator, override, value, color].filter(Boolean)
         ?.length === 0;
 
-    console.log('StatusTagComponent :>> ', {
-      colorCodeEvaluator,
-      overrideCodeEvaluator,
-      valueCodeEvaluator,
-      override,
-      value,
-      color,
-    });
-
     const getValueByExpression = (expression: string = '') => {
       return expression?.includes('{{') ? evaluateString(expression, formData) : expression;
     };

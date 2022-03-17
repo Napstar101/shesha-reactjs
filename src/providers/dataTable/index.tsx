@@ -41,6 +41,7 @@ import {
   deleteRowItemAction,
   registerConfigurableColumnsAction,
   fetchColumnsSuccessSuccessAction,
+  setCrudConfigAction,
 } from './actions';
 import {
   ITableDataResponse,
@@ -52,6 +53,7 @@ import {
   ICrudProps,
   IStoredFilter,
   ITableFilter,
+  ITableCrudConfig,
 } from './interfaces';
 import { useMutate, useGet } from 'restful-react';
 import _ from 'lodash';
@@ -153,18 +155,30 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
       quickSearch: payload.quickSearch,
       columns: state.columns,
       tableSorting: payload.sorting,
-
-      selectedStoredFilterIds: payload.selectedStoredFilterIds,
+      selectedStoredFilterIds: payload.selectedStoredFilterIds || state?.selectedStoredFilterIds,
       tableFilter: payload.filter,
     };
+
     setUserDTSettings(userConfigToSave);
 
     // convert filters
     const allFilters = [...(state.predefinedFilters || []), ...(state.storedFilters || [])];
+
     const filters = payload.selectedStoredFilterIds
       .map(id => allFilters.find(f => f.id === id))
       .filter(f => Boolean(f));
+
     const expandedPayload: IGetDataPayload = { ...payload, selectedFilters: filters };
+
+    // Check against state.selectedStoredFilterIds as well
+    if (filters?.length === 0 && state?.predefinedFilters?.length) {
+      const foundSelectedFilter = state?.predefinedFilters?.find(({ defaultSelected }) => defaultSelected);
+
+      if (foundSelectedFilter) {
+        expandedPayload.selectedStoredFilterIds = [foundSelectedFilter?.id];
+        expandedPayload.selectedFilters = [foundSelectedFilter];
+      }
+    }
 
     return fetchDataTableDataInternal(expandedPayload);
   };
@@ -553,6 +567,10 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
     return !tableId && entityType ? 'entity' : 'tableConfig';
   };
 
+  const setCrudConfig = (config: ITableCrudConfig) => {
+    dispatch(setCrudConfigAction(config));
+  };
+
   /* NEW_ACTION_DECLARATION_GOES_HERE */
 
   return (
@@ -587,6 +605,7 @@ const DataTableProvider: FC<PropsWithChildren<IDataTableProviderProps>> = ({
           registerConfigurableColumns,
           getCurrentFilter,
           getDataSourceType,
+          setCrudConfig,
           /* NEW_ACTION_GOES_HERE */
         }}
       >

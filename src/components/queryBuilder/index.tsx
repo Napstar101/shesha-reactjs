@@ -33,9 +33,16 @@ export interface IQueryBuilderProps {
   columns?: IQueryBuilderColumn[];
   fields: IProperty[];
   showActionBtnOnHover?: boolean;
+  useExpression?: boolean;
 }
 
-export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = true, onChange, value, fields }) => {
+export const QueryBuilder: FC<IQueryBuilderProps> = ({
+  showActionBtnOnHover = true,
+  onChange,
+  value,
+  fields,
+  useExpression,
+}) => {
   const [tree, setTree] = useState<ImmutableTree>();
   const [config, setConfig] = useState<Config>();
 
@@ -80,6 +87,7 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
     fields?.forEach(({ dataType, visible, propertyName, label, fieldSettings, preferWidgets }) => {
       let type: string = dataType;
       let defaultPreferWidgets = [];
+      let localPreferWidgets = preferWidgets;
 
       /*
       Fields can be of type:
@@ -130,13 +138,19 @@ export const QueryBuilder: FC<IQueryBuilderProps> = ({ showActionBtnOnHover = tr
             break;
         }
 
+        if (useExpression) {
+          type = 'text';
+          defaultPreferWidgets = ['text'];
+          localPreferWidgets = ['text'];
+        }
+
         conf.fields[propertyName] = {
           label,
           type,
           valueSources: ['value'],
           // @ts-ignore note: types are wrong in the library, they doesn't allow to extend
           fieldSettings,
-          preferWidgets: preferWidgets || defaultPreferWidgets,
+          preferWidgets: localPreferWidgets || defaultPreferWidgets,
         };
       }
     });

@@ -1,3 +1,4 @@
+import { IAnyObject } from './../../interfaces/anyObject';
 import {
   IFlatComponentsStructure,
   IConfigurableFormComponent,
@@ -406,16 +407,10 @@ export const evaluateValue = (value: string, dictionary: any) => {
  * @param data the data to use to evaluate the expression
  * @returns
  */
-export const evaluateExpression = (expression: string, data: any) => {
-  return expression.replace(/\$\{(.*?)\}/g, (_, token) => nestedProperty.get(data, token));
-};
-// export const evaluateExpression = (expression: string, data: any) => {
-//   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
-// };
 
-// export const evaluateExpression = (expression, data: any) => {
-//   return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token));
-// };
+export const evaluateExpression = (expression, data: any) => {
+  return expression.replace(/\{\{(.*?)\}\}/g, (_, token) => nestedProperty.get(data, token)) as string;
+};
 
 /**
  * Remove zero-width space characters from a string.
@@ -730,4 +725,25 @@ export const sheshaApplication = () => {
   } catch (error) {
     return { toolboxComponentGroups: [] };
   }
+};
+
+interface IKeyValue {
+  key: string;
+  value: string;
+}
+
+export const evaluateKeyValuesToObject = (arr: IKeyValue[], data: any): IAnyObject => {
+  const queryParamObj: IAnyObject = {};
+
+  if (arr?.length) {
+    arr?.forEach(({ key, value }) => {
+      if (key?.length && value.length) {
+        queryParamObj[key] = evaluateString(value, data);
+      }
+    });
+
+    return queryParamObj;
+  }
+
+  return {};
 };

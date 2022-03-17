@@ -21,10 +21,4 @@ export interface IDropdownProps extends IConfigurableFormComponent {
   ignoredValues?: number[];
   placeholder?: string;
   useRawValues: boolean;
-
-  // Quickview properties
-  quickViewEnabled?: boolean;
-  displayFormPath?: string;
-  displayPropertyName?: string;
-  getDetailsUrl?: string;
 }

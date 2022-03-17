@@ -26,7 +26,7 @@ export interface IToolbarItemBase {
   buttonType?: ButtonType;
   customVisibility?: string;
   customEnabled?: string;
-  permissions?: string;
+  permissions?: string[];
 }
 
 export interface IToolbarButton extends IToolbarItemBase {
@@ -36,6 +36,7 @@ export interface IToolbarButton extends IToolbarItemBase {
   targetUrl?: string;
   modalFormId?: string;
   modalTitle?: string;
+  modalWidth?: number;
   formAction?: string;
   actionScript?: string;
 }
