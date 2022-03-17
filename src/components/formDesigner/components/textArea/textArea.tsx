@@ -1,4 +1,4 @@
-import { IToolboxComponent } from '../../../../interfaces';
+5import { IToolboxComponent } from '../../../../interfaces';
 import { FormMarkup, IConfigurableFormComponent } from '../../../../providers/form/models';
 import { FontColorsOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
